@@ -28,23 +28,28 @@
 #include <stdio.h>
 #include "prompt.h"
 
-// read only 1024 chars for this moment
-// maybe we read less chars in the future
-char* readCmd()
-{
-	char cmd[1024];
-	scanf("%s",cmd);
-	return cmd;
+// User prompt
+void promptU() {
+	putchar('>');
 }
 
-int main(int argc, char** argv)
+// Enable prompt
+void promptE() {
+	putchar('#');
+}
+
+// Configure prompt
+void promptC()
 {
-	printf("Type help to see the commands.\n");
-	promptU();
-	while(1)
-	{
-		readCmd();
-		promptU();
-	}
-	return 0;
+	printf("#(conf)");
+}
+
+void promptCIf()
+{
+	printf("#(conf-iface)");
+}
+
+void promptCFW()
+{
+	printf("#(conf-fw)");
 }

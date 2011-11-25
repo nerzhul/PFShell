@@ -61,10 +61,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.c" />
+    <ClCompile Include="..\src\prompt.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\CHANGELOG" />
     <None Include="..\README" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\prompt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
