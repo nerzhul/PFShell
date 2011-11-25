@@ -25,9 +25,37 @@
 
 #include <stdio.h>
 
+// User prompt
+void promptU() {
+	printf(">");
+}
+
+// Enable prompt
+void promptE() {
+	printf("#");
+}
+
+// Configure prompt
+void promptC()
+{
+	printf("#(conf)");
+}
+
+char* readCmd()
+{
+	char cmd[1024];
+	scanf("%s",cmd);
+	return cmd;
+}
+
 int main(int argc, char** argv)
 {
-
-
+	printf("Type help to see the commands.\n");
+	promptU();
+	while(1)
+	{
+		readCmd();
+		promptU();
+	}
 	return 0;
 }
