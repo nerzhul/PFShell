@@ -29,27 +29,14 @@
 #include "prompt.h"
 
 // User prompt
-void promptU() {
-	putchar('>');
-}
-
+void promptU() { putchar('>'); }
 // Enable prompt
-void promptE() {
-	putchar('#');
-}
-
+void promptE() { putchar('#'); }
 // Configure prompt
-void promptC()
-{
-	printf("#(conf)");
-}
-
-void promptCIf()
-{
-	printf("#(conf-iface)");
-}
-
-void promptCFW()
-{
-	printf("#(conf-fw)");
-}
+void promptC() { printf("#(conf)"); }
+// Configure prompt for Network Interfaces
+void promptCIf() { printf("#(conf-iface)"); }
+// Configure prompt for Firewall
+void promptCFW() { printf("#(conf-fw)"); }
+// Configure prompt for CARP redundancy
+void promptCRD() { printf("#(conf-redundancy)"); }

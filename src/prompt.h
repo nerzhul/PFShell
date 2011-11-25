@@ -30,3 +30,4 @@ void promptE();
 void promptC();
 void promptCIf();
 void promptCFW();
+void promptCRD();
