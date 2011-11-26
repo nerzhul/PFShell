@@ -103,8 +103,9 @@ void handleCmd(char* _cmd)
 			// Todo: cut the string
 			(*masterCmd[promptMode][i].handler)("");
 			// Bad thing but improve performance code
-			break;
+			return;
 		}
 		++i;
 	}
+	printf("Unknown command\n");
 }
