@@ -25,27 +25,4 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
-#include <stdio.h>
-#include "prompt.h"
 #include "command.h"
-
-// read only 1024 chars for this moment
-// maybe we read less chars in the future
-char* readCmd()
-{
-	char cmd[1024];
-	scanf("%s",cmd);
-	return cmd;
-}
-
-int main(int argc, char** argv)
-{
-	printf("Type help to see the commands.\n");
-	promptU();
-	while(1)
-	{
-		readCmd();
-		promptU();
-	}
-	return 0;
-}
