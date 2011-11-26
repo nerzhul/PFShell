@@ -29,6 +29,6 @@
 
 unsigned short initCmds()
 {
-	
+	userCmd = malloc(sizeof(cmdHdlr));
 	return 0;
 }

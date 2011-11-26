@@ -35,9 +35,16 @@ typedef struct commandHandler
 
 unsigned short initCmds();
 
-cmdHdlr userCmd[3];
-cmdHdlr enableCmd;
-cmdHdlr confCmd;
-cmdHdlr confIfCmd;
-cmdHdlr confFWCmd;
-cmdHdlr confRDCmd;
+#define MAX_USER_CMD	0
+#define MAX_ENABLE_CMD	0
+#define MAX_CONF_CMD	0
+#define MAX_CONF_IF_CMD 0
+#define MAX_CONF_FW_CMD 0
+#define MAX_CONF_RD_CMD 0
+
+cmdHdlr* userCmd;
+cmdHdlr* enableCmd;
+cmdHdlr* confCmd;
+cmdHdlr* confIfCmd;
+cmdHdlr* confFWCmd;
+cmdHdlr* confRDCmd;
