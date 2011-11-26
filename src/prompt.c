@@ -30,6 +30,9 @@
 
 unsigned int  initPrompts()
 {
+	// Set default mode to usermode
+	promptMode = 0;
+
 	promptTable[0].action = &promptU;
 	promptTable[1].action = &promptE;
 	promptTable[2].action = &promptC;
@@ -40,9 +43,9 @@ unsigned int  initPrompts()
 	return 1;
 }
 
-void prompt(unsigned int _mode)
+void prompt()
 {
-	(*promptTable[_mode].action)();
+	(*promptTable[promptMode].action)();
 }
 
 // User prompt

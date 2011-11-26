@@ -68,6 +68,7 @@
   <ItemGroup>
     <None Include="..\CHANGELOG" />
     <None Include="..\README" />
+    <None Include="..\src\Makefile.am" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\command.h" />

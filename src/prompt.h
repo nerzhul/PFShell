@@ -47,5 +47,7 @@ typedef struct prompt
 
 prompts promptTable[MAX_PROMPTS];
 
+unsigned int promptMode;
+
 unsigned int initPrompts();
-void prompt(unsigned int _mode);
+void prompt();

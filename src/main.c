@@ -29,9 +29,6 @@
 #include "prompt.h"
 #include "command.h"
 
-// Initialize prompt mode here, for this moment.
-unsigned int promptMode = 0;
-
 // read only 1024 chars for this moment
 // maybe we read less chars in the future
 char* readCmd()
@@ -50,12 +47,12 @@ int main(int argc, char** argv)
 	}
 	
 	printf("Type help to see the commands.\n");
-	prompt(promptMode);
+	prompt();
 	
 	while(1)
 	{
 		readCmd();
-		prompt(promptMode);
+		prompt();
 	}
 	return 0;
 }
