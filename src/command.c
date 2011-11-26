@@ -26,3 +26,9 @@
 */
 
 #include "command.h"
+
+unsigned short initCmds()
+{
+	
+	return 0;
+}

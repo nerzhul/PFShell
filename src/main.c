@@ -40,8 +40,15 @@ char* readCmd()
 
 int main(int argc, char** argv)
 {
+	if(!initCmds())
+	{
+		printf("PFShell is corrupt, please reinstall it\n");
+		return -1;
+	}
+	
 	printf("Type help to see the commands.\n");
 	promptU();
+	
 	while(1)
 	{
 		readCmd();

@@ -31,11 +31,13 @@ typedef struct commandHandler
 {
 	const char* name;
 	void (*handler)(char* otherArgs);
-} cmdTable;
+} cmdHdlr;
 
-cmdTable userCmd;
-cmdTable enableCmd;
-cmdTable confCmd;
-cmdTable confIfCmd;
-cmdTable confFWCmd;
-cmdTable confRDCmd;
+unsigned short initCmds();
+
+cmdHdlr userCmd[3];
+cmdHdlr enableCmd;
+cmdHdlr confCmd;
+cmdHdlr confIfCmd;
+cmdHdlr confFWCmd;
+cmdHdlr confRDCmd;
