@@ -86,8 +86,28 @@ unsigned short initCmds()
 // maybe we read less chars in the future
 char* readCmd()
 {
-	char cmd[1024];
-	scanf("%s",cmd);
+	char buffer[1024];
+	char* cmd;
+	char tmpchar;
+	int offset = 0;
+	do 
+	{
+		tmpchar = getchar();
+		buffer[offset] = tmpchar;
+		++offset;
+	} while(offset < 1023 && tmpchar != '\n' && tmpchar != '\0');
+
+	cmd = (char*) malloc((offset)*sizeof(char));
+
+	--offset;
+	cmd[offset] = '\0';
+	--offset;
+
+	while(offset >= 0)
+	{
+		cmd[offset] = buffer[offset];
+		--offset;
+	}
 	return cmd;
 }
 
