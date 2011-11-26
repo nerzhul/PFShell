@@ -29,15 +29,6 @@
 #include "prompt.h"
 #include "command.h"
 
-// read only 1024 chars for this moment
-// maybe we read less chars in the future
-char* readCmd()
-{
-	char cmd[1024];
-	scanf("%s",cmd);
-	return cmd;
-}
-
 int main(int argc, char** argv)
 {
 	if(!initCmds() || !initPrompts())
@@ -51,7 +42,7 @@ int main(int argc, char** argv)
 	
 	while(1)
 	{
-		readCmd();
+		handleCmd(readCmd());
 		prompt();
 	}
 	return 0;

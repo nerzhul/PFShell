@@ -27,10 +27,12 @@
 
 #include <stdlib.h>
 #include "command_user.h"
+#include "prompt.h"
 
 void uCMD_enable(char* _none)
 {
 	printf("Password:");
+	promptMode = PROMPT_ENABLE;
 }
 
 void uCMD_exit(char* _none)

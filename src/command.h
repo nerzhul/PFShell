@@ -48,3 +48,7 @@ cmdHdlr confFWCmd[MAX_CONF_FW_CMD];
 cmdHdlr confRDCmd[MAX_CONF_RD_CMD];
 
 unsigned short initCmds();
+
+char* readCmd();
+
+void handleCmd(char* _cmd);

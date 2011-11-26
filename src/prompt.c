@@ -31,7 +31,7 @@
 unsigned int  initPrompts()
 {
 	// Set default mode to usermode
-	promptMode = 0;
+	promptMode = PROMPT_USER;
 
 	promptTable[0].action = &promptU;
 	promptTable[1].action = &promptE;

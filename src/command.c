@@ -25,7 +25,10 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
+#include <stdlib.h>
+#include <string.h>
 #include "command.h"
+#include "prompt.h"
 
 unsigned short initCmds()
 {
@@ -60,4 +63,133 @@ unsigned short initCmds()
 	confRDCmd[0].name = "exit";
 
 	return 1;
+}
+
+// read only 1024 chars for this moment
+// maybe we read less chars in the future
+char* readCmd()
+{
+	char cmd[1024];
+	scanf("%s",cmd);
+	return cmd;
+}
+
+void handleCmd(char* _cmd)
+{
+	// replace it by a table for the future
+	switch(promptMode)
+	{
+		case PROMPT_USER:
+		{
+			unsigned int i;
+			i = 0;
+
+			while(i < MAX_USER_CMD)
+			{
+				if(strcmp(_cmd,userCmd[i].name) == 0)
+				{
+					// Todo: cut the string
+					(*userCmd[i].handler)("");
+					// Bad thing but improve performance code
+					break;
+				}
+				++i;
+			}
+			break;
+		}
+		case PROMPT_ENABLE:
+		{
+			unsigned int i;
+			i = 0;
+
+			while(i < MAX_ENABLE_CMD)
+			{
+				if(strcmp(_cmd,enableCmd[i].name) == 0)
+				{
+					// Todo: cut the string
+					(*enableCmd[i].handler)("");
+					// Bad thing but improve performance code
+					break;
+				}
+				++i;
+			}
+			break;
+		}
+		case PROMPT_CONF:
+		{
+			unsigned int i;
+			i = 0;
+
+			while(i < MAX_CONF_CMD)
+			{
+				if(strcmp(_cmd,confCmd[i].name) == 0)
+				{
+					// Todo: cut the string
+					(*confCmd[i].handler)("");
+					// Bad thing but improve performance code
+					break;
+				}
+				++i;
+			}
+			break;
+		}
+		case PROMPT_CONF_IF:
+		{
+			unsigned int i;
+			i = 0;
+
+			while(i < MAX_CONF_IF_CMD)
+			{
+				if(strcmp(_cmd,confIfCmd[i].name) == 0)
+				{
+					// Todo: cut the string
+					(*confIfCmd[i].handler)("");
+					// Bad thing but improve performance code
+					break;
+				}
+				++i;
+			}
+			break;
+		}
+		case PROMPT_CONF_FW:
+		{
+			unsigned int i;
+			i = 0;
+
+			while(i < MAX_CONF_FW_CMD)
+			{
+				if(strcmp(_cmd,confFWCmd[i].name) == 0)
+				{
+					// Todo: cut the string
+					(*confFWCmd[i].handler)("");
+					// Bad thing but improve performance code
+					break;
+				}
+				++i;
+			}
+			break;
+		}
+		case PROMPT_CONF_RD:
+		{
+			unsigned int i;
+			i = 0;
+
+			while(i < MAX_CONF_RD_CMD)
+			{
+				if(strcmp(_cmd,confRDCmd[i].name) == 0)
+				{
+					// Todo: cut the string
+					(*confRDCmd[i].handler)("");
+					// Bad thing but improve performance code
+					break;
+				}
+				++i;
+			}
+			break;
+		}
+		default:
+			printf("[FATAL ERROR] Unhandled prompt appears %u\n",promptMode);
+			exit(0);
+			break;
+	}
 }
