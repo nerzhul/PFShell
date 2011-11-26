@@ -130,7 +130,7 @@ void handleCmd(char* _fullcmd)
 		}
 		++i;
 	}
-	printf("Unknown command\n");
+	printError("Unknown command\n");
 }
 
 char** cutFirstWord(char* string)

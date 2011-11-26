@@ -1,3 +1,6 @@
 Alpha 0.0
 - We decide to create this project.
 - Source code is under BSD Licence
+Alpha 0.1
+- Shell command handling is now ready
+- Different type of prompts are created

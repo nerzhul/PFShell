@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 {
 	if(!initCmds() || !initPrompts())
 	{
-		printf("PFShell is corrupt, please reinstall it\n");
+		printError("PFShell is corrupt, please reinstall it\n");
 		return -1;
 	}
 	

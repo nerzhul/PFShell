@@ -30,15 +30,16 @@
 
 void eCMD_configure(char* _none) {
 	if(strlen(_none) > 0)
-		printf("Syntax error !\n Correct syntax is: configure\n");
+		printError("Syntax error !\n Correct syntax is: configure\n");
 	else
 		promptMode = PROMPT_CONF;
 }
 
 void eCMD_exit(char* _none) {
 	if(strlen(_none) > 0)
-		printf("Syntax error !\n Correct syntax is: exit\n");
-	promptMode = PROMPT_USER;
+		printError("Syntax error !\n Correct syntax is: exit\n");
+	else
+		promptMode = PROMPT_USER;
 }
 
 void eCMD_save(char* _none)

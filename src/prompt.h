@@ -27,6 +27,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 #define PROMPT_USER		0
 #define PROMPT_ENABLE	1
@@ -35,6 +36,23 @@
 #define PROMPT_CONF_FW	4
 #define PROMPT_CONF_RD	5
 #define MAX_PROMPTS		6
+
+#define BLACK 0
+#define RED 1
+#define GREEN 2
+#define BROWN 3
+#define BLUE 4
+#define MAGENTA 5
+#define CYAN 6
+#define GREY 7
+#define YELLOW 8
+#define LRED 9
+#define LGREEN 10
+#define LBLUE 11
+#define LMAGENTA 12
+#define LCYAN 13
+#define WHITE 14
+#define MAX_COLORS 15
 
 void promptU();
 void promptE();
@@ -54,3 +72,7 @@ unsigned int promptMode;
 
 unsigned int initPrompts();
 void prompt();
+void printError(char* str, ...);
+
+void setPromptColor(short stdout_stream, short color);
+void resetPromptColor(short stdout_stream);
