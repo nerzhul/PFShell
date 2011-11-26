@@ -31,7 +31,7 @@ typedef struct commandHandler
 	void (*handler)(char* otherArgs);
 } cmdHdlr;
 
-#define MAX_USER_CMD	2
+#define MAX_USER_CMD	3
 #define MAX_ENABLE_CMD	3
 #define MAX_CONF_CMD	1
 #define MAX_CONF_IF_CMD 3
@@ -52,4 +52,7 @@ unsigned short initCmds();
 
 char* readCmd();
 
+char** cutFirstWord(char*);
+
 void handleCmd(char* _cmd);
+

@@ -29,3 +29,4 @@
 
 void uCMD_enable(char* _none);
 void uCMD_exit(char* _none);
+void uCMD_help(char* _none);

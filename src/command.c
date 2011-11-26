@@ -43,6 +43,8 @@ unsigned short initCmds()
 	userCmd[0].handler = &uCMD_exit;
 	userCmd[1].name = "enable";
 	userCmd[1].handler = &uCMD_enable;
+	userCmd[2].name = "help";
+	userCmd[2].handler = &uCMD_help;
 
 	// Enable Mode Commands
 	enableCmd[0].name = "exit";
@@ -95,6 +97,7 @@ char* readCmd()
 		tmpchar = getchar();
 		buffer[offset] = tmpchar;
 		++offset;
+	// @TODO: handle \t
 	} while(offset < 1023 && tmpchar != '\n' && tmpchar != '\0');
 
 	cmd = (char*) malloc((offset)*sizeof(char));
@@ -111,21 +114,82 @@ char* readCmd()
 	return cmd;
 }
 
-void handleCmd(char* _cmd)
+void handleCmd(char* _fullcmd)
 {
 	unsigned int i;
 	i = 0;
-
+	// @TODO: cutFirstWord MUST be stored in a variable although we do 2 times the command !
 	while(i < MAX_USER_CMD)
 	{
-		if(strcmp(_cmd,masterCmd[promptMode][i].name) == 0)
+		if(strcmp(cutFirstWord(_fullcmd)[0],masterCmd[promptMode][i].name) == 0)
 		{
 			// Todo: cut the string
-			(*masterCmd[promptMode][i].handler)("");
+			(*masterCmd[promptMode][i].handler)(cutFirstWord(_fullcmd)[1]);
 			// Bad thing but improve performance code
 			return;
 		}
 		++i;
 	}
 	printf("Unknown command\n");
+}
+
+char** cutFirstWord(char* string)
+{
+	char* result[2];
+	char firstWord[1024];
+	char followWords[1024];
+
+	int offset = 0;
+	int offset2 = 0;
+	short first_written = 0;
+
+	while(offset <= strlen(string))
+	{
+		if(!first_written)
+		{
+			if(string[offset] == ' ')
+			{
+				first_written = 1;
+				firstWord[offset] = '\0';
+			}
+			else
+				firstWord[offset] = string[offset];
+		}
+		else
+		{
+			followWords[offset2] = string[offset];
+			++offset2;
+		}
+
+		++offset;
+	}
+
+	if(first_written)
+	{
+		followWords[offset] = '\0';
+
+		result[0] = (char*) malloc(offset*sizeof(char));
+		result[1] = (char*) malloc(offset2*sizeof(char));
+
+		offset = strlen(firstWord);
+		while(offset >= 0)
+		{
+			result[0][offset] = firstWord[offset];
+			--offset;
+		}
+
+		offset = strlen(followWords);
+		while(offset >= 0)
+		{
+			result[1][offset] = followWords[offset];
+			--offset;
+		}
+	}
+	else
+	{
+		result[0] = string;
+		result[1] = "";
+	}
+
+	return result;
 }

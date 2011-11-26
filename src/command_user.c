@@ -41,3 +41,10 @@ void uCMD_exit(char* _none)
 	printf("Bye !\n");
 	exit(0);
 }
+
+void uCMD_help(char* _none)
+{
+	printf("enable - grant you administrative privileges\n");
+	printf("exit   - leave the current terminal\n");
+	printf("help   - show this help\n");
+}
