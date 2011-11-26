@@ -29,6 +29,11 @@
 
 unsigned short initCmds()
 {
-	userCmd = malloc(sizeof(cmdHdlr));
+	userCmd = malloc(MAX_USER_CMD * sizeof(cmdHdlr));
+	enableCmd = malloc(MAX_ENABLE_CMD * sizeof(cmdHdlr));
+	confCmd = malloc(MAX_CONF_CMD * sizeof(cmdHdlr));
+	confIfCmd = malloc(MAX_CONF_IF_CMD * sizeof(cmdHdlr));
+	confFWCmd = malloc(MAX_CONF_FW_CMD * sizeof(cmdHdlr));
+	confRDCmd = malloc(MAX_CONF_RD_CMD * sizeof(cmdHdlr));
 	return 0;
 }
