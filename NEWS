@@ -1,0 +1,9 @@
+////////////////////////////////////////////////////////////////////////
+///		                      25 November 2011		                 ///
+////////////////////////////////////////////////////////////////////////
+
+Project was started. This project was started under BSD Licence. 
+You can redistribute it and use it without any problem.
+This project will abstract you from BSD administration. We decided to
+create a user-friendly shell to interact with BSD components and the 
+goal is to create a redundancy firewall, easily, efficient and powered. 
