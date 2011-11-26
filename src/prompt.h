@@ -25,6 +25,9 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
+#include <string.h>
+#include <stdio.h>
+
 #define PROMPT_USER		0
 #define PROMPT_ENABLE	1
 #define PROMPT_CONF		2

@@ -28,4 +28,9 @@
 #include "command_conf_if.h"
 #include "prompt.h"
 
-void cifCMD_exit(char* _none) { promptMode = PROMPT_CONF; }
+void cifCMD_exit(char* _none) {
+	if(strlen(_none) > 0)
+		printf("Syntax error !\n Correct syntax is: exit\n");
+	else
+		promptMode = PROMPT_CONF;
+}

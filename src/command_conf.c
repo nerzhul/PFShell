@@ -28,4 +28,10 @@
 #include "command_conf.h"
 #include "prompt.h"
 
-void cCMD_exit(char* _none) { promptMode = PROMPT_ENABLE; }
+void cCMD_exit(char* _none)
+{
+	if(strlen(_none) > 0)
+		printf("Syntax error !\n Correct syntax is: exit\n");
+	else
+		promptMode = PROMPT_ENABLE;
+}

@@ -31,6 +31,12 @@
 
 void uCMD_enable(char* _none)
 {
+	if(strlen(_none) > 0)
+	{
+		printf("Syntax error !\n Correct syntax is: enable\n");
+		return;
+	}
+
 	// Manage this later
 	printf("Password:\n");
 	promptMode = PROMPT_ENABLE;
@@ -38,6 +44,12 @@ void uCMD_enable(char* _none)
 
 void uCMD_exit(char* _none)
 {
+	if(strlen(_none) > 0)
+	{
+		printf("Syntax error !\n Correct syntax is: exit\n");
+		return;
+	}
+
 	printf("Bye !\n");
 	exit(0);
 }

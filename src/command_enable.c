@@ -28,9 +28,18 @@
 #include "command_enable.h"
 #include "prompt.h"
 
-void eCMD_configure(char* _none) { promptMode = PROMPT_CONF; }
+void eCMD_configure(char* _none) {
+	if(strlen(_none) > 0)
+		printf("Syntax error !\n Correct syntax is: configure\n");
+	else
+		promptMode = PROMPT_CONF;
+}
 
-void eCMD_exit(char* _none) { promptMode = PROMPT_USER; }
+void eCMD_exit(char* _none) {
+	if(strlen(_none) > 0)
+		printf("Syntax error !\n Correct syntax is: exit\n");
+	promptMode = PROMPT_USER;
+}
 
 void eCMD_save(char* _none)
 {

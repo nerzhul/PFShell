@@ -28,4 +28,9 @@
 #include "command_conf_fw.h"
 #include "prompt.h"
 
-void cfwCMD_exit(char* _none) { promptMode = PROMPT_CONF; }
+void cfwCMD_exit(char* _none) {
+	if(strlen(_none) > 0)
+		printf("Syntax error !\n Correct syntax is: exit\n");
+	else
+		promptMode = PROMPT_CONF;
+}

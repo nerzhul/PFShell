@@ -28,4 +28,9 @@
 #include "command_conf_rd.h"
 #include "prompt.h"
 
-void crdCMD_exit(char* _none) { promptMode = PROMPT_CONF; }
+void crdCMD_exit(char* _none) {
+	if(strlen(_none) > 0)
+		printf("Syntax error !\n Correct syntax is: exit\n");
+	else
+		promptMode = PROMPT_CONF;
+}
