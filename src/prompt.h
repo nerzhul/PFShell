@@ -25,6 +25,13 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
+#define PROMPT_USER		0
+#define PROMPT_ENABLE	1
+#define PROMPT_CONF		2
+#define PROMPT_CONF_IF	3
+#define PROMPT_CONF_FW	4
+#define PROMPT_CONF_RD	5
+
 void promptU();
 void promptE();
 void promptC();
