@@ -28,39 +28,56 @@
 #include <stdlib.h>
 #include <string.h>
 #include "command.h"
+#include "command_user.h"
+#include "command_enable.h"
+#include "command_conf.h"
+#include "command_conf_if.h"
+#include "command_conf_fw.h"
+#include "command_conf_rd.h"
 #include "prompt.h"
 
 unsigned short initCmds()
 {
 	//	User Mode Commands
 	userCmd[0].name = "exit";
-	userCmd[1].handler = &uCMD_exit;
+	userCmd[0].handler = &uCMD_exit;
 	userCmd[1].name = "enable";
 	userCmd[1].handler = &uCMD_enable;
 
 	// Enable Mode Commands
 	enableCmd[0].name = "exit";
-	//
+	enableCmd[0].handler = &eCMD_exit;
 	enableCmd[1].name = "configure";
-	//
+	enableCmd[1].handler = &eCMD_configure;
 	enableCmd[2].name = "save";
-	//
+	enableCmd[2].handler = &eCMD_save;
 
 	// Enable - Configure Commands
 	confCmd[0].name = "exit";
+	confCmd[0].handler = &cCMD_exit;
 
 	// Enable - Configure - Interface Commands
 	confIfCmd[0].name = "exit";
-	//
+	confIfCmd[0].handler = &cifCMD_exit;
 	confIfCmd[1].name = "shutdown";
-	//
+	// @ TODO
 	confIfCmd[2].name = "no shutdown";
+	// @ TODO
 
 	// Enable - Configure - Firewall Commands
 	confFWCmd[0].name = "exit";
+	confFWCmd[0].handler = &cfwCMD_exit;
 
 	// Enable - Configure - Redundancy Commands
 	confRDCmd[0].name = "exit";
+	confRDCmd[0].handler = &crdCMD_exit;
+
+	masterCmd[0] = userCmd;
+	masterCmd[1] = enableCmd;
+	masterCmd[2] = confCmd;
+	masterCmd[3] = confIfCmd;
+	masterCmd[4] = confFWCmd;
+	masterCmd[5] = confRDCmd;
 
 	return 1;
 }
@@ -76,120 +93,18 @@ char* readCmd()
 
 void handleCmd(char* _cmd)
 {
-	// replace it by a table for the future
-	switch(promptMode)
+	unsigned int i;
+	i = 0;
+
+	while(i < MAX_USER_CMD)
 	{
-		case PROMPT_USER:
+		if(strcmp(_cmd,masterCmd[promptMode][i].name) == 0)
 		{
-			unsigned int i;
-			i = 0;
-
-			while(i < MAX_USER_CMD)
-			{
-				if(strcmp(_cmd,userCmd[i].name) == 0)
-				{
-					// Todo: cut the string
-					(*userCmd[i].handler)("");
-					// Bad thing but improve performance code
-					break;
-				}
-				++i;
-			}
+			// Todo: cut the string
+			(*masterCmd[promptMode][i].handler)("");
+			// Bad thing but improve performance code
 			break;
 		}
-		case PROMPT_ENABLE:
-		{
-			unsigned int i;
-			i = 0;
-
-			while(i < MAX_ENABLE_CMD)
-			{
-				if(strcmp(_cmd,enableCmd[i].name) == 0)
-				{
-					// Todo: cut the string
-					(*enableCmd[i].handler)("");
-					// Bad thing but improve performance code
-					break;
-				}
-				++i;
-			}
-			break;
-		}
-		case PROMPT_CONF:
-		{
-			unsigned int i;
-			i = 0;
-
-			while(i < MAX_CONF_CMD)
-			{
-				if(strcmp(_cmd,confCmd[i].name) == 0)
-				{
-					// Todo: cut the string
-					(*confCmd[i].handler)("");
-					// Bad thing but improve performance code
-					break;
-				}
-				++i;
-			}
-			break;
-		}
-		case PROMPT_CONF_IF:
-		{
-			unsigned int i;
-			i = 0;
-
-			while(i < MAX_CONF_IF_CMD)
-			{
-				if(strcmp(_cmd,confIfCmd[i].name) == 0)
-				{
-					// Todo: cut the string
-					(*confIfCmd[i].handler)("");
-					// Bad thing but improve performance code
-					break;
-				}
-				++i;
-			}
-			break;
-		}
-		case PROMPT_CONF_FW:
-		{
-			unsigned int i;
-			i = 0;
-
-			while(i < MAX_CONF_FW_CMD)
-			{
-				if(strcmp(_cmd,confFWCmd[i].name) == 0)
-				{
-					// Todo: cut the string
-					(*confFWCmd[i].handler)("");
-					// Bad thing but improve performance code
-					break;
-				}
-				++i;
-			}
-			break;
-		}
-		case PROMPT_CONF_RD:
-		{
-			unsigned int i;
-			i = 0;
-
-			while(i < MAX_CONF_RD_CMD)
-			{
-				if(strcmp(_cmd,confRDCmd[i].name) == 0)
-				{
-					// Todo: cut the string
-					(*confRDCmd[i].handler)("");
-					// Bad thing but improve performance code
-					break;
-				}
-				++i;
-			}
-			break;
-		}
-		default:
-			printf("[FATAL ERROR] Unhandled prompt appears %u\n",promptMode);
-			exit(0);
-			break;
+		++i;
 	}
 }

@@ -31,7 +31,8 @@
 
 void uCMD_enable(char* _none)
 {
-	printf("Password:");
+	// Manage this later
+	printf("Password:\n");
 	promptMode = PROMPT_ENABLE;
 }
 

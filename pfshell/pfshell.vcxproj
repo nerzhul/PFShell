@@ -61,6 +61,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\command.c" />
+    <ClCompile Include="..\src\command_conf.c" />
+    <ClCompile Include="..\src\command_conf_fw.c" />
+    <ClCompile Include="..\src\command_conf_if.c" />
+    <ClCompile Include="..\src\command_conf_rd.c" />
+    <ClCompile Include="..\src\command_enable.c" />
     <ClCompile Include="..\src\command_user.c" />
     <ClCompile Include="..\src\main.c" />
     <ClCompile Include="..\src\prompt.c" />
@@ -72,6 +77,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\command.h" />
+    <ClInclude Include="..\src\command_conf.h" />
+    <ClInclude Include="..\src\command_conf_fw.h" />
+    <ClInclude Include="..\src\command_conf_if.h" />
+    <ClInclude Include="..\src\command_conf_rd.h" />
+    <ClInclude Include="..\src\command_enable.h" />
     <ClInclude Include="..\src\command_user.h" />
     <ClInclude Include="..\src\prompt.h" />
   </ItemGroup>

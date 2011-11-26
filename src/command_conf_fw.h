@@ -25,38 +25,4 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
-#include <stdio.h>
-#include "prompt.h"
-
-unsigned int  initPrompts()
-{
-	// Set default mode to usermode
-	promptMode = PROMPT_USER;
-
-	promptTable[0].action = &promptU;
-	promptTable[1].action = &promptE;
-	promptTable[2].action = &promptC;
-	promptTable[3].action = &promptCIf;
-	promptTable[4].action = &promptCFW;
-	promptTable[5].action = &promptCRD;
-
-	return 1;
-}
-
-void prompt()
-{
-	(*promptTable[promptMode].action)();
-}
-
-// User prompt
-void promptU() { putchar('>'); putchar(' '); }
-// Enable prompt
-void promptE() { putchar('#'); putchar(' '); }
-// Configure prompt
-void promptC() { printf("#(conf) "); }
-// Configure prompt for Network Interfaces
-void promptCIf() { printf("#(conf-iface) "); }
-// Configure prompt for Firewall
-void promptCFW() { printf("#(conf-fw) "); }
-// Configure prompt for CARP redundancy
-void promptCRD() { printf("#(conf-redundancy) "); }
+void cfwCMD_exit(char* _none);
