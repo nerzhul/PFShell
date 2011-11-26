@@ -29,11 +29,35 @@
 
 unsigned short initCmds()
 {
-	userCmd = malloc(MAX_USER_CMD * sizeof(cmdHdlr));
-	enableCmd = malloc(MAX_ENABLE_CMD * sizeof(cmdHdlr));
-	confCmd = malloc(MAX_CONF_CMD * sizeof(cmdHdlr));
-	confIfCmd = malloc(MAX_CONF_IF_CMD * sizeof(cmdHdlr));
-	confFWCmd = malloc(MAX_CONF_FW_CMD * sizeof(cmdHdlr));
-	confRDCmd = malloc(MAX_CONF_RD_CMD * sizeof(cmdHdlr));
-	return 0;
+	//	User Mode Commands
+	userCmd[0].name = "exit";
+	userCmd[1].handler = &uCMD_exit;
+	userCmd[1].name = "enable";
+	userCmd[1].handler = &uCMD_enable;
+
+	// Enable Mode Commands
+	enableCmd[0].name = "exit";
+	//
+	enableCmd[1].name = "configure";
+	//
+	enableCmd[2].name = "save";
+	//
+
+	// Enable - Configure Commands
+	confCmd[0].name = "exit";
+
+	// Enable - Configure - Interface Commands
+	confIfCmd[0].name = "exit";
+	//
+	confIfCmd[1].name = "shutdown";
+	//
+	confIfCmd[2].name = "no shutdown";
+
+	// Enable - Configure - Firewall Commands
+	confFWCmd[0].name = "exit";
+
+	// Enable - Configure - Redundancy Commands
+	confRDCmd[0].name = "exit";
+
+	return 1;
 }

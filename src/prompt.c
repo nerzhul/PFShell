@@ -28,6 +28,23 @@
 #include <stdio.h>
 #include "prompt.h"
 
+unsigned int  initPrompts()
+{
+	promptTable[0].action = &promptU;
+	promptTable[1].action = &promptE;
+	promptTable[2].action = &promptC;
+	promptTable[3].action = &promptCIf;
+	promptTable[4].action = &promptCFW;
+	promptTable[5].action = &promptCRD;
+
+	return 1;
+}
+
+void prompt(unsigned int _mode)
+{
+	(*promptTable[_mode].action)();
+}
+
 // User prompt
 void promptU() { putchar('>'); }
 // Enable prompt

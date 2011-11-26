@@ -26,36 +26,6 @@
 */
 
 #include <stdio.h>
-#include "prompt.h"
-#include "command.h"
 
-// Initialize prompt mode here, for this moment.
-unsigned int promptMode = 0;
-
-// read only 1024 chars for this moment
-// maybe we read less chars in the future
-char* readCmd()
-{
-	char cmd[1024];
-	scanf("%s",cmd);
-	return cmd;
-}
-
-int main(int argc, char** argv)
-{
-	if(!initCmds() || !initPrompts())
-	{
-		printf("PFShell is corrupt, please reinstall it\n");
-		return -1;
-	}
-	
-	printf("Type help to see the commands.\n");
-	prompt(promptMode);
-	
-	while(1)
-	{
-		readCmd();
-		prompt(promptMode);
-	}
-	return 0;
-}
+void uCMD_enable(char* _none);
+void uCMD_exit(char* _none);

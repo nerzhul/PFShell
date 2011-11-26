@@ -61,6 +61,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\command.c" />
+    <ClCompile Include="..\src\command_user.c" />
     <ClCompile Include="..\src\main.c" />
     <ClCompile Include="..\src\prompt.c" />
   </ItemGroup>
@@ -70,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\command.h" />
+    <ClInclude Include="..\src\command_user.h" />
     <ClInclude Include="..\src\prompt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

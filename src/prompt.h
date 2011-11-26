@@ -31,6 +31,7 @@
 #define PROMPT_CONF_IF	3
 #define PROMPT_CONF_FW	4
 #define PROMPT_CONF_RD	5
+#define MAX_PROMPTS		6
 
 void promptU();
 void promptE();
@@ -38,3 +39,13 @@ void promptC();
 void promptCIf();
 void promptCFW();
 void promptCRD();
+
+typedef struct prompt
+{
+	void (*action)();
+} prompts;
+
+prompts promptTable[MAX_PROMPTS];
+
+unsigned int initPrompts();
+void prompt(unsigned int _mode);

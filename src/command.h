@@ -25,7 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
-#include <stdlib.h>
+#include "command_user.h"
 
 typedef struct commandHandler
 {
@@ -33,18 +33,18 @@ typedef struct commandHandler
 	void (*handler)(char* otherArgs);
 } cmdHdlr;
 
+#define MAX_USER_CMD	2
+#define MAX_ENABLE_CMD	3
+#define MAX_CONF_CMD	1
+#define MAX_CONF_IF_CMD 3
+#define MAX_CONF_FW_CMD 1
+#define MAX_CONF_RD_CMD 1
+
+cmdHdlr userCmd[MAX_USER_CMD];
+cmdHdlr enableCmd[MAX_ENABLE_CMD];
+cmdHdlr confCmd[MAX_CONF_CMD];
+cmdHdlr confIfCmd[MAX_CONF_IF_CMD];
+cmdHdlr confFWCmd[MAX_CONF_FW_CMD];
+cmdHdlr confRDCmd[MAX_CONF_RD_CMD];
+
 unsigned short initCmds();
-
-#define MAX_USER_CMD	0
-#define MAX_ENABLE_CMD	0
-#define MAX_CONF_CMD	0
-#define MAX_CONF_IF_CMD 0
-#define MAX_CONF_FW_CMD 0
-#define MAX_CONF_RD_CMD 0
-
-cmdHdlr* userCmd;
-cmdHdlr* enableCmd;
-cmdHdlr* confCmd;
-cmdHdlr* confIfCmd;
-cmdHdlr* confFWCmd;
-cmdHdlr* confRDCmd;
