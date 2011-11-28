@@ -25,4 +25,15 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
+#ifndef __COMMAND_CONF_FW_H__
+#define __COMMAND_CONF_FW_H__
+
+#define CMDFW_DEFAULT_ERROR() printError("Syntax error !\nCorrect syntax is:\n   default (forward-policy|input-policy|output-policy) (allow|deny)\n");
+
 void cfwCMD_exit(char* _none);
+void cfwCMD_default(char* args);
+void cfwCMD_default_forward(char* args);
+void cfwCMD_default_input(char* args);
+void cfwCMD_default_output(char* args);
+
+#endif

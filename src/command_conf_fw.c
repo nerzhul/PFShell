@@ -27,10 +27,100 @@
 
 #include "command_conf_fw.h"
 #include "prompt.h"
+#include "command.h"
 
-void cfwCMD_exit(char* _none) {
+void cfwCMD_exit(char* _none)
+{
 	if(strlen(_none) > 0)
-		printError("Syntax error !\n Correct syntax is: exit\n");
+		printError("Syntax error !\nCorrect syntax is: \n   exit\n");
 	else
 		promptMode = PROMPT_CONF;
 }
+
+void cfwCMD_default(char* args)
+{
+	if(strlen(args) <= 11)
+	{
+		CMDFW_DEFAULT_ERROR();
+	}
+	else
+	{
+		char* defaultcmd[2];
+		cutFirstWord(args,defaultcmd);
+		// @TODO: create table with handlers
+		if(strcmp(defaultcmd[0],"forward-policy") == 0)
+			cfwCMD_default_forward(defaultcmd[1]);
+		else if(strcmp(defaultcmd[0],"input-policy") == 0)
+			cfwCMD_default_input(defaultcmd[1]);
+		else if(strcmp(defaultcmd[0],"output-policy") == 0)
+			cfwCMD_default_output(defaultcmd[1]);
+		else
+		{
+			CMDFW_DEFAULT_ERROR();
+		}
+	}
+}
+
+void cfwCMD_default_forward(char* args)
+{
+	if(strlen(args) < 4)
+	{
+		CMDFW_DEFAULT_ERROR();
+	}
+	else
+	{
+		char* policy[2];
+		cutFirstWord(args,policy);
+		if(strcmp(policy[0],"deny") == 0)
+			;
+		else if(strcmp(policy[0],"allow") == 0)
+			;
+		else
+		{
+			CMDFW_DEFAULT_ERROR();
+		}
+	}
+}
+
+void cfwCMD_default_input(char* args)
+{
+	if(strlen(args) < 4)
+	{
+		CMDFW_DEFAULT_ERROR();
+	}
+	else
+	{
+		char* policy[2];
+		cutFirstWord(args,policy);
+		if(strcmp(policy[0],"deny") == 0)
+			;
+		else if(strcmp(policy[0],"allow") == 0)
+			;
+		else
+		{
+			CMDFW_DEFAULT_ERROR();
+		}
+	}
+}
+
+void cfwCMD_default_output(char* args)
+{
+	if(strlen(args) < 4)
+	{
+		CMDFW_DEFAULT_ERROR();
+	}
+	else
+	{
+		char* policy[2];
+		cutFirstWord(args,policy);
+		if(strcmp(policy[0],"deny") == 0)
+			;
+		else if(strcmp(policy[0],"allow") == 0)
+			;
+		else
+		{
+			CMDFW_DEFAULT_ERROR();
+		}
+	}
+}
+

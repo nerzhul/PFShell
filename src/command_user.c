@@ -33,7 +33,7 @@ void uCMD_enable(char* _none)
 {
 	if(strlen(_none) > 0)
 	{
-		printError("Syntax error !\n Correct syntax is: enable\n");
+		printError("Syntax error !\nCorrect syntax is: \n   enable\n");
 		return;
 	}
 	// Manage this later

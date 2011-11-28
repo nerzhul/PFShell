@@ -57,6 +57,8 @@ unsigned short initCmds()
 	// Enable - Configure Commands
 	confCmd[0].name = "exit";
 	confCmd[0].handler = &cCMD_exit;
+	confCmd[1].name = "firewall";
+	confCmd[1].handler = &cCMD_firewall;
 
 	// Enable - Configure - Interface Commands
 	confIfCmd[0].name = "exit";
@@ -69,6 +71,8 @@ unsigned short initCmds()
 	// Enable - Configure - Firewall Commands
 	confFWCmd[0].name = "exit";
 	confFWCmd[0].handler = &cfwCMD_exit;
+	confFWCmd[1].name = "default";
+	confFWCmd[1].handler = &cfwCMD_default;
 
 	// Enable - Configure - Redundancy Commands
 	confRDCmd[0].name = "exit";
@@ -120,7 +124,7 @@ void handleCmd(char* _fullcmd)
 	i = 0;
 	char* cmd[2];
 	cutFirstWord(_fullcmd,cmd);
-	while(i < MAX_USER_CMD)
+	while(i < MAX_CMDS[promptMode])
 	{
 		if(strcmp(cmd[0],masterCmd[promptMode][i].name) == 0)
 		{

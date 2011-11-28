@@ -30,7 +30,7 @@
 
 void crdCMD_exit(char* _none) {
 	if(strlen(_none) > 0)
-		printError("Syntax error !\n Correct syntax is: exit\n");
+		printError("Syntax error !\nCorrect syntax is: \n   exit\n");
 	else
 		promptMode = PROMPT_CONF;
 }

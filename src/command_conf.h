@@ -26,3 +26,4 @@
 */
 
 void cCMD_exit(char* _none);
+void cCMD_firewall(char* _none);

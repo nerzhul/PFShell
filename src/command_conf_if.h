@@ -25,4 +25,9 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
+#ifndef __COMMAND_CONF_IF_H__
+#define __COMMAND_CONF_IF_H__
+
 void cifCMD_exit(char* _none);
+
+#endif

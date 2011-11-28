@@ -25,19 +25,33 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
+#ifndef __COMMAND_H__
+#define __COMMAND_H__
+
 typedef struct commandHandler
 {
 	const char* name;
 	void (*handler)(char* otherArgs);
 } cmdHdlr;
 
+#define MAX_CMD_TYPES	6
+
 #define MAX_USER_CMD	3
 #define MAX_ENABLE_CMD	3
-#define MAX_CONF_CMD	1
+#define MAX_CONF_CMD	2
 #define MAX_CONF_IF_CMD 3
-#define MAX_CONF_FW_CMD 1
+#define MAX_CONF_FW_CMD 2
 #define MAX_CONF_RD_CMD 1
-#define MAX_CMD_TYPES	6
+
+static const unsigned short MAX_CMDS[MAX_CMD_TYPES] = 
+{ 
+	MAX_USER_CMD, 
+	MAX_ENABLE_CMD, 
+	MAX_CONF_CMD, 
+	MAX_CONF_IF_CMD, 
+	MAX_CONF_FW_CMD, 
+	MAX_CONF_RD_CMD 
+};
 
 cmdHdlr userCmd[MAX_USER_CMD];
 cmdHdlr enableCmd[MAX_ENABLE_CMD];
@@ -56,3 +70,4 @@ void cutFirstWord(char*,char**);
 
 void handleCmd(char* _cmd);
 
+#endif
