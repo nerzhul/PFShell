@@ -52,7 +52,7 @@ unsigned short initCmds();
 
 char* readCmd();
 
-char** cutFirstWord(char*);
+void cutFirstWord(char*,char**);
 
 void handleCmd(char* _cmd);
 

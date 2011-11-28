@@ -118,13 +118,13 @@ void handleCmd(char* _fullcmd)
 {
 	unsigned int i;
 	i = 0;
-	// @TODO: cutFirstWord MUST be stored in a variable although we do 2 times the command !
+	char* cmd[2];
+	cutFirstWord(_fullcmd,cmd);
 	while(i < MAX_USER_CMD)
 	{
-		if(strcmp(cutFirstWord(_fullcmd)[0],masterCmd[promptMode][i].name) == 0)
+		if(strcmp(cmd[0],masterCmd[promptMode][i].name) == 0)
 		{
-			// Todo: cut the string
-			(*masterCmd[promptMode][i].handler)(cutFirstWord(_fullcmd)[1]);
+			(*masterCmd[promptMode][i].handler)(cmd[1]);
 			// Bad thing but improve performance code
 			return;
 		}
@@ -133,9 +133,8 @@ void handleCmd(char* _fullcmd)
 	printError("Unknown command\n");
 }
 
-char** cutFirstWord(char* string)
+void cutFirstWord(char* string,char** result)
 {
-	char* result[2];
 	char firstWord[1024];
 	char followWords[1024];
 
@@ -190,6 +189,4 @@ char** cutFirstWord(char* string)
 		result[0] = string;
 		result[1] = "";
 	}
-
-	return result;
 }

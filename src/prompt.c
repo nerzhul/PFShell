@@ -131,7 +131,7 @@ void setPromptColor(short stdout_stream, short color)
         BG_MAGENTA,  BG_CYAN, BG_WHITE
     };
 
-    static unsigned int UnixColorFG[Color_count] =
+    static unsigned int UnixColorFG[MAX_COLORS] =
     {
         FG_BLACK,                                           // BLACK
         FG_RED,                                             // RED
@@ -150,7 +150,7 @@ void setPromptColor(short stdout_stream, short color)
         FG_WHITE                                            // LWHITE
     };
 
-    fprintf((stdout_stream? stdout : stderr), "\x1b[%d%sm",UnixColorFG[color],(color>=YELLOW&&color<Color_count ?";1":""));
+    fprintf((stdout_stream? stdout : stderr), "\x1b[%d%sm",UnixColorFG[color],(color>=YELLOW&&color<MAX_COLORS ?";1":""));
     #endif
 }
 
