@@ -27,6 +27,7 @@
 
 #include "command_conf.h"
 #include "prompt.h"
+#include "configuration.h"
 
 void cCMD_exit(char* _none)
 {
@@ -42,4 +43,23 @@ void cCMD_firewall(char* _none)
 		printError("Syntax error !\nCorrect syntax is: \n   firewall\n");
 	else
 		promptMode = PROMPT_CONF_FW;
+}
+
+void cCMD_hostname(char* args)
+{
+	if(strlen(args) <= 1)
+	{
+		CMDCONF_HOSTNAME_ERROR();
+	}
+	else
+	{
+		char* _hostname[2];
+		cutFirstWord(args,_hostname);
+		if(strlen(_hostname[1]) > 0)
+		{
+			CMDCONF_HOSTNAME_ERROR();
+		}
+		else
+			hostname = _hostname[0];
+	}
 }

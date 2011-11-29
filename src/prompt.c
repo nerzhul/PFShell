@@ -26,6 +26,7 @@
 */
 
 #include "prompt.h"
+#include "configuration.h"
 
 #ifdef WIN32
 // Temp for tests on windows
@@ -53,17 +54,17 @@ void prompt()
 }
 
 // User prompt
-void promptU() { putchar('>'); putchar(' '); }
+void promptU() { printf("%s> ",hostname); }
 // Enable prompt
-void promptE() { putchar('#'); putchar(' '); }
+void promptE() { printf("%s# ",hostname); }
 // Configure prompt
-void promptC() { printf("#(conf) "); }
+void promptC() { printf("%s(conf)# ",hostname); }
 // Configure prompt for Network Interfaces
-void promptCIf() { printf("#(conf-iface) "); }
+void promptCIf() { printf("%s(conf-iface)# ",hostname); }
 // Configure prompt for Firewall
-void promptCFW() { printf("#(conf-fw) "); }
+void promptCFW() { printf("%s(conf-fw)# ",hostname); }
 // Configure prompt for CARP redundancy
-void promptCRD() { printf("#(conf-redundancy) "); }
+void promptCRD() { printf("%s(conf-redundancy)# ",hostname); }
 
 void printError(char* str, ...)
 {

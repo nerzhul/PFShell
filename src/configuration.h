@@ -25,13 +25,11 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
-#ifndef __COMMAND_CONF_H__
-#define __COMMAND_CONF_H__
+#ifndef __CONFIGURATION_H__
+#define __CONFIGURATION_H__
 
-#define CMDCONF_HOSTNAME_ERROR() printError("Syntax error !\nCorrect syntax is: \n   hostname <string>\n");
+unsigned short loadConfiguration();
 
-void cCMD_exit(char* _none);
-void cCMD_firewall(char* _none);
-void cCMD_hostname(char* args);
+char* hostname;
 
 #endif

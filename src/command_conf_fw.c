@@ -72,9 +72,9 @@ void cfwCMD_default_forward(char* args)
 		char* policy[2];
 		cutFirstWord(args,policy);
 		if(strcmp(policy[0],"deny") == 0)
-			;
+			;//@TODO
 		else if(strcmp(policy[0],"allow") == 0)
-			;
+			;//@TODO
 		else
 		{
 			CMDFW_DEFAULT_ERROR();
@@ -93,9 +93,9 @@ void cfwCMD_default_input(char* args)
 		char* policy[2];
 		cutFirstWord(args,policy);
 		if(strcmp(policy[0],"deny") == 0)
-			;
+			;//@TODO
 		else if(strcmp(policy[0],"allow") == 0)
-			;
+			;//@TODO
 		else
 		{
 			CMDFW_DEFAULT_ERROR();
@@ -114,9 +114,9 @@ void cfwCMD_default_output(char* args)
 		char* policy[2];
 		cutFirstWord(args,policy);
 		if(strcmp(policy[0],"deny") == 0)
-			;
+			;//@TODO
 		else if(strcmp(policy[0],"allow") == 0)
-			;
+			;//@TODO
 		else
 		{
 			CMDFW_DEFAULT_ERROR();

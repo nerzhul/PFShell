@@ -28,12 +28,20 @@
 #include <stdio.h>
 #include "prompt.h"
 #include "command.h"
+#include "configuration.h"
 
 int main(int argc, char** argv)
 {
 	if(!initCmds() || !initPrompts())
 	{
 		printError("PFShell is corrupt, please reinstall it\n");
+		return -1;
+	}
+	
+	if(!loadConfiguration())
+	{
+		printError("System configuration is corrupted !\n");
+		//@TODO: load a default configuration
 		return -1;
 	}
 	

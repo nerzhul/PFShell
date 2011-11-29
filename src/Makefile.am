@@ -17,6 +17,8 @@ PFShell_SOURCES = \
 	command_conf_if.h \
 	command_conf_rd.c \
 	command_conf_rd.h \
+	configuration.c \
+	configuration.h \
 	main.c \
 	prompt.c \
 	prompt.h

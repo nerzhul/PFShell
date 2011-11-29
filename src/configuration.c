@@ -25,13 +25,12 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
-#ifndef __COMMAND_CONF_H__
-#define __COMMAND_CONF_H__
+#include "configuration.h"
 
-#define CMDCONF_HOSTNAME_ERROR() printError("Syntax error !\nCorrect syntax is: \n   hostname <string>\n");
-
-void cCMD_exit(char* _none);
-void cCMD_firewall(char* _none);
-void cCMD_hostname(char* args);
-
-#endif
+unsigned short loadConfiguration()
+{
+	// @TODO
+	hostname = "BSD-Firewall";
+	
+	return 1;
+}
