@@ -71,5 +71,5 @@ void eCMD_show(char* args)
 
 void eCMD_save(char* _none)
 {
-	// @TODO
+	system("copy /opt/PFShell/running-config /opt/PFShell/startup-config");
 }

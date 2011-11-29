@@ -1,4 +1,4 @@
-AC_INIT(PFShell,alpha 0.2,loic.blot@frostsapphirestudios.com)
+AC_INIT(PFShell,alpha 0.3,loic.blot@frostsapphirestudios.com)
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC

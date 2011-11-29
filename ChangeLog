@@ -9,3 +9,7 @@ Alpha 0.2
 -- show version
 -- hostname <string>
 -- default (input|output|forward)-policy (deny|allow)
+Alpha 0.3
+- Implement some commands
+-- show version
+-- show interfaces

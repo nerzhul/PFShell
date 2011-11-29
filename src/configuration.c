@@ -25,12 +25,46 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
+#include <stdlib.h>
+#include <stdio.h>
 #include "configuration.h"
 
 unsigned short loadConfiguration()
 {
-	// @TODO
-	hostname = "BSD-Firewall";
+	// Temporary path
+	FILE* confFile;
+	confFile = fopen("/opt/PFShell/startup-config","r");
+	if(!confFile)
+	{
+		confFile = fopen("/opt/PFShell/startup-config", "w+");
+		fclose(confFile);
+		return 1;
+	}
 	
+	char path[1035];
+	
+	while (fgets(path, sizeof(path)-1, confFile) != NULL) {
+		char* keyval[2];
+		cutFirstWord(path,keyval);
+		// @TODO
+		if(strcmp(keyval[0],"hostname") == 0)
+		{
+			if(strlen(keyval[1]) > 0)
+			{
+				char* hname[2];
+				cutFirstWord(keyval[1],hname);
+				if(strlen(hname[1]) > 0)
+					hostname = "PFShell";
+				else
+					hostname = hname[0];
+			}
+			else
+				hostname = "PFShell";
+		}
+	}	
+	
+	fclose(confFile);
+	
+	system("copy /opt/PFShell/startup-config /opt/PFShell/running-config");
 	return 1;
 }

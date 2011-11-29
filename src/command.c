@@ -156,7 +156,7 @@ void cutFirstWord(char* string,char** result)
 	{
 		if(!first_written)
 		{
-			if(string[offset] == ' ')
+			if(string[offset] == ' ' || string[offset] == '\n')
 			{
 				first_written = 1;
 				firstWord[offset] = '\0';
