@@ -28,6 +28,7 @@
 #include "command_conf_fw.h"
 #include "prompt.h"
 #include "command.h"
+#include "configuration.h"
 
 void cfwCMD_exit(char* _none)
 {
@@ -72,9 +73,15 @@ void cfwCMD_default_forward(char* args)
 		char* policy[2];
 		cutFirstWord(args,policy);
 		if(strcmp(policy[0],"deny") == 0)
-			;//@TODO
+		{
+			pfpolicies[2] = 0;
+			WRITE_RUN();
+		}
 		else if(strcmp(policy[0],"allow") == 0)
-			;//@TODO
+		{
+			pfpolicies[2] = 1;
+			WRITE_RUN();
+		}
 		else
 		{
 			CMDFW_DEFAULT_ERROR();
@@ -93,9 +100,15 @@ void cfwCMD_default_input(char* args)
 		char* policy[2];
 		cutFirstWord(args,policy);
 		if(strcmp(policy[0],"deny") == 0)
-			;//@TODO
+		{
+			pfpolicies[0] = 0;
+			WRITE_RUN();
+		}
 		else if(strcmp(policy[0],"allow") == 0)
-			;//@TODO
+		{
+			pfpolicies[0] = 1;
+			WRITE_RUN();
+		}
 		else
 		{
 			CMDFW_DEFAULT_ERROR();
@@ -114,9 +127,15 @@ void cfwCMD_default_output(char* args)
 		char* policy[2];
 		cutFirstWord(args,policy);
 		if(strcmp(policy[0],"deny") == 0)
-			;//@TODO
+		{
+			pfpolicies[1] = 0;
+			WRITE_RUN();
+		}
 		else if(strcmp(policy[0],"allow") == 0)
-			;//@TODO
+		{
+			pfpolicies[1] = 1;
+			WRITE_RUN();
+		}
 		else
 		{
 			CMDFW_DEFAULT_ERROR();

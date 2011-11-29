@@ -28,9 +28,12 @@
 #ifndef __CONFIGURATION_H__
 #define __CONFIGURATION_H__
 
+#define WRITE_RUN() writeRunningConfig()
+
 unsigned short loadConfiguration();
 unsigned short writeRunningConfig();
 
 char* hostname;
+unsigned short pfpolicies[3]; 
 
 #endif

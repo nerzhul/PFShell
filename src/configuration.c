@@ -41,6 +41,11 @@ unsigned short loadConfiguration()
 		return 1;
 	}
 	
+	pfpolicies[0] = 1;
+	pfpolicies[1] = 1;
+	pfpolicies[2] = 1;
+	
+	// Read file
 	char path[1035];
 	
 	while (fgets(path, sizeof(path)-1, confFile) != NULL) {
@@ -61,6 +66,29 @@ unsigned short loadConfiguration()
 			else
 				hostname = "PFShell";
 		}
+		else if(strcmp(keyval[0],"default") == 0)
+		{
+			if(strlen(keyval[1]) > 0)
+			{
+				char* defarg[2];
+				cutFirstWord(keyval[1],defarg);
+				if(strlen(defarg[1]) > 0)
+				{
+					if(strcmp(defarg[0],"input-policy") == 0)
+					{
+						pfpolicies[0] = (strcmp(defarg[1],"deny") == 0) ? 0 : 1;
+					}
+					else if(strcmp(defarg[0],"output-policy") == 0)
+					{
+						pfpolicies[1] = (strcmp(defarg[1],"deny") == 0) ? 0 : 1;
+					}
+					else if(strcmp(defarg[0],"forward-policy") == 0)
+					{
+						pfpolicies[2] = (strcmp(defarg[1],"deny") == 0) ? 0 : 1;
+					}
+				}
+			}
+		}
 	}	
 	
 	fclose(confFile);
@@ -79,6 +107,16 @@ unsigned short writeRunningConfig()
 	{
 		fputs("hostname ",confFile);
 		fputs(hostname,confFile);
+		fputs("\n",confFile);
+		fputs("!\n",confFile);
+		fputs("default input-policy ",confFile);
+		fputs((pfpolicies[0] == 0 ? "deny" : "allow"),confFile);
+		fputs("\n",confFile);
+		fputs("default output-policy ",confFile);
+		fputs((pfpolicies[1] == 0 ? "deny" : "allow"),confFile);
+		fputs("\n",confFile);
+		fputs("default forward-policy ",confFile);
+		fputs((pfpolicies[2] == 0 ? "deny" : "allow"),confFile);
 		fputs("\n",confFile);
 		// @TODO other fields
 		fclose(confFile);
