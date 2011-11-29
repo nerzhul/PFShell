@@ -33,10 +33,10 @@ unsigned short loadConfiguration()
 {
 	// Temporary path
 	FILE* confFile;
-	confFile = fopen("/opt/PFShell/startup-config","r");
+	confFile = fopen("/opt/PFShell/running-config","r");
 	if(!confFile)
 	{
-		confFile = fopen("/opt/PFShell/startup-config", "w+");
+		confFile = fopen("/opt/PFShell/running-config", "w+");
 		fclose(confFile);
 		return 1;
 	}
@@ -64,7 +64,23 @@ unsigned short loadConfiguration()
 	}	
 	
 	fclose(confFile);
-	
-	system("copy /opt/PFShell/startup-config /opt/PFShell/running-config");
 	return 1;
+}
+
+unsigned short writeRunningConfig()
+{
+	FILE* confFile;
+	confFile = fopen("/opt/PFShell/running-config","w");
+	if(confFile == NULL)
+	{
+		printError("Writing failed for running-config !!!\n");
+	}
+	else
+	{
+		fputs("hostname ",confFile);
+		fputs(hostname,confFile);
+		fputs("\n",confFile);
+		// @TODO other fields
+		fclose(confFile);
+	}
 }

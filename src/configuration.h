@@ -29,6 +29,7 @@
 #define __CONFIGURATION_H__
 
 unsigned short loadConfiguration();
+unsigned short writeRunningConfig();
 
 char* hostname;
 

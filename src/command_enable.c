@@ -71,5 +71,5 @@ void eCMD_show(char* args)
 
 void eCMD_save(char* _none)
 {
-	system("copy /opt/PFShell/running-config /opt/PFShell/startup-config");
+	system("cp /opt/PFShell/running-config /opt/PFShell/startup-config");
 }

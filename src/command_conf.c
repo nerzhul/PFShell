@@ -62,7 +62,7 @@ void cCMD_hostname(char* args)
 		else
 		{
 			hostname = _hostname[0];
-			// @TODO: register in run-config file
+			writeRunningConfig();
 		}
 	}
 }
