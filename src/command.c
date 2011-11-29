@@ -200,3 +200,22 @@ void cutFirstWord(char* string,char** result)
 		result[1] = "";
 	}
 }
+
+int execSystemCommand(char* cmd, char* output)
+{
+	FILE *fp;
+	char path[1035];
+	
+	fp = popen(cmd, "r");
+	if (fp == NULL) {
+		printError("Failed to run command %s\n",cmd);
+		return -1;
+	}
+
+	while (fgets(path, sizeof(path)-1, fp) != NULL) {
+		strcat(output,path);
+	}
+
+	pclose(fp);
+	return 0;
+}

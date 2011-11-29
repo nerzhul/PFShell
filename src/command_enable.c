@@ -56,6 +56,12 @@ void eCMD_show(char* args)
 		{
 				printf("PFShell version %s\n",VERSION);
 		}
+		else if(strcmp(showcmd[0],"interfaces") == 0)
+		{
+			char output[10240] = "";
+			execSystemCommand("for IF in $(/sbin/ifconfig | grep HWaddr | awk '{print $1}'); do /sbin/ifconfig $IF; done;",output);
+			printf("Network Interfaces:\n%s",output);
+		}
 		else
 		{
 			CMDEN_SHOW_ERROR();	

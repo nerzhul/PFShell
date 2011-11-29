@@ -70,4 +70,6 @@ void cutFirstWord(char*,char**);
 
 void handleCmd(char* _cmd);
 
+int execSystemCommand(char* cmd, char* output);
+
 #endif
