@@ -4,3 +4,8 @@ Alpha 0.0
 Alpha 0.1
 - Shell command handling is now ready
 - Different type of prompts are created
+Alpha 0.2
+- Pre-Implement some commands
+-- show version
+-- hostname <string>
+-- default (input|output|forward)-policy (deny|allow)

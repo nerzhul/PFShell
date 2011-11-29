@@ -42,6 +42,27 @@ void eCMD_exit(char* _none) {
 		promptMode = PROMPT_USER;
 }
 
+void eCMD_show(char* args)
+{
+	if(strlen(args) <= 1)
+	{
+		CMDEN_SHOW_ERROR();
+	}
+	else
+	{
+		char* showcmd[2];
+		cutFirstWord(args,showcmd);
+		if(strcmp(showcmd[0],"version") == 0)
+		{
+				printf("PFShell version %s\n",VERSION);
+		}
+		else
+		{
+			CMDEN_SHOW_ERROR();	
+		}
+	}
+}
+
 void eCMD_save(char* _none)
 {
 	// @TODO

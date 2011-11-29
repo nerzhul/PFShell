@@ -55,7 +55,26 @@ void uCMD_exit(char* _none)
 
 void uCMD_help(char* _none)
 {
-	printf("enable - grant you administrative privileges\n");
-	printf("exit   - leave the current terminal\n");
-	printf("help   - show this help\n");
+	printf("enable - grant you administrative privileges\nexit   - leave the current terminal\nhelp   - show this help\nshow   - show some informations\n");
+}
+
+void uCMD_show(char* args)
+{
+	if(strlen(args) <= 1)
+	{
+		CMDUSER_SHOW_ERROR();
+	}
+	else
+	{
+		char* showcmd[2];
+		cutFirstWord(args,showcmd);
+		if(strcmp(showcmd[0],"version") == 0)
+		{
+				printf("PFShell version %s\n",VERSION);
+		}
+		else
+		{
+			CMDUSER_SHOW_ERROR();	
+		}
+	}
 }

@@ -36,8 +36,8 @@ typedef struct commandHandler
 
 #define MAX_CMD_TYPES	6
 
-#define MAX_USER_CMD	3
-#define MAX_ENABLE_CMD	3
+#define MAX_USER_CMD	4
+#define MAX_ENABLE_CMD	4
 #define MAX_CONF_CMD	3
 #define MAX_CONF_IF_CMD 3
 #define MAX_CONF_FW_CMD 2

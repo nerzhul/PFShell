@@ -45,6 +45,8 @@ unsigned short initCmds()
 	userCmd[1].handler = &uCMD_enable;
 	userCmd[2].name = "help";
 	userCmd[2].handler = &uCMD_help;
+	userCmd[3].name = "show";
+	userCmd[3].handler = &uCMD_show;
 
 	// Enable Mode Commands
 	enableCmd[0].name = "exit";
@@ -53,6 +55,8 @@ unsigned short initCmds()
 	enableCmd[1].handler = &eCMD_configure;
 	enableCmd[2].name = "save";
 	enableCmd[2].handler = &eCMD_save;
+	enableCmd[3].name = "show";
+	enableCmd[3].handler = &eCMD_show;
 
 	// Enable - Configure Commands
 	confCmd[0].name = "exit";

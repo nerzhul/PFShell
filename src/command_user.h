@@ -25,8 +25,14 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
-#include <stdio.h>
+#ifndef __COMMAND_USER_H__
+#define __COMMAND_USER_H__
+
+#define CMDUSER_SHOW_ERROR() printError("Syntax error !\nCorrect syntax is: \n   show (version)\n");
 
 void uCMD_enable(char* _none);
 void uCMD_exit(char* _none);
 void uCMD_help(char* _none);
+void uCMD_show(char* args);
+
+#endif

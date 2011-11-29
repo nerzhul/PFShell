@@ -60,6 +60,9 @@ void cCMD_hostname(char* args)
 			CMDCONF_HOSTNAME_ERROR();
 		}
 		else
+		{
 			hostname = _hostname[0];
+			// @TODO: register in run-config file
+		}
 	}
 }

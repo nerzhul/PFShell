@@ -25,6 +25,14 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 */
 
+#ifndef __COMMAND_ENABLE_H__
+#define __COMMAND_ENABLE_H__
+
+#define CMDEN_SHOW_ERROR() printError("Syntax error !\nCorrect syntax is: \n   show (version)\n");
+
 void eCMD_configure(char* _none);
 void eCMD_exit(char* _none);
 void eCMD_save(char* _none);
+void eCMD_show(char* args);
+
+#endif
