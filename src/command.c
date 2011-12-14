@@ -242,7 +242,12 @@ unsigned short askConfirm() {
 		c = getchar();
 	}
 	
-	if(c == 'n') return 1;
 	getchar();
+	
+	if(c == 'n') {
+		printf("Aborted.\n");
+		return 1;
+	}
+	
 	return 0;
 }

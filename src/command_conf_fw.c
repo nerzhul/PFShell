@@ -148,7 +148,7 @@ void cfwCMD_disable(char* _none) {
 		CMDFW_DISABLE_ERROR();
 		return;
 	}
-	// @ TODO: verify if PF is enabled
+	
 	if(askConfirm() == 0) {
 		hsystemcmd("/sbin/pfctl -d");
 		printSuccess("Firewall disabled !\n Don't forget to re-enable it faster !!\n");
