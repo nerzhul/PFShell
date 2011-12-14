@@ -34,3 +34,21 @@ void cifCMD_exit(char* _none) {
 	else
 		promptMode = PROMPT_CONF;
 }
+
+void cifCMD_ip(char* args) {
+	char* iface[2];
+	cutFirstWord(args,iface);
+	if(strcmp(iface[0],"address") == 0)
+		cifCMD_ip_address(iface[1]);
+	else
+		CMDIF_IP_ERROR();
+}
+
+void cifCMD_ip_address(char* args) {
+	if(strlen(args) < 7) {
+		CMDIF_IPADDR_ERROR();
+		return;
+	}
+	
+	// @ TODO
+}

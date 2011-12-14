@@ -73,6 +73,7 @@ unsigned int promptMode;
 unsigned int initPrompts();
 void prompt();
 void printError(char* str, ...);
+void printSuccess(char* str, ...);
 
 void setPromptColor(short stdout_stream, short color);
 void resetPromptColor(short stdout_stream);

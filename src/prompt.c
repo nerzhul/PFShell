@@ -78,40 +78,20 @@ void printError(char* str, ...)
     va_end(args);
 }
 
+void printSuccess(char* str, ...)
+{
+	va_list args;
+    va_start(args, str);
+ 
+    setPromptColor(0,GREEN);
+    vprintf(str, args);
+    resetPromptColor(0);
+ 
+    va_end(args);
+}
+
 void setPromptColor(short stdout_stream, short color)
 {
-	// Temp for tests on windows
-    #ifdef WIN32
-
-    static WORD WinColorFG[MAX_COLORS] =
-    {
-        0,                                                  // BLACK
-        FOREGROUND_RED,                                     // RED
-        FOREGROUND_GREEN,                                   // GREEN
-        FOREGROUND_RED | FOREGROUND_GREEN,                  // BROWN
-        FOREGROUND_BLUE,                                    // BLUE
-        FOREGROUND_RED |                    FOREGROUND_BLUE,// MAGENTA
-        FOREGROUND_GREEN | FOREGROUND_BLUE,                 // CYAN
-        FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE,// WHITE
-                                                            // YELLOW
-        FOREGROUND_RED | FOREGROUND_GREEN |                   FOREGROUND_INTENSITY,
-                                                            // RED_BOLD
-        FOREGROUND_RED |                                      FOREGROUND_INTENSITY,
-                                                            // GREEN_BOLD
-        FOREGROUND_GREEN |                   FOREGROUND_INTENSITY,
-        FOREGROUND_BLUE | FOREGROUND_INTENSITY,             // BLUE_BOLD
-                                                            // MAGENTA_BOLD
-        FOREGROUND_RED |                    FOREGROUND_BLUE | FOREGROUND_INTENSITY,
-                                                            // CYAN_BOLD
-        FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY,
-                                                            // WHITE_BOLD
-        FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY
-    };
-
-    HANDLE hConsole = GetStdHandle(stdout_stream ? STD_OUTPUT_HANDLE : STD_ERROR_HANDLE );
-    SetConsoleTextAttribute(hConsole, WinColorFG[color]);
-    #else
-
     enum ANSITextAttr
     {
         TA_NORMAL=0,
@@ -152,15 +132,9 @@ void setPromptColor(short stdout_stream, short color)
     };
 
     fprintf((stdout_stream? stdout : stderr), "\x1b[%d%sm",UnixColorFG[color],(color>=YELLOW&&color<MAX_COLORS ?";1":""));
-    #endif
 }
 
 void resetPromptColor(short stdout_stream)
 {
-    #ifdef WIN32
-		HANDLE hConsole = GetStdHandle(stdout_stream ? STD_OUTPUT_HANDLE : STD_ERROR_HANDLE );
-		SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED );
-    #else
     fprintf(( stdout_stream ? stdout : stderr ), "\x1b[0m");
-    #endif
 }

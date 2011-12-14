@@ -36,6 +36,7 @@ unsigned short loadConfiguration()
 	confFile = fopen("/opt/PFShell/running-config","r");
 	if(!confFile)
 	{
+		system("mkdir -p /opt/PFShell >> /dev/null 2>&1");
 		confFile = fopen("/opt/PFShell/running-config", "w+");
 		fclose(confFile);
 		return 1;

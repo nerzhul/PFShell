@@ -28,6 +28,11 @@
 #ifndef __COMMAND_CONF_IF_H__
 #define __COMMAND_CONF_IF_H__
 
+#define CMDIF_IP_ERROR() printError("Syntax error !\nCorrect syntax is:\n   ip (address) ...\n");
+#define CMDIF_IPADDR_ERROR() printError("Syntax error !\nCorrect syntax is:\n   ip adress A.B.C.D ...\n");
 void cifCMD_exit(char* _none);
 
+// IP management
+void cifCMD_ip(char* args);
+void cifCMD_ip_address(char* args);
 #endif

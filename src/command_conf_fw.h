@@ -29,11 +29,18 @@
 #define __COMMAND_CONF_FW_H__
 
 #define CMDFW_DEFAULT_ERROR() printError("Syntax error !\nCorrect syntax is:\n   default (forward-policy|input-policy|output-policy) (allow|deny)\n");
+#define CMDFW_DISABLE_ERROR() printError("Syntax error !\nCorrect syntax is:\n   disable\n");
+#define CMDFW_ENABLE_ERROR() printError("Syntax error !\nCorrect syntax is:\n   enable\n");
 
 void cfwCMD_exit(char* _none);
 void cfwCMD_default(char* args);
 void cfwCMD_default_forward(char* args);
 void cfwCMD_default_input(char* args);
 void cfwCMD_default_output(char* args);
+void cfwCMD_disable(char* _none);
+void cfwCMD_enable(char* _none);
+// Temp Command
+void cfwCMD_edit_packetfilter(char* _none);
+void cfwCMD_show_packetfilter(char* _none);
 
 #endif

@@ -72,4 +72,5 @@ void eCMD_show(char* args)
 void eCMD_save(char* _none)
 {
 	system("cp /opt/PFShell/running-config /opt/PFShell/startup-config");
+	printSuccess("Save done with success !\n");
 }

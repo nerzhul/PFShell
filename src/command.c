@@ -79,6 +79,13 @@ unsigned short initCmds()
 	confFWCmd[0].handler = &cfwCMD_exit;
 	confFWCmd[1].name = "default";
 	confFWCmd[1].handler = &cfwCMD_default;
+	confFWCmd[2].name = "enable";
+	confFWCmd[2].handler = &cfwCMD_enable;
+	confFWCmd[3].name = "disable";
+	confFWCmd[3].handler = &cfwCMD_disable;
+	// TEMP Command
+	confFWCmd[4].name = "edit";
+	confFWCmd[4].handler = &cfwCMD_edit_packetfilter;
 
 	// Enable - Configure - Redundancy Commands
 	confRDCmd[0].name = "exit";
@@ -217,5 +224,24 @@ int execSystemCommand(char* cmd, char* output)
 	}
 
 	pclose(fp);
+	return 0;
+}
+
+void hsystemcmd(char* cmd) {
+	char* cmd = strcat(cmd," > /dev/null 2>&1");
+	printError("%s\n",cmd);
+	system(cmd);
+}
+
+unsigned short askConfirm() {
+	printf("Are you sure [y|n] ? ");
+	char c = getchar();
+	while(c != 'y' && c != 'n') {
+		printError("Bad response, 'y' or 'n' espected !\n");
+		c = getchar();
+	}
+	
+	if(c == 'n') return 1;
+	getchar();
 	return 0;
 }
