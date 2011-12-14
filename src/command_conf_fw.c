@@ -150,21 +150,20 @@ void cfwCMD_disable(char* _none) {
 	}
 	// @ TODO: verify if PF is enabled
 	if(askConfirm() == 0) {
-		system("/sbin/pfctl -d > /dev/null 2>&1");
+		hsystemcmd("/sbin/pfctl -d");
 		printSuccess("Firewall disabled !\n Don't forget to re-enable it faster !!\n");
 	}
 }
 
 void cfwCMD_enable(char* _none) {
-	hsystemcmd("/sbin/pfctl -e > /dev/null 2>&1");
+	hsystemcmd("/sbin/pfctl -e");
 	printSuccess("Firewall enabled.\n");
 }
 
 void cfwCMD_edit_packetfilter(char* _none)
 {
 	system("vi /etc/pf.conf");
-	system("/sbin/pfctl -d > /dev/null 2>&1");
-	system("/sbin/pfctl -e > /dev/null 2>&1");
+	hsystemcmd("/sbin/pfctl -f /etc/pf.conf");
 	printSuccess("Firewall reloaded.\n");
 }
 

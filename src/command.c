@@ -228,9 +228,10 @@ int execSystemCommand(char* cmd, char* output)
 }
 
 void hsystemcmd(char* cmd) {
-	char* cmd = strcat(cmd," > /dev/null 2>&1");
-	printError("%s\n",cmd);
-	system(cmd);
+	char cmd2[1024];
+	strcpy(cmd2,cmd);
+	strcat(cmd2," > /dev/null 2>&1");
+	system(cmd2);
 }
 
 unsigned short askConfirm() {
