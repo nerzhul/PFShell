@@ -33,12 +33,21 @@
 #define CMDFW_ENABLE_ERROR() printError("Syntax error !\nCorrect syntax is:\n   enable\n");
 
 void cfwCMD_exit(char* _none);
+
+// Default policies
 void cfwCMD_default(char* args);
 void cfwCMD_default_forward(char* args);
 void cfwCMD_default_input(char* args);
 void cfwCMD_default_output(char* args);
+
+// Enable & Disable firewall
 void cfwCMD_disable(char* _none);
 void cfwCMD_enable(char* _none);
+
+// Declare vars
+void cfwCMD_portgroup(char* args);
+void cfwCMD_hostgroup(char* args);
+
 // Temp Command
 void cfwCMD_edit_packetfilter(char* _none);
 void cfwCMD_show_packetfilter(char* _none);

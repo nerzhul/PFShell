@@ -143,7 +143,8 @@ void cfwCMD_default_output(char* args)
 	}
 }
 
-void cfwCMD_disable(char* _none) {
+void cfwCMD_disable(char* _none)
+{
 	if(strlen(_none) > 1) {
 		CMDFW_DISABLE_ERROR();
 		return;
@@ -155,9 +156,26 @@ void cfwCMD_disable(char* _none) {
 	}
 }
 
-void cfwCMD_enable(char* _none) {
+void cfwCMD_enable(char* _none)
+{
 	hsystemcmd("/sbin/pfctl -e");
 	printSuccess("Firewall enabled.\n");
+}
+
+void cfwCMD_portgroup(char* args)
+{
+	char* portlist[2];
+	cutFirstWord(args,portlist);
+	if(regexp(portlist[0],"^(([a-zA-Z])([:alnum:]{,20}))$") == 0)
+		printSuccess("Name Match !\n");
+		
+	if(regexp(portlist[1],"^((((([1-5]?[0-9]{1,4})|([6](([0-4][0-9]{3})|([5](([0-4][0-9]{2})|([5](([0-2][0-9])|([3][0-6]))))))))[,])*)(([1-5]?[0-9]{1,4})|([6](([0-4][0-9]{3})|([5](([0-4][0-9]{2})|([5](([0-2][0-9])|([3][0-6])))))))))$") == 0)
+		printSuccess("Match !\n");
+}
+
+void cfwCMD_hostgroup(char* args)
+{
+	// @TODO
 }
 
 void cfwCMD_edit_packetfilter(char* _none)

@@ -58,13 +58,13 @@ void promptU() { printf("%s> ",hostname); }
 // Enable prompt
 void promptE() { printf("%s# ",hostname); }
 // Configure prompt
-void promptC() { printf("%s(conf)# ",hostname); }
+void promptC() { printf("%s(conf)# ",hostname);}
 // Configure prompt for Network Interfaces
-void promptCIf() { printf("%s(conf-iface)# ",hostname); }
+void promptCIf() { printf("%s(conf-iface)# ",hostname);}
 // Configure prompt for Firewall
 void promptCFW() { printf("%s(conf-fw)# ",hostname); }
 // Configure prompt for CARP redundancy
-void promptCRD() { printf("%s(conf-redundancy)# ",hostname); }
+void promptCRD() { printf("%s(conf-redundancy)# ",hostname);}
 
 void printError(char* str, ...)
 {

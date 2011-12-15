@@ -27,6 +27,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <regex.h>
 #include "command.h"
 #include "command_user.h"
 #include "command_enable.h"
@@ -83,9 +84,11 @@ unsigned short initCmds()
 	confFWCmd[2].handler = &cfwCMD_enable;
 	confFWCmd[3].name = "disable";
 	confFWCmd[3].handler = &cfwCMD_disable;
+	confFWCmd[4].name = "portgroup";
+	confFWCmd[4].handler = &cfwCMD_portgroup;
 	// TEMP Command
-	confFWCmd[4].name = "edit";
-	confFWCmd[4].handler = &cfwCMD_edit_packetfilter;
+	confFWCmd[5].name = "edit";
+	confFWCmd[5].handler = &cfwCMD_edit_packetfilter;
 
 	// Enable - Configure - Redundancy Commands
 	confRDCmd[0].name = "exit";
@@ -227,11 +230,26 @@ int execSystemCommand(char* cmd, char* output)
 	return 0;
 }
 
-void hsystemcmd(char* cmd) {
+void hsystemcmd(char* cmd)
+{
 	char cmd2[1024];
 	strcpy(cmd2,cmd);
 	strcat(cmd2," > /dev/null 2>&1");
 	system(cmd2);
+}
+
+unsigned short regexp(char* str, char* pattern)
+{
+	int err,match;
+	regex_t preg;
+	err = regcomp(&preg, pattern, REG_NOSUB | REG_EXTENDED);
+	if(err == 0)
+	{
+		match = regexec(&preg, str, 0, NULL, 0);
+		regfree (&preg);
+		if (match == 0) return 0;
+	}
+	return 1;
 }
 
 unsigned short askConfirm() {

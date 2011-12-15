@@ -28,14 +28,16 @@
 #include "command_conf_if.h"
 #include "prompt.h"
 
-void cifCMD_exit(char* _none) {
+void cifCMD_exit(char* _none)
+{
 	if(strlen(_none) > 0)
 		printError("Syntax error !\nCorrect syntax is: \n   exit\n");
 	else
 		promptMode = PROMPT_CONF;
 }
 
-void cifCMD_ip(char* args) {
+void cifCMD_ip(char* args)
+{
 	char* iface[2];
 	cutFirstWord(args,iface);
 	if(strcmp(iface[0],"address") == 0)
@@ -44,11 +46,23 @@ void cifCMD_ip(char* args) {
 		CMDIF_IP_ERROR();
 }
 
-void cifCMD_ip_address(char* args) {
-	if(strlen(args) < 7) {
+void cifCMD_ip_address(char* args)
+{
+	if(strlen(args) < 7)
+	{
 		CMDIF_IPADDR_ERROR();
 		return;
+		
 	}
 	
-	// @ TODO
+	if(strcmp(args,"DHCP"))
+	{
+		system("dhclient ...");
+	}
+	else
+	{
+		char* ipmask[2];
+		cutFirstWord(args,ipmask);
+	}
+	// @ TODO: CONFIG
 }

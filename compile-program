@@ -1,8 +1,4 @@
 #! /bin/sh
-aclocal
-automake --add-missing
-autoconf
-autoreconf --install --force
 ./configure --prefix=/opt/
 make
 make install

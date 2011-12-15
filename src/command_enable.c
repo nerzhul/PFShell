@@ -59,7 +59,11 @@ void eCMD_show(char* args)
 		else if(strcmp(showcmd[0],"interfaces") == 0)
 		{
 			char output[10240] = "";
+#ifdef FREEBSD
 			execSystemCommand("for IF in $(/sbin/ifconfig | grep HWaddr | awk '{print $1}'); do /sbin/ifconfig $IF; done;",output);
+#else
+			execSystemCommand("for IF in $(/sbin/ifconfig | grep BROADCAST | awk '{print $1}' | awk -F':' '{print $1}'); do /sbin/ifconfig $IF; done;",output);
+#endif
 			printf("Network Interfaces:\n%s",output);
 		}
 		else
