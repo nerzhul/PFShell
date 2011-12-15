@@ -1,6 +1,6 @@
 bin_PROGRAMS = PFShell
 
-AM_CPPFLAGS = 
+AM_CPPFLAGS =
 
 PFShell_SOURCES = \
 	command.c \
@@ -19,10 +19,12 @@ PFShell_SOURCES = \
 	command_conf_rd.h \
 	configuration.c \
 	configuration.h \
+	firewall.c \
+	firewall.h \
 	main.c \
 	prompt.c \
 	prompt.h
-	
-PFShell_LDADD = 
-	
-PFShell_LDFLAGS = 
+
+PFShell_LDADD =
+
+PFShell_LDFLAGS =

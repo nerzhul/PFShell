@@ -25,33 +25,36 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __COMMAND_CONF_FW_H__
-#define __COMMAND_CONF_FW_H__
+#ifndef __FIREWALL_H__
+#define __FIREWALL_H__
 
-#include "prompt.h"
+typedef struct access_control access_control;
 
-#define CMDFW_DEFAULT_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   default (forward-policy|input-policy|output-policy) (allow|deny)\n");
-#define CMDFW_DISABLE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   disable\n");
-#define CMDFW_ENABLE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   enable\n");
-#define CMDFW_PORTGRP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   portgroup <name> <port1,port2,port3...>\n");
+struct access_control
+{
+	unsigned short _direction;
+	unsigned short _proto;
+	int _sport;
+	int _dport;
+	char* _saddr;
+	char* _daddr;
+	unsigned short _allow;
+	access_control* next;
+	access_control* prev;
+};
 
-void cfwCMD_exit(char* _none);
+typedef struct acl acl;
 
-// Default policies
-void cfwCMD_default(char* args);
-void cfwCMD_default_forward(char* args);
-void cfwCMD_default_input(char* args);
-void cfwCMD_default_output(char* args);
+struct acl
+{
+	char* name;
+	access_control* ac;
+	acl* next;
+	acl* prev;
+};
 
-// Enable & Disable firewall
-void cfwCMD_disable(char* _none);
-void cfwCMD_enable(char* _none);
-
-// ACLs
-void cfwCMD_acl(char* args);
-
-// Temp Command
-void cfwCMD_edit_packetfilter(char* _none);
-void cfwCMD_show_packetfilter(char* _none);
+void addAccessList(acl* list, char* name);
+void addAccessControl(access_control* ac, unsigned short direction, unsigned short proto, int sport, int dport, char* saddr, char* daddr, unsigned short allow);
+void addACL(char* listname, int sport, unsigned short direction, unsigned short proto, int dport, char* saddr, char* daddr, unsigned short allow);
 
 #endif

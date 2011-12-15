@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (c) 2011, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
@@ -11,7 +11,7 @@
 *       documentation and/or other materials provided with the distribution.
 *     * Neither the name of the Frost Sapphire Studios nor the
 *       names of its contributors may be used to endorse or promote products
-*       derived from this software without specific prior written permission. 
+*       derived from this software without specific prior written permission.
 *
 * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
 * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -22,7 +22,7 @@
 * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include <stdlib.h>
@@ -84,8 +84,8 @@ unsigned short initCmds()
 	confFWCmd[2].handler = &cfwCMD_enable;
 	confFWCmd[3].name = "disable";
 	confFWCmd[3].handler = &cfwCMD_disable;
-	confFWCmd[4].name = "portgroup";
-	confFWCmd[4].handler = &cfwCMD_portgroup;
+	confFWCmd[4].name = "acl";
+	confFWCmd[4].handler = &cfwCMD_acl;
 	// TEMP Command
 	confFWCmd[5].name = "edit";
 	confFWCmd[5].handler = &cfwCMD_edit_packetfilter;
@@ -112,7 +112,7 @@ char* readCmd()
 	char* cmd;
 	char tmpchar;
 	int offset = 0;
-	do 
+	do
 	{
 		tmpchar = getchar();
 		buffer[offset] = tmpchar;
@@ -215,7 +215,7 @@ int execSystemCommand(char* cmd, char* output)
 {
 	FILE *fp;
 	char path[1035];
-	
+
 	fp = popen(cmd, "r");
 	if (fp == NULL) {
 		printError("Failed to run command %s\n",cmd);
@@ -259,13 +259,13 @@ unsigned short askConfirm() {
 		printError("Bad response, 'y' or 'n' espected !\n");
 		c = getchar();
 	}
-	
+
 	getchar();
-	
+
 	if(c == 'n') {
 		printf("Aborted.\n");
 		return 1;
 	}
-	
+
 	return 0;
 }
