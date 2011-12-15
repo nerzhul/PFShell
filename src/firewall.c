@@ -25,6 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <stddef.h>
 #include "firewall.h"
 #include "configuration.h"
 
@@ -50,11 +51,11 @@ void addAccessList(acl* list, char* name)
 	}
 }
 
-void addAccessControl(access_control* ac, unsigned int direction, unsigned int proto, int sport, int dport, char* saddr, char* daddr, unsigned short allow)
+void addAccessControl(access_control* ac, unsigned short direction, unsigned short proto, int sport, int dport, char* saddr, char* daddr, unsigned short allow)
 {
 	access_control* newAC = malloc(sizeof(access_control));
-	newAC->direction = direction;
-	newAC->proto = proto;
+	newAC->_direction = direction;
+	newAC->_proto = proto;
 	newAC->_sport = sport;
 	newAC->_dport = dport;
 	newAC->_saddr = saddr;
@@ -77,7 +78,7 @@ void addAccessControl(access_control* ac, unsigned int direction, unsigned int p
 	}
 }
 
-void addACL(char* listname, unsigned int direction, unsigned int proto, int sport, int dport, char* saddr, char* daddr, unsigned short allow)
+void addACL(char* listname, unsigned short direction, unsigned short proto, int sport, int dport, char* saddr, char* daddr, unsigned short allow)
 {
 	acl* cursor = access_lists;
 	if(strcmp(cursor->name,listname) == 0)

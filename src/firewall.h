@@ -55,6 +55,6 @@ struct acl
 
 void addAccessList(acl* list, char* name);
 void addAccessControl(access_control* ac, unsigned short direction, unsigned short proto, int sport, int dport, char* saddr, char* daddr, unsigned short allow);
-void addACL(char* listname, int sport, unsigned short direction, unsigned short proto, int dport, char* saddr, char* daddr, unsigned short allow);
+void addACL(char* listname, unsigned short direction, unsigned short proto, int sport, int dport, char* saddr, char* daddr, unsigned short allow);
 
 #endif
