@@ -133,18 +133,37 @@ unsigned short writeRunningConfig()
 			while(cursor2 != NULL)
 			{
 				fputs("acl ",confFile);
+
 				fputs(cursor->name,confFile);
 				fputs(" ",confFile);
-				if(cursor2->allow == 0)
+
+				if(cursor2->_allow == 0)
 					fputs("deny ",confFile);
 				else
 					fputs("allow ",confFile);
-				if(cursor2->proto == 0)
+
+				if(cursor2->_direction == 0)
+					fputs("in ",confFile);
+				else
+					fputs("out ",confFile);
+
+				if(cursor2->_proto == 0)
 					fputs("tcp ",confFile);
-				else if(cursor2->proto == 1)
+				else if(cursor2->_proto == 1)
 					fputs("udp ",confFile);
 				else
 					fputs("icmp ",confFile);
+
+				fputs("from ",confFile);
+				fputs(cursor2->_saddr,confFile);
+				fputs(":",confFile);
+				fputs(cursor2->_sport,confFile);
+				fputs(" ",confFile);
+
+				fputs("to ",confFile);
+				fputs(cursor2->_daddr,confFile);
+				fputs(":",confFile);
+				fputs(cursor2->_dport,confFile);
 				cursor2 = cursor2->next;
 			}
 			cursor = cursor->next;
