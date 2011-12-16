@@ -98,6 +98,9 @@ unsigned short loadConfiguration()
 		}
 	}
 
+	if(hostname == NULL)
+		hostname = "PFShell";
+
 	fclose(confFile);
 	return 1;
 }
@@ -154,16 +157,21 @@ unsigned short writeRunningConfig()
 				else
 					fputs("icmp ",confFile);
 
-				fputs("from ",confFile);
 				fputs(cursor2->_saddr,confFile);
-				fputs(":",confFile);
-				fputs(cursor2->_sport,confFile);
+
+				char buffer[1024];
+
+				sprintf(buffer,"%d",cursor2->_sport);
+				fputs(" ",confFile);
+				fputs(buffer,confFile);
 				fputs(" ",confFile);
 
-				fputs("to ",confFile);
 				fputs(cursor2->_daddr,confFile);
-				fputs(":",confFile);
-				fputs(cursor2->_dport,confFile);
+
+				sprintf(buffer,"%d",cursor2->_sport);
+				fputs(" ",confFile);
+				fputs(buffer,confFile);
+				fputs("\n",confFile);
 				cursor2 = cursor2->next;
 			}
 			cursor = cursor->next;

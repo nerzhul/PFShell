@@ -86,9 +86,11 @@ unsigned short initCmds()
 	confFWCmd[3].handler = &cfwCMD_disable;
 	confFWCmd[4].name = "acl";
 	confFWCmd[4].handler = &cfwCMD_acl;
+	confFWCmd[5].name = "show";
+	confFWCmd[5].handler = &cfwCMD_show;
 	// TEMP Command
-	confFWCmd[5].name = "edit";
-	confFWCmd[5].handler = &cfwCMD_edit_packetfilter;
+	confFWCmd[6].name = "edit";
+	confFWCmd[6].handler = &cfwCMD_edit_packetfilter;
 
 	// Enable - Configure - Redundancy Commands
 	confRDCmd[0].name = "exit";

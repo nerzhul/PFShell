@@ -29,70 +29,96 @@
 #include "firewall.h"
 #include "configuration.h"
 
-void addAccessList(acl* list, char* name)
+void addAccessList(acl* _list, char* name)
 {
-	acl* newACL = malloc(sizeof(acl));
-	newACL->name = name;
-	newACL->next = NULL;
-
-	if(list == NULL)
+	if(strcmp(_list->name,"") == 0)
 	{
-		newACL->prev = NULL;
-		list = newACL;
+		_list->name = (char*)malloc((strlen(name)+1)*sizeof(char));
+		strcpy(_list->name,name);
+		_list->next = NULL;
+		_list->ac = NULL;
+		_list->prev = NULL;
 	}
 	else
 	{
-		acl* cursor = list;
-		while(cursor->next != NULL)
-			cursor = cursor->next;
+		acl* newACL = (acl*)malloc(sizeof(acl));
+		newACL->name = name;
+		newACL->next = NULL;
+		newACL->ac = NULL;
 
-		newACL->prev = list;
-		list->next = newACL;
+		acl* cursor = _list;
+		acl* cursor2 = _list;
+		while(cursor->next != NULL)
+		{
+			cursor2 = cursor;
+			cursor = cursor->next;
+		}
+
+		newACL->prev = cursor;
+		cursor->next = newACL;
 	}
 }
 
-void addAccessControl(access_control* ac, unsigned short direction, unsigned short proto, int sport, int dport, char* saddr, char* daddr, unsigned short allow)
+void addAccessControl(access_control* ac, unsigned short direction, unsigned short proto, unsigned short sport, unsigned short dport, char* saddr, char* daddr, unsigned short allow)
 {
-	access_control* newAC = malloc(sizeof(access_control));
-	newAC->_direction = direction;
-	newAC->_proto = proto;
-	newAC->_sport = sport;
-	newAC->_dport = dport;
-	newAC->_saddr = saddr;
-	newAC->_daddr = daddr;
-	newAC->_allow = allow;
-
-	if(ac == NULL)
+	if(ac->_direction == 10)
 	{
-		newAC->prev = NULL;
-		ac = newAC;
+		ac->_direction = direction;
+		ac->_proto = proto;
+		ac->_sport = sport;
+		ac->_dport = dport;
+		ac->_saddr = saddr;
+		ac->_daddr = daddr;
+		ac->_allow = allow;
 	}
 	else
 	{
 		access_control* cursor = ac;
-		while(cursor->next != NULL)
-			cursor = cursor->next;
 
-		newAC->prev = ac;
-		ac->next = newAC;
+		while(cursor->next != NULL)
+		{
+			cursor = cursor->next;
+		}
+
+		access_control* newAC = (access_control*)malloc(sizeof(access_control));
+		newAC->_direction = direction;
+		newAC->_proto = proto;
+		newAC->_sport = sport;
+		newAC->_dport = dport;
+		newAC->_saddr = saddr;
+		newAC->_daddr = daddr;
+		newAC->_allow = allow;
+
+		cursor->next = newAC;
+		newAC->prev = cursor;
 	}
 }
 
-void addACL(char* listname, unsigned short direction, unsigned short proto, int sport, int dport, char* saddr, char* daddr, unsigned short allow)
+void addACL(char* listname, unsigned short direction, unsigned short proto, unsigned short sport, unsigned short dport, char* saddr, char* daddr, unsigned short allow)
 {
 	acl* cursor = access_lists;
-	if(strcmp(cursor->name,listname) == 0)
+	if(cursor != NULL && strcmp(cursor->name,listname) == 0)
 	{
+		if(cursor->ac == NULL)
+		{
+			cursor->ac = (access_control*)malloc(sizeof(access_control));
+			cursor->ac->_direction = 10;
+		}
 		addAccessControl(cursor->ac, direction, proto, sport, dport, saddr, daddr, allow);
 	}
 	else
 	{
 		unsigned short found = 0;
-		while(found == 0 && cursor->next != NULL)
+		while(cursor != NULL && found == 0 && cursor->next != NULL)
 		{
 			cursor = cursor->next;
 			if(strcmp(cursor->name,listname) == 0)
 			{
+				if(cursor->ac == NULL)
+				{
+					cursor->ac = (access_control*)malloc(sizeof(access_control));
+					cursor->ac->_direction = 10;
+				}
 				addAccessControl(cursor->ac, direction, proto, sport, dport, saddr, daddr, allow);
 				found = 1;
 			}
@@ -100,6 +126,11 @@ void addACL(char* listname, unsigned short direction, unsigned short proto, int 
 
 		if(found == 0)
 		{
+			if(access_lists == NULL)
+			{
+				access_lists = (acl*)malloc(sizeof(acl));
+				access_lists->name = "";
+			}
 			addAccessList(access_lists, listname);
 			addACL(listname, direction, proto, sport, dport, saddr, daddr, allow);
 		}
