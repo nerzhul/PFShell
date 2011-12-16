@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "configuration.h"
+#include "command_conf_fw.h"
 
 unsigned short loadConfiguration()
 {
@@ -94,7 +95,8 @@ unsigned short loadConfiguration()
 		}
 		else if(strcmp(keyval[0],"acl") == 0)
 		{
-
+			if(strlen(keyval[1]) > 0)
+				cfwCMD_acl(keyval[1]);
 		}
 	}
 

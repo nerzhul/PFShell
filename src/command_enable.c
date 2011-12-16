@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (c) 2011, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
@@ -11,7 +11,7 @@
 *       documentation and/or other materials provided with the distribution.
 *     * Neither the name of the Frost Sapphire Studios nor the
 *       names of its contributors may be used to endorse or promote products
-*       derived from this software without specific prior written permission. 
+*       derived from this software without specific prior written permission.
 *
 * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
 * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -22,9 +22,10 @@
 * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "configuration.h"
 #include "command_enable.h"
 #include "prompt.h"
 
@@ -66,9 +67,47 @@ void eCMD_show(char* args)
 #endif
 			printf("Network Interfaces:\n%s",output);
 		}
+		else if(strcmp(showcmd[0],"acls") == 0)
+		{
+			printf("------------- Current ACLs -------------\n");
+			unsigned short found = 0;
+			acl* cursor = access_lists;
+			while(cursor != NULL)
+			{
+				printf("Access-List %s\n",cursor->name);
+				access_control* cursor2 = cursor->ac;
+				while(cursor2 != NULL)
+				{
+					found = 1;
+					putchar(' ');
+					if(cursor2->_allow == 0)
+						printf("deny ");
+					else
+						printf("allow ");
+
+					if(cursor2->_direction == 0)
+						printf("in ");
+					else
+						printf("out ");
+
+					if(cursor2->_proto == 0)
+						printf("tcp ");
+					else if(cursor2->_proto == 1)
+						printf("udp ");
+					else
+						printf("icmp ");
+
+					printf("%s %d %s %d\n",cursor2->_saddr,cursor2->_sport,cursor2->_daddr,cursor2->_dport);
+					cursor2 = cursor2->next;
+				}
+				putchar('\n');
+				cursor = cursor->next;
+			}
+			if(found == 0) printf("No Access-Lists found !\n");
+		}
 		else
 		{
-			CMDEN_SHOW_ERROR();	
+			CMDEN_SHOW_ERROR();
 		}
 	}
 }

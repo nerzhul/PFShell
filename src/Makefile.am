@@ -1,6 +1,6 @@
 bin_PROGRAMS = PFShell
 
-AM_CPPFLAGS =
+AM_CPPFLAGS = -lncurses
 
 PFShell_SOURCES = \
 	command.c \

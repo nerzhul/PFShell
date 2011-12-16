@@ -86,11 +86,9 @@ unsigned short initCmds()
 	confFWCmd[3].handler = &cfwCMD_disable;
 	confFWCmd[4].name = "acl";
 	confFWCmd[4].handler = &cfwCMD_acl;
-	confFWCmd[5].name = "show";
-	confFWCmd[5].handler = &cfwCMD_show;
 	// TEMP Command
-	confFWCmd[6].name = "edit";
-	confFWCmd[6].handler = &cfwCMD_edit_packetfilter;
+	confFWCmd[5].name = "edit";
+	confFWCmd[5].handler = &cfwCMD_edit_packetfilter;
 
 	// Enable - Configure - Redundancy Commands
 	confRDCmd[0].name = "exit";
@@ -113,13 +111,13 @@ char* readCmd()
 	char buffer[1024];
 	char* cmd;
 	char tmpchar;
-	int offset = 0;
+	short offset = 0;
 	do
 	{
 		tmpchar = getchar();
 		buffer[offset] = tmpchar;
 		++offset;
-	// @TODO: handle \t
+	// @ TODO: handle \t
 	} while(offset < 1023 && tmpchar != '\n' && tmpchar != '\0');
 
 	cmd = (char*) malloc((offset)*sizeof(char));

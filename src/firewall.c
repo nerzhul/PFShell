@@ -136,3 +136,117 @@ void addACL(char* listname, unsigned short direction, unsigned short proto, unsi
 		}
 	}
 }
+
+unsigned short readACL(char* args)
+{
+		char* nexttab[2];
+	char _nextvar[1024];
+
+	char* name;
+	unsigned short _allow;
+	unsigned short _direction;
+	unsigned short _proto;
+
+	char* _saddr;
+	unsigned short _sport;
+
+	char* _daddr;
+	unsigned short _dport;
+
+
+	strcpy(_nextvar,args);
+	cutFirstWord(_nextvar,nexttab);
+	if(strlen(nexttab[0]) < 2 || strlen(_nextvar) > 1023 || strcmp(nexttab[1],"") == 0)
+		return 1;
+
+	name = (char*)malloc(strlen(nexttab[0])*sizeof(char));
+	strcpy(name,nexttab[0]);
+	strcpy(_nextvar,nexttab[1]);
+
+	cutFirstWord(_nextvar,nexttab);
+	if(strcmp(nexttab[0],"deny") != 0 && strcmp(nexttab[0],"allow") != 0 || strcmp(nexttab[1],"") == 0)
+		return 1;
+
+	_allow = (strcmp(nexttab[0],"deny") == 0) ? 0 : 1;
+	strcpy(_nextvar,nexttab[1]);
+
+	cutFirstWord(_nextvar,nexttab);
+	if(strcmp(nexttab[0],"in") != 0 && strcmp(nexttab[0],"out") != 0 || strcmp(nexttab[1],"") == 0)
+		return 1;
+
+	_direction = (strcmp(nexttab[0],"in") == 0) ? 0 : 1;
+	strcpy(_nextvar,nexttab[1]);
+
+	cutFirstWord(_nextvar,nexttab);
+	if(strcmp(nexttab[0],"tcp") != 0 && strcmp(nexttab[0],"udp") != 0 && strcmp(nexttab[0],"icmp") || strcmp(nexttab[1],"") == 0)
+		return 1;
+
+	if(strcmp(nexttab[0],"tcp") == 0) _proto = 0;
+	else if(strcmp(nexttab[0],"udp") == 0) _proto = 1;
+	else _proto = 2;
+
+	strcpy(_nextvar,nexttab[1]);
+
+	cutFirstWord(_nextvar,nexttab);
+	if(strcmp(nexttab[0],"any") == 0)
+	{
+		if(strcmp(nexttab[1],"") == 0)
+			return 1;
+
+		_saddr = (char*)malloc(strlen(nexttab[0])*sizeof(char));
+		strcpy(_saddr,nexttab[0]);
+	}
+	else
+	{
+		if(regexp(nexttab[0],"10.0.0.0/8") == 0)
+		{
+			_saddr = (char*)malloc(strlen(nexttab[0])*sizeof(char));
+			strcpy(_saddr,nexttab[0]);
+		}
+		else
+			return 1;
+	}
+
+	strcpy(_nextvar,nexttab[1]);
+	cutFirstWord(_nextvar,nexttab);
+
+	int port = atoi(nexttab[0]);
+	if(port <= 65535 && port >= 0)
+	{
+		_sport = port;
+		strcpy(_nextvar,nexttab[1]);
+		cutFirstWord(_nextvar,nexttab);
+	}
+	else _sport = 0;
+
+	if(strcmp(nexttab[0],"any") == 0)
+	{
+		_daddr = (char*)malloc(strlen(nexttab[0])*sizeof(char));
+		strcpy(_daddr,nexttab[0]);
+	}
+	else
+	{
+		if(regexp(nexttab[0],"10.0.0.0/8") == 0)
+		{
+			_daddr = (char*)malloc(strlen(nexttab[0])*sizeof(char));
+			strcpy(_daddr,nexttab[0]);
+		}
+		else
+			return 1;
+	}
+
+	if(strcmp(nexttab[1],"") == 0)
+		_dport = 0;
+	else
+	{
+		int port2 = atoi(nexttab[1]);
+		if(port2 > 65535 && port2 < 0)
+			return 1;
+		else
+			_dport = port2;
+	}
+
+	addACL(name,_direction,_proto,_sport,_dport,_saddr,_daddr,_allow);
+
+	return 0;
+}

@@ -34,7 +34,7 @@
 #define CMDFW_DISABLE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   disable\n");
 #define CMDFW_ENABLE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   enable\n");
 #define CMDFW_ACL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax  is:\n   acl <name> <allow|deny> <in|out> <tcp|udp|icmp> <any|A.B.C.D/CIDR> (<port>) <any|A.B.C.D/CIDR> (<port>)\n");
-#define CMDFW_SHOW_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    show <acl> <name>\n");
+
 void cfwCMD_exit(char* _none);
 
 // Default policies
@@ -49,8 +49,6 @@ void cfwCMD_enable(char* _none);
 
 // ACLs
 void cfwCMD_acl(char* args);
-void cfwCMD_show(char* args);
-void cfwCMD_show_acl(char* args);
 
 // Temp Command
 void cfwCMD_edit_packetfilter(char* _none);
