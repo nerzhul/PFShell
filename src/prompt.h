@@ -83,4 +83,6 @@ void printSuccess(char* str, ...);
 void setPromptColor(short stdout_stream, short color);
 void resetPromptColor(short stdout_stream);
 
+unsigned short askConfirm();
+
 #endif

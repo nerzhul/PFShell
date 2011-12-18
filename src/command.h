@@ -72,7 +72,6 @@ void cutFirstWord(char*,char**);
 
 void handleCmd(char* _cmd);
 
-unsigned short askConfirm();
 unsigned short regexp(char* str, char* pattern);
 
 void hsystemcmd(char* cmd);

@@ -251,21 +251,3 @@ unsigned short regexp(char* str, char* pattern)
 	}
 	return 1;
 }
-
-unsigned short askConfirm() {
-	printf("Are you sure [y|n] ? ");
-	char c = getchar();
-	while(c != 'y' && c != 'n') {
-		printError("Bad response, 'y' or 'n' espected !\n");
-		c = getchar();
-	}
-
-	getchar();
-
-	if(c == 'n') {
-		printf("Aborted.\n");
-		return 1;
-	}
-
-	return 0;
-}
