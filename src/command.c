@@ -66,6 +66,8 @@ unsigned short initCmds()
 	confCmd[1].handler = &cCMD_firewall;
 	confCmd[2].name = "hostname";
 	confCmd[2].handler = &cCMD_hostname;
+	confCmd[3].name = "interface";
+	confCmd[3].handler = &cCMD_interface;
 
 	// Enable - Configure - Interface Commands
 	confIfCmd[0].name = "exit";
