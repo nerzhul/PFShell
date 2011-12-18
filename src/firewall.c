@@ -33,7 +33,7 @@ void addAccessList(acl* _list, char* name)
 {
 	if(strcmp(_list->name,"") == 0)
 	{
-		_list->name = (char*)malloc((strlen(name)+1)*sizeof(char));
+		_list->name = (char*)malloc(strlen(name)*sizeof(char));
 		strcpy(_list->name,name);
 		_list->next = NULL;
 		_list->ac = NULL;
@@ -42,17 +42,14 @@ void addAccessList(acl* _list, char* name)
 	else
 	{
 		acl* newACL = (acl*)malloc(sizeof(acl));
-		newACL->name = name;
+		newACL->name = (char*)malloc(strlen(name)*sizeof(char));
+		strcpy(newACL->name,name);
 		newACL->next = NULL;
 		newACL->ac = NULL;
 
 		acl* cursor = _list;
-		acl* cursor2 = _list;
 		while(cursor->next != NULL)
-		{
-			cursor2 = cursor;
 			cursor = cursor->next;
-		}
 
 		newACL->prev = cursor;
 		cursor->next = newACL;
@@ -67,9 +64,13 @@ void addAccessControl(access_control* ac, unsigned short direction, unsigned sho
 		ac->_proto = proto;
 		ac->_sport = sport;
 		ac->_dport = dport;
-		ac->_saddr = saddr;
-		ac->_daddr = daddr;
+		ac->_saddr = (char*)malloc(strlen(saddr)*sizeof(char));
+		strcpy(ac->_saddr,saddr);
+		ac->_daddr = (char*)malloc(strlen(daddr)*sizeof(char));
+		strcpy(ac->_daddr,daddr);
 		ac->_allow = allow;
+		ac->next = NULL;
+		ac->prev = NULL;
 	}
 	else
 	{
@@ -85,12 +86,15 @@ void addAccessControl(access_control* ac, unsigned short direction, unsigned sho
 		newAC->_proto = proto;
 		newAC->_sport = sport;
 		newAC->_dport = dport;
-		newAC->_saddr = saddr;
-		newAC->_daddr = daddr;
+		newAC->_saddr = (char*)malloc(strlen(saddr)*sizeof(char));
+		strcpy(newAC->_saddr,saddr);
+		newAC->_daddr = (char*)malloc(strlen(daddr)*sizeof(char));
+		strcpy(newAC->_daddr,daddr);
 		newAC->_allow = allow;
 
 		cursor->next = newAC;
 		newAC->prev = cursor;
+		newAC->next = NULL;
 	}
 }
 
@@ -139,7 +143,7 @@ void addACL(char* listname, unsigned short direction, unsigned short proto, unsi
 
 unsigned short readACL(char* args)
 {
-		char* nexttab[2];
+	char* nexttab[2];
 	char _nextvar[1024];
 
 	char* name;
@@ -153,7 +157,6 @@ unsigned short readACL(char* args)
 	char* _daddr;
 	unsigned short _dport;
 
-
 	strcpy(_nextvar,args);
 	cutFirstWord(_nextvar,nexttab);
 	if(strlen(nexttab[0]) < 2 || strlen(_nextvar) > 1023 || strcmp(nexttab[1],"") == 0)
@@ -161,33 +164,37 @@ unsigned short readACL(char* args)
 
 	name = (char*)malloc(strlen(nexttab[0])*sizeof(char));
 	strcpy(name,nexttab[0]);
-	strcpy(_nextvar,nexttab[1]);
 
+	strcpy(_nextvar,nexttab[1]);
 	cutFirstWord(_nextvar,nexttab);
+
 	if(strcmp(nexttab[0],"deny") != 0 && strcmp(nexttab[0],"allow") != 0 || strcmp(nexttab[1],"") == 0)
 		return 1;
 
-	_allow = (strcmp(nexttab[0],"deny") == 0) ? 0 : 1;
-	strcpy(_nextvar,nexttab[1]);
+	if(strcmp(nexttab[0],"deny") == 0) _allow = 0;
+	else _allow = 1;
 
+	strcpy(_nextvar,nexttab[1]);
 	cutFirstWord(_nextvar,nexttab);
+
 	if(strcmp(nexttab[0],"in") != 0 && strcmp(nexttab[0],"out") != 0 || strcmp(nexttab[1],"") == 0)
 		return 1;
 
 	_direction = (strcmp(nexttab[0],"in") == 0) ? 0 : 1;
-	strcpy(_nextvar,nexttab[1]);
 
+	strcpy(_nextvar,nexttab[1]);
 	cutFirstWord(_nextvar,nexttab);
+
 	if(strcmp(nexttab[0],"tcp") != 0 && strcmp(nexttab[0],"udp") != 0 && strcmp(nexttab[0],"icmp") || strcmp(nexttab[1],"") == 0)
 		return 1;
 
-	if(strcmp(nexttab[0],"tcp") == 0) _proto = 0;
-	else if(strcmp(nexttab[0],"udp") == 0) _proto = 1;
-	else _proto = 2;
+	if(strcmp(nexttab[0],"tcp") == 0) _proto = TCP;
+	else if(strcmp(nexttab[0],"udp") == 0) _proto = UDP;
+	else _proto = ICMP;
 
 	strcpy(_nextvar,nexttab[1]);
-
 	cutFirstWord(_nextvar,nexttab);
+
 	if(strcmp(nexttab[0],"any") == 0)
 	{
 		if(strcmp(nexttab[1],"") == 0)
@@ -198,7 +205,7 @@ unsigned short readACL(char* args)
 	}
 	else
 	{
-		if(regexp(nexttab[0],"10.0.0.0/8") == 0)
+		if(regexp(nexttab[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
 		{
 			_saddr = (char*)malloc(strlen(nexttab[0])*sizeof(char));
 			strcpy(_saddr,nexttab[0]);
@@ -210,9 +217,17 @@ unsigned short readACL(char* args)
 	strcpy(_nextvar,nexttab[1]);
 	cutFirstWord(_nextvar,nexttab);
 
+	// atoi func get first segment of IP and traduce it into port, we must check if next is IP
+	unsigned short notport = 0;
+	if(regexp(nexttab[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
+		notport = 1;
+
 	int port = atoi(nexttab[0]);
-	if(port <= 65535 && port >= 0)
+	if(notport == 0 && port <= 65535 && port > 0)
 	{
+		if(_proto == ICMP)
+			return 1;
+
 		_sport = port;
 		strcpy(_nextvar,nexttab[1]);
 		cutFirstWord(_nextvar,nexttab);
@@ -226,7 +241,7 @@ unsigned short readACL(char* args)
 	}
 	else
 	{
-		if(regexp(nexttab[0],"10.0.0.0/8") == 0)
+		if(regexp(nexttab[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([8-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
 		{
 			_daddr = (char*)malloc(strlen(nexttab[0])*sizeof(char));
 			strcpy(_daddr,nexttab[0]);

@@ -159,6 +159,11 @@ void cfwCMD_disable(char* _none)
 
 void cfwCMD_enable(char* _none)
 {
+	if(strlen(_none) > 1) {
+		CMDFW_ENABLE_ERROR();
+		return;
+	}
+
 	hsystemcmd("/sbin/pfctl -e");
 	printSuccess("Firewall enabled.\n");
 }

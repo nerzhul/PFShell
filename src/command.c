@@ -242,7 +242,7 @@ unsigned short regexp(char* str, char* pattern)
 {
 	int err,match;
 	regex_t preg;
-	err = regcomp(&preg, pattern, REG_NOSUB | REG_EXTENDED);
+	err = regcomp(&preg, pattern, REG_EXTENDED);
 	if(err == 0)
 	{
 		match = regexec(&preg, str, 0, NULL, 0);

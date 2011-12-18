@@ -29,9 +29,16 @@
 #include "command_enable.h"
 #include "prompt.h"
 
-void eCMD_configure(char* _none) {
-	if(strlen(_none) > 0)
-		printError("Syntax error !\nCorrect syntax is: \n   configure\n");
+void eCMD_configure(char* args) {
+	if(strlen(args) > 0)
+	{
+		if(strcmp(args,"firewall") == 0)
+		{
+			promptMode = PROMPT_CONF_FW;
+		}
+		else
+			CMDEN_CONFIGURE_ERROR();
+	}
 	else
 		promptMode = PROMPT_CONF;
 }
@@ -97,7 +104,14 @@ void eCMD_show(char* args)
 					else
 						printf("icmp ");
 
-					printf("%s %d %s %d\n",cursor2->_saddr,cursor2->_sport,cursor2->_daddr,cursor2->_dport);
+					printf("%s ",cursor2->_saddr);
+					if(cursor2->_sport > 0)
+						printf("%d ",cursor2->_sport);
+
+					printf("%s ",cursor2->_daddr);
+					if(cursor2->_dport > 0)
+						printf("%d",cursor2->_dport);
+					printf("\n");
 					cursor2 = cursor2->next;
 				}
 				putchar('\n');

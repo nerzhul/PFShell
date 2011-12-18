@@ -30,6 +30,10 @@
 
 typedef struct access_control access_control;
 
+#define TCP 0
+#define UDP 1
+#define ICMP 2
+
 struct access_control
 {
 	unsigned short _direction;
