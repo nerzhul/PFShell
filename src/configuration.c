@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include "configuration.h"
 #include "command_conf_fw.h"
+#include "command_conf.h"
 
 unsigned short loadConfiguration()
 {
@@ -48,6 +49,8 @@ unsigned short loadConfiguration()
 	pfpolicies[2] = 1;
 
 	access_lists = NULL;
+
+	iprouting = 0;
 
 	// Read file
 	char path[1035];
@@ -97,6 +100,11 @@ unsigned short loadConfiguration()
 		{
 			if(strlen(keyval[1]) > 0)
 				cfwCMD_acl(keyval[1]);
+		}
+		else if(strcmp(keyval[0],"ip") == 0)
+		{
+			if(strlen(keyval[1]) > 0)
+				cCMD_ip(keyval[1]);
 		}
 	}
 

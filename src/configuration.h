@@ -40,4 +40,6 @@ unsigned short pfpolicies[3];
 
 acl* access_lists;
 
+unsigned short iprouting;
+
 #endif

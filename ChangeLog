@@ -14,4 +14,12 @@ Alpha 0.3
 -- show version
 -- show interfaces
 -- save
-
+Alpha 0.4
+- Implement some commands
+-- show acls
+-- acl <name> (...)
+-- ip routing
+-- firewall -> disable | enable
+-- interface <name>
+- Loading configuration from configuration file
+- Stability fixes

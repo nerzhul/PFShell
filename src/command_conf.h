@@ -31,10 +31,11 @@
 #define CMDCONF_HOSTNAME_ERROR() printError("Syntax error !\nCorrect syntax is: \n   hostname <string>\n");
 #define CMDCONF_INTERFACE_ERROR() printError("Syntax error !\nCorrect syntax is: \n   interface <name>\n");
 #define CMDCONF_INTERFACE_UNK(A) printError("Unknown interface %s\n",A);
+#define CMDCONF_IP_ERROR() printError("Syntax error !\nCorrect syntax is: \n   ip <routing>\n");
 
 void cCMD_exit(char* _none);
 void cCMD_firewall(char* _none);
 void cCMD_hostname(char* args);
 void cCMD_interface(char* args);
-
+void cCMD_ip(char* args);
 #endif

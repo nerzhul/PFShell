@@ -94,3 +94,28 @@ void cCMD_interface(char* args)
 	current_iface = args;
 	promptMode = PROMPT_CONF_IF;
 }
+
+void cCMD_ip(char* args)
+{
+	if(strlen(args) == 0)
+	{
+		CMDCONF_IP_ERROR();
+		return;
+	}
+
+	char* ipcmd[2];
+	cutFirstWord(args,ipcmd);
+
+	if(strcmp(ipcmd[0],"routing") == 0)
+	{
+		if(strlen(ipcmd[1]) > 0)
+		{
+			CMDCONF_IP_ERROR();
+			return;
+		}
+
+		iprouting = 1;
+	}
+	else
+		CMDCONF_IP_ERROR();
+}
