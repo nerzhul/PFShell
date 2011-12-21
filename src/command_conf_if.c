@@ -27,6 +27,7 @@
 
 #include "command_conf_if.h"
 #include "prompt.h"
+#include "iputils.h"
 
 void cifCMD_exit(char* _none)
 {
@@ -58,7 +59,7 @@ void cifCMD_ip_address(char* args)
 
 	}
 
-	if(strcmp(args,"DHCP"))
+	if(strcmp(args,"DHCP") == 0)
 	{
 		char buffer[1024];
 		strcpy(buffer,"dhclient ");
@@ -73,12 +74,24 @@ void cifCMD_ip_address(char* args)
 		{
 			if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
 			{
+				char network[32];
+				strcpy(network,calc_network(ipmask[0],ipmask[1]));
+				char bcast[32];
+				strcpy(bcast, calc_broadcast(ipmask[0],ipmask[1]));
+				short cidr = calc_cidr(ipmask[1]);
+				printf("Network %s\nBroadcast %s\nCIDR %d valid %d\n",network,bcast,cidr,is_valid_mask(ipmask[1]));
 			}
 			else
 				CMDIF_IPADDR_ERROR();
 		}
 		else if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
 		{
+			char buffer[1024];
+			strcpy(buffer,"ifconfig ");
+			strcat(buffer,current_iface);
+			strcat(buffer," ");
+			strcat(buffer,ipmask[0]);
+			system(buffer);
 		}
 		else
 			CMDIF_IPADDR_ERROR();

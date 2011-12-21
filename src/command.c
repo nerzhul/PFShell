@@ -76,6 +76,8 @@ unsigned short initCmds()
 	// @ TODO
 	confIfCmd[2].name = "no shutdown";
 	// @ TODO
+	confIfCmd[3].name = "ip";
+	confIfCmd[3].handler = &cifCMD_ip;
 
 	// Enable - Configure - Firewall Commands
 	confFWCmd[0].name = "exit";

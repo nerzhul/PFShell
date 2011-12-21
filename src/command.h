@@ -41,7 +41,7 @@ typedef struct commandHandler
 #define MAX_USER_CMD	4
 #define MAX_ENABLE_CMD	4
 #define MAX_CONF_CMD	4
-#define MAX_CONF_IF_CMD 3
+#define MAX_CONF_IF_CMD 4
 #define MAX_CONF_FW_CMD 6
 #define MAX_CONF_RD_CMD 1
 

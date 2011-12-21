@@ -30,7 +30,7 @@
 
 char* current_iface;
 #define CMDIF_IP_ERROR() printError("Syntax error !\nCorrect syntax is:\n   ip (address) ...\n");
-#define CMDIF_IPADDR_ERROR() printError("Syntax error !\nCorrect syntax is:\n   ip address A.B.C.D M.A.S.K\n   ip address A.B.C.D/CIDR\n   ip address dhcp\n");
+#define CMDIF_IPADDR_ERROR() printError("Syntax error !\nCorrect syntax is:\n   ip address A.B.C.D M.A.S.K\n   ip address A.B.C.D/CIDR\n   ip address DHCP\n");
 void cifCMD_exit(char* _none);
 
 // IP management

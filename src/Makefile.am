@@ -1,6 +1,6 @@
 bin_PROGRAMS = PFShell
 
-AM_CPPFLAGS = -lncurses
+AM_CPPFLAGS = -lncurses -lm -std=gnu99
 
 PFShell_SOURCES = \
 	command.c \
@@ -27,6 +27,6 @@ PFShell_SOURCES = \
 	prompt.c \
 	prompt.h
 
-PFShell_LDADD =
+PFShell_LDADD = -lm
 
 PFShell_LDFLAGS =

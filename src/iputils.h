@@ -28,7 +28,12 @@
 #ifndef __IP_UTILS_H_
 #define __IP_UTILS_H_
 
-unsigned int calc_broadcast(unsigned int IP,unsigned int mask);
-unsigned int calc_network(unsigned int IP,unsigned int mask);
+char* calc_broadcast(char* IP, char* mask);
+char*  calc_network(char*  IP,char*  mask);
+short calc_cidr(char* mask);
+unsigned short is_valid_mask(char* mask);
+// Not used for now
+unsigned int calc_num_broadcast(unsigned int IP,unsigned int mask);
+unsigned int calc_num_network(unsigned int IP,unsigned int mask);
 
 #endif
