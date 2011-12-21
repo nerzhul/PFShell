@@ -25,15 +25,10 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __COMMAND_CONF_IF_H__
-#define __COMMAND_CONF_IF_H__
+#ifndef __IP_UTILS_H_
+#define __IP_UTILS_H_
 
-char* current_iface;
-#define CMDIF_IP_ERROR() printError("Syntax error !\nCorrect syntax is:\n   ip (address) ...\n");
-#define CMDIF_IPADDR_ERROR() printError("Syntax error !\nCorrect syntax is:\n   ip address A.B.C.D M.A.S.K\n   ip address A.B.C.D/CIDR\n   ip address dhcp\n");
-void cifCMD_exit(char* _none);
+unsigned int calc_broadcast(unsigned int IP,unsigned int mask);
+unsigned int calc_network(unsigned int IP,unsigned int mask);
 
-// IP management
-void cifCMD_ip(char* args);
-void cifCMD_ip_address(char* args);
 #endif

@@ -25,101 +25,14 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "command_conf.h"
-#include "command_conf_if.h"
-#include "prompt.h"
-#include "configuration.h"
+#include "iputils.h"
 
-void cCMD_exit(char* _none)
+unsigned int calc_broadcast(unsigned int IP,unsigned int mask)
 {
-	if(strlen(_none) > 0)
-		printError("Syntax error !\nCorrect syntax is: \n   exit\n");
-	else
-		promptMode = PROMPT_ENABLE;
+	return (IP | ~mask);
 }
 
-void cCMD_firewall(char* _none)
+unsigned int calc_network(unsigned int IP,unsigned int mask)
 {
-	if(strlen(_none) > 0)
-		printError("Syntax error !\nCorrect syntax is: \n   firewall\n");
-	else
-		promptMode = PROMPT_CONF_FW;
-}
-
-void cCMD_hostname(char* args)
-{
-	if(strlen(args) <= 1)
-	{
-		CMDCONF_HOSTNAME_ERROR();
-	}
-	else
-	{
-		char* _hostname[2];
-		cutFirstWord(args,_hostname);
-		if(strlen(_hostname[1]) > 0)
-		{
-			CMDCONF_HOSTNAME_ERROR();
-		}
-		else
-		{
-			hostname = _hostname[0];
-			writeRunningConfig();
-		}
-	}
-}
-
-void cCMD_interface(char* args)
-{
-	if(strlen(args) == 0)
-	{
-		CMDCONF_INTERFACE_ERROR();
-		return;
-	}
-
-
-	char input[1024];
-	char output[1024] = "";
-#ifdef FREEBSD
-	sprintf(input,"/sbin/ifconfig %s | grep HWaddr | awk '{print $1}'",args);
-#else
-	sprintf(input,"/sbin/ifconfig %s | grep BROADCAST | awk '{print $1}' | awk -F':' '{print $1}'",args);
-#endif
-	execSystemCommand(input,output);
-	if(strlen(output) == 0)
-	{
-		CMDCONF_INTERFACE_UNK(args);
-		return;
-	}
-
-	current_iface = args;
-	promptMode = PROMPT_CONF_IF;
-}
-
-void cCMD_ip(char* args)
-{
-	if(strlen(args) == 0)
-	{
-		CMDCONF_IP_ERROR();
-		return;
-	}
-
-	char* ipcmd[2];
-	cutFirstWord(args,ipcmd);
-
-	if(strcmp(ipcmd[0],"routing") == 0)
-	{
-		if(strlen(ipcmd[1]) > 0)
-		{
-			CMDCONF_IP_ERROR();
-			return;
-		}
-
-		iprouting = 1;
-	}
-	else if(strcmp(ipcmd[0],"route") == 0)
-	{
-		// @ TODO
-	}
-	else
-		CMDCONF_IP_ERROR();
+	return (IP & mask);
 }

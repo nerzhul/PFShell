@@ -51,7 +51,7 @@ void cifCMD_ip(char* args)
 
 void cifCMD_ip_address(char* args)
 {
-	if(strlen(args) < 7)
+	if(strlen(args) < 4)
 	{
 		CMDIF_IPADDR_ERROR();
 		return;
@@ -60,12 +60,28 @@ void cifCMD_ip_address(char* args)
 
 	if(strcmp(args,"DHCP"))
 	{
-		system("dhclient ...");
+		char buffer[1024];
+		strcpy(buffer,"dhclient ");
+		strcat(buffer,current_iface);
+		system(buffer);
 	}
 	else
 	{
 		char* ipmask[2];
 		cutFirstWord(args,ipmask);
+		if(strlen(ipmask[1]) > 1)
+		{
+			if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+			{
+			}
+			else
+				CMDIF_IPADDR_ERROR();
+		}
+		else if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
+		{
+		}
+		else
+			CMDIF_IPADDR_ERROR();
 	}
 	// @ TODO: CONFIG
 }
