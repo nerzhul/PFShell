@@ -25,6 +25,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <stdlib.h>
+#include "command.h"
 #include "command_conf_if.h"
 #include "prompt.h"
 #include "iputils.h"
@@ -76,6 +78,7 @@ void cifCMD_ip_address(char* args)
 			{
 				if(is_valid_mask(ipmask[1]) == 0)
 				{
+					char buffer[1024];
 					strcpy(buffer,"ifconfig ");
 					strcat(buffer,current_iface);
 					strcat(buffer," ");
