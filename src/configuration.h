@@ -36,7 +36,7 @@ unsigned short loadConfiguration();
 unsigned short writeRunningConfig();
 
 char* hostname;
-unsigned short pfpolicies[3];
+unsigned short pfpolicies[2];
 
 acl* access_lists;
 

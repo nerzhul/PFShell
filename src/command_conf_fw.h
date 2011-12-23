@@ -39,7 +39,6 @@ void cfwCMD_exit(char* _none);
 
 // Default policies
 void cfwCMD_default(char* args);
-void cfwCMD_default_forward(char* args);
 void cfwCMD_default_input(char* args);
 void cfwCMD_default_output(char* args);
 

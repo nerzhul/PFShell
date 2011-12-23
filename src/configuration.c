@@ -46,7 +46,6 @@ unsigned short loadConfiguration()
 
 	pfpolicies[0] = 1;
 	pfpolicies[1] = 1;
-	pfpolicies[2] = 1;
 
 	access_lists = NULL;
 
@@ -89,10 +88,6 @@ unsigned short loadConfiguration()
 					{
 						pfpolicies[1] = (strcmp(defarg[1],"deny") == 0) ? 0 : 1;
 					}
-					else if(strcmp(defarg[0],"forward-policy") == 0)
-					{
-						pfpolicies[2] = (strcmp(defarg[1],"deny") == 0) ? 0 : 1;
-					}
 				}
 			}
 		}
@@ -134,9 +129,6 @@ unsigned short writeRunningConfig()
 		fputs("\n",confFile);
 		fputs("default output-policy ",confFile);
 		fputs((pfpolicies[1] == 0 ? "deny" : "allow"),confFile);
-		fputs("\n",confFile);
-		fputs("default forward-policy ",confFile);
-		fputs((pfpolicies[2] == 0 ? "deny" : "allow"),confFile);
 		fputs("\n",confFile);
 
 		acl* cursor = access_lists;

@@ -49,40 +49,10 @@ void cfwCMD_default(char* args)
 	{
 		char* defaultcmd[2];
 		cutFirstWord(args,defaultcmd);
-		// @TODO: create table with handlers
-		if(strcmp(defaultcmd[0],"forward-policy") == 0)
-			cfwCMD_default_forward(defaultcmd[1]);
-		else if(strcmp(defaultcmd[0],"input-policy") == 0)
+		if(strcmp(defaultcmd[0],"input-policy") == 0)
 			cfwCMD_default_input(defaultcmd[1]);
 		else if(strcmp(defaultcmd[0],"output-policy") == 0)
 			cfwCMD_default_output(defaultcmd[1]);
-		else
-		{
-			CMDFW_DEFAULT_ERROR();
-		}
-	}
-}
-
-void cfwCMD_default_forward(char* args)
-{
-	if(strlen(args) < 4)
-	{
-		CMDFW_DEFAULT_ERROR();
-	}
-	else
-	{
-		char* policy[2];
-		cutFirstWord(args,policy);
-		if(strcmp(policy[0],"deny") == 0)
-		{
-			pfpolicies[2] = 0;
-			WRITE_RUN();
-		}
-		else if(strcmp(policy[0],"allow") == 0)
-		{
-			pfpolicies[2] = 1;
-			WRITE_RUN();
-		}
 		else
 		{
 			CMDFW_DEFAULT_ERROR();
