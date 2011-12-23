@@ -26,3 +26,5 @@ Alpha 0.4
 Alpha 0.5 - prev
 - iputils added to calculate some things under IPs
 - Remove default forward-policy
+- Implement interface <name> -> shutdown
+- Implement show ip routes

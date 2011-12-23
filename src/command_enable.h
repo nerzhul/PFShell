@@ -28,8 +28,9 @@
 #ifndef __COMMAND_ENABLE_H__
 #define __COMMAND_ENABLE_H__
 
-#define CMDEN_SHOW_ERROR() printError("Syntax error !\nCorrect syntax is: \n   show (version)\n");
+#define CMDEN_SHOW_ERROR() printError("Syntax error !\nCorrect syntax is: \n   show (acls|ip|interfaces|version)\n");
 #define CMDEN_CONFIGURE_ERROR() printError("Syntax error !\nCorrect syntax is: \n   configure (<firewall>)\n");
+#define CMDEN_SHOW_IP_ERROR() printError("Syntax error !\nCorrect syntax is: \n   show ip routes\n");
 
 void eCMD_configure(char* args);
 void eCMD_exit(char* _none);

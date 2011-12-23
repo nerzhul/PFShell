@@ -62,7 +62,7 @@ void eCMD_show(char* args)
 		cutFirstWord(args,showcmd);
 		if(strcmp(showcmd[0],"version") == 0)
 		{
-				printf("PFShell version %s\n",VERSION);
+			printf("PFShell version %s\n",VERSION);
 		}
 		else if(strcmp(showcmd[0],"interfaces") == 0)
 		{
@@ -118,6 +118,20 @@ void eCMD_show(char* args)
 				cursor = cursor->next;
 			}
 			if(found == 0) printf("No Access-Lists found !\n");
+		}
+		else if(strcmp(showcmd[0],"ip") == 0)
+		{
+			char* ipt[2];
+			cutFirstWord(showcmd[1],ipt);
+
+			if(strcmp(ipt[0],"routes") == 0)
+			{
+				char output[10240] = "";
+				execSystemCommand("netstat -rn",output);
+				printf("\n-------------------------------------------------------------------\n%s-------------------------------------------------------------------\n",output);
+			}
+			else
+				CMDEN_SHOW_IP_ERROR();
 		}
 		else
 		{
