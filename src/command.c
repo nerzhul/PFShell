@@ -73,7 +73,7 @@ unsigned short initCmds()
 	confIfCmd[0].name = "exit";
 	confIfCmd[0].handler = &cifCMD_exit;
 	confIfCmd[1].name = "shutdown";
-	// @ TODO
+	confIfCmd[1].handler = &cifCMD_shutdown;
 	confIfCmd[2].name = "no shutdown";
 	// @ TODO
 	confIfCmd[3].name = "ip";

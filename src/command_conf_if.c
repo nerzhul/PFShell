@@ -74,12 +74,18 @@ void cifCMD_ip_address(char* args)
 		{
 			if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
 			{
-				char network[32];
-				strcpy(network,calc_network(ipmask[0],ipmask[1]));
-				char bcast[32];
-				strcpy(bcast, calc_broadcast(ipmask[0],ipmask[1]));
-				short cidr = calc_cidr(ipmask[1]);
-				printf("Network %s\nBroadcast %s\nCIDR %d valid %d\n",network,bcast,cidr,is_valid_mask(ipmask[1]));
+				if(is_valid_mask(ipmask[1]) == 0)
+				{
+					strcpy(buffer,"ifconfig ");
+					strcat(buffer,current_iface);
+					strcat(buffer," ");
+					strcat(buffer,ipmask[0]);
+					strcat(buffer," ");
+					strcat(buffer,ipmask[1]);
+					system(buffer);
+				}
+				else
+					CMDIF_IPADDR_ERROR();
 			}
 			else
 				CMDIF_IPADDR_ERROR();
@@ -97,4 +103,19 @@ void cifCMD_ip_address(char* args)
 			CMDIF_IPADDR_ERROR();
 	}
 	// @ TODO: CONFIG
+}
+
+void cifCMD_shutdown(char* _none)
+{
+	if(strlen(_none) > 0)
+	{
+		CMDIF_SHUTDOWN_ERROR();
+		return;
+	}
+
+	char buffer[1024];
+	strcpy(buffer,"ifconfig ");
+	strcat(buffer,current_iface);
+	strcat(buffer," down");
+	system(buffer);
 }
