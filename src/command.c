@@ -79,6 +79,10 @@ unsigned short initCmds()
 	confIfCmd[3].name = "ip";
 	confIfCmd[3].handler = &cifCMD_ip;
 
+	// Enable - Configure - Interface Inverted commands
+	noconfIfCmd[0].name = "shutdown";
+	noconfIfCmd[0].handler = cifCMD_noshutdown;
+
 	// Enable - Configure - Firewall Commands
 	confFWCmd[0].name = "exit";
 	confFWCmd[0].handler = &cfwCMD_exit;
@@ -104,6 +108,13 @@ unsigned short initCmds()
 	masterCmd[3] = confIfCmd;
 	masterCmd[4] = confFWCmd;
 	masterCmd[5] = confRDCmd;
+
+	masternoCmd[0] = nouserCmd;
+	masternoCmd[1] = noenableCmd;
+	masternoCmd[2] = noconfCmd;
+	masternoCmd[3] = noconfIfCmd;
+	masternoCmd[4] = noconfFWCmd;
+	masternoCmd[5] = noconfRDCmd;
 
 	return 1;
 }
@@ -144,15 +155,33 @@ void handleCmd(char* _fullcmd)
 	i = 0;
 	char* cmd[2];
 	cutFirstWord(_fullcmd,cmd);
-	while(i < MAX_CMDS[promptMode])
+	if(strcmp(cmd[0],"no") == 0)
 	{
-		if(strcmp(cmd[0],masterCmd[promptMode][i].name) == 0)
+		char* nocmd[2];
+		cutFirstWord(cmd[1],nocmd);
+		while(i < MAX_NO_CMDS[promptMode])
 		{
-			(*masterCmd[promptMode][i].handler)(cmd[1]);
-			// Bad thing but improve performance code
-			return;
+			if(strcmp(nocmd[0],masternoCmd[promptMode][i].name) == 0)
+			{
+				(*masternoCmd[promptMode][i].handler)(nocmd[1]);
+				// Bad thing but improve performance code
+				return;
+			}
+			++i;
 		}
-		++i;
+	}
+	else
+	{
+		while(i < MAX_CMDS[promptMode])
+		{
+			if(strcmp(cmd[0],masterCmd[promptMode][i].name) == 0)
+			{
+				(*masterCmd[promptMode][i].handler)(cmd[1]);
+				// Bad thing but improve performance code
+				return;
+			}
+			++i;
+		}
 	}
 	printError("Unknown command\n");
 }

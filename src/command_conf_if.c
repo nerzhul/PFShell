@@ -122,3 +122,18 @@ void cifCMD_shutdown(char* _none)
 	strcat(buffer," down");
 	system(buffer);
 }
+
+void cifCMD_noshutdown(char* _none)
+{
+	if(strlen(_none) > 0)
+	{
+		CMDIF_NOSHUTDOWN_ERROR();
+		return;
+	}
+
+	char buffer[1024];
+	strcpy(buffer,"ifconfig ");
+	strcat(buffer,current_iface);
+	strcat(buffer," up");
+	system(buffer);
+}
