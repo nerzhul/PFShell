@@ -108,6 +108,11 @@ void cifCMD_ip_address(char* args)
 	// @ TODO: CONFIG
 }
 
+void cifCMD_noip_address(char* args)
+{
+	// @ TODO
+}
+
 void cifCMD_shutdown(char* _none)
 {
 	if(strlen(_none) > 0)
@@ -136,4 +141,13 @@ void cifCMD_noshutdown(char* _none)
 	strcat(buffer,current_iface);
 	strcat(buffer," up");
 	system(buffer);
+}
+
+void cifCMD_access_list(char* args)
+{
+	if(strlen(args) < 3)
+	{
+		CMDIF_ACCESS_LIST_ERROR();
+		return;
+	}
 }

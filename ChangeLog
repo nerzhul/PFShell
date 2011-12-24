@@ -28,3 +28,6 @@ Alpha 0.5 - prev
 - Remove default forward-policy
 - Implement interface <name> -> shutdown
 - Implement show ip routes
+- Implement no <cmd> handling
+- Implement no shutdown command
+- Prepare interface acl handling

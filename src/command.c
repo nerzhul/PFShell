@@ -74,14 +74,16 @@ unsigned short initCmds()
 	confIfCmd[0].handler = &cifCMD_exit;
 	confIfCmd[1].name = "shutdown";
 	confIfCmd[1].handler = &cifCMD_shutdown;
-	confIfCmd[2].name = "no shutdown";
-	// @ TODO
-	confIfCmd[3].name = "ip";
-	confIfCmd[3].handler = &cifCMD_ip;
+	confIfCmd[2].name = "ip";
+	confIfCmd[2].handler = &cifCMD_ip;
+	confIfCmd[3].name = "access-list";
+	confIfCmd[3].handler = &cifCMD_access_list;
 
 	// Enable - Configure - Interface Inverted commands
 	noconfIfCmd[0].name = "shutdown";
-	noconfIfCmd[0].handler = cifCMD_noshutdown;
+	noconfIfCmd[0].handler = &cifCMD_noshutdown;
+	noconfIfCmd[1].name = "ip";
+	noconfIfCmd[1].handler = &cifCMD_noip_address;
 
 	// Enable - Configure - Firewall Commands
 	confFWCmd[0].name = "exit";

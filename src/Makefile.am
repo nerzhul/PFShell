@@ -21,6 +21,8 @@ PFShell_SOURCES = \
 	configuration.h \
 	firewall.c \
 	firewall.h \
+	interface.c \
+	interface.h \
 	iputils.c \
 	iputils.h \
 	main.c \

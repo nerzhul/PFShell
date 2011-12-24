@@ -25,22 +25,4 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __CONFIGURATION_H__
-#define __CONFIGURATION_H__
-
-#include "firewall.h"
 #include "interface.h"
-
-#define WRITE_RUN() writeRunningConfig()
-
-unsigned short loadConfiguration();
-unsigned short writeRunningConfig();
-
-char* hostname;
-unsigned short pfpolicies[2];
-
-acl* access_lists;
-
-unsigned short iprouting;
-
-#endif
