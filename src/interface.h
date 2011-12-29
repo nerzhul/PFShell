@@ -42,5 +42,6 @@ struct net_iface
 };
 
 void addInterface(char* name);
+void loadInterfaces();
 
 #endif

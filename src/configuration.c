@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "configuration.h"
+#include "interface.h"
 #include "command_conf_fw.h"
 #include "command_conf.h"
 
@@ -49,6 +50,8 @@ unsigned short loadConfiguration()
 
 	access_lists = NULL;
 	interfaces = NULL;
+
+	loadInterfaces();
 
 	iprouting = 0;
 

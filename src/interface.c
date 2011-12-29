@@ -25,9 +25,10 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stddef.h>
+#include <stdio.h>
 #include "interface.h"
 #include "configuration.h"
+#include "command.h"
 
 void addInterface(char* name)
 {
@@ -53,4 +54,19 @@ void addInterface(char* name)
 		newIface->prev = cursor;
 		cursor->next = newIface;
 	}
+}
+
+void loadInterfaces()
+{
+	char input[1024];
+	char output[1024] = "";
+#ifdef FREEBSD
+			execSystemCommand("for IF in $(/sbin/ifconfig | grep HWaddr | awk '{print $1}'); do echo $IF; done;",output);
+#else
+			execSystemCommand("for IF in $(/sbin/ifconfig | grep BROADCAST | awk '{print $1}' | awk -F':' '{print $1}'); do echo $IF; done;",output);
+#endif
+	execSystemCommand(input,output);
+	char* iface[2];
+	cutFirstWord(output,iface);
+	printf("iface1 %s iface2 %s\n",iface[0],iface[1]);
 }
