@@ -76,16 +76,21 @@ void cCMD_interface(char* args)
 		return;
 	}
 
+	net_iface* cursor = interfaces;
+	short found = 0;
 
-	char input[1024];
-	char output[1024] = "";
-#ifdef FREEBSD
-	sprintf(input,"/sbin/ifconfig %s | grep HWaddr | awk '{print $1}'",args);
-#else
-	sprintf(input,"/sbin/ifconfig %s | grep BROADCAST | awk '{print $1}' | awk -F':' '{print $1}'",args);
-#endif
-	execSystemCommand(input,output);
-	if(strlen(output) == 0)
+	if(cursor != NULL)
+	{
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,args) == 0)
+				found = 1;
+			else
+				cursor = cursor->next;
+		}
+	}
+
+	if(found == 0)
 	{
 		CMDCONF_INTERFACE_UNK(args);
 		return;

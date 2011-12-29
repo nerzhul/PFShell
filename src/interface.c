@@ -73,7 +73,16 @@ void loadInterfaces()
 		addInterface(iface[0]);
 		if(strcmp(iface[1],"") != 0)
 		{
-			addInterface(iface[1]);
+			char* iface2[2];
+			char ifbuffer[1024];
+			strcpy(ifbuffer,iface[1]);
+
+			while(strcmp(ifbuffer,"") != 0)
+			{
+				cutFirstWord(ifbuffer,iface2);
+				addInterface(iface2[0]);
+				strcpy(ifbuffer,iface2[1]);
+			}
 			// @TODO more than 2 interfaces
 			// @TODO check if iface is already in the list
 		}
