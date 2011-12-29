@@ -37,17 +37,18 @@ void addInterface(char* name)
 	strcpy(newIface->name,name);
 	newIface->next = NULL;
 	newIface->prev = NULL;
-	strcpy(newIface->ip,"");
-	strcpy(newIface->acl_in,"");
-	strcpy(newIface->acl_out,"");
+	newIface->ip = "";
+	newIface->acl_in = "";
+	newIface->acl_out = "";
 
-	net_iface* cursor = interfaces;
-	if(cursor == NULL)
+	if(interfaces == NULL)
 	{
-		cursor = newIface;
+		interfaces = newIface;
 	}
 	else
 	{
+		net_iface* cursor = interfaces;
+
 		while(cursor->next != NULL)
 			cursor = cursor->next;
 
@@ -74,6 +75,7 @@ void loadInterfaces()
 		{
 			addInterface(iface[1]);
 			// @TODO more than 2 interfaces
+			// @TODO check if iface is already in the list
 		}
 	}
 

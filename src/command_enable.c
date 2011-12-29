@@ -66,13 +66,28 @@ void eCMD_show(char* args)
 		}
 		else if(strcmp(showcmd[0],"interfaces") == 0)
 		{
-			char output[10240] = "";
-#ifdef FREEBSD
-			execSystemCommand("for IF in $(/sbin/ifconfig | grep HWaddr | awk '{print $1}'); do /sbin/ifconfig $IF; done;",output);
-#else
-			execSystemCommand("for IF in $(/sbin/ifconfig | grep BROADCAST | awk '{print $1}' | awk -F':' '{print $1}'); do /sbin/ifconfig $IF; done;",output);
-#endif
-			printf("Network Interfaces:\n%s",output);
+			net_iface* iface = interfaces;
+			if(iface == NULL)
+			{
+				CMDEN_SHOW_INTERFACES_NOTFOUND();
+			}
+			else
+			{
+				printf("Running Interfaces:\n");
+				while(iface != NULL)
+				{
+					char buffer[1024] = "";
+					char output[10240] = "";
+
+					strcpy(buffer,"/sbin/ifconfig ");
+					strcat(buffer,iface->name);
+
+					execSystemCommand(buffer,output);
+
+					printf("%s\n",output);
+					iface = iface->next;
+				}
+			}
 		}
 		else if(strcmp(showcmd[0],"acls") == 0)
 		{
