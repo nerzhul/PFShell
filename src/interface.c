@@ -25,4 +25,32 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <stddef.h>
 #include "interface.h"
+#include "configuration.h"
+
+void addInterface(char* name)
+{
+	net_iface* newIface = (net_iface*)malloc(sizeof(net_iface));
+	newIface->name = (char*)malloc(strlen(name)*sizeof(char));
+	strcpy(newIface->name,name);
+	newIface->next = NULL;
+	newIface->prev = NULL;
+	strcpy(newIface->ip,"");
+	strcpy(newIface->acl_in,"");
+	strcpy(newIface->acl_out,"");
+
+	net_iface* cursor = interfaces;
+	if(cursor == NULL)
+	{
+		cursor = newIface;
+	}
+	else
+	{
+		while(cursor->next != NULL)
+			cursor = cursor->next;
+
+		newIface->prev = cursor;
+		cursor->next = newIface;
+	}
+}

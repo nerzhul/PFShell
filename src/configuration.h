@@ -40,6 +40,7 @@ char* hostname;
 unsigned short pfpolicies[2];
 
 acl* access_lists;
+net_iface* interfaces;
 
 unsigned short iprouting;
 

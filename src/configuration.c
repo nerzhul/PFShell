@@ -48,6 +48,7 @@ unsigned short loadConfiguration()
 	pfpolicies[1] = 1;
 
 	access_lists = NULL;
+	interfaces = NULL;
 
 	iprouting = 0;
 

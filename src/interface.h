@@ -28,5 +28,19 @@
 #ifndef __INTERFACE_H_
 #define __INTERFACE_H_
 
+typedef struct net_iface net_iface;
+
+struct net_iface
+{
+	char* name;
+	char* ip;
+	char* acl_in;
+	char* acl_out;
+
+	net_iface* next;
+	net_iface* prev;
+};
+
+void addInterface(char* name);
 
 #endif
