@@ -61,12 +61,20 @@ void loadInterfaces()
 	char input[1024];
 	char output[1024] = "";
 #ifdef FREEBSD
-			execSystemCommand("for IF in $(/sbin/ifconfig | grep HWaddr | awk '{print $1}'); do echo $IF; done;",output);
+	execSystemCommand("for IF in $(/sbin/ifconfig | grep HWaddr | awk '{print $1}'); do echo $IF; done;",output);
 #else
-			execSystemCommand("for IF in $(/sbin/ifconfig | grep BROADCAST | awk '{print $1}' | awk -F':' '{print $1}'); do echo $IF; done;",output);
+	execSystemCommand("for IF in $(/sbin/ifconfig | grep BROADCAST | awk '{print $1}' | awk -F':' '{print $1}'); do echo $IF; done;",output);
 #endif
-	execSystemCommand(input,output);
 	char* iface[2];
 	cutFirstWord(output,iface);
-	printf("iface1 %s iface2 %s\n",iface[0],iface[1]);
+	if(strcmp(iface[0],"") != 0)
+	{
+		addInterface(iface[0]);
+		if(strcmp(iface[1],"") != 0)
+		{
+			addInterface(iface[1]);
+			// @TODO more than 2 interfaces
+		}
+	}
+
 }
