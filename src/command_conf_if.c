@@ -28,6 +28,8 @@
 #include <stdlib.h>
 #include "command.h"
 #include "command_conf_if.h"
+#include "configuration.h"
+#include "interface.h"
 #include "prompt.h"
 #include "iputils.h"
 
@@ -67,6 +69,11 @@ void cifCMD_ip_address(char* args)
 		strcpy(buffer,"dhclient ");
 		strcat(buffer,current_iface);
 		system(buffer);
+		if(setInterfaceIP(current_iface,"DHCP") != 0)
+		{
+			CMDIF_FATAL_ERROR();
+			return;
+		}
 	}
 	else
 	{
@@ -79,19 +86,37 @@ void cifCMD_ip_address(char* args)
 				if(is_valid_mask(ipmask[1]) == 0)
 				{
 					char buffer[1024];
+					char ipbuffer[100];
 					strcpy(buffer,"ifconfig ");
 					strcat(buffer,current_iface);
 					strcat(buffer," ");
-					strcat(buffer,ipmask[0]);
-					strcat(buffer," ");
-					strcat(buffer,ipmask[1]);
+
+					strcpy(ipbuffer,ipmask[0]);
+					strcat(ipbuffer," ");
+					strcat(ipbuffer,ipmask[1]);
+
+					strcat(buffer,ipbuffer);
+
 					system(buffer);
+
+					if(setInterfaceIP(current_iface,ipbuffer) != 0)
+					{
+						CMDIF_FATAL_ERROR();
+						return;
+					}
+
 				}
 				else
+				{
 					CMDIF_IPADDR_ERROR();
+					return;
+				}
 			}
 			else
+			{
 				CMDIF_IPADDR_ERROR();
+				return;
+			}
 		}
 		else if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
 		{
@@ -101,11 +126,20 @@ void cifCMD_ip_address(char* args)
 			strcat(buffer," ");
 			strcat(buffer,ipmask[0]);
 			system(buffer);
+
+			if(setInterfaceIP(current_iface,ipmask[0]) != 0)
+			{
+				CMDIF_FATAL_ERROR();
+				return;
+			}
 		}
 		else
+		{
 			CMDIF_IPADDR_ERROR();
+			return;
+		}
 	}
-	// @ TODO: CONFIG
+	WRITE_RUN();
 }
 
 void cifCMD_noip_address(char* args)

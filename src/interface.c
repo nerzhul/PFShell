@@ -83,9 +83,31 @@ void loadInterfaces()
 				addInterface(iface2[0]);
 				strcpy(ifbuffer,iface2[1]);
 			}
-			// @TODO more than 2 interfaces
 			// @TODO check if iface is already in the list
 		}
 	}
+}
 
+unsigned short setInterfaceIP(char* name, char* ip)
+{
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->ip = ip;
+			}
+			else
+				cursor = cursor->next;
+		}
+	}
+
+	return 0;
 }
