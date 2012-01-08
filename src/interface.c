@@ -80,10 +80,25 @@ void loadInterfaces()
 			while(strcmp(ifbuffer,"") != 0)
 			{
 				cutFirstWord(ifbuffer,iface2);
-				addInterface(iface2[0]);
+				net_iface* cursor = interfaces;
+				if(cursor == NULL)
+					addInterface(iface2[0]);
+				else
+				{
+					unsigned short found = 0;
+					while(cursor != NULL && found == 0)
+					{
+						if(strcmp(cursor->name,iface2[0]) != 0)
+							cursor = cursor->next;
+						else
+							found = 1;
+					}
+
+					if(found == 0)
+						addInterface(iface2[0]);
+				}
 				strcpy(ifbuffer,iface2[1]);
 			}
-			// @TODO check if iface is already in the list
 		}
 	}
 }
