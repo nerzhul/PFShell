@@ -47,5 +47,6 @@ void loadInterfaces();
 
 unsigned short setInterfaceIP(char* name, char* ip);
 unsigned short setInterfaceState(char* name, unsigned short state);
+unsigned short setInterfaceACL(char* name, char* aclname, char* direction);
 
 #endif

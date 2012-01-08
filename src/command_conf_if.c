@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include "command.h"
 #include "command_conf_if.h"
+#include "firewall.h"
 #include "configuration.h"
 #include "interface.h"
 #include "prompt.h"
@@ -161,7 +162,7 @@ void cifCMD_shutdown(char* _none)
 	strcat(buffer," down");
 	system(buffer);
 
-	if(setInterfaceState(current_iface,1) != 0)
+	if(setInterfaceState(current_iface,0) != 0)
 	{
 		CMDIF_FATAL_ERROR();
 		return;
@@ -184,7 +185,7 @@ void cifCMD_noshutdown(char* _none)
 	strcat(buffer," up");
 	system(buffer);
 
-	if(setInterfaceState(current_iface,0) != 0)
+	if(setInterfaceState(current_iface,1) != 0)
 	{
 		CMDIF_FATAL_ERROR();
 		return;
@@ -201,5 +202,42 @@ void cifCMD_access_list(char* args)
 		return;
 	}
 
-	// @ TODO, in/out
+	char* inout[2];
+	cutFirstWord(args,inout);
+	if(strcmp(inout[0],"in") != 0 && strcmp(inout[0],"out") != 0)
+	{
+		CMDIF_ACCESS_LIST_ERROR();
+		return;
+	}
+
+	char* aclname[2];
+	cutFirstWord(inout[1],aclname);
+	if(strlen(aclname[1]) > 0)
+	{
+		CMDIF_ACCESS_LIST_ERROR();
+		return;
+	}
+
+	acl* cursor = access_lists;
+	if(access_lists == NULL)
+	{
+		CMDIF_ACCESS_LIST_UNK();
+		return;
+	}
+
+	unsigned short found = 0;
+	while(cursor != NULL && found == 0)
+	{
+		if(strcmp(cursor->name,aclname[0]) == 0)
+		{
+			setInterfaceACL(current_iface,aclname[0],inout[0]);
+			found = 1;
+		}
+		cursor = cursor->next;
+	}
+
+	if(found == 0)
+		CMDIF_ACCESS_LIST_UNK();
+
+	WRITE_RUN();
 }

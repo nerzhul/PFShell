@@ -40,7 +40,7 @@ void addInterface(char* name)
 	newIface->ip = "";
 	newIface->acl_in = "";
 	newIface->acl_out = "";
-	newIface->state = 0;
+	newIface->state = 1;
 
 	if(interfaces == NULL)
 	{
@@ -146,6 +146,38 @@ unsigned short setInterfaceState(char* name, unsigned short state)
 			{
 				found = 1;
 				cursor->state = state;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
+unsigned short setInterfaceACL(char* name, char* aclname, char* direction)
+{
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				if(strcmp(direction,"in") == 0)
+					cursor->acl_in = aclname;
+				else if(strcmp(direction,"out") == 0)
+					cursor->acl_out = aclname;
+				else
+					return 1;
 			}
 			else
 				cursor = cursor->next;

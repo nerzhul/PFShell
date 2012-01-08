@@ -33,7 +33,8 @@ char* current_iface;
 #define CMDIF_IPADDR_ERROR() printError("Syntax error !\nCorrect syntax is:\n   ip address A.B.C.D M.A.S.K\n   ip address A.B.C.D/CIDR\n   ip address DHCP\n");
 #define CMDIF_SHUTDOWN_ERROR() printError("Syntax error !\nCorrect syntax is:\n   shutdown\n");
 #define CMDIF_NOSHUTDOWN_ERROR() printError("Syntax error !\nCorrect syntax is:\n   shutdown\n");
-#define CMDIF_ACCESS_LIST_ERROR() printError("Syntax error !\n Correct syntax is:\n   access-list <name> <in|out>\n");
+#define CMDIF_ACCESS_LIST_ERROR() printError("Syntax error !\n Correct syntax is:\n   access-list <in|out> <name>\n");
+#define CMDIF_ACCESS_LIST_UNK() printError("Error !\n No ACL matches this name\n");
 #define CMDIF_FATAL_ERROR() printError("Interface Fatal Error !!\n");
 
 void cifCMD_exit(char* _none);

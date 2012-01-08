@@ -32,3 +32,5 @@ Alpha 0.5
 - Implement no shutdown command
 - Prepare interface acl handling
 - Implement saving configuration
+Alpha 0.6 - prev
+- Pré-implément ACL binding for in/out on interfaces

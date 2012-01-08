@@ -91,41 +91,6 @@ unsigned short writeRunningConfig()
 		fputs(hostname,confFile);
 		fputs("\n",confFile);
 
-		// Interfaces
-		net_iface* if_cursor = interfaces;
-		while(if_cursor != NULL)
-		{
-			fputs("interface ",confFile);
-			fputs(if_cursor->name,confFile);
-			fputs("\n",confFile);
-			if(strlen(if_cursor->ip) > 0)
-			{
-				fputs("ip address ",confFile);
-				fputs(if_cursor->ip,confFile);
-				fputs("\n",confFile);
-			}
-
-			if(if_cursor->state == 0)
-				fputs("shutdown\n",confFile);
-
-			if(strlen(if_cursor->acl_in) > 0)
-			{
-				fputs("access-list in ",confFile);
-				fputs(if_cursor->acl_in,confFile);
-				fputs("\n",confFile);
-			}
-
-			if(strlen(if_cursor->acl_out) > 0)
-			{
-				fputs("access-list out ",confFile);
-				fputs(if_cursor->acl_out,confFile);
-				fputs("\n",confFile);
-			}
-
-			fputs("!\n",confFile);
-			if_cursor = if_cursor->next;
-		}
-
 		// Firewall
 		fputs("firewall\n",confFile);
 		fputs("default input-policy ",confFile);
@@ -190,6 +155,42 @@ unsigned short writeRunningConfig()
 			cursor = cursor->next;
 			fputs("!\n",confFile);
 		}
+
+		// Interfaces
+		net_iface* if_cursor = interfaces;
+		while(if_cursor != NULL)
+		{
+			fputs("interface ",confFile);
+			fputs(if_cursor->name,confFile);
+			fputs("\n",confFile);
+			if(strlen(if_cursor->ip) > 0)
+			{
+				fputs("ip address ",confFile);
+				fputs(if_cursor->ip,confFile);
+				fputs("\n",confFile);
+			}
+
+			if(if_cursor->state == 0)
+				fputs("shutdown\n",confFile);
+
+			if(strlen(if_cursor->acl_in) > 0)
+			{
+				fputs("access-list in ",confFile);
+				fputs(if_cursor->acl_in,confFile);
+				fputs("\n",confFile);
+			}
+
+			if(strlen(if_cursor->acl_out) > 0)
+			{
+				fputs("access-list out ",confFile);
+				fputs(if_cursor->acl_out,confFile);
+				fputs("\n",confFile);
+			}
+
+			fputs("!\n",confFile);
+			if_cursor = if_cursor->next;
+		}
+
 		fclose(confFile);
 	}
 }
