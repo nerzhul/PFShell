@@ -124,9 +124,26 @@ unsigned short writeRunningConfig()
 	}
 	else
 	{
+		// Hostname
+		fputs("!\n",confFile);
 		fputs("hostname ",confFile);
 		fputs(hostname,confFile);
 		fputs("\n",confFile);
+		fputs("!\n",confFile);
+
+		// Interfaces
+		net_iface* if_cursor = interfaces;
+		while(if_cursor != NULL)
+		{
+			fputs("interface ",confFile);
+			fputs(if_cursor->name,confFile);
+			fputs("\n",confFile);
+
+			if_cursor = if_cursor->next;
+		}
+
+		fputs("!\n",confFile);
+		// Firewall
 		fputs("firewall\n",confFile);
 		fputs("default input-policy ",confFile);
 		fputs((pfpolicies[0] == 0 ? "deny" : "allow"),confFile);
@@ -188,8 +205,9 @@ unsigned short writeRunningConfig()
 				cursor2 = cursor2->next;
 			}
 			cursor = cursor->next;
+			fputs("!\n",confFile);
 		}
-		// @TODO other fields
+		fputs("!\n",confFile);
 		fclose(confFile);
 	}
 }

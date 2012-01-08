@@ -122,6 +122,36 @@ unsigned short setInterfaceIP(char* name, char* ip)
 			else
 				cursor = cursor->next;
 		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
+unsigned short setInterfaceState(char* name, unsigned short state)
+{
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->state = state;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
 	}
 
 	return 0;

@@ -160,6 +160,14 @@ void cifCMD_shutdown(char* _none)
 	strcat(buffer,current_iface);
 	strcat(buffer," down");
 	system(buffer);
+
+	if(setInterfaceState(current_iface,1) != 0)
+	{
+		CMDIF_FATAL_ERROR();
+		return;
+	}
+
+	WRITE_RUN();
 }
 
 void cifCMD_noshutdown(char* _none)
@@ -175,6 +183,14 @@ void cifCMD_noshutdown(char* _none)
 	strcat(buffer,current_iface);
 	strcat(buffer," up");
 	system(buffer);
+
+	if(setInterfaceState(current_iface,0) != 0)
+	{
+		CMDIF_FATAL_ERROR();
+		return;
+	}
+
+	WRITE_RUN();
 }
 
 void cifCMD_access_list(char* args)
