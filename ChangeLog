@@ -23,7 +23,7 @@ Alpha 0.4
 -- interface <name>
 - Loading configuration from configuration file
 - Stability fixes
-Alpha 0.5 - prev
+Alpha 0.5
 - iputils added to calculate some things under IPs
 - Remove default forward-policy
 - Implement interface <name> -> shutdown
@@ -31,3 +31,4 @@ Alpha 0.5 - prev
 - Implement no <cmd> handling
 - Implement no shutdown command
 - Prepare interface acl handling
+- Implement saving configuration

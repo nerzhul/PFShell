@@ -68,7 +68,7 @@ void cifCMD_ip_address(char* args)
 		char buffer[1024];
 		strcpy(buffer,"dhclient ");
 		strcat(buffer,current_iface);
-		system(buffer);
+		hsystemcmd(buffer);
 		if(setInterfaceIP(current_iface,"DHCP") != 0)
 		{
 			CMDIF_FATAL_ERROR();
@@ -97,7 +97,7 @@ void cifCMD_ip_address(char* args)
 
 					strcat(buffer,ipbuffer);
 
-					system(buffer);
+					hsystemcmd(buffer);
 
 					if(setInterfaceIP(current_iface,ipbuffer) != 0)
 					{
@@ -125,7 +125,7 @@ void cifCMD_ip_address(char* args)
 			strcat(buffer,current_iface);
 			strcat(buffer," ");
 			strcat(buffer,ipmask[0]);
-			system(buffer);
+			hsystemcmd(buffer);
 
 			if(setInterfaceIP(current_iface,ipmask[0]) != 0)
 			{
@@ -200,4 +200,6 @@ void cifCMD_access_list(char* args)
 		CMDIF_ACCESS_LIST_ERROR();
 		return;
 	}
+
+	// @ TODO, in/out
 }

@@ -156,6 +156,11 @@ void handleCmd(char* _fullcmd)
 	unsigned int i;
 	i = 0;
 	char* cmd[2];
+
+	// For load configuration mode
+	if(strcmp(_fullcmd,"!") == 0)
+		_fullcmd = "exit";
+
 	cutFirstWord(_fullcmd,cmd);
 	if(strcmp(cmd[0],"no") == 0)
 	{
@@ -185,7 +190,7 @@ void handleCmd(char* _fullcmd)
 			++i;
 		}
 	}
-	printError("Unknown command\n");
+	printError("Unknown command '%s'\n",_fullcmd);
 }
 
 void cutFirstWord(char* string,char** result)

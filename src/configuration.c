@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include "configuration.h"
 #include "interface.h"
+#include "command.h"
 #include "command_conf_fw.h"
 #include "command_conf.h"
 
@@ -55,61 +56,22 @@ unsigned short loadConfiguration()
 
 	iprouting = 0;
 
+	hostname = "PFShell";
+
 	// Read file
 	char path[1035];
 
-	while (fgets(path, sizeof(path)-1, confFile) != NULL) {
-		char* keyval[2];
-		cutFirstWord(path,keyval);
-		// @TODO
-		if(strcmp(keyval[0],"hostname") == 0)
+	while (fgets(path, sizeof(path), confFile) != NULL) {
+		int len = strlen(path);
+		int offset = 0;
+		while(offset < len)
 		{
-			if(strlen(keyval[1]) > 0)
-			{
-				char* hname[2];
-				cutFirstWord(keyval[1],hname);
-				if(strlen(hname[1]) > 0)
-					hostname = "PFShell";
-				else
-					hostname = hname[0];
-			}
-			else
-				hostname = "PFShell";
+			if(path[offset] == '\n')
+				path[offset] = '\0';
+			++offset;
 		}
-		else if(strcmp(keyval[0],"default") == 0)
-		{
-			if(strlen(keyval[1]) > 0)
-			{
-				char* defarg[2];
-				cutFirstWord(keyval[1],defarg);
-				if(strlen(defarg[1]) > 0)
-				{
-					if(strcmp(defarg[0],"input-policy") == 0)
-					{
-						pfpolicies[0] = (strcmp(defarg[1],"deny") == 0) ? 0 : 1;
-					}
-					else if(strcmp(defarg[0],"output-policy") == 0)
-					{
-						pfpolicies[1] = (strcmp(defarg[1],"deny") == 0) ? 0 : 1;
-					}
-				}
-			}
-		}
-		else if(strcmp(keyval[0],"acl") == 0)
-		{
-			if(strlen(keyval[1]) > 0)
-				cfwCMD_acl(keyval[1]);
-		}
-		else if(strcmp(keyval[0],"ip") == 0)
-		{
-			if(strlen(keyval[1]) > 0)
-				cCMD_ip(keyval[1]);
-		}
+		handleCmd(path);
 	}
-
-	if(hostname == NULL)
-		hostname = "PFShell";
-
 	fclose(confFile);
 	return 1;
 }
@@ -125,11 +87,9 @@ unsigned short writeRunningConfig()
 	else
 	{
 		// Hostname
-		fputs("!\n",confFile);
 		fputs("hostname ",confFile);
 		fputs(hostname,confFile);
 		fputs("\n",confFile);
-		fputs("!\n",confFile);
 
 		// Interfaces
 		net_iface* if_cursor = interfaces;
@@ -138,11 +98,34 @@ unsigned short writeRunningConfig()
 			fputs("interface ",confFile);
 			fputs(if_cursor->name,confFile);
 			fputs("\n",confFile);
+			if(strlen(if_cursor->ip) > 0)
+			{
+				fputs("ip address ",confFile);
+				fputs(if_cursor->ip,confFile);
+				fputs("\n",confFile);
+			}
 
+			if(if_cursor->state == 0)
+				fputs("shutdown\n",confFile);
+
+			if(strlen(if_cursor->acl_in) > 0)
+			{
+				fputs("access-list in ",confFile);
+				fputs(if_cursor->acl_in,confFile);
+				fputs("\n",confFile);
+			}
+
+			if(strlen(if_cursor->acl_out) > 0)
+			{
+				fputs("access-list out ",confFile);
+				fputs(if_cursor->acl_out,confFile);
+				fputs("\n",confFile);
+			}
+
+			fputs("!\n",confFile);
 			if_cursor = if_cursor->next;
 		}
 
-		fputs("!\n",confFile);
 		// Firewall
 		fputs("firewall\n",confFile);
 		fputs("default input-policy ",confFile);
@@ -207,7 +190,6 @@ unsigned short writeRunningConfig()
 			cursor = cursor->next;
 			fputs("!\n",confFile);
 		}
-		fputs("!\n",confFile);
 		fclose(confFile);
 	}
 }

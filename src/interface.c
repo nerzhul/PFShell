@@ -40,6 +40,7 @@ void addInterface(char* name)
 	newIface->ip = "";
 	newIface->acl_in = "";
 	newIface->acl_out = "";
+	newIface->state = 0;
 
 	if(interfaces == NULL)
 	{
