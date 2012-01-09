@@ -171,6 +171,14 @@ unsigned short writeRunningConfig()
 			fputs("interface ",confFile);
 			fputs(if_cursor->name,confFile);
 			fputs("\n",confFile);
+
+			if(strlen(if_cursor->desc) > 0)
+			{
+				fputs("description ",confFile);
+				fputs(if_cursor->desc,confFile);
+				fputs("\n",confFile);
+			}
+
 			if(strlen(if_cursor->ip) > 0)
 			{
 				fputs("ip address ",confFile);

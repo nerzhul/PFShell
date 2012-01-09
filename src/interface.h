@@ -36,6 +36,7 @@ struct net_iface
 	char* ip;
 	char* acl_in;
 	char* acl_out;
+	char* desc;
 	unsigned short state;
 
 	net_iface* next;
@@ -48,5 +49,6 @@ void loadInterfaces();
 unsigned short setInterfaceIP(char* name, char* ip);
 unsigned short setInterfaceState(char* name, unsigned short state);
 unsigned short setInterfaceACL(char* name, char* aclname, char* direction);
+unsigned short setInterfaceDesc(char* name, char* desc);
 
 #endif

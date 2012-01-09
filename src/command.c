@@ -80,6 +80,8 @@ unsigned short initCmds()
 	confIfCmd[2].handler = &cifCMD_ip;
 	confIfCmd[3].name = "access-list";
 	confIfCmd[3].handler = &cifCMD_access_list;
+	confIfCmd[4].name = "description";
+	confIfCmd[4].handler = &cifCMD_description;
 
 	// Enable - Configure - Interface Inverted commands
 	noconfIfCmd[0].name = "shutdown";

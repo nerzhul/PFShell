@@ -44,4 +44,7 @@ void cifCMD_access_list(char* args);
 void cifCMD_shutdown(char* _none);
 void cifCMD_noshutdown(char* _none);
 
+// Misc
+void cifCMD_description(char* args);
+
 #endif

@@ -227,19 +227,22 @@ void cifCMD_access_list(char* args)
 		return;
 	}
 
-	unsigned short found = 0;
-	while(cursor != NULL && found == 0)
+	if(setInterfaceACL(current_iface,aclname[0],inout[0]) != 0)
+		CMDIF_ACCESS_LIST_UNK();
+
+	WRITE_RUN();
+}
+
+void cifCMD_description(char* args)
+{
+	if(strlen(args) < 2)
 	{
-		if(strcmp(cursor->name,aclname[0]) == 0)
-		{
-			setInterfaceACL(current_iface,aclname[0],inout[0]);
-			found = 1;
-		}
-		cursor = cursor->next;
+		CMDIF_DESC_ERROR();
+		return;
 	}
 
-	if(found == 0)
-		CMDIF_ACCESS_LIST_UNK();
+	if(setInterfaceDesc(current_iface,args) != 0)
+		CMDIF_DESC_ERROR();
 
 	WRITE_RUN();
 }
