@@ -1,19 +1,23 @@
 Alpha 0.0
 - We decide to create this project.
 - Source code is under BSD Licence
+
 Alpha 0.1
 - Shell command handling is now ready
 - Different type of prompts are created
+
 Alpha 0.2
 - Pre-Implement some commands
 -- show version
 -- hostname <string>
 -- default (input|output|forward)-policy (deny|allow)
+
 Alpha 0.3
 - Implement some commands
 -- show version
 -- show interfaces
 -- save
+
 Alpha 0.4
 - Implement some commands
 -- show acls
@@ -23,6 +27,7 @@ Alpha 0.4
 -- interface <name>
 - Loading configuration from configuration file
 - Stability fixes
+
 Alpha 0.5
 - iputils added to calculate some things under IPs
 - Remove default forward-policy
@@ -32,8 +37,13 @@ Alpha 0.5
 - Implement no shutdown command
 - Prepare interface acl handling
 - Implement saving configuration
+
 Alpha 0.6
 - Pré-implément ACL binding for in/out on interfaces
 - Update Copyright for 2012
 - Implement prompt_msg file which contains majority of text macros
 - Implement ip routing & ip multicast-routing
+
+Alpha 0.7 - prev
+- Implement show running-config
+- Implement show startup-config

@@ -144,12 +144,24 @@ void eCMD_show(char* args)
 			if(strcmp(ipt[0],"routes") == 0)
 			{
 				char output[10240] = "";
-				execSystemCommand("netstat -rn",output);
+				execSystemCommand("netstat -rn -f inet",output);
 				printf("\n-------------------------------------------------------------------\n");
 				printf("%s-------------------------------------------------------------------\n",output);
 			}
 			else
 				CMDEN_SHOW_IP_ERROR();
+		}
+		else if(strcmp(showcmd[0],"running-config") == 0)
+		{
+			char output[10240] = "";
+			execSystemCommand("cat /opt/PFShell/running-config",output);
+			printf("\n%s\n",output);
+		}
+		else if(strcmp(showcmd[0],"startup-config") == 0)
+		{
+			char output[10240] = "";
+			execSystemCommand("cat /opt/PFShell/startup-config",output);
+			printf("\n%s\n",output);
 		}
 		else
 		{
