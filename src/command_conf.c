@@ -32,6 +32,7 @@
 #include "prompt_msg.h"
 #include "configuration.h"
 #include "iputils.h"
+#include "route.h"
 
 void cCMD_exit(char* _none)
 {
@@ -186,8 +187,11 @@ void cCMD_ip(char* args)
 					strcat(buffer," ");
 					strcat(buffer,gateip[0]);
 
-					printf("buffer %s\n",buffer);
+					addRoute(netip[0],maskip[0],gateip[0]);
+
 					hsystemcmd(buffer);
+
+					WRITE_RUN();
 				}
 				else
 				{

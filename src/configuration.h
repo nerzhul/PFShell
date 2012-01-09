@@ -30,6 +30,7 @@
 
 #include "firewall.h"
 #include "interface.h"
+#include "route.h"
 
 #define WRITE_RUN() writeRunningConfig()
 
@@ -41,6 +42,7 @@ unsigned short pfpolicies[2];
 
 acl* access_lists;
 net_iface* interfaces;
+route* routes;
 
 unsigned short iprouting;
 unsigned short mcastrouting;

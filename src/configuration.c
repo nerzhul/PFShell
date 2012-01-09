@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include "configuration.h"
 #include "interface.h"
+#include "route.h"
 #include "command.h"
 #include "command_conf_fw.h"
 #include "command_conf.h"
@@ -52,6 +53,7 @@ unsigned short loadConfiguration()
 
 	access_lists = NULL;
 	interfaces = NULL;
+	routes = NULL;
 
 	loadInterfaces();
 
@@ -99,6 +101,18 @@ unsigned short writeRunningConfig()
 		if(mcastrouting == 1)
 			fputs("ip multicast-routing\n",confFile);
 
+		route* rcursor = routes;
+		while(rcursor != NULL)
+		{
+			fputs("ip route ",confFile);
+			fputs(rcursor->net,confFile);
+			fputs(" ",confFile);
+			fputs(rcursor->mask,confFile);
+			fputs(" ",confFile);
+			fputs(rcursor->gate,confFile);
+			fputs("\n",confFile);
+			rcursor = rcursor->next;
+		}
 		// Firewall
 		fputs("firewall\n",confFile);
 		fputs("default input-policy ",confFile);

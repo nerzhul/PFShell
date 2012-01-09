@@ -28,7 +28,9 @@ PFShell_SOURCES = \
 	main.c \
 	prompt.c \
 	prompt.h \
-	prompt_msg.h
+	prompt_msg.h \
+	route.c \
+	route.h
 
 PFShell_LDADD = -lm
 
