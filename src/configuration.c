@@ -191,16 +191,16 @@ unsigned short writeRunningConfig()
 
 			if(strlen(if_cursor->acl_in) > 0)
 			{
-				fputs("access-list in ",confFile);
+				fputs("ip access-group ",confFile);
 				fputs(if_cursor->acl_in,confFile);
-				fputs("\n",confFile);
+				fputs(" in\n",confFile);
 			}
 
 			if(strlen(if_cursor->acl_out) > 0)
 			{
-				fputs("access-list out ",confFile);
+				fputs("ip access-group ",confFile);
 				fputs(if_cursor->acl_out,confFile);
-				fputs("\n",confFile);
+				fputs(" out\n",confFile);
 			}
 
 			fputs("!\n",confFile);

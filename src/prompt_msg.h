@@ -67,7 +67,7 @@
 #define CMDIF_IPADDR_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   ip address A.B.C.D M.A.S.K\n   ip address A.B.C.D/CIDR\n   ip address DHCP\n");
 #define CMDIF_SHUTDOWN_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   shutdown\n");
 #define CMDIF_NOSHUTDOWN_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   shutdown\n");
-#define CMDIF_ACCESS_LIST_ERROR() PRINTERROR("Syntax error !\n Correct syntax is:\n   access-list <in|out> <name>\n");
+#define CMDIF_ACCESS_LIST_ERROR() PRINTERROR("Syntax error !\n Correct syntax is:\n   ip access-group <name> <in|out>\n");
 #define CMDIF_ACCESS_LIST_UNK() PRINTERROR("Error !\n No ACL matches this name\n");
 #define CMDIF_DESC_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   description <string>\n");
 #define CMDIF_FATAL_ERROR() PRINTERROR("Interface Fatal Error !!\n");

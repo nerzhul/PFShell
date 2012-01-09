@@ -200,11 +200,28 @@ unsigned short setInterfaceACL(char* name, char* aclname, char* direction)
 			if(strcmp(cursor->name,name) == 0)
 			{
 				found = 1;
-				if(strcmp(direction,"in") == 0)
-					cursor->acl_in = aclname;
-				else if(strcmp(direction,"out") == 0)
-					cursor->acl_out = aclname;
-				else
+
+				acl* cursor2 = access_lists;
+				unsigned short found2 = 0;
+
+				while(found2 == 0 && cursor2 != NULL)
+				{
+					if(strcmp(cursor2->name,aclname) == 0)
+					{
+						found2 = 1;
+
+						if(strcmp(direction,"in") == 0)
+							cursor->acl_in = aclname;
+						else if(strcmp(direction,"out") == 0)
+							cursor->acl_out = aclname;
+						else
+							return 1;
+					}
+					else
+						cursor2 = cursor2->next;
+				}
+
+				if(found2 == 0)
 					return 1;
 			}
 			else

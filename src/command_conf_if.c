@@ -53,6 +53,8 @@ void cifCMD_ip(char* args)
 	cutFirstWord(args,iface);
 	if(strcmp(iface[0],"address") == 0)
 		cifCMD_ip_address(iface[1]);
+	else if(strcmp(iface[0],"access-group") == 0)
+		cifCMD_access_list(iface[1]);
 	else
 		CMDIF_IP_ERROR();
 }
@@ -204,17 +206,12 @@ void cifCMD_access_list(char* args)
 		return;
 	}
 
-	char* inout[2];
-	cutFirstWord(args,inout);
-	if(strcmp(inout[0],"in") != 0 && strcmp(inout[0],"out") != 0)
-	{
-		CMDIF_ACCESS_LIST_ERROR();
-		return;
-	}
-
 	char* aclname[2];
-	cutFirstWord(inout[1],aclname);
-	if(strlen(aclname[1]) > 0)
+	cutFirstWord(args,aclname);
+
+	char* inout[2];
+	cutFirstWord(aclname[1],inout);
+	if(strcmp(inout[0],"in") != 0 && strcmp(inout[0],"out") != 0)
 	{
 		CMDIF_ACCESS_LIST_ERROR();
 		return;
