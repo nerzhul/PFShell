@@ -32,5 +32,8 @@ Alpha 0.5
 - Implement no shutdown command
 - Prepare interface acl handling
 - Implement saving configuration
-Alpha 0.6 - prev
+Alpha 0.6
 - Pré-implément ACL binding for in/out on interfaces
+- Update Copyright for 2012
+- Implement prompt_msg file which contains majority of text macros
+- Implement ip routing & ip multicast-routing

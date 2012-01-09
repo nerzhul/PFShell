@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -29,13 +29,6 @@
 #define __COMMAND_CONF_IF_H__
 
 char* current_iface;
-#define CMDIF_IP_ERROR() printError("Syntax error !\nCorrect syntax is:\n   ip (address) ...\n");
-#define CMDIF_IPADDR_ERROR() printError("Syntax error !\nCorrect syntax is:\n   ip address A.B.C.D M.A.S.K\n   ip address A.B.C.D/CIDR\n   ip address DHCP\n");
-#define CMDIF_SHUTDOWN_ERROR() printError("Syntax error !\nCorrect syntax is:\n   shutdown\n");
-#define CMDIF_NOSHUTDOWN_ERROR() printError("Syntax error !\nCorrect syntax is:\n   shutdown\n");
-#define CMDIF_ACCESS_LIST_ERROR() printError("Syntax error !\n Correct syntax is:\n   access-list <in|out> <name>\n");
-#define CMDIF_ACCESS_LIST_UNK() printError("Error !\n No ACL matches this name\n");
-#define CMDIF_FATAL_ERROR() printError("Interface Fatal Error !!\n");
 
 void cifCMD_exit(char* _none);
 

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -31,13 +31,15 @@
 #include "firewall.h"
 #include "configuration.h"
 #include "interface.h"
-#include "prompt.h"
+#include "prompt_msg.h"
 #include "iputils.h"
 
 void cifCMD_exit(char* _none)
 {
 	if(strlen(_none) > 0)
-		printError("Syntax error !\nCorrect syntax is: \n   exit\n");
+	{
+		CMDCOMMON_EXIT_ERROR();
+	}
 	else
 	{
 		promptMode = PROMPT_CONF;

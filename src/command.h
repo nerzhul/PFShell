@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -40,7 +40,7 @@ typedef struct commandHandler
 
 #define MAX_USER_CMD	4
 #define MAX_ENABLE_CMD	4
-#define MAX_CONF_CMD	4
+#define MAX_CONF_CMD	5
 #define MAX_CONF_IF_CMD 4
 #define MAX_CONF_FW_CMD 6
 #define MAX_CONF_RD_CMD 1

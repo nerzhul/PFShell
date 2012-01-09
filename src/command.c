@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -35,7 +35,7 @@
 #include "command_conf_if.h"
 #include "command_conf_fw.h"
 #include "command_conf_rd.h"
-#include "prompt.h"
+#include "prompt_msg.h"
 
 unsigned short initCmds()
 {
@@ -68,6 +68,8 @@ unsigned short initCmds()
 	confCmd[2].handler = &cCMD_hostname;
 	confCmd[3].name = "interface";
 	confCmd[3].handler = &cCMD_interface;
+	confCmd[4].name = "ip";
+	confCmd[4].handler = &cCMD_ip;
 
 	// Enable - Configure - Interface Commands
 	confIfCmd[0].name = "exit";
@@ -190,7 +192,7 @@ void handleCmd(char* _fullcmd)
 			++i;
 		}
 	}
-	printError("Unknown command '%s'\n",_fullcmd);
+	CMD_UNK();
 }
 
 void cutFirstWord(char* string,char** result)

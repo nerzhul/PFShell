@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -26,7 +26,7 @@
 */
 
 #include <stdio.h>
-#include "prompt.h"
+#include "prompt_msg.h"
 #include "command.h"
 #include "configuration.h"
 
@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 {
 	if(!initCmds() || !initPrompts())
 	{
-		printError("PFShell is corrupt, please reinstall it\n");
+		CMDMAIN_INIT_FAIL();
 		return -1;
 	}
 
@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 
 	if(!loadConfiguration())
 	{
-		printError("System configuration is corrupted !\n");
+		CMDMAIN_CONFINIT_FAIL();
 		//@TODO: load a default configuration
 		return -1;
 	}

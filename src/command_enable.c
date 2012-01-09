@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -27,7 +27,7 @@
 
 #include "configuration.h"
 #include "command_enable.h"
-#include "prompt.h"
+#include "prompt_msg.h"
 
 void eCMD_configure(char* args) {
 	if(strlen(args) > 0)
@@ -45,7 +45,9 @@ void eCMD_configure(char* args) {
 
 void eCMD_exit(char* _none) {
 	if(strlen(_none) > 0)
-		printError("Syntax error !\nCorrect syntax is: \n   exit\n");
+	{
+		CMDCOMMON_EXIT_ERROR();
+	}
 	else
 		promptMode = PROMPT_USER;
 }
@@ -159,5 +161,5 @@ void eCMD_show(char* args)
 void eCMD_save(char* _none)
 {
 	system("cp /opt/PFShell/running-config /opt/PFShell/startup-config");
-	printSuccess("Save done with success !\n");
+	CMDEN_SAVE_SUCCESS();
 }

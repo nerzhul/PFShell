@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -28,14 +28,10 @@
 #ifndef __COMMAND_CONF_H__
 #define __COMMAND_CONF_H__
 
-#define CMDCONF_HOSTNAME_ERROR() printError("Syntax error !\nCorrect syntax is: \n   hostname <string>\n");
-#define CMDCONF_INTERFACE_ERROR() printError("Syntax error !\nCorrect syntax is: \n   interface <name>\n");
-#define CMDCONF_INTERFACE_UNK(A) printError("Unknown interface %s\n",A);
-#define CMDCONF_IP_ERROR() printError("Syntax error !\nCorrect syntax is: \n   ip <routing>\n");
-
 void cCMD_exit(char* _none);
 void cCMD_firewall(char* _none);
 void cCMD_hostname(char* args);
 void cCMD_interface(char* args);
 void cCMD_ip(char* args);
+
 #endif

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -27,11 +27,6 @@
 
 #ifndef __COMMAND_ENABLE_H__
 #define __COMMAND_ENABLE_H__
-
-#define CMDEN_SHOW_ERROR() printError("Syntax error !\nCorrect syntax is: \n   show (acls|ip|interfaces|version)\n");
-#define CMDEN_CONFIGURE_ERROR() printError("Syntax error !\nCorrect syntax is: \n   configure (<firewall>)\n");
-#define CMDEN_SHOW_IP_ERROR() printError("Syntax error !\nCorrect syntax is: \n   show ip routes\n");
-#define CMDEN_SHOW_INTERFACES_NOTFOUND() printError("No hardware interface found !\n");
 
 void eCMD_configure(char* args);
 void eCMD_exit(char* _none);

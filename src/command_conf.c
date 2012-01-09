@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -27,13 +27,15 @@
 
 #include "command_conf.h"
 #include "command_conf_if.h"
-#include "prompt.h"
+#include "prompt_msg.h"
 #include "configuration.h"
 
 void cCMD_exit(char* _none)
 {
 	if(strlen(_none) > 0)
-		printError("Syntax error !\nCorrect syntax is: \n   exit\n");
+	{
+		CMDCOMMON_EXIT_ERROR();
+	}
 	else
 		promptMode = PROMPT_ENABLE;
 }
@@ -41,7 +43,9 @@ void cCMD_exit(char* _none)
 void cCMD_firewall(char* _none)
 {
 	if(strlen(_none) > 0)
-		printError("Syntax error !\nCorrect syntax is: \n   firewall\n");
+	{
+		CMDCONF_FIREWALL_ERROR();
+	}
 	else
 		promptMode = PROMPT_CONF_FW;
 }
@@ -120,6 +124,22 @@ void cCMD_ip(char* args)
 		}
 
 		iprouting = 1;
+		hsystemcmd("/usr/sbin/sysctl net.inet.ip.forwarding=1");
+		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.forwarding=1");
+		WRITE_RUN();
+	}
+	else if(strcmp(ipcmd[0],"multicast-routing") == 0)
+	{
+		if(strlen(ipcmd[1]) > 0)
+		{
+			CMDCONF_IP_ERROR();
+			return;
+		}
+
+		mcastrouting = 1;
+		hsystemcmd("/usr/sbin/sysctl net.inet.ip.mforwarding=1");
+		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.mforwarding=1");
+		WRITE_RUN();
 	}
 	else if(strcmp(ipcmd[0],"route") == 0)
 	{

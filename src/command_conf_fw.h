@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -27,13 +27,6 @@
 
 #ifndef __COMMAND_CONF_FW_H__
 #define __COMMAND_CONF_FW_H__
-
-#include "prompt.h"
-
-#define CMDFW_DEFAULT_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   default (forward-policy|input-policy|output-policy) (allow|deny)\n");
-#define CMDFW_DISABLE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   disable\n");
-#define CMDFW_ENABLE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   enable\n");
-#define CMDFW_ACL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax  is:\n   acl <name> <allow|deny> <in|out> <tcp|udp|icmp> <any|A.B.C.D/CIDR> (<port>) <any|A.B.C.D/CIDR> (<port>)\n");
 
 void cfwCMD_exit(char* _none);
 

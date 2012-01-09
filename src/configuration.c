@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -32,6 +32,7 @@
 #include "command.h"
 #include "command_conf_fw.h"
 #include "command_conf.h"
+#include "prompt_msg.h"
 
 unsigned short loadConfiguration()
 {
@@ -82,7 +83,7 @@ unsigned short writeRunningConfig()
 	confFile = fopen("/opt/PFShell/running-config","w");
 	if(confFile == NULL)
 	{
-		printError("Writing failed for running-config !!!\n");
+		CMD_WRITE_RUN_FAIL();
 	}
 	else
 	{
@@ -90,6 +91,13 @@ unsigned short writeRunningConfig()
 		fputs("hostname ",confFile);
 		fputs(hostname,confFile);
 		fputs("\n",confFile);
+
+		// Routing
+		if(iprouting == 1)
+			fputs("ip routing\n",confFile);
+
+		if(mcastrouting == 1)
+			fputs("ip multicast-routing\n",confFile);
 
 		// Firewall
 		fputs("firewall\n",confFile);
@@ -153,8 +161,8 @@ unsigned short writeRunningConfig()
 				cursor2 = cursor2->next;
 			}
 			cursor = cursor->next;
-			fputs("!\n",confFile);
 		}
+		fputs("!\n",confFile);
 
 		// Interfaces
 		net_iface* if_cursor = interfaces;

@@ -27,7 +27,8 @@ PFShell_SOURCES = \
 	iputils.h \
 	main.c \
 	prompt.c \
-	prompt.h
+	prompt.h \
+	prompt_msg.h
 
 PFShell_LDADD = -lm
 
