@@ -47,3 +47,4 @@ Alpha 0.6
 Alpha 0.7 - prev
 - Implement show running-config
 - Implement show startup-config
+- Pre-Implement ip route A.B.C.D M.A.S.K G.A.T.E

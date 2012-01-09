@@ -25,10 +25,13 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <stdlib.h>
+#include <stdio.h>
 #include "command_conf.h"
 #include "command_conf_if.h"
 #include "prompt_msg.h"
 #include "configuration.h"
+#include "iputils.h"
 
 void cCMD_exit(char* _none)
 {
@@ -143,7 +146,66 @@ void cCMD_ip(char* args)
 	}
 	else if(strcmp(ipcmd[0],"route") == 0)
 	{
-		// @ TODO
+		if(strlen(ipcmd[1]) < 15)
+		{
+			CMDCONF_IPROUTE_ERROR();
+			return;
+		}
+
+		char* netip[2];
+		cutFirstWord(ipcmd[1],netip);
+
+		if(regexp(netip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+		{
+			char* maskip[2];
+
+			cutFirstWord(netip[1],maskip);
+
+			if(is_valid_mask(maskip[0]) == 0)
+			{
+				unsigned short cidr = calc_cidr(maskip[0]);
+				char* gateip[2];
+				cutFirstWord(maskip[1],gateip);
+
+				if(regexp(gateip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+				{
+					if(strlen(gateip[1]) > 0)
+					{
+						CMDCONF_IPROUTE_ERROR();
+						return;
+					}
+
+					char buffer[1024];
+					char cidrbuf[100];
+					sprintf(cidrbuf,"%d",cidr);
+
+					strcpy(buffer,"route add ");
+					strcat(buffer,netip[0]);
+					strcat(buffer,"/");
+					strcat(buffer,cidrbuf);
+					strcat(buffer," ");
+					strcat(buffer,gateip[0]);
+
+					printf("buffer %s\n",buffer);
+					hsystemcmd(buffer);
+				}
+				else
+				{
+					CMDCONF_IPROUTE_ERROR();
+					return;
+				}
+			}
+			else
+			{
+				CMDCONF_IPROUTE_ERROR();
+				return;
+			}
+		}
+		else
+		{
+			CMDCONF_IPROUTE_ERROR();
+			return;
+		}
 	}
 	else
 		CMDCONF_IP_ERROR();

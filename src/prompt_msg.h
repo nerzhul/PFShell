@@ -59,8 +59,9 @@
 #define CMDCONF_HOSTNAME_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   hostname <string>\n");
 #define CMDCONF_INTERFACE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   interface <name>\n");
 #define CMDCONF_INTERFACE_UNK(A) printError("Unknown interface %s\n",A);
-#define CMDCONF_IP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   ip <routing|multicast-routing>\n");
+#define CMDCONF_IP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   ip <route|routing|multicast-routing>\n");
 #define CMDCONF_FIREWALL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   firewall\n");
+#define CMDCONF_IPROUTE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    ip route A.B.C.D M.A.S.K G.A.T.E\n");
 
 // Interface Messages
 #define CMDIF_IP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   ip (address) ...\n");
