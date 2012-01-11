@@ -33,12 +33,13 @@
 #include <stdarg.h>
 
 #define PROMPT_USER		0
-#define PROMPT_ENABLE	1
+#define PROMPT_ENABLE		1
 #define PROMPT_CONF		2
-#define PROMPT_CONF_IF	3
-#define PROMPT_CONF_FW	4
-#define PROMPT_CONF_RD	5
-#define MAX_PROMPTS		6
+#define PROMPT_CONF_IF		3
+#define PROMPT_CONF_FW		4
+#define PROMPT_CONF_RD		5
+#define PROMPT_CONF_ACL 	6
+#define MAX_PROMPTS		7
 
 #define BLACK 0
 #define RED 1
@@ -63,6 +64,7 @@ void promptC();
 void promptCIf();
 void promptCFW();
 void promptCRD();
+void promptCACL();
 
 typedef struct prompt
 {

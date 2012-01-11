@@ -112,6 +112,7 @@ unsigned short initCmds()
 	masterCmd[3] = confIfCmd;
 	masterCmd[4] = confFWCmd;
 	masterCmd[5] = confRDCmd;
+	masterCmd[6] = confACLCmd;
 
 	masternoCmd[0] = nouserCmd;
 	masternoCmd[1] = noenableCmd;
@@ -119,6 +120,7 @@ unsigned short initCmds()
 	masternoCmd[3] = noconfIfCmd;
 	masternoCmd[4] = noconfFWCmd;
 	masternoCmd[5] = noconfRDCmd;
+	masternoCmd[6] = noconfACLCmd;
 
 	return 1;
 }

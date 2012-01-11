@@ -36,14 +36,15 @@ typedef struct commandHandler
 	void (*handler)(char* otherArgs);
 } cmdHdlr;
 
-#define MAX_CMD_TYPES	6
+#define MAX_CMD_TYPES	7
 
-#define MAX_USER_CMD	4
-#define MAX_ENABLE_CMD	4
-#define MAX_CONF_CMD	5
-#define MAX_CONF_IF_CMD 4
-#define MAX_CONF_FW_CMD 6
-#define MAX_CONF_RD_CMD 1
+#define MAX_USER_CMD		4
+#define MAX_ENABLE_CMD		4
+#define MAX_CONF_CMD		5
+#define MAX_CONF_IF_CMD 	4
+#define MAX_CONF_FW_CMD		6
+#define MAX_CONF_RD_CMD		1
+#define MAX_CONF_ACL_CMD	0
 
 static const unsigned short MAX_CMDS[MAX_CMD_TYPES] =
 {
@@ -52,7 +53,8 @@ static const unsigned short MAX_CMDS[MAX_CMD_TYPES] =
 	MAX_CONF_CMD,
 	MAX_CONF_IF_CMD,
 	MAX_CONF_FW_CMD,
-	MAX_CONF_RD_CMD
+	MAX_CONF_RD_CMD,
+	MAX_CONF_ACL_CMD
 };
 
 cmdHdlr userCmd[MAX_USER_CMD];
@@ -61,6 +63,7 @@ cmdHdlr confCmd[MAX_CONF_CMD];
 cmdHdlr confIfCmd[MAX_CONF_IF_CMD];
 cmdHdlr confFWCmd[MAX_CONF_FW_CMD];
 cmdHdlr confRDCmd[MAX_CONF_RD_CMD];
+cmdHdlr confACLCmd[MAX_CONF_ACL_CMD];
 
 cmdHdlr* masterCmd[MAX_CMD_TYPES];
 
@@ -72,6 +75,7 @@ cmdHdlr* masterCmd[MAX_CMD_TYPES];
 #define MAX_CONF_IF_NO_CMD 2
 #define MAX_CONF_FW_NO_CMD 0
 #define MAX_CONF_RD_NO_CMD 0
+#define MAX_CONF_ACL_NO_CMD 0
 
 static const unsigned short MAX_NO_CMDS[MAX_CMD_TYPES] =
 {
@@ -80,7 +84,8 @@ static const unsigned short MAX_NO_CMDS[MAX_CMD_TYPES] =
 	MAX_CONF_NO_CMD,
 	MAX_CONF_IF_NO_CMD,
 	MAX_CONF_FW_NO_CMD,
-	MAX_CONF_RD_NO_CMD
+	MAX_CONF_RD_NO_CMD,
+	MAX_CONF_ACL_NO_CMD
 };
 
 cmdHdlr nouserCmd[MAX_USER_NO_CMD];
@@ -89,6 +94,7 @@ cmdHdlr noconfCmd[MAX_CONF_NO_CMD];
 cmdHdlr noconfIfCmd[MAX_CONF_IF_NO_CMD];
 cmdHdlr noconfFWCmd[MAX_CONF_FW_NO_CMD];
 cmdHdlr noconfRDCmd[MAX_CONF_RD_NO_CMD];
+cmdHdlr noconfACLCmd[MAX_CONF_ACL_NO_CMD];
 
 cmdHdlr* masternoCmd[MAX_CMD_TYPES];
 

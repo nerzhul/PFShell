@@ -44,7 +44,10 @@ Alpha 0.6
 - Implement prompt_msg file which contains majority of text macros
 - Implement ip routing & ip multicast-routing
 
-Alpha 0.7 - prev
+Alpha 0.7
 - Implement show running-config
 - Implement show startup-config
 - Implement ip route A.B.C.D M.A.S.K G.A.T.E
+
+Alpha 0.8 - prev
+- Prepare interactive shell for extended ACLs (ip access-list <name> extended command)

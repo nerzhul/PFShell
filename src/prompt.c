@@ -44,6 +44,7 @@ unsigned int  initPrompts()
 	promptTable[3].action = &promptCIf;
 	promptTable[4].action = &promptCFW;
 	promptTable[5].action = &promptCRD;
+	promptTable[6].action = &promptCACL;
 
 	return 1;
 }
@@ -65,6 +66,8 @@ void promptCIf() { printf("%s(conf-iface)# ",hostname);}
 void promptCFW() { printf("%s(conf-fw)# ",hostname); }
 // Configure prompt for CARP redundancy
 void promptCRD() { printf("%s(conf-redundancy)# ",hostname);}
+// Configure prompt for ACLs
+void promptACL() { printf("%s(conf-acl)# ",hostname);}
 
 void printError(char* str, ...)
 {

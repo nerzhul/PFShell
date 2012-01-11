@@ -25,28 +25,4 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __CONFIGURATION_H__
-#define __CONFIGURATION_H__
-
-#include "firewall.h"
-#include "interface.h"
-#include "route.h"
-
-#define WRITE_RUN() writeRunningConfig()
-
-unsigned short loadConfiguration();
-unsigned short writeRunningConfig();
-
-char* hostname;
-unsigned short pfpolicies[2];
-
-// Chained Lists
-acl* access_lists;
-net_iface* interfaces;
-route* routes;
-
-// sysctl vars
-unsigned short iprouting;
-unsigned short mcastrouting;
-
-#endif
+#include "command_conf_acl.h"
