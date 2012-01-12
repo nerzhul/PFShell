@@ -26,3 +26,32 @@
 */
 
 #include "command_conf_acl.h"
+#include "configuration.h"
+#include "firewall.h"
+#include "prompt_msg.h"
+
+void caclCMD_exit(char* _none)
+{
+	if(strlen(_none) > 0)
+	{
+		CMDCOMMON_EXIT_ERROR();
+	}
+	else
+		promptMode = PROMPT_CONF_FW;
+}
+
+void caclCMD_allow_acl(char* args)
+{
+	if(readACL(args,1) == 0)
+		WRITE_RUN();
+	else
+		CMDACL_ERROR();
+}
+
+void caclCMD_deny_acl(char* args)
+{
+	if(readACL(args,0) == 0)
+		WRITE_RUN();
+	else
+		CMDACL_ERROR();
+}

@@ -30,4 +30,9 @@
 
 char* current_acl;
 
+void caclCMD_exit(char* _none);
+
+void caclCMD_allow_acl(char* args);
+void caclCMD_deny_acl(char* args);
+
 #endif

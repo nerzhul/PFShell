@@ -32,6 +32,7 @@
 #include "command_user.h"
 #include "command_enable.h"
 #include "command_conf.h"
+#include "command_conf_acl.h"
 #include "command_conf_if.h"
 #include "command_conf_fw.h"
 #include "command_conf_rd.h"
@@ -96,11 +97,19 @@ unsigned short initCmds()
 	confFWCmd[2].handler = &cfwCMD_enable;
 	confFWCmd[3].name = "disable";
 	confFWCmd[3].handler = &cfwCMD_disable;
-	confFWCmd[4].name = "acl";
+	confFWCmd[4].name = "access-list";
 	confFWCmd[4].handler = &cfwCMD_acl;
 	// TEMP Command
 	confFWCmd[5].name = "edit";
 	confFWCmd[5].handler = &cfwCMD_edit_packetfilter;
+
+	// Enable - Configure - Firewall - ACL Commands
+	confACLCmd[0].name = "allow";
+	confACLCmd[0].handler = &caclCMD_allow_acl;
+	confACLCmd[1].name = "deny";
+	confACLCmd[1].handler = &caclCMD_deny_acl;
+	confACLCmd[2].name = "exit";
+	confACLCmd[2].handler = &caclCMD_exit;
 
 	// Enable - Configure - Redundancy Commands
 	confRDCmd[0].name = "exit";

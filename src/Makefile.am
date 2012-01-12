@@ -11,6 +11,8 @@ PFShell_SOURCES = \
 	command_enable.h \
 	command_conf.c \
 	command_conf.h \
+	command_conf_acl.c \
+	command_conf_acl.h \
 	command_conf_fw.c \
 	command_conf_fw.h \
 	command_conf_if.c \

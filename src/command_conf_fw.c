@@ -26,6 +26,7 @@
 */
 
 #include "command_conf_fw.h"
+#include "command_conf_acl.h"
 #include "firewall.h"
 #include "prompt_msg.h"
 #include "command.h"
@@ -142,8 +143,17 @@ void cfwCMD_enable(char* _none)
 
 void cfwCMD_acl(char* args)
 {
-	if(readACL(args) != 0) CMDFW_ACL_ERROR();
-	WRITE_RUN();
+	char* aclname[2];
+	cutFirstWord(args,aclname);
+
+	if(strlen(aclname[1]) > 0 || strlen(aclname[0]) < 2)
+	{
+		CMDFW_ACL_ERROR();
+		return;
+	}
+
+	current_acl = aclname[0];
+	promptMode = PROMPT_CONF_ACL;
 }
 
 void cfwCMD_edit_packetfilter(char* _none)

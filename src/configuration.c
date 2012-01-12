@@ -125,14 +125,12 @@ unsigned short writeRunningConfig()
 		acl* cursor = access_lists;
 		while(cursor != NULL)
 		{
+			fputs("access-list ",confFile);
+			fputs(cursor->name,confFile);
+			fputs("\n",confFile);
 			access_control* cursor2 = cursor->ac;
 			while(cursor2 != NULL)
 			{
-				fputs("acl ",confFile);
-
-				fputs(cursor->name,confFile);
-				fputs(" ",confFile);
-
 				if(cursor2->_allow == 0)
 					fputs("deny ",confFile);
 				else
@@ -175,6 +173,7 @@ unsigned short writeRunningConfig()
 				cursor2 = cursor2->next;
 			}
 			cursor = cursor->next;
+			fputs("!\n",confFile);
 		}
 		fputs("!\n",confFile);
 

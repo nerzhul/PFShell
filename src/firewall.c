@@ -26,6 +26,7 @@
 */
 
 #include <stddef.h>
+#include "command_conf_acl.h"
 #include "firewall.h"
 #include "configuration.h"
 
@@ -141,7 +142,7 @@ void addACL(char* listname, unsigned short direction, unsigned short proto, unsi
 	}
 }
 
-unsigned short readACL(char* args)
+unsigned short readACL(char* args, unsigned short allow)
 {
 	char* nexttab[2];
 	char _nextvar[1024];
@@ -157,24 +158,12 @@ unsigned short readACL(char* args)
 	char* _daddr;
 	unsigned short _dport;
 
+	name = (char*)malloc(strlen(current_acl)*sizeof(char));
+	strcpy(name,current_acl);
+
+	_allow = allow;
+
 	strcpy(_nextvar,args);
-	cutFirstWord(_nextvar,nexttab);
-	if(strlen(nexttab[0]) < 2 || strlen(_nextvar) > 1023 || strcmp(nexttab[1],"") == 0)
-		return 1;
-
-	name = (char*)malloc(strlen(nexttab[0])*sizeof(char));
-	strcpy(name,nexttab[0]);
-
-	strcpy(_nextvar,nexttab[1]);
-	cutFirstWord(_nextvar,nexttab);
-
-	if(strcmp(nexttab[0],"deny") != 0 && strcmp(nexttab[0],"allow") != 0 || strcmp(nexttab[1],"") == 0)
-		return 1;
-
-	if(strcmp(nexttab[0],"deny") == 0) _allow = 0;
-	else _allow = 1;
-
-	strcpy(_nextvar,nexttab[1]);
 	cutFirstWord(_nextvar,nexttab);
 
 	if(strcmp(nexttab[0],"in") != 0 && strcmp(nexttab[0],"out") != 0 || strcmp(nexttab[1],"") == 0)
@@ -254,12 +243,17 @@ unsigned short readACL(char* args)
 		_dport = 0;
 	else
 	{
-		int port2 = atoi(nexttab[1]);
+		strcpy(_nextvar,nexttab[1]);
+		cutFirstWord(_nextvar,nexttab);
+
+		int port2 = atoi(nexttab[0]);
 		if(port2 > 65535 && port2 < 0)
 			return 1;
 		else
 			_dport = port2;
 	}
+
+	printf("addacl name %s allow %d direction %d proto %d saddr %s sport %d daddr %s dport %d\n",name,_allow,_direction,_proto,_saddr,_sport,_daddr,_dport);
 
 	addACL(name,_direction,_proto,_sport,_dport,_saddr,_daddr,_allow);
 

@@ -81,7 +81,10 @@
 #define CMDFW_ENABLE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   enable\n");
 #define CMDFW_ENABLE_SUCCESS() PRINTSUCCESS("Firewall enabled.\n");
 #define CMDFW_RELOAD_SUCCESS() PRINTSUCCESS("Firewall reloaded.\n");
-#define CMDFW_ACL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax  is:\n   acl <name> <allow|deny> <in|out> <tcp|udp|icmp> <any|A.B.C.D/CIDR> (<port>) <any|A.B.C.D/CIDR> (<port>)\n");
+#define CMDFW_ACL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   acl <name>\n");
+
+// ACL Messages
+#define CMDACL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   <allow|deny> <in|out> <tcp|udp|icmp> <any|A.B.C.D/CIDR> (<port>) <any|A.B.C.D/CIDR> (<port>)\n");
 
 
 #endif

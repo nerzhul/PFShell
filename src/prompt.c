@@ -33,7 +33,7 @@
 #include <Windows.h>
 #endif
 
-unsigned int  initPrompts()
+unsigned int initPrompts()
 {
 	// Set default mode to usermode
 	promptMode = PROMPT_USER;
@@ -67,7 +67,7 @@ void promptCFW() { printf("%s(conf-fw)# ",hostname); }
 // Configure prompt for CARP redundancy
 void promptCRD() { printf("%s(conf-redundancy)# ",hostname);}
 // Configure prompt for ACLs
-void promptACL() { printf("%s(conf-acl)# ",hostname);}
+void promptCACL() { printf("%s(conf-acl)# ",hostname);}
 
 void printError(char* str, ...)
 {
