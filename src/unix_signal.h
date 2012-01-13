@@ -25,38 +25,13 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stdio.h>
-#include "prompt_msg.h"
-#include "command.h"
-#include "configuration.h"
-#include "unix_signal.h"
+#ifndef __UNIX_SIGNAL_H__
+#define __UNIX_SIGNAL_H__
 
-int main(int argc, char** argv)
-{
-	if(!initCmds() || !initPrompts() || initSignals() != 0)
-	{
-		CMDMAIN_INIT_FAIL();
-		return -1;
-	}
+unsigned short initSignals();
 
-	promptMode = PROMPT_CONF;
+// handlers
+void sigint_handler(int param);
+void sigtstp_handler(int param);
 
-	if(!loadConfiguration())
-	{
-		CMDMAIN_CONFINIT_FAIL();
-		//@TODO: load a default configuration
-		return -1;
-	}
-
-	promptMode = PROMPT_USER;
-
-	printf("Type help to see the commands.\n");
-	prompt();
-
-	while(1)
-	{
-		handleCmd(readCmd());
-		prompt();
-	}
-	return 0;
-}
+#endif

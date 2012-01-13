@@ -49,5 +49,8 @@ Alpha 0.7
 - Implement show startup-config
 - Implement ip route A.B.C.D M.A.S.K G.A.T.E
 
-Alpha 0.8 - prev
-- Prepare interactive shell for extended ACLs (ip access-list <name> extended command)
+Alpha 0.8
+- interactive shell for extended ACLs (ip access-list <name> extended command)
+
+Alpha 0.9
+- Caught CTRL+C signal for return to enable menu

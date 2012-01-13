@@ -253,8 +253,6 @@ unsigned short readACL(char* args, unsigned short allow)
 			_dport = port2;
 	}
 
-	printf("addacl name %s allow %d direction %d proto %d saddr %s sport %d daddr %s dport %d\n",name,_allow,_direction,_proto,_saddr,_sport,_daddr,_dport);
-
 	addACL(name,_direction,_proto,_sport,_dport,_saddr,_daddr,_allow);
 
 	return 0;

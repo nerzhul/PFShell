@@ -32,7 +32,9 @@ PFShell_SOURCES = \
 	prompt.h \
 	prompt_msg.h \
 	route.c \
-	route.h
+	route.h \
+	unix_signal.c \
+	unix_signal.h
 
 PFShell_LDADD = -lm
 

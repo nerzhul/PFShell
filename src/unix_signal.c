@@ -26,37 +26,32 @@
 */
 
 #include <stdio.h>
-#include "prompt_msg.h"
-#include "command.h"
-#include "configuration.h"
+#include <signal.h>
 #include "unix_signal.h"
+#include "prompt.h"
 
-int main(int argc, char** argv)
+void sigint_handler(int param)
 {
-	if(!initCmds() || !initPrompts() || initSignals() != 0)
-	{
-		CMDMAIN_INIT_FAIL();
-		return -1;
-	}
+	if(promptMode > PROMPT_USER)
+		promptMode = PROMPT_ENABLE;
+	else
+		promptMode = PROMPT_USER;
+	putchar('\n');
+}
 
-	promptMode = PROMPT_CONF;
+void sigtstp_handler(int param)
+{
+	if(promptMode > PROMPT_USER)
+		promptMode = PROMPT_ENABLE;
+	else
+		promptMode = PROMPT_USER;
+	putchar('\n');
+}
 
-	if(!loadConfiguration())
-	{
-		CMDMAIN_CONFINIT_FAIL();
-		//@TODO: load a default configuration
-		return -1;
-	}
+unsigned short initSignals()
+{
+	signal(SIGINT,sigint_handler);
+	signal(SIGTSTP,sigtstp_handler);
 
-	promptMode = PROMPT_USER;
-
-	printf("Type help to see the commands.\n");
-	prompt();
-
-	while(1)
-	{
-		handleCmd(readCmd());
-		prompt();
-	}
 	return 0;
 }
