@@ -132,6 +132,35 @@ unsigned short setInterfaceIP(char* name, char* ip)
 	return 0;
 }
 
+char* getInterfaceIP(char* name)
+{
+	char _ip[50];
+
+	if(interfaces == NULL)
+		return "";
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				strcpy(_ip,cursor->ip);
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return "";
+	}
+
+	return _ip;
+}
+
 unsigned short setInterfaceDesc(char* name, char* desc)
 {
 	if(interfaces == NULL)
@@ -156,7 +185,7 @@ unsigned short setInterfaceDesc(char* name, char* desc)
 			return 1;
 	}
 
-	return 0;
+	return 1;
 }
 
 unsigned short setInterfaceState(char* name, unsigned short state)
@@ -184,6 +213,35 @@ unsigned short setInterfaceState(char* name, unsigned short state)
 	}
 
 	return 0;
+}
+
+unsigned short getInterfaceState(char* name)
+{
+	unsigned short result = -1;
+
+	if(interfaces == NULL)
+		return -1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				result = cursor->state;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return -1;
+	}
+
+	return result;
 }
 
 unsigned short setInterfaceACL(char* name, char* aclname, char* direction)

@@ -33,5 +33,6 @@ unsigned short initSignals();
 // handlers
 void sigint_handler(int param);
 void sigtstp_handler(int param);
+void sigterm_handler(int param);
 
 #endif

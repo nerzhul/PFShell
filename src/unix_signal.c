@@ -52,9 +52,21 @@ void sigtstp_handler(int param)
 	fflush(stdout);
 }
 
+void sigterm_handler(int param)
+{
+	if(promptMode > PROMPT_USER)
+		promptMode = PROMPT_ENABLE;
+	else
+		promptMode = PROMPT_USER;
+	putchar('\n');
+	prompt();
+	fflush(stdout);
+}
+
 unsigned short initSignals()
 {
 	signal(SIGINT,sigint_handler);
+	signal(SIGTERM,sigterm_handler);
 	signal(SIGTSTP,sigtstp_handler);
 
 	return 0;

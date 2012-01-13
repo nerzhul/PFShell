@@ -70,10 +70,14 @@ void cifCMD_ip_address(char* args)
 
 	if(strcmp(args,"DHCP") == 0)
 	{
-		char buffer[1024];
-		strcpy(buffer,"dhclient ");
-		strcat(buffer,current_iface);
-		hsystemcmd(buffer);
+		if(getInterfaceState(current_iface) == 1)
+		{
+			char buffer[1024];
+			strcpy(buffer,"dhclient ");
+			strcat(buffer,current_iface);
+			hsystemcmd(buffer);
+		}
+
 		if(setInterfaceIP(current_iface,"DHCP") != 0)
 		{
 			CMDIF_FATAL_ERROR();
@@ -92,15 +96,15 @@ void cifCMD_ip_address(char* args)
 				{
 					char buffer[1024];
 					char ipbuffer[100];
+
 					strcpy(buffer,"ifconfig ");
 					strcat(buffer,current_iface);
 					strcat(buffer," ");
+					strcat(buffer,ipbuffer);
 
 					strcpy(ipbuffer,ipmask[0]);
 					strcat(ipbuffer," ");
 					strcat(ipbuffer,ipmask[1]);
-
-					strcat(buffer,ipbuffer);
 
 					hsystemcmd(buffer);
 
@@ -188,6 +192,23 @@ void cifCMD_noshutdown(char* _none)
 	strcat(buffer,current_iface);
 	strcat(buffer," up");
 	system(buffer);
+
+	char* ifconf = getInterfaceIP(current_iface);
+	if(strcmp(ifconf,"DHCP") == 0)
+	{
+		char buffer[1024];
+		strcpy(buffer,"dhclient ");
+		strcat(buffer,current_iface);
+		hsystemcmd(buffer);
+	}
+	else if(strlen(ifconf) > 0)
+	{
+		strcpy(buffer,"ifconfig ");
+		strcat(buffer,current_iface);
+		strcat(buffer," ");
+		strcat(buffer,ifconf);
+		hsystemcmd(buffer);
+	}
 
 	if(setInterfaceState(current_iface,1) != 0)
 	{

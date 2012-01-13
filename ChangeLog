@@ -53,4 +53,7 @@ Alpha 0.8
 - interactive shell for extended ACLs (ip access-list <name> extended command)
 
 Alpha 0.9
-- Caught CTRL+C signal for return to enable menu
+- Caught CTRL+C & CTRL+Z signal for return to enable menu
+
+Alpha 0.10 - prev
+- Use DHClient only when interface is up

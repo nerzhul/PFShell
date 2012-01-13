@@ -51,4 +51,7 @@ unsigned short setInterfaceState(char* name, unsigned short state);
 unsigned short setInterfaceACL(char* name, char* aclname, char* direction);
 unsigned short setInterfaceDesc(char* name, char* desc);
 
+char* getInterfaceIP(char* name);
+unsigned short getInterfaceState(char* name);
+
 #endif
