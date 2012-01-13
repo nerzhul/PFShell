@@ -124,7 +124,7 @@ unsigned short saveInterfaces()
 				strcat(pathbuffer,cursor->name);
 
 				FILE* fIface = fopen(pathbuffer,"w+");
-				fwrite("dhcp",1,sizeof("dhcp"),fIface);
+				fwrite("dhcp\n",1,sizeof("dhcp\n"),fIface);
 				fclose(fIface);
 			}
 		}
@@ -147,7 +147,7 @@ unsigned short saveInterfaces()
 						strcat(buffer,ipmask[0]);
 						strcat(buffer," ");
 						strcat(buffer,ipmask[1]);
-						strcat(buffer," NONE");
+						strcat(buffer," NONE\n");
 
 						FILE* fIface = fopen(pathbuffer,"w+");
 						fwrite(buffer,1,strlen(buffer),fIface);
@@ -170,7 +170,7 @@ unsigned short saveInterfaces()
 				strcat(buffer,mask[0]);
 				strcat(buffer," ");
 				strcat(buffer,calc_mask_from_cidr(mask[1]));
-				strcat(buffer," NONE");
+				strcat(buffer," NONE\n");
 
 				FILE* fIface = fopen(pathbuffer,"w+");
 				fwrite(buffer,1,strlen(buffer),fIface);
