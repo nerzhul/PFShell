@@ -27,6 +27,7 @@
 
 #include "configuration.h"
 #include "command_enable.h"
+#include "interface.h"
 #include "prompt_msg.h"
 
 void eCMD_configure(char* args) {
@@ -173,5 +174,6 @@ void eCMD_show(char* args)
 void eCMD_save(char* _none)
 {
 	system("cp /opt/PFShell/running-config /opt/PFShell/startup-config");
+	saveInterfaces();
 	CMDEN_SAVE_SUCCESS();
 }

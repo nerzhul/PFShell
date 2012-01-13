@@ -45,6 +45,7 @@ struct net_iface
 
 void addInterface(char* name);
 void loadInterfaces();
+unsigned short saveInterfaces();
 
 unsigned short setInterfaceIP(char* name, char* ip);
 unsigned short setInterfaceState(char* name, unsigned short state);

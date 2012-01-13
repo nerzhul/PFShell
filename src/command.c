@@ -265,6 +265,65 @@ void cutFirstWord(char* string,char** result)
 	}
 }
 
+void cutByChar(char* string,char** result,char cutter)
+{
+	char firstWord[1024];
+	char followWords[1024];
+
+	int offset = 0;
+	int offset2 = 0;
+	short first_written = 0;
+
+	while(offset <= strlen(string))
+	{
+		if(!first_written)
+		{
+			if(string[offset] == cutter)
+			{
+				first_written = 1;
+				firstWord[offset] = '\0';
+			}
+			else
+				firstWord[offset] = string[offset];
+		}
+		else
+		{
+			followWords[offset2] = string[offset];
+			++offset2;
+		}
+
+		++offset;
+	}
+
+	if(first_written)
+	{
+		followWords[offset] = '\0';
+
+		result[0] = (char*) malloc(offset*sizeof(char));
+		result[1] = (char*) malloc(offset2*sizeof(char));
+
+		offset = strlen(firstWord);
+		while(offset >= 0)
+		{
+			result[0][offset] = firstWord[offset];
+			--offset;
+		}
+
+		offset = strlen(followWords);
+		while(offset >= 0)
+		{
+			result[1][offset] = followWords[offset];
+			--offset;
+		}
+	}
+	else
+	{
+		result[0] = string;
+		result[1] = "";
+	}
+}
+
+
 int execSystemCommand(char* cmd, char* output)
 {
 	FILE *fp;

@@ -30,6 +30,7 @@
 #include "command.h"
 #include "configuration.h"
 #include "unix_signal.h"
+#include "iputils.h"
 
 int main(int argc, char** argv)
 {

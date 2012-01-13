@@ -81,6 +81,14 @@ short calc_cidr(char* mask)
 	return (32-cidr);
 }
 
+char* calc_mask_from_cidr(char* cidr)
+{
+	struct in_addr _mask;
+	unsigned long mask = (0xffffffff >> (32 - atoi(cidr) )) << (32 - atoi(cidr));
+	_mask.s_addr = htonl(mask);
+	return inet_ntoa(_mask);
+}
+
 short unsigned int is_valid_mask(char* mask)
 {
 	struct in_addr _mask;

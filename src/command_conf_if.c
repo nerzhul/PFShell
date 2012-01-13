@@ -100,11 +100,11 @@ void cifCMD_ip_address(char* args)
 					strcpy(buffer,"ifconfig ");
 					strcat(buffer,current_iface);
 					strcat(buffer," ");
-					strcat(buffer,ipbuffer);
 
 					strcpy(ipbuffer,ipmask[0]);
 					strcat(ipbuffer," ");
 					strcat(ipbuffer,ipmask[1]);
+					strcat(buffer,ipbuffer);
 
 					hsystemcmd(buffer);
 

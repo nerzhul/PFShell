@@ -29,6 +29,7 @@
 #include "interface.h"
 #include "configuration.h"
 #include "command.h"
+#include "iputils.h"
 
 void addInterface(char* name)
 {
@@ -103,6 +104,83 @@ void loadInterfaces()
 			}
 		}
 	}
+}
+
+unsigned short saveInterfaces()
+{
+	net_iface* cursor = interfaces;
+	if(interfaces == NULL)
+		return 0;
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->ip,"DHCP") == 0)
+		{
+			if(getInterfaceState(cursor->name) == 1)
+			{
+				char buffer[1024];
+				char pathbuffer[100];
+				strcpy(pathbuffer,"/etc/hostname.");
+				strcat(pathbuffer,cursor->name);
+
+				FILE* fIface = fopen(pathbuffer,"w+");
+				fwrite("dhcp",1,sizeof("dhcp"),fIface);
+				fclose(fIface);
+			}
+		}
+		else
+		{
+			char* ipmask[2];
+			cutFirstWord(cursor->ip,ipmask);
+			if(strlen(ipmask[1]) > 1)
+			{
+				if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+				{
+					if(is_valid_mask(ipmask[1]) == 0)
+					{
+						char buffer[1024];
+						char pathbuffer[100];
+						strcpy(pathbuffer,"/etc/hostname.");
+						strcat(pathbuffer,cursor->name);
+
+						strcpy(buffer,"inet ");
+						strcat(buffer,ipmask[0]);
+						strcat(buffer," ");
+						strcat(buffer,ipmask[1]);
+						strcat(buffer," NONE");
+
+						FILE* fIface = fopen(pathbuffer,"w+");
+						fwrite(buffer,1,strlen(buffer),fIface);
+						fclose(fIface);
+					}
+				}
+			}
+			else if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
+			{
+				char* mask[2];
+				cutByChar(ipmask[0],mask,'/');
+
+				char buffer[1024];
+				char pathbuffer[100];
+
+				strcpy(pathbuffer,"/etc/hostname.");
+				strcat(pathbuffer,cursor->name);
+
+				strcpy(buffer,"inet ");
+				strcat(buffer,mask[0]);
+				strcat(buffer," ");
+				strcat(buffer,calc_mask_from_cidr(mask[1]));
+				strcat(buffer," NONE");
+
+				FILE* fIface = fopen(pathbuffer,"w+");
+				fwrite(buffer,1,strlen(buffer),fIface);
+				fclose(fIface);
+			}
+		}
+		cursor = cursor->next;
+	}
+
+	return 0;
 }
 
 unsigned short setInterfaceIP(char* name, char* ip)

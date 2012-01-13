@@ -103,6 +103,7 @@ unsigned short initCmds();
 char* readCmd();
 
 void cutFirstWord(char*,char**);
+void cutByChar(char*, char**, char cutter);
 
 void handleCmd(char* _cmd);
 
