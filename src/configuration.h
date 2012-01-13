@@ -32,7 +32,7 @@
 #include "interface.h"
 #include "route.h"
 
-#define WRITE_RUN() writeRunningConfig()
+#define WRITE_RUN() writeRunningConfig();
 
 unsigned short loadConfiguration();
 unsigned short writeRunningConfig();

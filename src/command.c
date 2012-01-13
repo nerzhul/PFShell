@@ -203,7 +203,8 @@ void handleCmd(char* _fullcmd)
 			++i;
 		}
 	}
-	CMD_UNK();
+	if(strlen(_fullcmd) > 0)
+		CMD_UNK();
 }
 
 void cutFirstWord(char* string,char** result)

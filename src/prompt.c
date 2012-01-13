@@ -28,11 +28,6 @@
 #include "prompt.h"
 #include "configuration.h"
 
-#ifdef WIN32
-// Temp for tests on windows
-#include <Windows.h>
-#endif
-
 unsigned int initPrompts()
 {
 	// Set default mode to usermode

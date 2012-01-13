@@ -43,7 +43,9 @@ void caclCMD_exit(char* _none)
 void caclCMD_allow_acl(char* args)
 {
 	if(readACL(args,1) == 0)
+	{
 		WRITE_RUN();
+	}
 	else
 		CMDACL_ERROR();
 }
@@ -51,7 +53,9 @@ void caclCMD_allow_acl(char* args)
 void caclCMD_deny_acl(char* args)
 {
 	if(readACL(args,0) == 0)
+	{
 		WRITE_RUN();
+	}
 	else
 		CMDACL_ERROR();
 }

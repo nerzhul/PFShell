@@ -37,6 +37,8 @@ void sigint_handler(int param)
 	else
 		promptMode = PROMPT_USER;
 	putchar('\n');
+	prompt();
+	fflush(stdout);
 }
 
 void sigtstp_handler(int param)
@@ -46,6 +48,8 @@ void sigtstp_handler(int param)
 	else
 		promptMode = PROMPT_USER;
 	putchar('\n');
+	prompt();
+	fflush(stdout);
 }
 
 unsigned short initSignals()
