@@ -59,3 +59,4 @@ Alpha 0.10 - prev
 - Use DHClient only when interface is up
 - Save Interface configuration in system when command save is done
 - Implement function to calculate str netmask by cidr
+- Bugfix on Interface <name> -> Description command

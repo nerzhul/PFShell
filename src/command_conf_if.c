@@ -264,3 +264,20 @@ void cifCMD_description(char* args)
 
 	WRITE_RUN();
 }
+
+void cifCMD_nodescription(char* args)
+{
+	if(strlen(args) < 2)
+	{
+		CMDIF_DESC_ERROR();
+		return;
+	}
+
+	if(strcmp(getInterfaceDesc(current_iface),args) == 0)
+	{
+		if(setInterfaceDesc(current_iface,"") != 0)
+			CMDIF_DESC_ERROR();
+	}
+
+	WRITE_RUN();
+}

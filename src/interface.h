@@ -54,5 +54,5 @@ unsigned short setInterfaceDesc(char* name, char* desc);
 
 char* getInterfaceIP(char* name);
 unsigned short getInterfaceState(char* name);
-
+char* getInterfaceDesc(char* name);
 #endif

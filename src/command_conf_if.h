@@ -46,5 +46,6 @@ void cifCMD_noshutdown(char* _none);
 
 // Misc
 void cifCMD_description(char* args);
+void cifCMD_nodescription(char* args);
 
 #endif

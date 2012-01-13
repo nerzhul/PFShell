@@ -263,7 +263,36 @@ unsigned short setInterfaceDesc(char* name, char* desc)
 			return 1;
 	}
 
-	return 1;
+	return 0;
+}
+
+char* getInterfaceDesc(char* name)
+{
+	char _desc[50];
+
+	if(interfaces == NULL)
+		return "";
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				strcpy(_desc,cursor->desc);
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return "";
+	}
+
+	return _desc;
 }
 
 unsigned short setInterfaceState(char* name, unsigned short state)

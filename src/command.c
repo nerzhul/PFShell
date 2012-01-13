@@ -87,6 +87,8 @@ unsigned short initCmds()
 	noconfIfCmd[0].handler = &cifCMD_noshutdown;
 	noconfIfCmd[1].name = "ip";
 	noconfIfCmd[1].handler = &cifCMD_noip_address;
+	noconfIfCmd[2].name = "description";
+	noconfIfCmd[2].handler = &cifCMD_nodescription;
 
 	// Enable - Configure - Firewall Commands
 	confFWCmd[0].name = "exit";
