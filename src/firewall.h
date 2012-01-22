@@ -62,4 +62,6 @@ void addAccessControl(access_control* ac, short unsigned int direction, short un
 void addACL(char* listname, short unsigned int direction, short unsigned int proto, short unsigned int sport, short unsigned int dport, char* saddr, char* daddr, short unsigned int allow);
 unsigned short readACL(char* acl, unsigned short allow);
 
+unsigned short writeFirewall();
+
 #endif

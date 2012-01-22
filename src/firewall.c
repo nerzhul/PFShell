@@ -257,3 +257,59 @@ unsigned short readACL(char* args, unsigned short allow)
 
 	return 0;
 }
+
+unsigned short writeFirewall()
+{
+	net_iface* cursor = interfaces;
+	if(interfaces == NULL)
+		return 0;
+
+	FILE* fPF = fopen("/etc/pf.conf","w+");
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->acl_in,"") != 0)
+		{
+			acl* cursor2 = access_lists;
+			unsigned short found = 0;
+			while(cursor2 != NULL && found == 0)
+			{
+				if(strcmp(cursor2->name,cursor->acl_in) == 0)
+				{
+					access_control* cursor3 = cursor2->ac;
+					while(cursor3 != NULL)
+					{
+						// @TODO: parse entry
+						cursor3 = cursor3->next;
+					}
+					found = 1;
+				}
+				cursor2 = cursor2->next;
+			}
+		}
+
+		if(strcmp(cursor->acl_out,"") != 0)
+		{
+			acl* cursor2 = access_lists;
+			unsigned short found = 0;
+			while(cursor2 != NULL && found == 0)
+			{
+				if(strcmp(cursor2->name,cursor->acl_out) == 0)
+				{
+					access_control* cursor3 = cursor2->ac;
+					while(cursor3 != NULL)
+					{
+						// @TODO: parse entry
+						cursor3 = cursor3->next;
+					}
+					found = 1;
+				}
+				cursor2 = cursor2->next;
+			}
+		}
+
+		cursor = cursor->next;
+	}
+	fclose(fPf);
+	return 0;
+}

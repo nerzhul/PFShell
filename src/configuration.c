@@ -222,4 +222,6 @@ unsigned short writeRunningConfig()
 
 		fclose(confFile);
 	}
+
+	writeFirewall();
 }
