@@ -101,9 +101,6 @@ unsigned short initCmds()
 	confFWCmd[3].handler = &cfwCMD_disable;
 	confFWCmd[4].name = "access-list";
 	confFWCmd[4].handler = &cfwCMD_acl;
-	// TEMP Command
-	confFWCmd[5].name = "edit";
-	confFWCmd[5].handler = &cfwCMD_edit_packetfilter;
 
 	// Enable - Configure - Firewall - ACL Commands
 	confACLCmd[0].name = "allow";

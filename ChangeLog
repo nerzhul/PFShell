@@ -63,5 +63,11 @@ Alpha 0.10
 - Implement Interface -> no description command
 - Refuse Proto on firewall when not TCP,UDP,ICMP (need more support for generic protos later)
 
-Alpha 0.11 - prev
-- Implement writing pf.conf rules
+Alpha 0.11
+- Implement writing pf.conf rules with reloading
+- Due to this, remove editPacketFilter command
+- Reload packet filter only if it's enabled
+- Implement configuration for firewall state. Disable is written, Enable by default
+- Fix malloc warnings on compilation
+- Fix strcmp, strcat warnings on compilation
+- Implement show firewall stats to get stats from PacketFilter

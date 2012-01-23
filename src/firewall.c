@@ -25,7 +25,10 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stddef.h>
+#include <regex.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "command_conf_acl.h"
 #include "firewall.h"
 #include "configuration.h"
@@ -316,7 +319,9 @@ unsigned short writeFirewall()
 							strcat(buffer,bufport);
 						}
 
-						printf("ACL: %s\n",buffer);
+						strcat(buffer,"\n");
+
+						fwrite(buffer,1,strlen(buffer),fPF);
 						cursor3 = cursor3->next;
 					}
 					found = 1;
@@ -372,7 +377,8 @@ unsigned short writeFirewall()
 							strcat(buffer,bufport);
 						}
 
-						printf("ACL: %s\n",buffer);
+						strcat(buffer,"\n");
+						fwrite(buffer,1,strlen(buffer),fPF);
 						cursor3 = cursor3->next;
 					}
 					found = 1;
@@ -383,6 +389,18 @@ unsigned short writeFirewall()
 
 		cursor = cursor->next;
 	}
-	fclose(fPf);
+
+	if(pfpolicies[0] == 0) fwrite("block in\n",1,strlen("block in\n"),fPF);
+	else fwrite("pass in\n",1,strlen("pass in\n"),fPF);
+
+	if(pfpolicies[1] == 0) fwrite("block out\n",1,strlen("block out\n"),fPF);
+	else fwrite("pass out\n",1,strlen("pass out\n"),fPF);
+
+	fclose(fPF);
+
+	// Reload only if firewall is up
+	if(firewallState > 0)
+		hsystemcmd("/sbin/pfctl -f /etc/pf.conf");
+
 	return 0;
 }

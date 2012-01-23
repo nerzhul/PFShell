@@ -67,31 +67,6 @@ void eCMD_show(char* args)
 		{
 			printf("PFShell version %s\n",VERSION);
 		}
-		else if(strcmp(showcmd[0],"interfaces") == 0)
-		{
-			net_iface* iface = interfaces;
-			if(iface == NULL)
-			{
-				CMDEN_SHOW_INTERFACES_NOTFOUND();
-			}
-			else
-			{
-				printf("Running Interfaces:\n");
-				while(iface != NULL)
-				{
-					char buffer[1024] = "";
-					char output[10240] = "";
-
-					strcpy(buffer,"/sbin/ifconfig ");
-					strcat(buffer,iface->name);
-
-					execSystemCommand(buffer,output);
-
-					printf("%s\n",output);
-					iface = iface->next;
-				}
-			}
-		}
 		else if(strcmp(showcmd[0],"acls") == 0)
 		{
 			printf("------------- Current ACLs -------------\n");
@@ -136,6 +111,47 @@ void eCMD_show(char* args)
 				cursor = cursor->next;
 			}
 			if(found == 0) printf("No Access-Lists found !\n");
+		}
+		else if(strcmp(showcmd[0],"firewall") == 0)
+		{
+			char* fwArg[2];
+			cutFirstWord(showcmd[1],fwArg);
+			if(strcmp(fwArg[0],"stats") == 0)
+			{
+				if(strlen(fwArg[1]) > 0)
+				{
+					CMDEN_SHOW_FIREWALL_ERROR();
+				}
+				else
+					system("/sbin/pfctl -si");
+			}
+			else
+				CMDEN_SHOW_FIREWALL_ERROR();
+		}
+		else if(strcmp(showcmd[0],"interfaces") == 0)
+		{
+			net_iface* iface = interfaces;
+			if(iface == NULL)
+			{
+				CMDEN_SHOW_INTERFACES_NOTFOUND();
+			}
+			else
+			{
+				printf("Running Interfaces:\n");
+				while(iface != NULL)
+				{
+					char buffer[1024] = "";
+					char output[10240] = "";
+
+					strcpy(buffer,"/sbin/ifconfig ");
+					strcat(buffer,iface->name);
+
+					execSystemCommand(buffer,output);
+
+					printf("%s\n",output);
+					iface = iface->next;
+				}
+			}
 		}
 		else if(strcmp(showcmd[0],"ip") == 0)
 		{

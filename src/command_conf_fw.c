@@ -126,6 +126,7 @@ void cfwCMD_disable(char* _none)
 
 	if(askConfirm() == 0) {
 		hsystemcmd("/sbin/pfctl -d");
+		firewallState = 0;
 		CMDFW_DISABLE_SUCCESS();
 	}
 }
@@ -138,6 +139,8 @@ void cfwCMD_enable(char* _none)
 	}
 
 	hsystemcmd("/sbin/pfctl -e");
+	hsystemcmd("/sbin/pfctl -f /etc/pf.conf");
+	firewallState = 1;
 	CMDFW_ENABLE_SUCCESS();
 }
 
@@ -154,13 +157,6 @@ void cfwCMD_acl(char* args)
 
 	current_acl = aclname[0];
 	promptMode = PROMPT_CONF_ACL;
-}
-
-void cfwCMD_edit_packetfilter(char* _none)
-{
-	system("vi /etc/pf.conf");
-	hsystemcmd("/sbin/pfctl -f /etc/pf.conf");
-	CMDFW_RELOAD_SUCCESS();
 }
 
 void cfwCMD_show_packetfilter(char* _none)

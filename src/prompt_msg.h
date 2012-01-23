@@ -49,8 +49,9 @@
 #define CMDUSER_ENABLE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   enable\n");
 
 // Enable menu Messages
-#define CMDEN_SHOW_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   show (acls|ip|interfaces|version)\n");
+#define CMDEN_SHOW_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   show (acls|firewall|ip|interfaces|version)\n");
 #define CMDEN_CONFIGURE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   configure (<firewall>)\n");
+#define CMDEN_SHOW_FIREWALL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   show firewall stats\n");
 #define CMDEN_SHOW_IP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   show ip routes\n");
 #define CMDEN_SHOW_INTERFACES_NOTFOUND() PRINTERROR("No hardware interface found !\n");
 #define CMDEN_SAVE_SUCCESS() PRINTSUCCESS("Save done with success !\n");
@@ -85,6 +86,5 @@
 
 // ACL Messages
 #define CMDACL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   <allow|deny> <in|out> <tcp|udp|icmp> <any|A.B.C.D/CIDR> (<port>) <any|A.B.C.D/CIDR> (<port>)\n");
-
 
 #endif

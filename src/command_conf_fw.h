@@ -43,7 +43,6 @@ void cfwCMD_enable(char* _none);
 void cfwCMD_acl(char* args);
 
 // Temp Command
-void cfwCMD_edit_packetfilter(char* _none);
 void cfwCMD_show_packetfilter(char* _none);
 
 #endif

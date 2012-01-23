@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "configuration.h"
+#include "firewall.h"
 #include "interface.h"
 #include "route.h"
 #include "command.h"
@@ -47,6 +48,8 @@ unsigned short loadConfiguration()
 		fclose(confFile);
 		return 1;
 	}
+
+	firewallState = 1;
 
 	pfpolicies[0] = 1;
 	pfpolicies[1] = 1;
@@ -115,6 +118,7 @@ unsigned short writeRunningConfig()
 		}
 		// Firewall
 		fputs("firewall\n",confFile);
+		if(firewallState == 0) fputs("disable\n",confFile);
 		fputs("default input-policy ",confFile);
 		fputs((pfpolicies[0] == 0 ? "deny" : "allow"),confFile);
 		fputs("\n",confFile);

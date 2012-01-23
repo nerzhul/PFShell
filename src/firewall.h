@@ -28,6 +28,8 @@
 #ifndef __FIREWALL_H__
 #define __FIREWALL_H__
 
+unsigned short firewallState;
+
 typedef struct access_control access_control;
 
 #define TCP 0
