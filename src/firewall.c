@@ -289,7 +289,7 @@ unsigned short writeFirewall()
 						if(cursor3->_allow == 1) strcpy(buffer,"pass ");
 						else strcpy(buffer,"block ");
 
-						strcat(buffer,"in on ");
+						strcat(buffer,"in quick on ");
 						strcat(buffer,cursor->name);
 						strcat(buffer," proto ");
 
@@ -347,7 +347,7 @@ unsigned short writeFirewall()
 						if(cursor3->_allow == 1) strcpy(buffer,"pass ");
 						else strcpy(buffer,"block ");
 
-						strcat(buffer,"out on ");
+						strcat(buffer,"out quick on ");
 						strcat(buffer,cursor->name);
 						strcat(buffer," proto ");
 
