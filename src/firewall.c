@@ -179,7 +179,8 @@ unsigned short readACL(char* args, unsigned short allow)
 
 	if(strcmp(nexttab[0],"tcp") == 0) _proto = TCP;
 	else if(strcmp(nexttab[0],"udp") == 0) _proto = UDP;
-	else _proto = ICMP;
+	else if(strcmp(nexttab[0],"icmp") == 0) _proto = ICMP;
+	else return 1;
 
 	strcpy(_nextvar,nexttab[1]);
 	cutFirstWord(_nextvar,nexttab);
@@ -279,7 +280,43 @@ unsigned short writeFirewall()
 					access_control* cursor3 = cursor2->ac;
 					while(cursor3 != NULL)
 					{
-						// @TODO: parse entry
+						// @Todo: optimize rules
+						char buffer[1024];
+
+						if(cursor3->_allow == 1) strcpy(buffer,"pass ");
+						else strcpy(buffer,"block ");
+
+						strcat(buffer,"in on ");
+						strcat(buffer,cursor->name);
+						strcat(buffer," proto ");
+
+						if(cursor3->_proto == TCP) strcat(buffer,"tcp ");
+						else if(cursor3->_proto == UDP) strcat(buffer,"udp ");
+						else if(cursor3->_proto == ICMP) strcat(buffer,"icmp ");
+
+						strcat(buffer,"from ");
+						strcat(buffer,cursor3->_saddr);
+						strcat(buffer," ");
+
+						if(cursor3->_sport != 0)
+						{
+							char bufport[15];
+							sprintf(bufport,"port %d ",cursor3->_sport);
+							strcat(buffer,bufport);
+						}
+
+						strcat(buffer,"to ");
+						strcat(buffer,cursor3->_daddr);
+						strcat(buffer," ");
+
+						if(cursor3->_dport != 0)
+						{
+							char bufport[15];
+							sprintf(bufport,"port %d ",cursor3->_dport);
+							strcat(buffer,bufport);
+						}
+
+						printf("ACL: %s\n",buffer);
 						cursor3 = cursor3->next;
 					}
 					found = 1;
@@ -299,7 +336,43 @@ unsigned short writeFirewall()
 					access_control* cursor3 = cursor2->ac;
 					while(cursor3 != NULL)
 					{
-						// @TODO: parse entry
+						// @Todo: optimize rules
+						char buffer[1024];
+
+						if(cursor3->_allow == 1) strcpy(buffer,"pass ");
+						else strcpy(buffer,"block ");
+
+						strcat(buffer,"out on ");
+						strcat(buffer,cursor->name);
+						strcat(buffer," proto ");
+
+						if(cursor3->_proto == TCP) strcat(buffer,"tcp ");
+						else if(cursor3->_proto == UDP) strcat(buffer,"udp ");
+						else if(cursor3->_proto == ICMP) strcat(buffer,"icmp ");
+
+						strcat(buffer,"from ");
+						strcat(buffer,cursor3->_saddr);
+						strcat(buffer," ");
+
+						if(cursor3->_sport != 0)
+						{
+							char bufport[15];
+							sprintf(bufport,"port %d ",cursor3->_sport);
+							strcat(buffer,bufport);
+						}
+
+						strcat(buffer,"to ");
+						strcat(buffer,cursor3->_daddr);
+						strcat(buffer," ");
+
+						if(cursor3->_dport != 0)
+						{
+							char bufport[15];
+							sprintf(bufport,"port %d ",cursor3->_dport);
+							strcat(buffer,bufport);
+						}
+
+						printf("ACL: %s\n",buffer);
 						cursor3 = cursor3->next;
 					}
 					found = 1;

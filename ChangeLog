@@ -55,9 +55,13 @@ Alpha 0.8
 Alpha 0.9
 - Caught CTRL+C & CTRL+Z signal for return to enable menu
 
-Alpha 0.10 - prev
+Alpha 0.10
 - Use DHClient only when interface is up
 - Save Interface configuration in system when command save is done
 - Implement function to calculate str netmask by cidr
 - Bugfix on Interface <name> -> Description command
 - Implement Interface -> no description command
+- Refuse Proto on firewall when not TCP,UDP,ICMP (need more support for generic protos later)
+
+Alpha 0.11 - prev
+- Implement writing pf.conf rules
