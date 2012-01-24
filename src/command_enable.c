@@ -192,15 +192,20 @@ void eCMD_save(char* _none)
 {
 	// Save PFShell conf
 	system("cp /opt/PFShell/running-config /opt/PFShell/startup-config");
-	hsystemcmd("/bin/md5 /opt/PFShell/startup-config | awk '{print $4}' > /opt/PFShell/startup-config.md5");
-	hsystemcmd("/bin/sha1 /opt/PFShell/startup-config | awk '{print $4}' > /opt/PFShell/startup-config.sha1");
+	system("/bin/md5 /opt/PFShell/startup-config | /usr/bin/awk '{print $4}' > /opt/PFShell/startup-config.md5");
+	system("/bin/sha1 /opt/PFShell/startup-config | /usr/bin/awk '{print $4}' > /opt/PFShell/startup-config.sha1");
+	system("/bin/sha256 /opt/PFShell/startup-config | /usr/bin/awk '{print $4}' > /opt/PFShell/startup-config.sha256");
 	// Save system interface conf
 	saveInterfaces();
 	// Save sysctl vars
 	saveSysctl();
+	system("/bin/md5 /etc/sysctl.conf | /usr/bin/awk '{print $4}' > /etc/sysctl.conf.md5");
+	system("/bin/sha1 /etc/sysctl.conf | /usr/bin/awk '{print $4}' > /etc/sysctl.conf.sha1");
+	system("/bin/sha256 /etc/sysctl.conf | /usr/bin/awk '{print $4}' > /etc/sysctl.conf.sha256");
 	// Save PacketFilter conf
 	system("cp /etc/pf.conf.run /etc/pf.conf");
-	hsystemcmd("/bin/md5 /etc/pf.conf | awk '{print $4}' > /etc/pf.conf.md5");
-	hsystemcmd("/bin/sda1 /etc/pf.conf | awk '{print $4}' > /etc/pf.conf.sha1");
+	system("/bin/md5 /etc/pf.conf | /usr/bin/awk '{print $4}' > /etc/pf.conf.md5");
+	system("/bin/sha1 /etc/pf.conf | /usr/bin/awk '{print $4}' > /etc/pf.conf.sha1");
+	system("/bin/sha256 /etc/pf.conf | /usr/bin/awk '{print $4}' > /etc/pf.conf.sha256");
 	CMDEN_SAVE_SUCCESS();
 }

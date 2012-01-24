@@ -62,4 +62,36 @@ void addRoute(char* ip, char* mask, char* gate)
 
 void saveSysctl()
 {
+	FILE* fSysctl = fopen("/etc/sysctl.conf","w+");
+	if(iprouting > 0)
+	{
+		char ipfw[100] = "net.inet.ip.forwarding=1\n";
+		char ip6fw[100] = "net.inet6.ip6.forwarding=1\n";
+		fwrite(ipfw,1,strlen(ipfw),fSysctl);
+		fwrite(ip6fw,1,strlen(ip6fw),fSysctl);
+	}
+	else
+	{
+		char ipfw[100] = "net.inet.ip.forwarding=0\n";
+		char ip6fw[100] = "net.inet6.ip6.forwarding=0\n";
+		fwrite(ipfw,1,strlen(ipfw),fSysctl);
+		fwrite(ip6fw,1,strlen(ip6fw),fSysctl);
+	}
+
+	if(mcastrouting > 0)
+	{
+		char ipfw[100] = "net.inet.ip.mforwarding=1\n";
+		char ip6fw[100] = "net.inet6.ip6.mforwarding=1\n";
+		fwrite(ipfw,1,strlen(ipfw),fSysctl);
+		fwrite(ip6fw,1,strlen(ip6fw),fSysctl);
+	}
+	else
+	{
+		char ipfw[100] = "net.inet.ip.mforwarding=0\n";
+		char ip6fw[100] = "net.inet6.ip6.mforwarding=0\n";
+		fwrite(ipfw,1,strlen(ipfw),fSysctl);
+		fwrite(ip6fw,1,strlen(ip6fw),fSysctl);
+	}
+
+	fclose(fSysctl);
 }

@@ -75,6 +75,8 @@ unsigned short initCmds()
 	// Enable - Configure Inverted Commands
 	noconfCmd[0].name = "hostname";
 	noconfCmd[0].handler = &cCMD_nohostname;
+	noconfCmd[1].name = "ip";
+	noconfCmd[1].handler = &cCMD_noip;
 
 	// Enable - Configure - Interface Commands
 	confIfCmd[0].name = "exit";

@@ -72,9 +72,10 @@ Alpha 0.11
 - Fix strcmp, strcat warnings on compilation
 - Implement show firewall stats to get stats from PacketFilter
 
-Alpha 0.12 - prev
+Alpha 0.12
 - Added quick keyword for packetFilter to go out of rules tables when match.
-- Added fingerprinting for startup-config and running-config in md5 and sha1
+- Added fingerprinting for startup-config and running-config in md5, sha1 and sha256
 - Implement no hostname <name>
-- Added fingerprinting for pf.conf in md5 and sha1
+- Added fingerprinting for pf.conf in md5, sha1 and sha256
 - PacketFilter configuration is now written into pf.conf.run and copied into pf.conf when saving firewall
+- Save sysctl for mcastrouting and ip routing with fingerprinting
