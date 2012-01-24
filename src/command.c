@@ -40,7 +40,7 @@
 
 unsigned short initCmds()
 {
-	//	User Mode Commands
+	// User Mode Commands
 	userCmd[0].name = "exit";
 	userCmd[0].handler = &uCMD_exit;
 	userCmd[1].name = "enable";
@@ -71,6 +71,10 @@ unsigned short initCmds()
 	confCmd[3].handler = &cCMD_interface;
 	confCmd[4].name = "ip";
 	confCmd[4].handler = &cCMD_ip;
+
+	// Enable - Configure Inverted Commands
+	noconfCmd[0].name = "hostname";
+	noconfCmd[0].handler = &cCMD_nohostname;
 
 	// Enable - Configure - Interface Commands
 	confIfCmd[0].name = "exit";

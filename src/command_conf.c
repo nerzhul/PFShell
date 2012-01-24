@@ -76,6 +76,20 @@ void cCMD_hostname(char* args)
 	}
 }
 
+void cCMD_nohostname(char* args)
+{
+	if(strlen(args) > 1)
+	{
+		char* _hostname[2];
+		cutFirstWord(args,_hostname);
+		if(strlen(_hostname[1]) == 0 && strcmp(_hostname[0],hostname) == 0)
+		{
+			hostname = "PFShell";
+			writeRunningConfig();
+		}
+	}
+}
+
 void cCMD_interface(char* args)
 {
 	if(strlen(args) == 0)

@@ -191,5 +191,7 @@ void eCMD_save(char* _none)
 {
 	system("cp /opt/PFShell/running-config /opt/PFShell/startup-config");
 	saveInterfaces();
+	hsystemcmd("/bin/md5 /opt/PFShell/startup-config | awk '{print $4}' > /opt/PFShell/startup-config.md5");
+	hsystemcmd("/bin/sha1 /opt/PFShell/startup-config | awk '{print $4}' > /opt/PFShell/startup-config.sha1");
 	CMDEN_SAVE_SUCCESS();
 }
