@@ -42,4 +42,6 @@ struct route
 
 void addRoute(char* ip, char* mask, char* gate);
 
+void saveSysctl();
+
 #endif

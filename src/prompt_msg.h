@@ -64,6 +64,9 @@
 #define CMDCONF_FIREWALL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   firewall\n");
 #define CMDCONF_IPROUTE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    ip route A.B.C.D M.A.S.K G.A.T.E\n");
 
+// Configure menu No Messages
+#define CMDCONF_NOIP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   ip <route|routing|multicast-routing>\n");
+
 // Interface Messages
 #define CMDIF_IP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   ip (address) ...\n");
 #define CMDIF_IPADDR_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   ip address A.B.C.D M.A.S.K\n   ip address A.B.C.D/CIDR\n   ip address DHCP\n");

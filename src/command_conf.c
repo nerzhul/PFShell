@@ -228,3 +228,47 @@ void cCMD_ip(char* args)
 	else
 		CMDCONF_IP_ERROR();
 }
+
+void cCMD_noip(char* args)
+{
+	if(strlen(args) == 0)
+	{
+		CMDCONF_NOIP_ERROR();
+		return;
+	}
+
+	char* ipcmd[2];
+	cutFirstWord(args,ipcmd);
+
+	if(strcmp(ipcmd[0],"routing") == 0)
+	{
+		if(strlen(ipcmd[1]) > 0)
+		{
+			CMDCONF_NOIP_ERROR();
+			return;
+		}
+
+		iprouting = 0;
+		hsystemcmd("/usr/sbin/sysctl net.inet.ip.forwarding=0");
+		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.forwarding=0");
+		WRITE_RUN();
+	}
+	else if(strcmp(ipcmd[0],"multicast-routing") == 0)
+	{
+		if(strlen(ipcmd[1]) > 0)
+		{
+			CMDCONF_NOIP_ERROR();
+			return;
+		}
+
+		mcastrouting = 0;
+		hsystemcmd("/usr/sbin/sysctl net.inet.ip.mforwarding=0");
+		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.mforwarding=0");
+		WRITE_RUN();
+	}
+	else if(strcmp(ipcmd[0],"route") == 0)
+	{
+		// @ TODO
+	}
+
+}

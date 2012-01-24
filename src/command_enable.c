@@ -29,6 +29,7 @@
 #include "command_enable.h"
 #include "interface.h"
 #include "prompt_msg.h"
+#include "route.h"
 
 void eCMD_configure(char* args) {
 	if(strlen(args) > 0)
@@ -189,9 +190,17 @@ void eCMD_show(char* args)
 
 void eCMD_save(char* _none)
 {
+	// Save PFShell conf
 	system("cp /opt/PFShell/running-config /opt/PFShell/startup-config");
-	saveInterfaces();
 	hsystemcmd("/bin/md5 /opt/PFShell/startup-config | awk '{print $4}' > /opt/PFShell/startup-config.md5");
 	hsystemcmd("/bin/sha1 /opt/PFShell/startup-config | awk '{print $4}' > /opt/PFShell/startup-config.sha1");
+	// Save system interface conf
+	saveInterfaces();
+	// Save sysctl vars
+	saveSysctl();
+	// Save PacketFilter conf
+	system("cp /etc/pf.conf.run /etc/pf.conf");
+	hsystemcmd("/bin/md5 /etc/pf.conf | awk '{print $4}' > /etc/pf.conf.md5");
+	hsystemcmd("/bin/sda1 /etc/pf.conf | awk '{print $4}' > /etc/pf.conf.sha1");
 	CMDEN_SAVE_SUCCESS();
 }

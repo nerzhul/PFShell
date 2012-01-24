@@ -36,5 +36,6 @@ void cCMD_ip(char* args);
 
 // Inverted commands
 void cCMD_nohostname(char* args);
+void cCMD_noip(char* args);
 
 #endif

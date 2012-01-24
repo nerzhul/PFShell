@@ -59,3 +59,7 @@ void addRoute(char* ip, char* mask, char* gate)
 		cursor->next = newRoute;
 	}
 }
+
+void saveSysctl()
+{
+}

@@ -268,7 +268,7 @@ unsigned short writeFirewall()
 	if(interfaces == NULL)
 		return 0;
 
-	FILE* fPF = fopen("/etc/pf.conf","w+");
+	FILE* fPF = fopen("/etc/pf.conf.run","w+");
 
 	while(cursor != NULL)
 	{
@@ -400,7 +400,7 @@ unsigned short writeFirewall()
 
 	// Reload only if firewall is up
 	if(firewallState > 0)
-		hsystemcmd("/sbin/pfctl -f /etc/pf.conf");
+		hsystemcmd("/sbin/pfctl -f /etc/pf.conf.run");
 
 	return 0;
 }

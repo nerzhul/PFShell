@@ -139,7 +139,7 @@ void cfwCMD_enable(char* _none)
 	}
 
 	hsystemcmd("/sbin/pfctl -e");
-	hsystemcmd("/sbin/pfctl -f /etc/pf.conf");
+	hsystemcmd("/sbin/pfctl -f /etc/pf.conf.run");
 	firewallState = 1;
 	CMDFW_ENABLE_SUCCESS();
 }

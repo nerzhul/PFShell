@@ -76,3 +76,5 @@ Alpha 0.12 - prev
 - Added quick keyword for packetFilter to go out of rules tables when match.
 - Added fingerprinting for startup-config and running-config in md5 and sha1
 - Implement no hostname <name>
+- Added fingerprinting for pf.conf in md5 and sha1
+- PacketFilter configuration is now written into pf.conf.run and copied into pf.conf when saving firewall
