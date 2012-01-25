@@ -79,3 +79,6 @@ Alpha 0.12
 - Added fingerprinting for pf.conf in md5, sha1 and sha256
 - PacketFilter configuration is now written into pf.conf.run and copied into pf.conf when saving firewall
 - Save sysctl for mcastrouting and ip routing with fingerprinting
+
+Alpha 0.13 - prev
+- Some little cleanup
