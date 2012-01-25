@@ -25,23 +25,30 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stdio.h>
+#ifndef __DAEMON_SOCKET_H__
+#define __DAEMON_SOCKET_H__
 
-#include "cli_socket.h"
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
 
-int main(int argc, const char** argv)
-{
-	int sock_error = openShellSocket();
-	if(sock_error == 0)
-	{
-		// Working commands
-	}
-	else if(sock_error == 1)
-		printf("BSDRouter-Shell fail to connect with BSDRouter Daemon. Failed to create socket !\n");
-	else if(sock_error == 2)
-		printf("BSDRouter-Shell fail to connect with BSDRouter Daemon. BSDRouter Daemon not running ?\n");
-	else
-		printf("BSDRouter-Shell fail to connect with BSDRouter Daemon. Unknown error %d\n",sock_error);
-	closeShellSocket();
-	return 0;
-}
+#define INVALID_SOCKET -1
+#define SOCKET_ERROR -1
+#define closesocket(s) close(s)
+typedef int SOCKET;
+
+struct sockaddr_in ssin;
+struct sockaddr_in csin;
+SOCKET ssock;
+SOCKET csock;
+socklen_t csize;
+int serror;
+
+unsigned short openServerSocket();
+unsigned short closeServerSocket();
+void waitAndHandleClients();
+unsigned short sendPacket();
+
+#endif

@@ -25,23 +25,58 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stdio.h>
+#include "daemon_socket.h"
 
-#include "cli_socket.h"
-
-int main(int argc, const char** argv)
+unsigned short openServerSocket()
 {
-	int sock_error = openShellSocket();
-	if(sock_error == 0)
+	ssock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+	if(ssock == INVALID_SOCKET)
+		return 1;
+
+	memset(&ssin, 0, sizeof(ssin));
+
+	ssin.sin_family = AF_INET;
+	ssin.sin_port = htons(12589);
+	ssin.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+	serror = bind(ssock, (struct sockaddr*)&ssin, sizeof(ssin));
+
+	if(serror == SOCKET_ERROR)
 	{
-		// Working commands
+		closeServerSocket();
+		return 2;
 	}
-	else if(sock_error == 1)
-		printf("BSDRouter-Shell fail to connect with BSDRouter Daemon. Failed to create socket !\n");
-	else if(sock_error == 2)
-		printf("BSDRouter-Shell fail to connect with BSDRouter Daemon. BSDRouter Daemon not running ?\n");
-	else
-		printf("BSDRouter-Shell fail to connect with BSDRouter Daemon. Unknown error %d\n",sock_error);
-	closeShellSocket();
+
+	serror = listen(ssock, 5);
+
+	if(serror == SOCKET_ERROR)
+	{
+		closeServerSocket();
+		return 3;
+	}
+
+	return 0;
+}
+
+void waitAndHandleClients()
+{
+	while(1)
+	{
+		if(csock = accept(ssock, (struct sockaddr*)&csin, &csize))
+		{
+		}
+		sleep(50);
+	}
+}
+
+unsigned short closeServerSocket()
+{
+	shutdown(ssock,2);
+	return 0;
+}
+
+unsigned short sendPacket()
+{
 	return 0;
 }

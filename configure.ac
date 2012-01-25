@@ -9,6 +9,7 @@ AC_CHECK_HEADERS([stdio.h])
 
 AC_CONFIG_FILES([
 	Makefile
+	daemon_src/Makefile
 	shell_src/Makefile
 	src/Makefile
 	])

@@ -27,21 +27,23 @@
 
 #include <stdio.h>
 
-#include "cli_socket.h"
+#include "daemon_socket.h"
 
 int main(int argc, const char** argv)
 {
-	int sock_error = openShellSocket();
+	int sock_error = openServerSocket();
 	if(sock_error == 0)
 	{
-		// Working commands
+		waitAndHandleClients();
 	}
 	else if(sock_error == 1)
-		printf("BSDRouter-Shell fail to connect with BSDRouter Daemon. Failed to create socket !\n");
+		printf("[ERROR] BSDRouterd: TCP/IP Stack error\n");
 	else if(sock_error == 2)
-		printf("BSDRouter-Shell fail to connect with BSDRouter Daemon. BSDRouter Daemon not running ?\n");
+		printf("[ERROR] BSDRouterd: unable to bind port... already in use ? (error %d)\n",sock_error);
+	else if(sock_error == 3)
+		printf("[ERROR] BSDRouterd: unable to listen port... already in use (error %d)?\n",sock_error);
 	else
-		printf("BSDRouter-Shell fail to connect with BSDRouter Daemon. Unknown error %d\n",sock_error);
-	closeShellSocket();
+		printf("[ERROR] BSDRouterd: unk error\n");
+	closeServerSocket();
 	return 0;
 }

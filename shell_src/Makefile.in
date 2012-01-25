@@ -44,7 +44,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_BSDRouterShell_OBJECTS = main.$(OBJEXT)
+am_BSDRouterShell_OBJECTS = cli_socket.$(OBJEXT) main.$(OBJEXT)
 BSDRouterShell_OBJECTS = $(am_BSDRouterShell_OBJECTS)
 BSDRouterShell_DEPENDENCIES =
 BSDRouterShell_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
@@ -150,6 +150,8 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -lncurses -lm -std=gnu99
 BSDRouterShell_SOURCES = \
+	cli_socket.c \
+	cli_socket.h \
 	main.c
 
 BSDRouterShell_LDADD = -lm
@@ -235,6 +237,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cli_socket.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 
 .c.o:

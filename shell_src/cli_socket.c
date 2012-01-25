@@ -25,23 +25,30 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stdio.h>
-
 #include "cli_socket.h"
 
-int main(int argc, const char** argv)
+unsigned short openShellSocket()
 {
-	int sock_error = openShellSocket();
-	if(sock_error == 0)
-	{
-		// Working commands
-	}
-	else if(sock_error == 1)
-		printf("BSDRouter-Shell fail to connect with BSDRouter Daemon. Failed to create socket !\n");
-	else if(sock_error == 2)
-		printf("BSDRouter-Shell fail to connect with BSDRouter Daemon. BSDRouter Daemon not running ?\n");
-	else
-		printf("BSDRouter-Shell fail to connect with BSDRouter Daemon. Unknown error %d\n",sock_error);
-	closeShellSocket();
+	csock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if(csock == INVALID_SOCKET)
+		return 1;
+
+	csin.sin_addr.s_addr = inet_addr("127.0.0.1");
+	csin.sin_family = AF_INET;
+	csin.sin_port = htons(12589);
+
+	if(connect(csock, (SOCKADDR*)&csin, sizeof(csin)) == SOCKET_ERROR)
+		return 2;
 	return 0;
+}
+
+unsigned short closeShellSocket()
+{
+	closesocket(csock);
+	return 0;
+}
+
+short unsigned int sendPacket(char* data)
+{
+	return send(csock,data,sizeof(data),0);
 }
