@@ -1,1 +1,1 @@
-SUBDIRS = src
+SUBDIRS = shell_src src
