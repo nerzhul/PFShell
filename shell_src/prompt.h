@@ -25,39 +25,39 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#ifndef __PROMPT_H_
+#define __PROMPT_H_
+
+#include <string.h>
 #include <stdio.h>
-#include "prompt_msg.h"
-#include "command.h"
-#include "configuration.h"
-#include "unix_signal.h"
-#include "iputils.h"
 
-int main(int argc, char** argv)
+#define PROMPT_USER		0
+#define PROMPT_ENABLE		1
+#define PROMPT_CONF		2
+#define PROMPT_CONF_IF		3
+#define PROMPT_CONF_FW		4
+#define PROMPT_CONF_RD		5
+#define PROMPT_CONF_ACL 	6
+#define MAX_PROMPTS		7
+
+unsigned int initPrompts();
+void prompt();
+
+void promptU();
+void promptE();
+void promptC();
+void promptCIf();
+void promptCFW();
+void promptCRD();
+void promptCACL();
+
+typedef struct prompt
 {
-	if(!initCmds() || /*!initPrompts() ||*/ initSignals() != 0)
-	{
-		CMDMAIN_INIT_FAIL();
-		return -1;
-	}
+	void (*action)();
+} prompts;
 
-	promptMode = PROMPT_CONF;
+prompts promptTable[MAX_PROMPTS];
 
-	if(!loadConfiguration())
-	{
-		CMDMAIN_CONFINIT_FAIL();
-		//@TODO: load a default configuration
-		return -1;
-	}
+unsigned int promptMode;
 
-	promptMode = PROMPT_USER;
-
-	printf("Type help to see the commands.\n");
-	prompt();
-
-	while(1)
-	{
-		handleCmd(readCmd());
-		prompt();
-	}
-	return 0;
-}
+#endif

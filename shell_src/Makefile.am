@@ -5,7 +5,13 @@ AM_CPPFLAGS = -lncurses -lm -std=gnu99
 BSDRouterShell_SOURCES = \
 	cli_socket.c \
 	cli_socket.h \
-	main.c
+	command.c \
+	command.h \
+	configuration.h \
+	main.c \
+	prompt.c \
+	prompt.h
+
 
 BSDRouterShell_LDADD = -lm
 

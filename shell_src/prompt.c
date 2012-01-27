@@ -25,39 +25,42 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stdio.h>
-#include "prompt_msg.h"
-#include "command.h"
+#include "prompt.h"
+
 #include "configuration.h"
-#include "unix_signal.h"
-#include "iputils.h"
 
-int main(int argc, char** argv)
+unsigned int initPrompts()
 {
-	if(!initCmds() || /*!initPrompts() ||*/ initSignals() != 0)
-	{
-		CMDMAIN_INIT_FAIL();
-		return -1;
-	}
-
-	promptMode = PROMPT_CONF;
-
-	if(!loadConfiguration())
-	{
-		CMDMAIN_CONFINIT_FAIL();
-		//@TODO: load a default configuration
-		return -1;
-	}
-
+	// Set default mode to usermode
 	promptMode = PROMPT_USER;
 
-	printf("Type help to see the commands.\n");
-	prompt();
+	promptTable[0].action = &promptU;
+	promptTable[1].action = &promptE;
+	promptTable[2].action = &promptC;
+	promptTable[3].action = &promptCIf;
+	promptTable[4].action = &promptCFW;
+	promptTable[5].action = &promptCRD;
+	promptTable[6].action = &promptCACL;
 
-	while(1)
-	{
-		handleCmd(readCmd());
-		prompt();
-	}
-	return 0;
+	return 1;
 }
+
+void prompt()
+{
+	(*promptTable[promptMode].action)();
+}
+
+// User prompt
+void promptU() { printf("%s> ",hostname); }
+// Enable prompt
+void promptE() { printf("%s# ",hostname); }
+// Configure prompt
+void promptC() { printf("%s(conf)# ",hostname);}
+// Configure prompt for Network Interfaces
+void promptCIf() { printf("%s(conf-iface)# ",hostname);}
+// Configure prompt for Firewall
+void promptCFW() { printf("%s(conf-fw)# ",hostname); }
+// Configure prompt for CARP redundancy
+void promptCRD() { printf("%s(conf-redundancy)# ",hostname);}
+// Configure prompt for ACLs
+void promptCACL() { printf("%s(conf-acl)# ",hostname);}

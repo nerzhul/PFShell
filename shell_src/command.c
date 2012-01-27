@@ -26,38 +26,33 @@
 */
 
 #include <stdio.h>
-#include "prompt_msg.h"
+
 #include "command.h"
-#include "configuration.h"
-#include "unix_signal.h"
-#include "iputils.h"
 
-int main(int argc, char** argv)
+char* readCmd()
 {
-	if(!initCmds() || /*!initPrompts() ||*/ initSignals() != 0)
+	char buffer[1024];
+	char* cmd;
+	char tmpchar;
+	short offset = 0;
+	do
 	{
-		CMDMAIN_INIT_FAIL();
-		return -1;
-	}
+		tmpchar = getchar();
+		buffer[offset] = tmpchar;
+		++offset;
+		// @ TODO: handle \t
+	} while(offset < 1023 && tmpchar != '\n' && tmpchar != '\0');
 
-	promptMode = PROMPT_CONF;
+	cmd = (char*) malloc((offset)*sizeof(char));
 
-	if(!loadConfiguration())
+	--offset;
+	cmd[offset] = '\0';
+	--offset;
+
+	while(offset >= 0)
 	{
-		CMDMAIN_CONFINIT_FAIL();
-		//@TODO: load a default configuration
-		return -1;
+		cmd[offset] = buffer[offset];
+		--offset;
 	}
-
-	promptMode = PROMPT_USER;
-
-	printf("Type help to see the commands.\n");
-	prompt();
-
-	while(1)
-	{
-		handleCmd(readCmd());
-		prompt();
-	}
-	return 0;
+	return cmd;
 }

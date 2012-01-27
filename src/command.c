@@ -141,7 +141,7 @@ unsigned short initCmds()
 
 // read only 1024 chars for this moment
 // maybe we read less chars in the future
-char* readCmd()
+/*char* readCmd()
 {
 	char buffer[1024];
 	char* cmd;
@@ -167,7 +167,7 @@ char* readCmd()
 		--offset;
 	}
 	return cmd;
-}
+}*/
 
 void handleCmd(char* _fullcmd)
 {

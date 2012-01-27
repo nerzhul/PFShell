@@ -28,7 +28,7 @@
 #include "prompt.h"
 #include "configuration.h"
 
-unsigned int initPrompts()
+/*unsigned int initPrompts()
 {
 	// Set default mode to usermode
 	promptMode = PROMPT_USER;
@@ -63,7 +63,7 @@ void promptCFW() { printf("%s(conf-fw)# ",hostname); }
 void promptCRD() { printf("%s(conf-redundancy)# ",hostname);}
 // Configure prompt for ACLs
 void promptCACL() { printf("%s(conf-acl)# ",hostname);}
-
+*/
 void printError(char* str, ...)
 {
 	va_list args;

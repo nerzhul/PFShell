@@ -25,16 +25,32 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stdio.h>
-
 #include "cli_socket.h"
+#include "command.h"
+#include "configuration.h"
+#include "prompt.h"
 
 int main(int argc, const char** argv)
 {
+	// Set default hostname
+	hostname = "BSDRouter";
+
+	// @ TODO: load hostname from BSDRouterd
+
 	int sock_error = openShellSocket();
 	if(sock_error == 0)
 	{
-		// Working commands
+		promptMode = PROMPT_USER;
+
+		printf("Type help to see the commands.\n");
+		prompt();
+
+		while(1)
+		{
+			sendPacket(readCmd());
+			// @ TODO: receive and handle the callback
+			prompt();
+		}
 	}
 	else if(sock_error == 1)
 		printf("BSDRouter-Shell fail to connect with BSDRouter Daemon. Failed to create socket !\n");

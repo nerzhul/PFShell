@@ -100,7 +100,7 @@ cmdHdlr* masternoCmd[MAX_CMD_TYPES];
 
 unsigned short initCmds();
 
-char* readCmd();
+//char* readCmd();
 
 void cutFirstWord(char*,char**);
 void cutByChar(char*, char**, char cutter);

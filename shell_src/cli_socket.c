@@ -48,7 +48,9 @@ unsigned short closeShellSocket()
 	return 0;
 }
 
-short unsigned int sendPacket(char* data)
+unsigned short sendPacket(char* data)
 {
 	return send(csock,data,sizeof(data),0);
 }
+
+
