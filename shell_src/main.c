@@ -58,11 +58,11 @@ int main(int argc, const char** argv)
 			{
 				char buffer[4096];
 				int recvsize = recv(csock,buffer,4096,0);
-				printf("recvsize %d\n",recvsize);
 				if(recvsize == 0 || recvsize < 1)
 				{
+					printf("Broken pipe. Exiting shell\n");
 					shutdown(csock,SHUT_RDWR);
-					return;
+					return 0;
 				}
 				else
 					decodePacket(buffer);

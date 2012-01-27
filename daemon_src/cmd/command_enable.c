@@ -73,52 +73,65 @@ cmdCallback eCMD_show(char* args)
 		cutFirstWord(args,showcmd);
 		if(strcmp(showcmd[0],"version") == 0)
 		{
-			printf("PFShell version %s\n",VERSION);
+			sprintf(cb.message,"PFShell version %s\n",VERSION);
 		}
 		else if(strcmp(showcmd[0],"acls") == 0)
 		{
-			printf("------------- Current ACLs -------------\n");
+			char buffer[4000];
+			strcat(buffer,"------------- Current ACLs -------------\n");
 			unsigned short found = 0;
 			acl* cursor = access_lists;
 			while(cursor != NULL)
 			{
-				printf("Access-List %s\n",cursor->name);
+				char buffer2[1000];
+				sprintf(buffer2,"Access-List %s\n",cursor->name);
+				strcat(buffer,buffer2);
 				access_control* cursor2 = cursor->ac;
 				while(cursor2 != NULL)
 				{
 					found = 1;
-					putchar(' ');
+					strcat(buffer," ");
 					if(cursor2->_allow == 0)
-						printf("deny ");
+						strcat(buffer,"deny ");
 					else
-						printf("allow ");
+						strcat(buffer,"allow ");
 
 					if(cursor2->_direction == 0)
-						printf("in ");
+						strcat(buffer,"in ");
 					else
-						printf("out ");
+						strcat(buffer,"out ");
 
 					if(cursor2->_proto == 0)
-						printf("tcp ");
+						strcat(buffer,"tcp ");
 					else if(cursor2->_proto == 1)
-						printf("udp ");
+						strcat(buffer,"udp ");
 					else
-						printf("icmp ");
+						strcat(buffer,"icmp ");
 
-					printf("%s ",cursor2->_saddr);
+					sprintf(buffer2,"%s ",cursor2->_saddr);
+					strcat(buffer,buffer2);
 					if(cursor2->_sport > 0)
-						printf("%d ",cursor2->_sport);
+					{
+						sprintf(buffer2,"%d ",cursor2->_sport);
+						strcat(buffer,buffer2);
+					}
 
-					printf("%s ",cursor2->_daddr);
+					sprintf(buffer2,"%s ",cursor2->_daddr);
+					strcat(buffer,buffer2);
 					if(cursor2->_dport > 0)
-						printf("%d",cursor2->_dport);
-					printf("\n");
+					{
+						sprintf(buffer2,"%d",cursor2->_dport);
+						strcat(buffer,buffer2);
+					}
+					strcat(buffer,"\n");
 					cursor2 = cursor2->next;
 				}
-				putchar('\n');
+				strcat(buffer,"\n");
 				cursor = cursor->next;
 			}
-			if(found == 0) printf("No Access-Lists found !\n");
+			if(found == 0) strcat(buffer,"No Access-Lists found !\n");
+
+			cb.message = buffer;
 		}
 		else if(strcmp(showcmd[0],"firewall") == 0)
 		{
@@ -131,7 +144,11 @@ cmdCallback eCMD_show(char* args)
 					cb.message = CMDEN_SHOW_FIREWALL_ERROR();
 				}
 				else
-					system("/sbin/pfctl -si");
+				{
+					char buffer[4000];
+					execSystemCommand("/sbin/pfctl -si",buffer);
+					cb.message = buffer;
+				}
 			}
 			else
 				cb.message = CMDEN_SHOW_FIREWALL_ERROR();
@@ -145,20 +162,23 @@ cmdCallback eCMD_show(char* args)
 			}
 			else
 			{
-				printf("Running Interfaces:\n");
+				char pbuffer[4000];
+				strcpy(pbuffer,"Running Interfaces:\n");
 				while(iface != NULL)
 				{
 					char buffer[1024] = "";
-					char output[10240] = "";
+					char output[3900] = "";
 
 					strcpy(buffer,"/sbin/ifconfig ");
 					strcat(buffer,iface->name);
 
 					execSystemCommand(buffer,output);
 
-					printf("%s\n",output);
+					strcat(pbuffer,output);
+					strcat(pbuffer,"\n");
 					iface = iface->next;
 				}
+				cb.message = pbuffer;
 			}
 		}
 		else if(strcmp(showcmd[0],"ip") == 0)
@@ -170,23 +190,22 @@ cmdCallback eCMD_show(char* args)
 			{
 				char output[10240] = "";
 				execSystemCommand("netstat -rn -f inet",output);
-				printf("\n-------------------------------------------------------------------\n");
-				printf("%s-------------------------------------------------------------------\n",output);
+				cb.message = output;
 			}
 			else
-				CMDEN_SHOW_IP_ERROR();
+				cb.message = CMDEN_SHOW_IP_ERROR();
 		}
 		else if(strcmp(showcmd[0],"running-config") == 0)
 		{
 			char output[10240] = "";
 			execSystemCommand("cat /opt/PFShell/running-config",output);
-			printf("\n%s\n",output);
+			cb.message = output;
 		}
 		else if(strcmp(showcmd[0],"startup-config") == 0)
 		{
 			char output[10240] = "";
 			execSystemCommand("cat /opt/PFShell/startup-config",output);
-			printf("\n%s\n",output);
+			cb.message = output;
 		}
 		else
 		{

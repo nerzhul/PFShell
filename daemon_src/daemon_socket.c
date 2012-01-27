@@ -71,14 +71,15 @@ void waitAndHandleClients()
 		// @TODO: thread this
 		if(csock = accept(ssock, (struct sockaddr*)&csin, &csize))
 		{
-			while(1)
+			unsigned short closeSock = 0;
+			while(closeSock == 0)
 			{
 				char buffer[4096];
 				int recvsize = recv(csock,buffer,4096,0);
 				if(recvsize == 0 || recvsize < 1)
 				{
 					shutdown(csock,SHUT_RDWR);
-					return;
+					closeSock = 1;
 				}
 				else
 					decodePacket(buffer);
@@ -108,14 +109,13 @@ void decodePacket(char* pkt)
 		++offset;
 	}
 
-	command[offset] = '\0';
+	command[strlen(pkt)-1] = '\0';
 
 	if(promptMode < MAX_PROMPTS)
 	{
 		cmdCallback cb = handleCmd(command,promptMode);
 		char sendBuffer[4096];
 		sprintf(sendBuffer,"%d%s",cb.promptMode,cb.message);
-		//printf("sendBuffer %s\n",sendBuffer);
 		sendPacket(sendBuffer);
 	}
 }

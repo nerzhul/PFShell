@@ -73,7 +73,10 @@ void decodePacket(char* pkt)
 
 	if(promptMode < MAX_PROMPTS)
 	{
-		printf("%s\n",command);
+		printf("%s",command);
+		fflush(stdout);
+		if(strcmp(command,"Bye !\n") == 0)
+			exit(0);
 	}
 }
 

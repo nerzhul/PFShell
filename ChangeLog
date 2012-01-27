@@ -85,3 +85,4 @@ Alpha 0.13
 - Create daemon and client sources. Split files between the two things
 - Added callback for commands
 - Bugfix for send command
+- Proper flush for stdout before printing the prompt

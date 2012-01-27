@@ -47,6 +47,7 @@ unsigned int initPrompts()
 
 void prompt()
 {
+	fflush(stdout);
 	(*promptTable[promptMode].action)();
 }
 

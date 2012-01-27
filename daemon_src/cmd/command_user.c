@@ -39,7 +39,7 @@ cmdCallback uCMD_enable(char* _none)
 		return cb;
 	}
 	//  @ TODO
-	printf("Password: \n");
+	//printf("Password: \n");
 
 	cb.promptMode = PROMPT_ENABLE;
 	return cb;
@@ -54,7 +54,7 @@ cmdCallback uCMD_exit(char* _none)
 		return cb;
 	}
 
-	printf("Bye !\n");
+	cb.message = "Bye !\n";
 	return cb;
 }
 
