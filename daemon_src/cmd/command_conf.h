@@ -28,14 +28,16 @@
 #ifndef __COMMAND_CONF_H__
 #define __COMMAND_CONF_H__
 
-void cCMD_exit(char* _none);
-void cCMD_firewall(char* _none);
-void cCMD_hostname(char* args);
-void cCMD_interface(char* args);
-void cCMD_ip(char* args);
+#include "command.h"
+
+cmdCallback cCMD_exit(char* _none);
+cmdCallback cCMD_firewall(char* _none);
+cmdCallback cCMD_hostname(char* args);
+cmdCallback cCMD_interface(char* args);
+cmdCallback cCMD_ip(char* args);
 
 // Inverted commands
-void cCMD_nohostname(char* args);
-void cCMD_noip(char* args);
+cmdCallback cCMD_nohostname(char* args);
+cmdCallback cCMD_noip(char* args);
 
 #endif

@@ -28,113 +28,87 @@
 #include "prompt.h"
 #include "configuration.h"
 
-/*unsigned int initPrompts()
+char* printError(char* str, ...)
 {
-	// Set default mode to usermode
-	promptMode = PROMPT_USER;
-
-	promptTable[0].action = &promptU;
-	promptTable[1].action = &promptE;
-	promptTable[2].action = &promptC;
-	promptTable[3].action = &promptCIf;
-	promptTable[4].action = &promptCFW;
-	promptTable[5].action = &promptCRD;
-	promptTable[6].action = &promptCACL;
-
-	return 1;
-}
-
-void prompt()
-{
-	(*promptTable[promptMode].action)();
-}
-
-// User prompt
-void promptU() { printf("%s> ",hostname); }
-// Enable prompt
-void promptE() { printf("%s# ",hostname); }
-// Configure prompt
-void promptC() { printf("%s(conf)# ",hostname);}
-// Configure prompt for Network Interfaces
-void promptCIf() { printf("%s(conf-iface)# ",hostname);}
-// Configure prompt for Firewall
-void promptCFW() { printf("%s(conf-fw)# ",hostname); }
-// Configure prompt for CARP redundancy
-void promptCRD() { printf("%s(conf-redundancy)# ",hostname);}
-// Configure prompt for ACLs
-void promptCACL() { printf("%s(conf-acl)# ",hostname);}
-*/
-void printError(char* str, ...)
-{
+	char buffer[4094];
+	char buffer2[4094];
 	va_list args;
-    va_start(args, str);
+	va_start(args, str);
 
-    setPromptColor(0,RED);
-    vprintf(str, args);
-    resetPromptColor(0);
+	strcpy(buffer,setPromptColor(0,RED));
+	sprintf(buffer2,str, args);
+	strcat(buffer,buffer2);
+	strcat(buffer,resetPromptColor(0));
 
-    va_end(args);
+	va_end(args);
 }
 
-void printSuccess(char* str, ...)
+char* printSuccess(char* str, ...)
 {
+	char buffer[4094];
+	char buffer2[4094];
 	va_list args;
-    va_start(args, str);
+	va_start(args, str);
 
-    setPromptColor(0,GREEN);
-    vprintf(str, args);
-    resetPromptColor(0);
+	strcpy(buffer,setPromptColor(0,GREEN));
+	sprintf(buffer2,str, args);
+	strcat(buffer,buffer2);
+	strcat(buffer,resetPromptColor(0));
 
-    va_end(args);
+	va_end(args);
 }
 
-void setPromptColor(short stdout_stream, short color)
+char* setPromptColor(short stdout_stream, short color)
 {
-    enum ANSITextAttr
-    {
-        TA_NORMAL=0,
-        TA_BOLD=1,
-        TA_BLINK=5,
-        TA_REVERSE=7
-    };
+	char buffer[100];
+	enum ANSITextAttr
+	{
+		TA_NORMAL=0,
+		TA_BOLD=1,
+		TA_BLINK=5,
+		TA_REVERSE=7
+		};
 
-    enum ANSIFgTextAttr
-    {
-        FG_BLACK=30, FG_RED,  FG_GREEN, FG_BROWN, FG_BLUE,
-        FG_MAGENTA,  FG_CYAN, FG_WHITE, FG_YELLOW
-    };
+	enum ANSIFgTextAttr
+	{
+		FG_BLACK=30, FG_RED,  FG_GREEN, FG_BROWN, FG_BLUE,
+		FG_MAGENTA,  FG_CYAN, FG_WHITE, FG_YELLOW
+	};
 
-    enum ANSIBgTextAttr
-    {
-        BG_BLACK=40, BG_RED,  BG_GREEN, BG_BROWN, BG_BLUE,
-        BG_MAGENTA,  BG_CYAN, BG_WHITE
-    };
+	enum ANSIBgTextAttr
+	{
+		BG_BLACK=40, BG_RED,  BG_GREEN, BG_BROWN, BG_BLUE,
+		BG_MAGENTA,  BG_CYAN, BG_WHITE
+	};
 
-    static unsigned int UnixColorFG[MAX_COLORS] =
-    {
-        FG_BLACK,                                           // BLACK
-        FG_RED,                                             // RED
-        FG_GREEN,                                           // GREEN
-        FG_BROWN,                                           // BROWN
-        FG_BLUE,                                            // BLUE
-        FG_MAGENTA,                                         // MAGENTA
-        FG_CYAN,                                            // CYAN
-        FG_WHITE,                                           // WHITE
-        FG_YELLOW,                                          // YELLOW
-        FG_RED,                                             // LRED
-        FG_GREEN,                                           // LGREEN
-        FG_BLUE,                                            // LBLUE
-        FG_MAGENTA,                                         // LMAGENTA
-        FG_CYAN,                                            // LCYAN
-        FG_WHITE                                            // LWHITE
-    };
+	static unsigned int UnixColorFG[MAX_COLORS] =
+	{
+		FG_BLACK,                                           // BLACK
+		FG_RED,                                             // RED
+		FG_GREEN,                                           // GREEN
+		FG_BROWN,                                           // BROWN
+		FG_BLUE,                                            // BLUE
+		FG_MAGENTA,                                         // MAGENTA
+		FG_CYAN,                                            // CYAN
+		FG_WHITE,                                           // WHITE
+		FG_YELLOW,                                          // YELLOW
+		FG_RED,                                             // LRED
+		FG_GREEN,                                           // LGREEN
+		FG_BLUE,                                            // LBLUE
+		FG_MAGENTA,                                         // LMAGENTA
+		FG_CYAN,                                            // LCYAN
+		FG_WHITE                                            // LWHITE
+	};
 
-    fprintf((stdout_stream? stdout : stderr), "\x1b[%d%sm",UnixColorFG[color],(color>=YELLOW&&color<MAX_COLORS ?";1":""));
+	sprintf(buffer,"\x1b[%d%sm",UnixColorFG[color],(color>=YELLOW&&color<MAX_COLORS ?";1":""));
+	return buffer;
 }
 
-void resetPromptColor(short stdout_stream)
+char* resetPromptColor(short stdout_stream)
 {
-    fprintf(( stdout_stream ? stdout : stderr ), "\x1b[0m");
+	char buffer[100];
+	sprintf(buffer, "\x1b[0m");
+	return buffer;
 }
 
 unsigned short askConfirm() {

@@ -28,21 +28,23 @@
 #ifndef __COMMAND_CONF_FW_H__
 #define __COMMAND_CONF_FW_H__
 
-void cfwCMD_exit(char* _none);
+#include "command.h"
+
+cmdCallback cfwCMD_exit(char* _none);
 
 // Default policies
-void cfwCMD_default(char* args);
-void cfwCMD_default_input(char* args);
-void cfwCMD_default_output(char* args);
+cmdCallback cfwCMD_default(char* args);
+cmdCallback cfwCMD_default_input(char* args);
+cmdCallback cfwCMD_default_output(char* args);
 
 // Enable & Disable firewall
-void cfwCMD_disable(char* _none);
-void cfwCMD_enable(char* _none);
+cmdCallback cfwCMD_disable(char* _none);
+cmdCallback cfwCMD_enable(char* _none);
 
 // ACLs
-void cfwCMD_acl(char* args);
+cmdCallback cfwCMD_acl(char* args);
 
 // Temp Command
-void cfwCMD_show_packetfilter(char* _none);
+cmdCallback cfwCMD_show_packetfilter(char* _none);
 
 #endif

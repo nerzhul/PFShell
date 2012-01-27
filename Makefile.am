@@ -1,1 +1,1 @@
-SUBDIRS = daemon_src shell_src src
+SUBDIRS = daemon_src shell_src

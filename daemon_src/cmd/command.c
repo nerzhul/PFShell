@@ -139,7 +139,7 @@ unsigned short initCmds()
 	return 1;
 }
 
-void handleCmd(char* _fullcmd)
+cmdCallback handleCmd(char* _fullcmd, unsigned short promptMode)
 {
 	unsigned int i;
 	i = 0;
@@ -158,9 +158,7 @@ void handleCmd(char* _fullcmd)
 		{
 			if(strcmp(nocmd[0],masternoCmd[promptMode][i].name) == 0)
 			{
-				(*masternoCmd[promptMode][i].handler)(nocmd[1]);
-				// Bad thing but improve performance code
-				return;
+				return (*masternoCmd[promptMode][i].handler)(nocmd[1]);
 			}
 			++i;
 		}
@@ -171,9 +169,7 @@ void handleCmd(char* _fullcmd)
 		{
 			if(strcmp(cmd[0],masterCmd[promptMode][i].name) == 0)
 			{
-				(*masterCmd[promptMode][i].handler)(cmd[1]);
-				// Bad thing but improve performance code
-				return;
+				return (*masterCmd[promptMode][i].handler)(cmd[1]);
 			}
 			++i;
 		}

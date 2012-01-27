@@ -28,9 +28,11 @@
 #ifndef __COMMAND_USER_H__
 #define __COMMAND_USER_H__
 
-void uCMD_enable(char* _none);
-void uCMD_exit(char* _none);
-void uCMD_help(char* _none);
-void uCMD_show(char* args);
+#include "command.h"
+
+cmdCallback uCMD_enable(char* _none);
+cmdCallback uCMD_exit(char* _none);
+cmdCallback uCMD_help(char* _none);
+cmdCallback uCMD_show(char* args);
 
 #endif

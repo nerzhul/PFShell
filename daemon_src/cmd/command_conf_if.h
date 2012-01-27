@@ -28,24 +28,26 @@
 #ifndef __COMMAND_CONF_IF_H__
 #define __COMMAND_CONF_IF_H__
 
+#include "command.h"
+
 char* current_iface;
 
-void cifCMD_exit(char* _none);
+cmdCallback cifCMD_exit(char* _none);
 
 // IP management
-void cifCMD_ip(char* args);
-void cifCMD_ip_address(char* args);
-void cifCMD_noip_address(char* args);
+cmdCallback cifCMD_ip(char* args);
+cmdCallback cifCMD_ip_address(char* args);
+cmdCallback cifCMD_noip_address(char* args);
 
 // ACLS
-void cifCMD_access_list(char* args);
+cmdCallback cifCMD_access_list(char* args);
 
 // Interface Mgmt
-void cifCMD_shutdown(char* _none);
-void cifCMD_noshutdown(char* _none);
+cmdCallback cifCMD_shutdown(char* _none);
+cmdCallback cifCMD_noshutdown(char* _none);
 
 // Misc
-void cifCMD_description(char* args);
-void cifCMD_nodescription(char* args);
+cmdCallback cifCMD_description(char* args);
+cmdCallback cifCMD_nodescription(char* args);
 
 #endif

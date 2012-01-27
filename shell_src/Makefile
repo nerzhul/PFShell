@@ -75,7 +75,7 @@ CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
-DEFS = -DPACKAGE_NAME=\"PFShell\" -DPACKAGE_TARNAME=\"pfshell\" -DPACKAGE_VERSION=\"alpha\ 0.12\" -DPACKAGE_STRING=\"PFShell\ alpha\ 0.12\" -DPACKAGE_BUGREPORT=\"loic.blot@frostsapphirestudios.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"pfshell\" -DVERSION=\"alpha\ 0.12\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STDIO_H=1
+DEFS = -DPACKAGE_NAME=\"PFShell\" -DPACKAGE_TARNAME=\"pfshell\" -DPACKAGE_VERSION=\"alpha\ 0.13\" -DPACKAGE_STRING=\"PFShell\ alpha\ 0.13\" -DPACKAGE_BUGREPORT=\"loic.blot@frostsapphirestudios.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"pfshell\" -DVERSION=\"alpha\ 0.13\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STDIO_H=1
 DEPDIR = .deps
 ECHO_C = 
 ECHO_N = -n
@@ -98,15 +98,15 @@ OBJEXT = o
 PACKAGE = pfshell
 PACKAGE_BUGREPORT = loic.blot@frostsapphirestudios.com
 PACKAGE_NAME = PFShell
-PACKAGE_STRING = PFShell alpha 0.12
+PACKAGE_STRING = PFShell alpha 0.13
 PACKAGE_TARNAME = pfshell
 PACKAGE_URL = 
-PACKAGE_VERSION = alpha 0.12
+PACKAGE_VERSION = alpha 0.13
 PATH_SEPARATOR = :
 SET_MAKE = 
 SHELL = /bin/bash
 STRIP = 
-VERSION = alpha 0.12
+VERSION = alpha 0.13
 abs_builddir = /home/nerzhul/Desktop/dev/PFShell/shell_src
 abs_srcdir = /home/nerzhul/Desktop/dev/PFShell/shell_src
 abs_top_builddir = /home/nerzhul/Desktop/dev/PFShell

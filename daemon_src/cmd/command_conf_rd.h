@@ -25,4 +25,11 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-void crdCMD_exit(char* _none);
+#ifndef __COMMAND_CONF_RD_H__
+#define __COMMAND_CONF_RD_H__
+
+#include "command.h"
+
+cmdCallback crdCMD_exit(char* _none);
+
+#endif

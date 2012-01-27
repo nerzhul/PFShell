@@ -28,9 +28,11 @@
 #ifndef __COMMAND_ENABLE_H__
 #define __COMMAND_ENABLE_H__
 
-void eCMD_configure(char* args);
-void eCMD_exit(char* _none);
-void eCMD_save(char* _none);
-void eCMD_show(char* args);
+#include "command.h"
+
+cmdCallback eCMD_configure(char* args);
+cmdCallback eCMD_exit(char* _none);
+cmdCallback eCMD_save(char* _none);
+cmdCallback eCMD_show(char* args);
 
 #endif

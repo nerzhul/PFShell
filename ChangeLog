@@ -80,5 +80,7 @@ Alpha 0.12
 - PacketFilter configuration is now written into pf.conf.run and copied into pf.conf when saving firewall
 - Save sysctl for mcastrouting and ip routing with fingerprinting
 
-Alpha 0.13 - prev
+Alpha 0.13
 - Some little cleanup
+- Create daemon and client sources. Split files between the two things
+- Added callback for commands

@@ -30,10 +30,16 @@
 
 #define CMD_ASKCONFIRM() askConfirm();
 
+typedef struct cmdCallback
+{
+	unsigned short promptMode;
+	char* message;
+} cmdCallback;
+
 typedef struct commandHandler
 {
 	const char* name;
-	void (*handler)(char* otherArgs);
+	cmdCallback (*handler)(char* otherArgs);
 } cmdHdlr;
 
 #define MAX_CMD_TYPES	7
@@ -88,6 +94,7 @@ static const unsigned short MAX_NO_CMDS[MAX_CMD_TYPES] =
 	MAX_CONF_ACL_NO_CMD
 };
 
+
 cmdHdlr nouserCmd[MAX_USER_NO_CMD];
 cmdHdlr noenableCmd[MAX_ENABLE_NO_CMD];
 cmdHdlr noconfCmd[MAX_CONF_NO_CMD];
@@ -103,7 +110,7 @@ unsigned short initCmds();
 void cutFirstWord(char*,char**);
 void cutByChar(char*, char**, char cutter);
 
-void handleCmd(char* _cmd);
+cmdCallback handleCmd(char* _cmd, unsigned short promptMode);
 
 unsigned short regexp(char* str, char* pattern);
 

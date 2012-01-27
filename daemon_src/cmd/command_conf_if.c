@@ -28,43 +28,48 @@
 #include <stdlib.h>
 #include "command.h"
 #include "command_conf_if.h"
-#include "firewall.h"
-#include "configuration.h"
-#include "interface.h"
-#include "prompt_msg.h"
-#include "iputils.h"
+#include "../firewall.h"
+#include "../configuration.h"
+#include "../interface.h"
+#include "../prompt/prompt_msg.h"
+#include "../iputils.h"
 
-void cifCMD_exit(char* _none)
+cmdCallback cifCMD_exit(char* _none)
 {
+	cmdCallback cb = {PROMPT_CONF_IF,""};
 	if(strlen(_none) > 0)
 	{
-		CMDCOMMON_EXIT_ERROR();
+		cb.message = CMDCOMMON_EXIT_ERROR();
 	}
 	else
 	{
-		promptMode = PROMPT_CONF;
+		cb.promptMode = PROMPT_CONF;
 		current_iface = "";
 	}
+	return cb;
 }
 
-void cifCMD_ip(char* args)
+cmdCallback cifCMD_ip(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF_IF,""};
 	char* iface[2];
 	cutFirstWord(args,iface);
 	if(strcmp(iface[0],"address") == 0)
-		cifCMD_ip_address(iface[1]);
+		return cifCMD_ip_address(iface[1]);
 	else if(strcmp(iface[0],"access-group") == 0)
-		cifCMD_access_list(iface[1]);
+		return cifCMD_access_list(iface[1]);
 	else
-		CMDIF_IP_ERROR();
+		cb.message = CMDIF_IP_ERROR();
+	return cb;
 }
 
-void cifCMD_ip_address(char* args)
+cmdCallback cifCMD_ip_address(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF_IF,""};
 	if(strlen(args) < 4)
 	{
-		CMDIF_IPADDR_ERROR();
-		return;
+		cb.message = CMDIF_IPADDR_ERROR();
+		return cb;
 
 	}
 
@@ -80,8 +85,8 @@ void cifCMD_ip_address(char* args)
 
 		if(setInterfaceIP(current_iface,"DHCP") != 0)
 		{
-			CMDIF_FATAL_ERROR();
-			return;
+			cb.message = CMDIF_FATAL_ERROR();
+			return cb;
 		}
 	}
 	else
@@ -110,21 +115,21 @@ void cifCMD_ip_address(char* args)
 
 					if(setInterfaceIP(current_iface,ipbuffer) != 0)
 					{
-						CMDIF_FATAL_ERROR();
-						return;
+						cb.message = CMDIF_FATAL_ERROR();
+						return cb;
 					}
 
 				}
 				else
 				{
-					CMDIF_IPADDR_ERROR();
-					return;
+					cb.message = CMDIF_IPADDR_ERROR();
+					return cb;
 				}
 			}
 			else
 			{
-				CMDIF_IPADDR_ERROR();
-				return;
+				cb.message = CMDIF_IPADDR_ERROR();
+				return cb;
 			}
 		}
 		else if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
@@ -138,30 +143,35 @@ void cifCMD_ip_address(char* args)
 
 			if(setInterfaceIP(current_iface,ipmask[0]) != 0)
 			{
-				CMDIF_FATAL_ERROR();
-				return;
+				cb.message = CMDIF_FATAL_ERROR();
+				return cb;
 			}
 		}
 		else
 		{
-			CMDIF_IPADDR_ERROR();
-			return;
+			cb.message = CMDIF_IPADDR_ERROR();
+			return cb;
 		}
 	}
 	WRITE_RUN();
+	return cb;
 }
 
-void cifCMD_noip_address(char* args)
+cmdCallback cifCMD_noip_address(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF_IF,""};
 	// @ TODO
+	return cb;
+
 }
 
-void cifCMD_shutdown(char* _none)
+cmdCallback cifCMD_shutdown(char* _none)
 {
+	cmdCallback cb = {PROMPT_CONF_IF,""};
 	if(strlen(_none) > 0)
 	{
-		CMDIF_SHUTDOWN_ERROR();
-		return;
+		cb.message = CMDIF_SHUTDOWN_ERROR();
+		return cb;
 	}
 
 	char buffer[1024];
@@ -172,19 +182,21 @@ void cifCMD_shutdown(char* _none)
 
 	if(setInterfaceState(current_iface,0) != 0)
 	{
-		CMDIF_FATAL_ERROR();
-		return;
+		cb.message = CMDIF_FATAL_ERROR();
+		return cb;
 	}
 
 	WRITE_RUN();
+	return cb;
 }
 
-void cifCMD_noshutdown(char* _none)
+cmdCallback cifCMD_noshutdown(char* _none)
 {
+	cmdCallback cb = {PROMPT_CONF_IF,""};
 	if(strlen(_none) > 0)
 	{
-		CMDIF_NOSHUTDOWN_ERROR();
-		return;
+		cb.message = CMDIF_NOSHUTDOWN_ERROR();
+		return cb;
 	}
 
 	char buffer[1024];
@@ -212,19 +224,21 @@ void cifCMD_noshutdown(char* _none)
 
 	if(setInterfaceState(current_iface,1) != 0)
 	{
-		CMDIF_FATAL_ERROR();
-		return;
+		cb.message = CMDIF_FATAL_ERROR();
+		return cb;
 	}
 
 	WRITE_RUN();
+	return cb;
 }
 
-void cifCMD_access_list(char* args)
+cmdCallback cifCMD_access_list(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF_IF,""};
 	if(strlen(args) < 3)
 	{
-		CMDIF_ACCESS_LIST_ERROR();
-		return;
+		cb.message = CMDIF_ACCESS_LIST_ERROR();
+		return cb;
 	}
 
 	char* aclname[2];
@@ -234,50 +248,55 @@ void cifCMD_access_list(char* args)
 	cutFirstWord(aclname[1],inout);
 	if(strcmp(inout[0],"in") != 0 && strcmp(inout[0],"out") != 0)
 	{
-		CMDIF_ACCESS_LIST_ERROR();
-		return;
+		cb.message = CMDIF_ACCESS_LIST_ERROR();
+		return cb;
 	}
 
 	acl* cursor = access_lists;
 	if(access_lists == NULL)
 	{
-		CMDIF_ACCESS_LIST_UNK();
-		return;
+		cb.message = CMDIF_ACCESS_LIST_UNK();
+		return cb;
 	}
 
 	if(setInterfaceACL(current_iface,aclname[0],inout[0]) != 0)
-		CMDIF_ACCESS_LIST_UNK();
+		cb.message = CMDIF_ACCESS_LIST_UNK();
 
 	WRITE_RUN();
+	return cb;
 }
 
-void cifCMD_description(char* args)
+cmdCallback cifCMD_description(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF_IF,""};
 	if(strlen(args) < 2)
 	{
-		CMDIF_DESC_ERROR();
-		return;
+		cb.message = CMDIF_DESC_ERROR();
+		return cb;
 	}
 
 	if(setInterfaceDesc(current_iface,args) != 0)
-		CMDIF_DESC_ERROR();
+		cb.message = CMDIF_DESC_ERROR();
 
 	WRITE_RUN();
+	return cb;
 }
 
-void cifCMD_nodescription(char* args)
+cmdCallback cifCMD_nodescription(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF_IF,""};
 	if(strlen(args) < 2)
 	{
-		CMDIF_DESC_ERROR();
-		return;
+		cb.message = CMDIF_DESC_ERROR();
+		return cb;
 	}
 
 	if(strcmp(getInterfaceDesc(current_iface),args) == 0)
 	{
 		if(setInterfaceDesc(current_iface,"") != 0)
-			CMDIF_DESC_ERROR();
+			cb.message = CMDIF_DESC_ERROR();
 	}
 
 	WRITE_RUN();
+	return cb;
 }

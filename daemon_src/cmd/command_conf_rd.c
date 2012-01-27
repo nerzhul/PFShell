@@ -26,13 +26,17 @@
 */
 
 #include "command_conf_rd.h"
-#include "prompt_msg.h"
+#include "../prompt/prompt_msg.h"
 
-void crdCMD_exit(char* _none) {
+cmdCallback crdCMD_exit(char* _none) {
+	cmdCallback cb = {PROMPT_CONF_RD,""};
+
 	if(strlen(_none) > 0)
 	{
-		CMDCOMMON_EXIT_ERROR();
+		cb.message = CMDCOMMON_EXIT_ERROR();
 	}
 	else
-		promptMode = PROMPT_CONF;
+		cb.promptMode = PROMPT_CONF;
+
+	return cb;
 }

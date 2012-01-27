@@ -35,7 +35,6 @@
 
 // Main Messages
 #define CMDMAIN_INIT_FAIL() PRINTERROR("PFShell is corrupt, please reinstall it\n");
-#define CMDMAIN_CONFINIT_FAIL() PRINTERROR("System configuration is corrupted !\n");
 
 // Configuration Messages
 #define CMD_WRITE_RUN_FAIL() printError("Writing failed for running-config !!!\n");

@@ -30,7 +30,7 @@
 #include <string.h>
 #include "interface.h"
 #include "configuration.h"
-#include "command.h"
+#include "cmd/command.h"
 #include "iputils.h"
 
 void addInterface(char* name)

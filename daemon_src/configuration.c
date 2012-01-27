@@ -31,10 +31,10 @@
 #include "firewall.h"
 #include "interface.h"
 #include "route.h"
-#include "command.h"
-#include "command_conf_fw.h"
-#include "command_conf.h"
-#include "prompt_msg.h"
+#include "cmd/command.h"
+#include "cmd/command_conf_fw.h"
+#include "cmd/command_conf.h"
+#include "prompt/prompt_msg.h"
 
 unsigned short loadConfiguration()
 {
@@ -67,6 +67,7 @@ unsigned short loadConfiguration()
 	// Read file
 	char path[1035];
 
+	cmdCallback promptMode = {PROMPT_CONF,""};
 	while (fgets(path, sizeof(path), confFile) != NULL) {
 		int len = strlen(path);
 		int offset = 0;
@@ -76,7 +77,7 @@ unsigned short loadConfiguration()
 				path[offset] = '\0';
 			++offset;
 		}
-		handleCmd(path);
+		promptMode = handleCmd(path,promptMode.promptMode);
 	}
 	fclose(confFile);
 	return 1;

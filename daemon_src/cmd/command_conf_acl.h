@@ -28,11 +28,13 @@
 #ifndef __COMMAND_ACL_H__
 #define __COMMAND_ACL_H__
 
+#include "command.h"
+
 char* current_acl;
 
-void caclCMD_exit(char* _none);
+cmdCallback caclCMD_exit(char* _none);
 
-void caclCMD_allow_acl(char* args);
-void caclCMD_deny_acl(char* args);
+cmdCallback caclCMD_allow_acl(char* args);
+cmdCallback caclCMD_deny_acl(char* args);
 
 #endif

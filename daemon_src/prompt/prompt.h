@@ -32,7 +32,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-/*#define PROMPT_USER		0
+#define PROMPT_USER		0
 #define PROMPT_ENABLE		1
 #define PROMPT_CONF		2
 #define PROMPT_CONF_IF		3
@@ -40,7 +40,8 @@
 #define PROMPT_CONF_RD		5
 #define PROMPT_CONF_ACL 	6
 #define MAX_PROMPTS		7
-*/
+
+
 #define BLACK 0
 #define RED 1
 #define GREEN 2
@@ -58,31 +59,11 @@
 #define WHITE 14
 #define MAX_COLORS 15
 
-/*void promptU();
-void promptE();
-void promptC();
-void promptCIf();
-void promptCFW();
-void promptCRD();
-void promptCACL();
+char* printError(char* str, ...);
+char* printSuccess(char* str, ...);
 
-typedef struct prompt
-{
-	void (*action)();
-} prompts;
-
-prompts promptTable[MAX_PROMPTS];
-
-unsigned int promptMode;
-
-unsigned int initPrompts();
-void prompt();*/
-
-void printError(char* str, ...);
-void printSuccess(char* str, ...);
-
-void setPromptColor(short stdout_stream, short color);
-void resetPromptColor(short stdout_stream);
+char* setPromptColor(short stdout_stream, short color);
+char* resetPromptColor(short stdout_stream);
 
 unsigned short askConfirm();
 

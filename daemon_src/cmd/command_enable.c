@@ -27,38 +27,45 @@
 
 #include "configuration.h"
 #include "command_enable.h"
-#include "interface.h"
-#include "prompt_msg.h"
-#include "route.h"
+#include "../interface.h"
+#include "../prompt/prompt_msg.h"
+#include "../route.h"
 
-void eCMD_configure(char* args) {
+cmdCallback eCMD_configure(char* args)
+{
+	cmdCallback cb = {PROMPT_ENABLE,""};
 	if(strlen(args) > 0)
 	{
 		if(strcmp(args,"firewall") == 0)
 		{
-			promptMode = PROMPT_CONF_FW;
+			cb.promptMode = PROMPT_CONF_FW;
 		}
 		else
-			CMDEN_CONFIGURE_ERROR();
+			cb.message = CMDEN_CONFIGURE_ERROR();
 	}
 	else
-		promptMode = PROMPT_CONF;
+		cb.promptMode = PROMPT_CONF;
+	return cb;
 }
 
-void eCMD_exit(char* _none) {
+cmdCallback eCMD_exit(char* _none)
+{
+	cmdCallback cb = {PROMPT_ENABLE,""};
 	if(strlen(_none) > 0)
 	{
-		CMDCOMMON_EXIT_ERROR();
+		cb.message = CMDCOMMON_EXIT_ERROR();
 	}
 	else
-		promptMode = PROMPT_USER;
+		cb.promptMode = PROMPT_USER;
+	return cb;
 }
 
-void eCMD_show(char* args)
+cmdCallback eCMD_show(char* args)
 {
+	cmdCallback cb = {PROMPT_ENABLE,""};
 	if(strlen(args) <= 1)
 	{
-		CMDEN_SHOW_ERROR();
+		cb.message = CMDEN_SHOW_ERROR();
 	}
 	else
 	{
@@ -121,20 +128,20 @@ void eCMD_show(char* args)
 			{
 				if(strlen(fwArg[1]) > 0)
 				{
-					CMDEN_SHOW_FIREWALL_ERROR();
+					cb.message = CMDEN_SHOW_FIREWALL_ERROR();
 				}
 				else
 					system("/sbin/pfctl -si");
 			}
 			else
-				CMDEN_SHOW_FIREWALL_ERROR();
+				cb.message = CMDEN_SHOW_FIREWALL_ERROR();
 		}
 		else if(strcmp(showcmd[0],"interfaces") == 0)
 		{
 			net_iface* iface = interfaces;
 			if(iface == NULL)
 			{
-				CMDEN_SHOW_INTERFACES_NOTFOUND();
+				cb.message = CMDEN_SHOW_INTERFACES_NOTFOUND();
 			}
 			else
 			{
@@ -183,13 +190,15 @@ void eCMD_show(char* args)
 		}
 		else
 		{
-			CMDEN_SHOW_ERROR();
+			cb.message = CMDEN_SHOW_ERROR();
 		}
 	}
+	return cb;
 }
 
-void eCMD_save(char* _none)
+cmdCallback eCMD_save(char* _none)
 {
+	cmdCallback cb = {PROMPT_ENABLE,""};
 	// Save PFShell conf
 	system("cp /opt/PFShell/running-config /opt/PFShell/startup-config");
 	system("/bin/md5 /opt/PFShell/startup-config | /usr/bin/awk '{print $4}' > /opt/PFShell/startup-config.md5");
@@ -207,5 +216,6 @@ void eCMD_save(char* _none)
 	system("/bin/md5 /etc/pf.conf | /usr/bin/awk '{print $4}' > /etc/pf.conf.md5");
 	system("/bin/sha1 /etc/pf.conf | /usr/bin/awk '{print $4}' > /etc/pf.conf.sha1");
 	system("/bin/sha256 /etc/pf.conf | /usr/bin/awk '{print $4}' > /etc/pf.conf.sha256");
-	CMDEN_SAVE_SUCCESS();
+	cb.message = CMDEN_SAVE_SUCCESS();
+	return cb;
 }

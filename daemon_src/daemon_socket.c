@@ -63,8 +63,22 @@ void waitAndHandleClients()
 {
 	while(1)
 	{
+		// @TODO: thread this
 		if(csock = accept(ssock, (struct sockaddr*)&csin, &csize))
 		{
+			while(1)
+			{
+				char buffer[4096];
+				int recvsize = recv(csock,buffer,4096,0);
+				if(recvsize == 0 || recvsize < 1)
+				{
+					shutdown(csock,SHUT_RDWR);
+					return;
+				}
+				else
+					decodePacket(buffer);
+				sleep(50);
+			}
 		}
 		sleep(50);
 	}
@@ -72,8 +86,28 @@ void waitAndHandleClients()
 
 unsigned short closeServerSocket()
 {
-	shutdown(ssock,2);
+	shutdown(ssock,SHUT_RDWR);
 	return 0;
+}
+
+void decodePacket(char* pkt)
+{
+	unsigned short promptMode;
+	char command[4096];
+
+	int offset = 1;
+	int offset2 = 0;
+	short first_written = 0;
+
+	promptMode = pkt[0];
+
+	while(offset <= strlen(pkt))
+	{
+		command[offset] = command[offset];
+		++offset;
+	}
+	handleCmd(command,promptMode);
+	// @ TODO: response
 }
 
 unsigned short sendPacket()

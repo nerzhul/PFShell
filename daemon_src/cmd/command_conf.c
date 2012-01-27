@@ -29,36 +29,46 @@
 #include <stdio.h>
 #include "command_conf.h"
 #include "command_conf_if.h"
-#include "prompt_msg.h"
-#include "configuration.h"
-#include "iputils.h"
-#include "route.h"
+#include "../prompt/prompt_msg.h"
+#include "../configuration.h"
+#include "../iputils.h"
+#include "../route.h"
 
-void cCMD_exit(char* _none)
+cmdCallback cCMD_exit(char* _none)
 {
+	cmdCallback cb = {PROMPT_CONF,""};
+
 	if(strlen(_none) > 0)
 	{
-		CMDCOMMON_EXIT_ERROR();
+		cb.message = CMDCOMMON_EXIT_ERROR();
 	}
 	else
-		promptMode = PROMPT_ENABLE;
+		cb.promptMode = PROMPT_ENABLE;
+
+	return cb;
 }
 
-void cCMD_firewall(char* _none)
+cmdCallback cCMD_firewall(char* _none)
 {
+	cmdCallback cb = {PROMPT_CONF,""};
+
 	if(strlen(_none) > 0)
 	{
-		CMDCONF_FIREWALL_ERROR();
+		cb.message = CMDCONF_FIREWALL_ERROR();
 	}
 	else
-		promptMode = PROMPT_CONF_FW;
+		cb.promptMode = PROMPT_CONF_FW;
+
+	return cb;
 }
 
-void cCMD_hostname(char* args)
+cmdCallback cCMD_hostname(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF,""};
+
 	if(strlen(args) <= 1)
 	{
-		CMDCONF_HOSTNAME_ERROR();
+		cb.message = CMDCONF_HOSTNAME_ERROR();
 	}
 	else
 	{
@@ -66,7 +76,7 @@ void cCMD_hostname(char* args)
 		cutFirstWord(args,_hostname);
 		if(strlen(_hostname[1]) > 0)
 		{
-			CMDCONF_HOSTNAME_ERROR();
+			cb.message = CMDCONF_HOSTNAME_ERROR();
 		}
 		else
 		{
@@ -74,10 +84,14 @@ void cCMD_hostname(char* args)
 			writeRunningConfig();
 		}
 	}
+
+	return cb;
 }
 
-void cCMD_nohostname(char* args)
+cmdCallback cCMD_nohostname(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF,""};
+
 	if(strlen(args) > 1)
 	{
 		char* _hostname[2];
@@ -88,14 +102,18 @@ void cCMD_nohostname(char* args)
 			writeRunningConfig();
 		}
 	}
+
+	return cb;
 }
 
-void cCMD_interface(char* args)
+cmdCallback cCMD_interface(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF,""};
+
 	if(strlen(args) == 0)
 	{
-		CMDCONF_INTERFACE_ERROR();
-		return;
+		cb.message = CMDCONF_INTERFACE_ERROR();
+		return cb;
 	}
 
 	net_iface* cursor = interfaces;
@@ -114,20 +132,24 @@ void cCMD_interface(char* args)
 
 	if(found == 0)
 	{
-		CMDCONF_INTERFACE_UNK(args);
-		return;
+		cb.message = CMDCONF_INTERFACE_UNK(args);
+		return cb;
 	}
 
 	current_iface = args;
-	promptMode = PROMPT_CONF_IF;
+	cb.promptMode = PROMPT_CONF_IF;
+
+	return cb;
 }
 
-void cCMD_ip(char* args)
+cmdCallback cCMD_ip(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF,""};
+
 	if(strlen(args) == 0)
 	{
-		CMDCONF_IP_ERROR();
-		return;
+		cb.message = CMDCONF_IP_ERROR();
+		return cb;
 	}
 
 	char* ipcmd[2];
@@ -137,8 +159,8 @@ void cCMD_ip(char* args)
 	{
 		if(strlen(ipcmd[1]) > 0)
 		{
-			CMDCONF_IP_ERROR();
-			return;
+			cb.message = CMDCONF_IP_ERROR();
+			return cb;
 		}
 
 		iprouting = 1;
@@ -150,8 +172,8 @@ void cCMD_ip(char* args)
 	{
 		if(strlen(ipcmd[1]) > 0)
 		{
-			CMDCONF_IP_ERROR();
-			return;
+			cb.message = CMDCONF_IP_ERROR();
+			return cb;
 		}
 
 		mcastrouting = 1;
@@ -163,8 +185,8 @@ void cCMD_ip(char* args)
 	{
 		if(strlen(ipcmd[1]) < 15)
 		{
-			CMDCONF_IPROUTE_ERROR();
-			return;
+			cb.message = CMDCONF_IPROUTE_ERROR();
+			return cb;
 		}
 
 		char* netip[2];
@@ -186,8 +208,8 @@ void cCMD_ip(char* args)
 				{
 					if(strlen(gateip[1]) > 0)
 					{
-						CMDCONF_IPROUTE_ERROR();
-						return;
+						cb.message = CMDCONF_IPROUTE_ERROR();
+						return cb;
 					}
 
 					char buffer[1024];
@@ -209,32 +231,36 @@ void cCMD_ip(char* args)
 				}
 				else
 				{
-					CMDCONF_IPROUTE_ERROR();
-					return;
+					cb.message = CMDCONF_IPROUTE_ERROR();
+					return cb;
 				}
 			}
 			else
 			{
-				CMDCONF_IPROUTE_ERROR();
-				return;
+				cb.message = CMDCONF_IPROUTE_ERROR();
+				return cb;
 			}
 		}
 		else
 		{
-			CMDCONF_IPROUTE_ERROR();
-			return;
+			cb.message = CMDCONF_IPROUTE_ERROR();
+			return cb;
 		}
 	}
 	else
-		CMDCONF_IP_ERROR();
+		cb.message = CMDCONF_IP_ERROR();
+
+	return cb;
 }
 
-void cCMD_noip(char* args)
+cmdCallback cCMD_noip(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF,""};
+
 	if(strlen(args) == 0)
 	{
-		CMDCONF_NOIP_ERROR();
-		return;
+		cb.message = CMDCONF_NOIP_ERROR();
+		return cb;
 	}
 
 	char* ipcmd[2];
@@ -244,8 +270,8 @@ void cCMD_noip(char* args)
 	{
 		if(strlen(ipcmd[1]) > 0)
 		{
-			CMDCONF_NOIP_ERROR();
-			return;
+			cb.message = CMDCONF_NOIP_ERROR();
+			return cb;
 		}
 
 		iprouting = 0;
@@ -257,8 +283,8 @@ void cCMD_noip(char* args)
 	{
 		if(strlen(ipcmd[1]) > 0)
 		{
-			CMDCONF_NOIP_ERROR();
-			return;
+			cb.message = CMDCONF_NOIP_ERROR();
+			return cb;
 		}
 
 		mcastrouting = 0;
@@ -271,4 +297,5 @@ void cCMD_noip(char* args)
 		// @ TODO
 	}
 
+	return cb;
 }

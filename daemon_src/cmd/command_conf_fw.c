@@ -27,26 +27,28 @@
 
 #include "command_conf_fw.h"
 #include "command_conf_acl.h"
-#include "firewall.h"
-#include "prompt_msg.h"
-#include "command.h"
-#include "configuration.h"
+#include "../firewall.h"
+#include "../prompt/prompt_msg.h"
+#include "../configuration.h"
 
-void cfwCMD_exit(char* _none)
+cmdCallback cfwCMD_exit(char* _none)
 {
+	cmdCallback cb = {PROMPT_CONF_FW,""};
 	if(strlen(_none) > 0)
 	{
-		CMDCOMMON_EXIT_ERROR();
+		cb.message = CMDCOMMON_EXIT_ERROR();
 	}
 	else
-		promptMode = PROMPT_CONF;
+		cb.promptMode = PROMPT_CONF;
+	return cb;
 }
 
-void cfwCMD_default(char* args)
+cmdCallback cfwCMD_default(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF_FW,""};
 	if(strlen(args) <= 11)
 	{
-		CMDFW_DEFAULT_ERROR();
+		cb.message = CMDFW_DEFAULT_ERROR();
 	}
 	else
 	{
@@ -58,16 +60,18 @@ void cfwCMD_default(char* args)
 			cfwCMD_default_output(defaultcmd[1]);
 		else
 		{
-			CMDFW_DEFAULT_ERROR();
+			cb.message = CMDFW_DEFAULT_ERROR();
 		}
 	}
+	return cb;
 }
 
-void cfwCMD_default_input(char* args)
+cmdCallback cfwCMD_default_input(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF_FW,""};
 	if(strlen(args) < 4)
 	{
-		CMDFW_DEFAULT_ERROR();
+		cb.message = CMDFW_DEFAULT_ERROR();
 	}
 	else
 	{
@@ -85,16 +89,18 @@ void cfwCMD_default_input(char* args)
 		}
 		else
 		{
-			CMDFW_DEFAULT_ERROR();
+			cb.message = CMDFW_DEFAULT_ERROR();
 		}
 	}
+	return cb;
 }
 
-void cfwCMD_default_output(char* args)
+cmdCallback cfwCMD_default_output(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF_FW,""};
 	if(strlen(args) < 4)
 	{
-		CMDFW_DEFAULT_ERROR();
+		cb.message = CMDFW_DEFAULT_ERROR();
 	}
 	else
 	{
@@ -112,54 +118,63 @@ void cfwCMD_default_output(char* args)
 		}
 		else
 		{
-			CMDFW_DEFAULT_ERROR();
+			cb.message = CMDFW_DEFAULT_ERROR();
 		}
 	}
+	return cb;
 }
 
-void cfwCMD_disable(char* _none)
+cmdCallback cfwCMD_disable(char* _none)
 {
+	cmdCallback cb = {PROMPT_CONF_FW,""};
 	if(strlen(_none) > 1) {
-		CMDFW_DISABLE_ERROR();
-		return;
+		cb.message = CMDFW_DISABLE_ERROR();
+		return cb;
 	}
 
 	if(askConfirm() == 0) {
 		hsystemcmd("/sbin/pfctl -d");
 		firewallState = 0;
-		CMDFW_DISABLE_SUCCESS();
+		cb.message = CMDFW_DISABLE_SUCCESS();
 	}
+	return cb;
 }
 
-void cfwCMD_enable(char* _none)
+cmdCallback cfwCMD_enable(char* _none)
 {
+	cmdCallback cb = {PROMPT_CONF_FW,""};
 	if(strlen(_none) > 1) {
-		CMDFW_ENABLE_ERROR();
-		return;
+		cb.message = CMDFW_ENABLE_ERROR();
+		return cb;
 	}
 
 	hsystemcmd("/sbin/pfctl -e");
 	hsystemcmd("/sbin/pfctl -f /etc/pf.conf.run");
 	firewallState = 1;
 	CMDFW_ENABLE_SUCCESS();
+	return cb;
 }
 
-void cfwCMD_acl(char* args)
+cmdCallback cfwCMD_acl(char* args)
 {
+	cmdCallback cb = {PROMPT_CONF_FW,""};
 	char* aclname[2];
 	cutFirstWord(args,aclname);
 
 	if(strlen(aclname[1]) > 0 || strlen(aclname[0]) < 2)
 	{
-		CMDFW_ACL_ERROR();
-		return;
+		cb.message = CMDFW_ACL_ERROR();
+		return cb;
 	}
 
 	current_acl = aclname[0];
-	promptMode = PROMPT_CONF_ACL;
+	cb.promptMode = PROMPT_CONF_ACL;
+	return cb;
 }
 
-void cfwCMD_show_packetfilter(char* _none)
+cmdCallback cfwCMD_show_packetfilter(char* _none)
 {
+	cmdCallback cb = {PROMPT_CONF_FW,""};
 	system("/sbin/pfctl -s rule");
+	return cb;
 }

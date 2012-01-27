@@ -49,6 +49,9 @@ int serror;
 unsigned short openServerSocket();
 unsigned short closeServerSocket();
 void waitAndHandleClients();
+
+void decodePacket(char* pkt);
+
 unsigned short sendPacket();
 
 #endif

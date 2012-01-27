@@ -28,22 +28,36 @@
 #include <stdio.h>
 
 #include "daemon_socket.h"
+#include "cmd/command.h"
+#include "configuration.h"
+#include "prompt/prompt_msg.h"
 
 int main(int argc, const char** argv)
 {
+	printf("BSDRouterd version %s\n",VERSION);
+	initCmds();
+	// @TODO daemonize
+	// @TODO: verify integrity
+	if(!loadConfiguration())
+	{
+		printf("%s",printError("System configuration is corrupted !\n"));
+		return -1;
+	}
+
 	int sock_error = openServerSocket();
 	if(sock_error == 0)
 	{
+		printf("%s",printSuccess("BSDRouterd is running !\n"));
 		waitAndHandleClients();
 	}
 	else if(sock_error == 1)
-		printf("[ERROR] BSDRouterd: TCP/IP Stack error\n");
+		printf("%s",printError("[ERROR] BSDRouterd: TCP/IP Stack error\n"));
 	else if(sock_error == 2)
-		printf("[ERROR] BSDRouterd: unable to bind port... already in use ? (error %d)\n",sock_error);
+		printf("%s",printError("[ERROR] BSDRouterd: unable to bind port... already in use ? (error %d)\n",sock_error));
 	else if(sock_error == 3)
-		printf("[ERROR] BSDRouterd: unable to listen port... already in use (error %d)?\n",sock_error);
+		printf("%s",printError("[ERROR] BSDRouterd: unable to listen port... already in use (error %d)?\n",sock_error));
 	else
-		printf("[ERROR] BSDRouterd: unk error\n");
+		printf("%s",printError("[ERROR] BSDRouterd: unk error\n"));
 	closeServerSocket();
 	return 0;
 }

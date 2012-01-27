@@ -28,43 +28,49 @@
 #include <stdlib.h>
 #include <ncurses.h>
 #include "command_user.h"
-#include "prompt_msg.h"
+#include "../prompt/prompt_msg.h"
 
-void uCMD_enable(char* _none)
+cmdCallback uCMD_enable(char* _none)
 {
+	cmdCallback cb = {PROMPT_USER,""};
 	if(strlen(_none) > 0)
 	{
-		CMDUSER_ENABLE_ERROR();
-		return;
+		cb.message = CMDUSER_ENABLE_ERROR();
+		return cb;
 	}
 	//  @ TODO
 	printf("Password: \n");
 
-	promptMode = PROMPT_ENABLE;
+	cb.promptMode = PROMPT_ENABLE;
+	return cb;
 }
 
-void uCMD_exit(char* _none)
+cmdCallback uCMD_exit(char* _none)
 {
+	cmdCallback cb = {PROMPT_USER,""};
 	if(strlen(_none) > 0)
 	{
-		CMDCOMMON_EXIT_ERROR();
-		return;
+		cb.message = CMDCOMMON_EXIT_ERROR();
+		return cb;
 	}
 
 	printf("Bye !\n");
-	exit(0);
+	return cb;
 }
 
-void uCMD_help(char* _none)
+cmdCallback uCMD_help(char* _none)
 {
-	printf("enable - grant you administrative privileges\nexit   - leave the current terminal\nhelp   - show this help\nshow   - show some informations\n");
+	cmdCallback cb = {PROMPT_USER,""};
+	cb.message = "enable - grant you administrative privileges\nexit   - leave the current terminal\nhelp   - show this help\nshow   - show some informations\n";
+	return cb;
 }
 
-void uCMD_show(char* args)
+cmdCallback uCMD_show(char* args)
 {
+	cmdCallback cb = {PROMPT_USER,""};
 	if(strlen(args) <= 1)
 	{
-		CMDUSER_SHOW_ERROR();
+		cb.message = CMDUSER_SHOW_ERROR();
 	}
 	else
 	{
@@ -72,11 +78,12 @@ void uCMD_show(char* args)
 		cutFirstWord(args,showcmd);
 		if(strcmp(showcmd[0],"version") == 0)
 		{
-				printf("PFShell version %s\n",VERSION);
+				sprintf(cb.message,"PFShell version %s\n",VERSION);
 		}
 		else
 		{
-			CMDUSER_SHOW_ERROR();
+			cb.message = CMDUSER_SHOW_ERROR();
 		}
 	}
+	return cb;
 }

@@ -17,6 +17,8 @@ BSDRouterd_SOURCES = \
 	cmd/command_conf_rd.h \
 	cmd/command_enable.c \
 	cmd/command_enable.h \
+	cmd/command_user.c \
+	cmd/command_user.h \
 	configuration.c \
 	configuration.h \
 	daemon_socket.c \
