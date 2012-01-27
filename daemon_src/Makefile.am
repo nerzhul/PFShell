@@ -7,7 +7,9 @@ BSDRouterd_SOURCES = \
 	daemon_socket.h \
 	iputils.c \
 	iputils.h \
-	main.c
+	main.c \
+	route.c \
+	route.h
 
 BSDRouterd_LDADD = -lm
 
