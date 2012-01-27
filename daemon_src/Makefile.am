@@ -7,6 +7,8 @@ BSDRouterd_SOURCES = \
 	daemon_socket.h \
 	firewall.c \
 	firewall.h \
+	interface.c \
+	interface.h \
 	iputils.c \
 	iputils.h \
 	main.c \
