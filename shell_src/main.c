@@ -29,17 +29,20 @@
 #include "command.h"
 #include "configuration.h"
 #include "prompt.h"
+#include "unix_signal.h"
 
 int main(int argc, const char** argv)
 {
 	// Set default hostname
 	hostname = "BSDRouter";
 
-	// @ TODO: load hostname from BSDRouterd
+	initSignals();
 
 	int sock_error = openShellSocket();
 	if(sock_error == 0)
 	{
+		// @ TODO: load hostname from BSDRouterd
+
 		promptMode = PROMPT_USER;
 
 		printf("Type help to see the commands.\n");

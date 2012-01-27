@@ -3,6 +3,8 @@ bin_PROGRAMS = BSDRouterd
 AM_CPPFLAGS = -lncurses -lm -std=gnu99
 
 BSDRouterd_SOURCES = \
+	configuration.c \
+	configuration.h \
 	daemon_socket.c \
 	daemon_socket.h \
 	firewall.c \

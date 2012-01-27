@@ -45,7 +45,7 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_BSDRouterShell_OBJECTS = cli_socket.$(OBJEXT) command.$(OBJEXT) \
-	main.$(OBJEXT) prompt.$(OBJEXT)
+	main.$(OBJEXT) prompt.$(OBJEXT) unix_signal.$(OBJEXT)
 BSDRouterShell_OBJECTS = $(am_BSDRouterShell_OBJECTS)
 BSDRouterShell_DEPENDENCIES =
 BSDRouterShell_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
@@ -158,7 +158,9 @@ BSDRouterShell_SOURCES = \
 	configuration.h \
 	main.c \
 	prompt.c \
-	prompt.h
+	prompt.h \
+	unix_signal.c \
+	unix_signal.h
 
 BSDRouterShell_LDADD = -lm
 BSDRouterShell_LDFLAGS = 
@@ -247,6 +249,7 @@ include ./$(DEPDIR)/cli_socket.Po
 include ./$(DEPDIR)/command.Po
 include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/prompt.Po
+include ./$(DEPDIR)/unix_signal.Po
 
 .c.o:
 	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

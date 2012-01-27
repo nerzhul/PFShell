@@ -10,7 +10,9 @@ BSDRouterShell_SOURCES = \
 	configuration.h \
 	main.c \
 	prompt.c \
-	prompt.h
+	prompt.h \
+	unix_signal.c \
+	unix_signal.h
 
 
 BSDRouterShell_LDADD = -lm
