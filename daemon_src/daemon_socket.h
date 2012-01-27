@@ -52,6 +52,6 @@ void waitAndHandleClients();
 
 void decodePacket(char* pkt);
 
-unsigned short sendPacket();
+unsigned short sendPacket(char* data);
 
 #endif

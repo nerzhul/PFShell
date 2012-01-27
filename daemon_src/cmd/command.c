@@ -136,7 +136,7 @@ unsigned short initCmds()
 	masternoCmd[5] = noconfRDCmd;
 	masternoCmd[6] = noconfACLCmd;
 
-	return 1;
+	return 0;
 }
 
 cmdCallback handleCmd(char* _fullcmd, unsigned short promptMode)
@@ -150,6 +150,7 @@ cmdCallback handleCmd(char* _fullcmd, unsigned short promptMode)
 		_fullcmd = "exit";
 
 	cutFirstWord(_fullcmd,cmd);
+
 	if(strcmp(cmd[0],"no") == 0)
 	{
 		char* nocmd[2];
@@ -174,8 +175,12 @@ cmdCallback handleCmd(char* _fullcmd, unsigned short promptMode)
 			++i;
 		}
 	}
+
+	cmdCallback cb = {promptMode,""};
 	if(strlen(_fullcmd) > 0)
-		CMD_UNK();
+		cb.message = printError("Command Unknown !\n");
+
+	return cb;
 }
 
 void cutFirstWord(char* string,char** result)

@@ -26,6 +26,7 @@
 */
 
 #include "cli_socket.h"
+#include "prompt.h"
 
 unsigned short openShellSocket()
 {
@@ -50,7 +51,29 @@ unsigned short closeShellSocket()
 
 unsigned short sendPacket(char* data)
 {
-	return send(csock,data,sizeof(data),0);
+	return send(csock,data,sizeof(char)*(strlen(data)+1),0);
 }
 
+void decodePacket(char* pkt)
+{
+	char command[4096];
+
+	int offset = 1;
+
+	promptMode = (int)(char)pkt[0]-(int)'0';
+
+	while(offset < strlen(pkt))
+	{
+		command[offset-1] = pkt[offset];
+		++offset;
+	}
+
+	command[offset] = '\0';
+
+
+	if(promptMode < MAX_PROMPTS)
+	{
+		printf("%s\n",command);
+	}
+}
 

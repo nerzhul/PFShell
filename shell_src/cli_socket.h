@@ -47,5 +47,6 @@ SOCKADDR_IN csin;
 unsigned short openShellSocket();
 unsigned short closeShellSocket();
 unsigned short sendPacket(char* data);
+void decodePacket(char* pkt);
 
 #endif

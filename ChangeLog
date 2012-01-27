@@ -84,3 +84,4 @@ Alpha 0.13
 - Some little cleanup
 - Create daemon and client sources. Split files between the two things
 - Added callback for commands
+- Bugfix for send command

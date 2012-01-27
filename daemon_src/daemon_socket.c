@@ -25,7 +25,12 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <stdlib.h>
+#include <stdio.h>
+
 #include "daemon_socket.h"
+#include "cmd/command.h"
+#include "prompt/prompt.h"
 
 unsigned short openServerSocket()
 {
@@ -77,10 +82,8 @@ void waitAndHandleClients()
 				}
 				else
 					decodePacket(buffer);
-				sleep(50);
 			}
 		}
-		sleep(50);
 	}
 }
 
@@ -96,21 +99,28 @@ void decodePacket(char* pkt)
 	char command[4096];
 
 	int offset = 1;
-	int offset2 = 0;
-	short first_written = 0;
 
-	promptMode = pkt[0];
+	promptMode = (int)(char)pkt[0]-(int)'0';
 
-	while(offset <= strlen(pkt))
+	while(offset < strlen(pkt))
 	{
-		command[offset] = command[offset];
+		command[offset-1] = pkt[offset];
 		++offset;
 	}
-	handleCmd(command,promptMode);
-	// @ TODO: response
+
+	command[offset] = '\0';
+
+	if(promptMode < MAX_PROMPTS)
+	{
+		cmdCallback cb = handleCmd(command,promptMode);
+		char sendBuffer[4096];
+		sprintf(sendBuffer,"%d%s",cb.promptMode,cb.message);
+		//printf("sendBuffer %s\n",sendBuffer);
+		sendPacket(sendBuffer);
+	}
 }
 
-unsigned short sendPacket()
+unsigned short sendPacket(char* data)
 {
-	return 0;
+	return send(csock,data,sizeof(char)*(strlen(data)+1),0);
 }

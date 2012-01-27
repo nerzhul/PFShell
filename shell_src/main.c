@@ -37,6 +37,7 @@ int main(int argc, const char** argv)
 	hostname = "BSDRouter";
 
 	initSignals();
+	initPrompts();
 
 	int sock_error = openShellSocket();
 	if(sock_error == 0)
@@ -50,8 +51,22 @@ int main(int argc, const char** argv)
 
 		while(1)
 		{
-			sendPacket(readCmd());
-			// @ TODO: receive and handle the callback
+			char sendBuffer[4096];
+			sprintf(sendBuffer,"%d%s",promptMode,readCmd());
+			sendPacket(sendBuffer);
+			if(strlen(sendBuffer) > 1)
+			{
+				char buffer[4096];
+				int recvsize = recv(csock,buffer,4096,0);
+				printf("recvsize %d\n",recvsize);
+				if(recvsize == 0 || recvsize < 1)
+				{
+					shutdown(csock,SHUT_RDWR);
+					return;
+				}
+				else
+					decodePacket(buffer);
+			}
 			prompt();
 		}
 	}
