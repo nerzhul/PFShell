@@ -41,6 +41,7 @@ struct route
 };
 
 void addRoute(char* ip, char* mask, char* gate);
+void delRoute(char* ip, char* mask, char* gate);
 
 void saveSysctl();
 

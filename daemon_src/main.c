@@ -37,7 +37,11 @@ int main(int argc, const char** argv)
 	printf("BSDRouterd version %s\n",VERSION);
 	initCmds();
 	// @TODO daemonize
-	// @TODO: verify integrity
+	// @TODO: verify integrity for configuration files
+
+	// Flush routes to manage it with the software
+	hsystemcmd("route flush");
+
 	if(!loadConfiguration())
 	{
 		printf("%s",printError("System configuration is corrupted !\n"));

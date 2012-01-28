@@ -50,13 +50,47 @@ void addRoute(char* ip, char* mask, char* gate)
 	}
 	else
 	{
-		route* cursor = newRoute;
+		route* cursor = routes;
 
 		while(cursor->next != NULL)
 			cursor = cursor->next;
 
 		newRoute->prev = cursor;
 		cursor->next = newRoute;
+	}
+}
+
+void delRoute(char* ip, char* mask, char* gate)
+{
+	if(routes == NULL)
+		return;
+
+
+	unsigned short found = 0;
+	route* cursor = routes;
+
+	while(cursor != NULL && found == 0)
+	{
+		if(strcmp(cursor->net,ip) == 0 && strcmp(cursor->mask,mask) == 0 && strcmp(cursor->gate,gate) == 0)
+		{
+			found = 1;
+			route* tmpcursor = cursor;
+			if(cursor == routes && cursor->next == NULL)
+				routes = NULL;
+			else
+			{
+				if(cursor->prev != NULL)
+					cursor->prev->next = cursor->next;
+				else
+					routes = cursor->next;
+
+				if(cursor->next != NULL)
+					cursor->next->prev = cursor->prev;
+
+			}
+		}
+		else
+			cursor = cursor->next;
 	}
 }
 

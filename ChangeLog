@@ -86,3 +86,8 @@ Alpha 0.13
 - Added callback for commands
 - Bugfix for send command
 - Proper flush for stdout before printing the prompt
+
+Alpha 0.14 - prev
+- Implement no ip route
+- Bug fix for adding routes
+- Now reading startup config on daemon start, not running-config

@@ -64,7 +64,8 @@
 #define CMDCONF_IPROUTE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    ip route A.B.C.D M.A.S.K G.A.T.E\n");
 
 // Configure menu No Messages
-#define CMDCONF_NOIP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   ip <route|routing|multicast-routing>\n");
+#define CMDCONF_NOIP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   no ip <route|routing|multicast-routing>\n");
+#define CMDCONF_NOIPROUTE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    no ip route A.B.C.D M.A.S.K G.A.T.E\n");
 
 // Interface Messages
 #define CMDIF_IP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   ip (address) ...\n");

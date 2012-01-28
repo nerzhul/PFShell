@@ -294,7 +294,68 @@ cmdCallback cCMD_noip(char* args)
 	}
 	else if(strcmp(ipcmd[0],"route") == 0)
 	{
-		// @ TODO
+		if(strlen(ipcmd[1]) < 15)
+		{
+			cb.message = CMDCONF_NOIPROUTE_ERROR();
+			return cb;
+		}
+
+		char* netip[2];
+		cutFirstWord(ipcmd[1],netip);
+
+		if(regexp(netip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+		{
+			char* maskip[2];
+
+			cutFirstWord(netip[1],maskip);
+
+			if(is_valid_mask(maskip[0]) == 0)
+			{
+				unsigned short cidr = calc_cidr(maskip[0]);
+				char* gateip[2];
+				cutFirstWord(maskip[1],gateip);
+				if(regexp(gateip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+				{
+					if(strlen(gateip[1]) > 0)
+					{
+						cb.message = CMDCONF_NOIPROUTE_ERROR();
+						return cb;
+					}
+
+					char buffer[1024];
+					char cidrbuf[100];
+					sprintf(cidrbuf,"%d",cidr);
+
+					strcpy(buffer,"route delete ");
+					strcat(buffer,netip[0]);
+					strcat(buffer,"/");
+					strcat(buffer,cidrbuf);
+					strcat(buffer," ");
+					strcat(buffer,gateip[0]);
+
+					delRoute(netip[0],maskip[0],gateip[0]);
+
+					hsystemcmd(buffer);
+
+					WRITE_RUN();
+				}
+				else
+				{
+					cb.message = CMDCONF_NOIPROUTE_ERROR();
+					return cb;
+				}
+			}
+			else
+			{
+				cb.message = CMDCONF_NOIPROUTE_ERROR();
+				return cb;
+			}
+		}
+		else
+		{
+			cb.message = CMDCONF_NOIPROUTE_ERROR();
+			return cb;
+		}
 	}
 
 	return cb;

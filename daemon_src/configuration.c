@@ -40,11 +40,11 @@ unsigned short loadConfiguration()
 {
 	// Temporary path
 	FILE* confFile;
-	confFile = fopen("/opt/PFShell/running-config","r");
+	confFile = fopen("/opt/PFShell/startup-config","r");
 	if(!confFile)
 	{
 		system("mkdir -p /opt/PFShell >> /dev/null 2>&1");
-		confFile = fopen("/opt/PFShell/running-config", "w+");
+		confFile = fopen("/opt/PFShell/startup-config", "w+");
 		fclose(confFile);
 		return 1;
 	}
