@@ -81,6 +81,12 @@ cmdCallback cCMD_hostname(char* args)
 		else
 		{
 			hostname = _hostname[0];
+			FILE* fname = fopen("/etc/myname","w+");
+			if(fname != NULL)
+			{
+				fputs(hostname,fname);
+				fclose(fname);
+			}
 			writeRunningConfig();
 		}
 	}

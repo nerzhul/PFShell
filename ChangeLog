@@ -91,3 +91,4 @@ Alpha 0.14 - prev
 - Implement no ip route
 - Bug fix for adding routes
 - Now reading startup config on daemon start, not running-config
+- Write hostname in system file /etc/myname
