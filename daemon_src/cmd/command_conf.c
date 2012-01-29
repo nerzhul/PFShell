@@ -161,18 +161,9 @@ cmdCallback cCMD_ip(char* args)
 	char* ipcmd[2];
 	cutFirstWord(args,ipcmd);
 
-	if(strcmp(ipcmd[0],"routing") == 0)
+	if(strcmp(ipcmd[0],"domain-name") == 0)
 	{
-		if(strlen(ipcmd[1]) > 0)
-		{
-			cb.message = CMDCONF_IP_ERROR();
-			return cb;
-		}
-
-		iprouting = 1;
-		hsystemcmd("/usr/sbin/sysctl net.inet.ip.forwarding=1");
-		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.forwarding=1");
-		WRITE_RUN();
+		//@TODO
 	}
 	else if(strcmp(ipcmd[0],"multicast-routing") == 0)
 	{
@@ -186,6 +177,29 @@ cmdCallback cCMD_ip(char* args)
 		hsystemcmd("/usr/sbin/sysctl net.inet.ip.mforwarding=1");
 		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.mforwarding=1");
 		WRITE_RUN();
+	}
+	else if(strcmp(ipcmd[0],"name-server") == 0)
+	{
+		if(strlen(ipcmd[1]) < 15)
+		{
+			cb.message = CMDCONF_IPNS_ERROR();
+			return cb;
+		}
+
+		char* netip[2];
+		cutFirstWord(ipcmd[1],netip);
+
+		if(regexp(netip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0
+			&& strlen(netip[1]) < 1)
+		{
+			dnsip = netip[0];
+			WRITE_RUN();
+		}
+		else
+		{
+			cb.message = CMDCONF_IPNS_ERROR();
+			return cb;
+		}
 	}
 	else if(strcmp(ipcmd[0],"route") == 0)
 	{
@@ -253,6 +267,19 @@ cmdCallback cCMD_ip(char* args)
 			return cb;
 		}
 	}
+	else if(strcmp(ipcmd[0],"routing") == 0)
+	{
+		if(strlen(ipcmd[1]) > 0)
+		{
+			cb.message = CMDCONF_IP_ERROR();
+			return cb;
+		}
+
+		iprouting = 1;
+		hsystemcmd("/usr/sbin/sysctl net.inet.ip.forwarding=1");
+		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.forwarding=1");
+		WRITE_RUN();
+	}
 	else
 		cb.message = CMDCONF_IP_ERROR();
 
@@ -297,6 +324,22 @@ cmdCallback cCMD_noip(char* args)
 		hsystemcmd("/usr/sbin/sysctl net.inet.ip.mforwarding=0");
 		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.mforwarding=0");
 		WRITE_RUN();
+	}
+	else if(strcmp(ipcmd[0],"name-server") == 0)
+	{
+		if(strlen(ipcmd[1]) < 15)
+			return cb;
+
+		char* netip[2];
+		cutFirstWord(ipcmd[1],netip);
+
+		if(strcmp(netip[0],dnsip) == 0 && strlen(netip[1]) < 1)
+		{
+			dnsip = "";
+			WRITE_RUN();
+		}
+		else
+			return cb;
 	}
 	else if(strcmp(ipcmd[0],"route") == 0)
 	{

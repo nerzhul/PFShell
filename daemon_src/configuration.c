@@ -63,6 +63,8 @@ unsigned short loadConfiguration()
 	iprouting = 0;
 
 	hostname = "PFShell";
+	dnssearch = ".local";
+	dnsip = "";
 
 	// Read file
 	char path[1035];
@@ -97,6 +99,19 @@ unsigned short writeRunningConfig()
 		fputs("hostname ",confFile);
 		fputs(hostname,confFile);
 		fputs("\n",confFile);
+
+		// DNS
+		if(strlen(dnsip) > 0)
+		{
+			fputs("ip name-server ",confFile);
+			fputs(dnsip,confFile);
+		}
+
+		if(strlen(dnssearch) > 0)
+		{
+			fputs("ip domain-name ",confFile);
+			fputs(dnsip,confFile);
+		}
 
 		// Routing
 		if(iprouting == 1)

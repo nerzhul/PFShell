@@ -38,6 +38,8 @@ unsigned short loadConfiguration();
 unsigned short writeRunningConfig();
 
 char* hostname;
+char* dnssearch;
+char* dnsip;
 unsigned short pfpolicies[2];
 
 // Chained Lists

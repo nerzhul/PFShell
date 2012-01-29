@@ -62,6 +62,7 @@
 #define CMDCONF_IP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   ip <route|routing|multicast-routing>\n");
 #define CMDCONF_FIREWALL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   firewall\n");
 #define CMDCONF_IPROUTE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    ip route A.B.C.D M.A.S.K G.A.T.E\n");
+#define CMDCONF_IPNS_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    ip name-server A.B.C.D\n");
 
 // Configure menu No Messages
 #define CMDCONF_NOIP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   no ip <route|routing|multicast-routing>\n");

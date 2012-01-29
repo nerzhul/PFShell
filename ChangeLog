@@ -92,3 +92,4 @@ Alpha 0.14 - prev
 - Bug fix for adding routes
 - Now reading startup config on daemon start, not running-config
 - Write hostname in system file /etc/myname
+- Implement ip name-server to set the main ns for the router
