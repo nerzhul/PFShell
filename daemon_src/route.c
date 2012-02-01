@@ -88,6 +88,7 @@ void delRoute(char* ip, char* mask, char* gate)
 					cursor->next->prev = cursor->prev;
 
 			}
+			free(tmpcursor);
 		}
 		else
 			cursor = cursor->next;

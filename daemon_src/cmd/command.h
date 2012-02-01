@@ -79,7 +79,7 @@ cmdHdlr* masterCmd[MAX_CMD_TYPES];
 #define MAX_ENABLE_NO_CMD 0
 #define MAX_CONF_NO_CMD 2
 #define MAX_CONF_IF_NO_CMD 3
-#define MAX_CONF_FW_NO_CMD 0
+#define MAX_CONF_FW_NO_CMD 1
 #define MAX_CONF_RD_NO_CMD 0
 #define MAX_CONF_ACL_NO_CMD 0
 

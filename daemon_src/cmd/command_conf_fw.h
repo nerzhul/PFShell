@@ -43,6 +43,7 @@ cmdCallback cfwCMD_enable(char* _none);
 
 // ACLs
 cmdCallback cfwCMD_acl(char* args);
+cmdCallback cfwCMD_noacl(char* args);
 
 // Temp Command
 cmdCallback cfwCMD_show_packetfilter(char* _none);

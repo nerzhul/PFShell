@@ -32,6 +32,7 @@
 #include "cmd/command_conf_acl.h"
 #include "firewall.h"
 #include "configuration.h"
+#include <unistd.h>
 
 void addAccessList(acl* _list, char* name)
 {
@@ -57,6 +58,51 @@ void addAccessList(acl* _list, char* name)
 
 		newACL->prev = cursor;
 		cursor->next = newACL;
+	}
+}
+
+void removeAccessList(char* name)
+{
+	if(access_lists == NULL)
+		return;
+
+	unsigned short found = 0;
+	acl* cursor = access_lists;
+
+	while(cursor != NULL && found == 0)
+	{
+		if(strcmp(cursor->name,name) == 0)
+		{
+			found = 1;
+			acl* tmpcursor = cursor;
+			if(cursor == routes && cursor->next == NULL)
+				access_lists = NULL;
+			else
+			{
+				if(cursor->prev != NULL)
+					cursor->prev->next = cursor->next;
+				else
+					access_lists = cursor->next;
+
+				if(cursor->next != NULL)
+					cursor->next->prev = cursor->prev;
+
+			}
+
+			if(tmpcursor->ac != NULL)
+			{
+				access_control* cursor2 = tmpcursor->ac;
+				while(cursor2 != NULL)
+				{
+					access_control* tmpac = cursor2;
+					cursor2 = cursor2->next;
+					free(tmpac);
+				}
+			}
+			free(tmpcursor);
+		}
+		else
+			cursor = cursor->next;
 	}
 }
 

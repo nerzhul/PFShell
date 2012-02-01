@@ -87,9 +87,11 @@ Alpha 0.13
 - Bugfix for send command
 - Proper flush for stdout before printing the prompt
 
-Alpha 0.14 - prev
+Alpha 0.14
 - Implement no ip route
 - Bug fix for adding routes
 - Now reading startup config on daemon start, not running-config
 - Write hostname in system file /etc/myname
 - Implement ip name-server to set the main ns for the router
+- Implement no access-list <name> with proper memory handling
+- Proper memory handling for no ip route

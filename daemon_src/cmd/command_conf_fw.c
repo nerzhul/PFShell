@@ -172,6 +172,20 @@ cmdCallback cfwCMD_acl(char* args)
 	return cb;
 }
 
+cmdCallback cfwCMD_noacl(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_FW,""};
+	char* aclname[2];
+	cutFirstWord(args,aclname);
+
+	if(strlen(aclname[1]) > 0 || strlen(aclname[0]) < 2)
+		return cb;
+
+	removeAccessList(aclname[0]);
+	WRITE_RUN();
+	return cb;
+}
+
 cmdCallback cfwCMD_show_packetfilter(char* _none)
 {
 	cmdCallback cb = {PROMPT_CONF_FW,""};

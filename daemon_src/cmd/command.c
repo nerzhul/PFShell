@@ -108,6 +108,10 @@ unsigned short initCmds()
 	confFWCmd[4].name = "access-list";
 	confFWCmd[4].handler = &cfwCMD_acl;
 
+	// Enable - Configure - Firewall Inverted Commands
+	noconfFWCmd[0].name = "access-list";
+	noconfFWCmd[0].handler = &cfwCMD_noacl;
+
 	// Enable - Configure - Firewall - ACL Commands
 	confACLCmd[0].name = "allow";
 	confACLCmd[0].handler = &caclCMD_allow_acl;
