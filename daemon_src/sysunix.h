@@ -25,46 +25,10 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stdio.h>
+#ifndef __SYSUNIX_H__
+#define __SYSUNIX_H__
 
-#include "daemon_socket.h"
-#include "cmd/command.h"
-#include "configuration.h"
-#include "prompt/prompt_msg.h"
-#include "sysunix.h"
+unsigned short checkSystemIntegrity();
+unsigned short execSystemCommand(char* cmd, char* output);
 
-int main(int argc, const char** argv)
-{
-	printf("\x1b[0mBSDRouterd version \x1b[33m%s\x1b[0m\n",VERSION);
-	initCmds();
-	// @TODO daemonize
-	// @TODO: verify integrity for configuration files
-
-	checkSystemIntegrity();
-
-	// Flush routes to manage it with the software
-	hsystemcmd("route flush");
-
-	if(!loadConfiguration())
-	{
-		printf("\x1b[31mSystem configuration is corrupted\x1b[0m !\n");
-		return -1;
-	}
-
-	int sock_error = openServerSocket();
-	if(sock_error == 0)
-	{
-		printf("BSDRouterd is \x1b[32mrunning\x1b[0m !\n");
-		waitAndHandleClients();
-	}
-	else if(sock_error == 1)
-		printf("%s",printError("[ERROR] BSDRouterd: TCP/IP Stack error\n"));
-	else if(sock_error == 2)
-		printf("%s",printError("[ERROR] BSDRouterd: unable to bind port... already in use ? (error %d)\n",sock_error));
-	else if(sock_error == 3)
-		printf("%s",printError("[ERROR] BSDRouterd: unable to listen port... already in use (error %d)?\n",sock_error));
-	else
-		printf("%s",printError("[ERROR] BSDRouterd: unk error\n"));
-	closeServerSocket();
-	return 0;
-}
+#endif

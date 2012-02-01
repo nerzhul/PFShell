@@ -115,6 +115,5 @@ cmdCallback handleCmd(char* _cmd, unsigned short promptMode);
 unsigned short regexp(char* str, char* pattern);
 
 void hsystemcmd(char* cmd);
-int execSystemCommand(char* cmd, char* output);
 
 #endif

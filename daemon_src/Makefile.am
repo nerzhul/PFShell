@@ -34,7 +34,9 @@ BSDRouterd_SOURCES = \
 	prompt/prompt.h \
 	prompt/prompt_msg.h \
 	route.c \
-	route.h
+	route.h \
+	sysunix.c \
+	sysunix.h
 
 BSDRouterd_LDADD = -lm
 

@@ -100,15 +100,13 @@ char* setPromptColor(short stdout_stream, short color)
 		FG_WHITE                                            // LWHITE
 	};
 
-	sprintf(buffer,"\x1b[%d%sm",UnixColorFG[color],(color>=YELLOW&&color<MAX_COLORS ?";1":""));
+	sprintf(buffer,"\x1b[%dm",UnixColorFG[color]);
 	return buffer;
 }
 
 char* resetPromptColor(short stdout_stream)
 {
-	char buffer[100];
-	sprintf(buffer, "\x1b[0m");
-	return buffer;
+	return "\x1b[0m";
 }
 
 unsigned short askConfirm() {

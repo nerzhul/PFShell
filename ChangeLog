@@ -95,3 +95,9 @@ Alpha 0.14
 - Implement ip name-server to set the main ns for the router
 - Implement no access-list <name> with proper memory handling
 - Proper memory handling for no ip route
+
+Alpha 0.15
+- Check integrity of the configuration files
+- Move execSystemCommand to sysunix.h
+- Little improvement to reset prompt color
+- Refund the prints when the daemon starts

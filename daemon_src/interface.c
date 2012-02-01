@@ -32,6 +32,7 @@
 #include "configuration.h"
 #include "cmd/command.h"
 #include "iputils.h"
+#include "sysunix.h"
 
 void addInterface(char* name)
 {

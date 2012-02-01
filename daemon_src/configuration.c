@@ -244,6 +244,7 @@ unsigned short writeRunningConfig()
 
 		hsystemcmd("/bin/md5 /opt/PFShell/running-config | awk '{print $4}' > /opt/PFShell/running-config.md5");
 		hsystemcmd("/bin/sha1 /opt/PFShell/running-config | awk '{print $4}' > /opt/PFShell/running-config.sha1");
+		hsystemcmd("/bin/sha256 /opt/PFShell/running-config | awk '{print $4}' > /opt/PFShell/running-config.sha256");
 	}
 
 	writeFirewall();
