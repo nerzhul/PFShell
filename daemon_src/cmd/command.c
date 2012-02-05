@@ -92,7 +92,7 @@ unsigned short initCmds()
 	noconfIfCmd[0].name = "shutdown";
 	noconfIfCmd[0].handler = &cifCMD_noshutdown;
 	noconfIfCmd[1].name = "ip";
-	noconfIfCmd[1].handler = &cifCMD_noip_address;
+	noconfIfCmd[1].handler = &cifCMD_noip;
 	noconfIfCmd[2].name = "description";
 	noconfIfCmd[2].handler = &cifCMD_nodescription;
 
@@ -119,6 +119,12 @@ unsigned short initCmds()
 	confACLCmd[1].handler = &caclCMD_deny_acl;
 	confACLCmd[2].name = "exit";
 	confACLCmd[2].handler = &caclCMD_exit;
+
+	// Enable - Configure - Firewall No ACL Commands
+	noconfACLCmd[0].name = "allow";
+	noconfACLCmd[0].handler = &caclCMD_noallow_acl;
+	noconfACLCmd[1].name = "deny";
+	noconfACLCmd[1].handler = &caclCMD_nodeny_acl;
 
 	// Enable - Configure - Redundancy Commands
 	confRDCmd[0].name = "exit";

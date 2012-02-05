@@ -58,12 +58,17 @@ struct acl_struct
 	acl* prev;
 };
 
+unsigned short readACL(char* acl, unsigned short allow, unsigned short remove);
+
+// Add ACL functions
 void addAccessList(acl* list, char* name);
 void addAccessControl(access_control* ac, unsigned short proto, unsigned short sport, unsigned short dport, char* saddr, char* daddr, unsigned short allow);
 void addACL(char* listname, unsigned short proto, unsigned short sport, unsigned short dport, char* saddr, char* daddr, unsigned short allow);
-unsigned short readACL(char* acl, unsigned short allow);
 
+// Remove ACL functions
 void removeAccessList(char* name);
+void removeAccessControl(acl* _acl,access_control* ac, unsigned short proto, unsigned short sport, unsigned short dport, char* saddr, char* daddr, unsigned short allow);
+void removeACL(char* listname, unsigned short proto, unsigned short sport, unsigned short dport, char* saddr, char* daddr, unsigned short allow);
 
 unsigned short writeFirewall();
 

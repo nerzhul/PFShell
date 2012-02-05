@@ -45,7 +45,7 @@ cmdCallback caclCMD_exit(char* _none)
 cmdCallback caclCMD_allow_acl(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_ACL,""};
-	if(readACL(args,1) == 0)
+	if(readACL(args,1,0) == 0)
 	{
 		WRITE_RUN();
 	}
@@ -57,11 +57,33 @@ cmdCallback caclCMD_allow_acl(char* args)
 cmdCallback caclCMD_deny_acl(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_ACL,""};
-	if(readACL(args,0) == 0)
+	if(readACL(args,0,0) == 0)
 	{
 		WRITE_RUN();
 	}
 	else
 		cb.message = CMDACL_ERROR();
+	return cb;
+}
+
+cmdCallback caclCMD_noallow_acl(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ACL,""};
+	if(readACL(args,1,1) == 0)
+	{
+		WRITE_RUN();
+	}
+
+	return cb;
+}
+
+cmdCallback caclCMD_nodeny_acl(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ACL,""};
+	if(readACL(args,0,1) == 0)
+	{
+		WRITE_RUN();
+	}
+
 	return cb;
 }

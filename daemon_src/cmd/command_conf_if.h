@@ -37,10 +37,11 @@ cmdCallback cifCMD_exit(char* _none);
 // IP management
 cmdCallback cifCMD_ip(char* args);
 cmdCallback cifCMD_ip_address(char* args);
-cmdCallback cifCMD_noip_address(char* args);
+cmdCallback cifCMD_noip(char* args);
 
 // ACLS
 cmdCallback cifCMD_access_list(char* args);
+cmdCallback cifCMD_noaccess_list(char* args);
 
 // Interface Mgmt
 cmdCallback cifCMD_shutdown(char* _none);

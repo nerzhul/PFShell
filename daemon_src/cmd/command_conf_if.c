@@ -157,10 +157,15 @@ cmdCallback cifCMD_ip_address(char* args)
 	return cb;
 }
 
-cmdCallback cifCMD_noip_address(char* args)
+cmdCallback cifCMD_noip(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_IF,""};
-	// @ TODO
+	char* iface[2];
+	cutFirstWord(args,iface);
+	/*if(strcmp(iface[0],"address") == 0)
+		return ;
+	else */if(strcmp(iface[0],"access-group") == 0)
+		return cifCMD_noaccess_list(iface[1]);
 	return cb;
 
 }
@@ -261,6 +266,33 @@ cmdCallback cifCMD_access_list(char* args)
 
 	if(setInterfaceACL(current_iface,aclname[0],inout[0]) != 0)
 		cb.message = CMDIF_ACCESS_LIST_UNK();
+
+	WRITE_RUN();
+	return cb;
+}
+
+cmdCallback cifCMD_noaccess_list(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+	if(strlen(args) < 3)
+	{
+		cb.message = CMDIF_ACCESS_LIST_ERROR();
+		return cb;
+	}
+
+	char* aclname[2];
+	cutFirstWord(args,aclname);
+
+	char* inout[2];
+	cutFirstWord(aclname[1],inout);
+	if(strcmp(inout[0],"in") != 0 && strcmp(inout[0],"out") != 0)
+		return cb;
+
+	acl* cursor = access_lists;
+	if(access_lists == NULL)
+		return cb;
+
+	setInterfaceACL(current_iface,"",inout[0]);
 
 	WRITE_RUN();
 	return cb;

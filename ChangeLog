@@ -102,6 +102,9 @@ Alpha 0.15
 - Little improvement to reset prompt color
 - Refund the prints when the daemon starts
 
-Alpha 0.16 - prev
+Alpha 0.16
 - Remove direction param from access_control structure
 - Little change for checkSystemIntegrity()
+- Implement removing special ACLs from an access-list
+- Improve code performance for adding acl
+- Implement no ip access-group <name> in/out

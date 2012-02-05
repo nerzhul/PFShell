@@ -81,7 +81,7 @@ cmdHdlr* masterCmd[MAX_CMD_TYPES];
 #define MAX_CONF_IF_NO_CMD 3
 #define MAX_CONF_FW_NO_CMD 1
 #define MAX_CONF_RD_NO_CMD 0
-#define MAX_CONF_ACL_NO_CMD 0
+#define MAX_CONF_ACL_NO_CMD 2
 
 static const unsigned short MAX_NO_CMDS[MAX_CMD_TYPES] =
 {

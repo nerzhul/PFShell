@@ -146,50 +146,92 @@ void addAccessControl(access_control* ac, unsigned short proto, unsigned short s
 	}
 }
 
-void addACL(char* listname, unsigned short proto, unsigned short sport, unsigned short dport, char* saddr, char* daddr, unsigned short allow)
+void removeAccessControl(acl* _acl, access_control* ac, unsigned short proto, unsigned short sport, unsigned short dport, char* saddr, char* daddr, unsigned short allow)
 {
-	acl* cursor = access_lists;
-	if(cursor != NULL && strcmp(cursor->name,listname) == 0)
-	{
-		if(cursor->ac == NULL)
-		{
-			cursor->ac = (access_control*)malloc(sizeof(access_control));
-			cursor->ac->_proto = 10;
-		}
-		addAccessControl(cursor->ac, proto, sport, dport, saddr, daddr, allow);
-	}
-	else
-	{
-		unsigned short found = 0;
-		while(cursor != NULL && found == 0 && cursor->next != NULL)
-		{
-			cursor = cursor->next;
-			if(strcmp(cursor->name,listname) == 0)
-			{
-				if(cursor->ac == NULL)
-				{
-					cursor->ac = (access_control*)malloc(sizeof(access_control));
-					cursor->ac->_proto = 10;
-				}
-				addAccessControl(cursor->ac, proto, sport, dport, saddr, daddr, allow);
-				found = 1;
-			}
-		}
+	access_control* cursor = ac;
+	if(cursor == NULL)
+		return;
 
-		if(found == 0)
+	unsigned short found = 0;
+
+	while(cursor != NULL && found == 0)
+	{
+		if(proto == cursor->_proto && sport == cursor->_sport && dport == cursor->_dport && strcmp(saddr,cursor->_saddr) == 0 &&
+			strcmp(daddr,cursor->_daddr) == 0 && allow == cursor->_allow)
 		{
-			if(access_lists == NULL)
+			found = 1;
+			if(cursor == ac && cursor->next == NULL)
+				_acl->ac = NULL;
+			else
 			{
-				access_lists = (acl*)malloc(sizeof(acl));
-				access_lists->name = "";
+				if(cursor->prev != NULL)
+					cursor->prev->next = cursor->next;
+				else
+					_acl->ac = cursor->next;
+
+				if(cursor->next != NULL)
+					cursor->next->prev = cursor->prev;
+
 			}
-			addAccessList(access_lists, listname);
-			addACL(listname, proto, sport, dport, saddr, daddr, allow);
 		}
+		cursor = cursor->next;
 	}
 }
 
-unsigned short readACL(char* args, unsigned short allow)
+void addACL(char* listname, unsigned short proto, unsigned short sport, unsigned short dport, char* saddr, char* daddr, unsigned short allow)
+{
+	acl* cursor = access_lists;
+
+	unsigned short found = 0;
+	while(cursor != NULL && found == 0)
+	{
+
+		if(strcmp(cursor->name,listname) == 0)
+		{
+			if(cursor->ac == NULL)
+			{
+				cursor->ac = (access_control*)malloc(sizeof(access_control));
+				cursor->ac->_proto = 10;
+			}
+			addAccessControl(cursor->ac, proto, sport, dport, saddr, daddr, allow);
+			found = 1;
+		}
+		else
+			cursor = cursor->next;
+	}
+
+	if(found == 0)
+	{
+		if(access_lists == NULL)
+		{
+			access_lists = (acl*)malloc(sizeof(acl));
+			access_lists->name = "";
+		}
+		addAccessList(access_lists, listname);
+		addACL(listname, proto, sport, dport, saddr, daddr, allow);
+	}
+}
+
+void removeACL(char* listname, unsigned short proto, unsigned short sport, unsigned short dport, char* saddr, char* daddr, unsigned short allow)
+{
+	acl* cursor = access_lists;
+	unsigned short found = 0;
+	while(cursor != NULL && found == 0)
+	{
+		if(strcmp(cursor->name,listname) == 0)
+		{
+			if(cursor->ac != NULL)
+			{
+				removeAccessControl(cursor,cursor->ac, proto, sport, dport, saddr, daddr, allow);
+				found = 1;
+			}
+		}
+		else
+			cursor = cursor->next;
+	}
+}
+
+unsigned short readACL(char* args, unsigned short allow, unsigned short remove)
 {
 	char* nexttab[2];
 	char _nextvar[1024];
@@ -292,7 +334,10 @@ unsigned short readACL(char* args, unsigned short allow)
 			_dport = port2;
 	}
 
-	addACL(name,_proto,_sport,_dport,_saddr,_daddr,_allow);
+	if(remove == 0)
+		addACL(name,_proto,_sport,_dport,_saddr,_daddr,_allow);
+	else
+		removeACL(name,_proto,_sport,_dport,_saddr,_daddr,_allow);
 
 	return 0;
 }

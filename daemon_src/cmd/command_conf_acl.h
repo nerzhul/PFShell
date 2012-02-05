@@ -37,4 +37,7 @@ cmdCallback caclCMD_exit(char* _none);
 cmdCallback caclCMD_allow_acl(char* args);
 cmdCallback caclCMD_deny_acl(char* args);
 
+cmdCallback caclCMD_noallow_acl(char* args);
+cmdCallback caclCMD_nodeny_acl(char* args);
+
 #endif
