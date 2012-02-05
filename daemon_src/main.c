@@ -40,7 +40,11 @@ int main(int argc, const char** argv)
 	// @TODO daemonize
 	// @TODO: verify integrity for configuration files
 
-	checkSystemIntegrity();
+
+	if(checkSystemIntegrity() == 0)
+		printf("\nIntegrity: \x1b[32mOK\x1b[0m\n");
+	else
+		printf("\nIntegrity: \x1b[31mFAIL\x1b[0m\n");
 
 	// Flush routes to manage it with the software
 	hsystemcmd("route flush");

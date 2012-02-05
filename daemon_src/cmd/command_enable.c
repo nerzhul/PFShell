@@ -97,11 +97,6 @@ cmdCallback eCMD_show(char* args)
 					else
 						strcat(buffer,"allow ");
 
-					if(cursor2->_direction == 0)
-						strcat(buffer,"in ");
-					else
-						strcat(buffer,"out ");
-
 					if(cursor2->_proto == 0)
 						strcat(buffer,"tcp ");
 					else if(cursor2->_proto == 1)

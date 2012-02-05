@@ -101,3 +101,7 @@ Alpha 0.15
 - Move execSystemCommand to sysunix.h
 - Little improvement to reset prompt color
 - Refund the prints when the daemon starts
+
+Alpha 0.16 - prev
+- Remove direction param from access_control structure
+- Little change for checkSystemIntegrity()

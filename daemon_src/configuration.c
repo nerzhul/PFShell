@@ -156,11 +156,6 @@ unsigned short writeRunningConfig()
 				else
 					fputs("allow ",confFile);
 
-				if(cursor2->_direction == 0)
-					fputs("in ",confFile);
-				else
-					fputs("out ",confFile);
-
 				if(cursor2->_proto == 0)
 					fputs("tcp ",confFile);
 				else if(cursor2->_proto == 1)

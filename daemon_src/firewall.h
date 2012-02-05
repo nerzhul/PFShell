@@ -38,7 +38,6 @@ typedef struct access_control access_control;
 
 struct access_control
 {
-	unsigned short _direction;
 	unsigned short _proto;
 	unsigned short _sport;
 	unsigned short _dport;
@@ -60,8 +59,8 @@ struct acl_struct
 };
 
 void addAccessList(acl* list, char* name);
-void addAccessControl(access_control* ac, short unsigned int direction, short unsigned int proto, short unsigned int sport, short unsigned int dport, char* saddr, char* daddr, short unsigned int allow);
-void addACL(char* listname, short unsigned int direction, short unsigned int proto, short unsigned int sport, short unsigned int dport, char* saddr, char* daddr, short unsigned int allow);
+void addAccessControl(access_control* ac, unsigned short proto, unsigned short sport, unsigned short dport, char* saddr, char* daddr, unsigned short allow);
+void addACL(char* listname, unsigned short proto, unsigned short sport, unsigned short dport, char* saddr, char* daddr, unsigned short allow);
 unsigned short readACL(char* acl, unsigned short allow);
 
 void removeAccessList(char* name);

@@ -38,6 +38,8 @@ unsigned short checkSystemIntegrity()
 	char buffer[1024];
 	char buffer2[1024];
 
+	unsigned short error = 0;
+
 	printf(".");
 	fflush(stdout);
 
@@ -48,7 +50,10 @@ unsigned short checkSystemIntegrity()
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
+	{
 		printf("\x1b[31mERROR\x1b[0m\nsysctl.conf is corrupted !\n");
+		error = 1;
+	}
 
 	printf(".");
 	fflush(stdout);
@@ -60,7 +65,10 @@ unsigned short checkSystemIntegrity()
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
+	{
 		printf("\x1b[31mERROR\x1b[0m\nsysctl.conf is corrupted !\n");
+		error = 1;
+	}
 
 	printf(".");
 	fflush(stdout);
@@ -72,7 +80,10 @@ unsigned short checkSystemIntegrity()
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
+	{
 		printf("\x1b[31mERROR\x1b[0m\nsysctl.conf is corrupted !\n");
+		error = 1;
+	}
 
 	// check Startup Config
 	printf(".");
@@ -85,7 +96,10 @@ unsigned short checkSystemIntegrity()
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
+	{
 		printf("\x1b[31mERROR\x1b[0m\nstartup-config is corrupted !\n");
+		error = 1;
+	}
 
 	printf(".");
 	fflush(stdout);
@@ -97,7 +111,10 @@ unsigned short checkSystemIntegrity()
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
+	{
 		printf("\x1b[31mERROR\x1b[0m\nstartup-config is corrupted !\n");
+		error = 1;
+	}
 
 	printf(".");
 	fflush(stdout);
@@ -109,7 +126,10 @@ unsigned short checkSystemIntegrity()
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
+	{
 		printf("\x1b[31mERROR\x1b[0m\nstartup-config is corrupted !\n");
+		error = 1;
+	}
 
 	printf(".");
 	fflush(stdout);
@@ -123,7 +143,10 @@ unsigned short checkSystemIntegrity()
 	// Check packet filter
 
 	if(strcmp(buffer,buffer2) != 0)
+	{
 		printf("\x1b[31mERROR\x1b[0m\nPacket Filter configuration is corrupted !\n");
+		error = 1;
+	}
 
 	printf(".");
 	fflush(stdout);
@@ -135,7 +158,10 @@ unsigned short checkSystemIntegrity()
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
+	{
 		printf("\x1b[31mERROR\x1b[0m\nPacket Filter configuration is corrupted !\n");
+		error = 1;
+	}
 
 
 	printf(".");
@@ -148,10 +174,12 @@ unsigned short checkSystemIntegrity()
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
+	{
 		printf("\x1b[31mERROR\x1b[0m\nPacket Filter configuration is corrupted !\n");
+		error = 1;
+	}
 
-	printf("\nIntegrity: \x1b[32mOK\x1b[0m\n");
-	return 0;
+	return error;
 }
 
 unsigned short execSystemCommand(char* cmd, char* output)
