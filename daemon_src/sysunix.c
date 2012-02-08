@@ -85,6 +85,53 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
+	printf(".");
+	fflush(stdout);
+
+	// Resolv.conf check
+
+	execSystemCommand("/bin/md5 /etc/resolv.conf.save | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("cat /etc/resolv.conf.md5",buffer2);
+
+	printf(".");
+	fflush(stdout);
+
+	if(strcmp(buffer,buffer2) != 0)
+	{
+		printf("\x1b[31mERROR\x1b[0m\nresolv.conf is corrupted !\n");
+		error = 1;
+	}
+
+	printf(".");
+	fflush(stdout);
+
+	execSystemCommand("/bin/sha1 /etc/resolv.conf.save | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("cat /etc/resolv.conf.sha1",buffer2);
+
+	printf(".");
+	fflush(stdout);
+
+	if(strcmp(buffer,buffer2) != 0)
+	{
+		printf("\x1b[31mERROR\x1b[0m\nresolv.conf is corrupted !\n");
+		error = 1;
+	}
+
+	printf(".");
+	fflush(stdout);
+
+	execSystemCommand("/bin/sha256 /etc/resolv.conf.save | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("cat /etc/resolv.conf.sha256",buffer2);
+
+	printf(".");
+	fflush(stdout);
+
+	if(strcmp(buffer,buffer2) != 0)
+	{
+		printf("\x1b[31mERROR\x1b[0m\nresolv.conf is corrupted !\n");
+		error = 1;
+	}
+
 	// check Startup Config
 	printf(".");
 	fflush(stdout);
@@ -141,7 +188,6 @@ unsigned short checkSystemIntegrity()
 	fflush(stdout);
 
 	// Check packet filter
-
 	if(strcmp(buffer,buffer2) != 0)
 	{
 		printf("\x1b[31mERROR\x1b[0m\nPacket Filter configuration is corrupted !\n");
@@ -186,6 +232,8 @@ unsigned short execSystemCommand(char* cmd, char* output)
 {
 	FILE *fp;
 	char path[1035];
+
+	strcpy(output,"");
 
 	fp = popen(cmd, "r");
 	if (fp == NULL) {

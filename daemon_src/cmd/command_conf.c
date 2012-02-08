@@ -163,7 +163,21 @@ cmdCallback cCMD_ip(char* args)
 
 	if(strcmp(ipcmd[0],"domain-name") == 0)
 	{
-		//@TODO
+		if(strlen(ipcmd[1]) < 2)
+		{
+			cb.message = CMDCONF_IPDN_ERROR();
+			return cb;
+		}
+
+		char* dname[2];
+		cutFirstWord(ipcmd[1],dname);
+		if(regexp(dname[0],"^([a-zA-Z0-9][a-zA-Z0-9_-]*(\.[a-zA-Z0-9][a-zA-Z0-9_-]*)+)$") == 0 && strlen(dname[1]) < 1)
+		{
+			strcpy(dnssearch,dname[0]);
+			WRITE_RUN();
+		}
+		else
+			cb.message = CMDCONF_IPDN_ERROR();
 	}
 	else if(strcmp(ipcmd[0],"multicast-routing") == 0)
 	{
@@ -180,7 +194,7 @@ cmdCallback cCMD_ip(char* args)
 	}
 	else if(strcmp(ipcmd[0],"name-server") == 0)
 	{
-		if(strlen(ipcmd[1]) < 15)
+		if(strlen(ipcmd[1]) < 6)
 		{
 			cb.message = CMDCONF_IPNS_ERROR();
 			return cb;
@@ -188,11 +202,10 @@ cmdCallback cCMD_ip(char* args)
 
 		char* netip[2];
 		cutFirstWord(ipcmd[1],netip);
-
 		if(regexp(netip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0
 			&& strlen(netip[1]) < 1)
 		{
-			dnsip = netip[0];
+			strcpy(dnsip,netip[0]);
 			WRITE_RUN();
 		}
 		else
@@ -299,18 +312,21 @@ cmdCallback cCMD_noip(char* args)
 	char* ipcmd[2];
 	cutFirstWord(args,ipcmd);
 
-	if(strcmp(ipcmd[0],"routing") == 0)
+	if(strcmp(ipcmd[0],"domain-name") == 0)
 	{
-		if(strlen(ipcmd[1]) > 0)
-		{
-			cb.message = CMDCONF_NOIP_ERROR();
+		if(strlen(ipcmd[1]) < 15)
 			return cb;
-		}
 
-		iprouting = 0;
-		hsystemcmd("/usr/sbin/sysctl net.inet.ip.forwarding=0");
-		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.forwarding=0");
-		WRITE_RUN();
+		char* netip[2];
+		cutFirstWord(ipcmd[1],netip);
+
+		if(strcmp(netip[0],dnssearch) == 0 && strlen(netip[1]) < 1)
+		{
+			strcpy(dnssearch,"");
+			WRITE_RUN();
+		}
+		else
+			return cb;
 	}
 	else if(strcmp(ipcmd[0],"multicast-routing") == 0)
 	{
@@ -335,7 +351,7 @@ cmdCallback cCMD_noip(char* args)
 
 		if(strcmp(netip[0],dnsip) == 0 && strlen(netip[1]) < 1)
 		{
-			dnsip = "";
+			strcpy(dnsip,"");
 			WRITE_RUN();
 		}
 		else
@@ -405,6 +421,19 @@ cmdCallback cCMD_noip(char* args)
 			cb.message = CMDCONF_NOIPROUTE_ERROR();
 			return cb;
 		}
+	}
+	else if(strcmp(ipcmd[0],"routing") == 0)
+	{
+		if(strlen(ipcmd[1]) > 0)
+		{
+			cb.message = CMDCONF_NOIP_ERROR();
+			return cb;
+		}
+
+		iprouting = 0;
+		hsystemcmd("/usr/sbin/sysctl net.inet.ip.forwarding=0");
+		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.forwarding=0");
+		WRITE_RUN();
 	}
 
 	return cb;

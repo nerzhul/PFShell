@@ -63,8 +63,8 @@ unsigned short loadConfiguration()
 	iprouting = 0;
 
 	hostname = "PFShell";
-	dnssearch = ".local";
-	dnsip = "";
+	strcpy(dnssearch,"local");
+	strcpy(dnsip,"");
 
 	// Read file
 	char path[1035];
@@ -101,16 +101,18 @@ unsigned short writeRunningConfig()
 		fputs("\n",confFile);
 
 		// DNS
-		if(strlen(dnsip) > 0)
+		if(strlen(dnsip) > 10)
 		{
 			fputs("ip name-server ",confFile);
 			fputs(dnsip,confFile);
+			fputs("\n",confFile);
 		}
 
-		if(strlen(dnssearch) > 0)
+		if(strlen(dnssearch) > 1)
 		{
 			fputs("ip domain-name ",confFile);
-			fputs(dnsip,confFile);
+			fputs(dnssearch,confFile);
+			fputs("\n",confFile);
 		}
 
 		// Routing
@@ -243,4 +245,28 @@ unsigned short writeRunningConfig()
 	}
 
 	writeFirewall();
+
+	confFile = fopen("/etc/resolv.conf","w");
+	if(confFile == NULL)
+	{
+		CMD_WRITE_RESOLV_FAIL();
+	}
+	else
+	{
+		if(strlen(dnssearch) > 0)
+		{
+			fputs("search ",confFile);
+			fputs(dnssearch,confFile);
+			fputs("\n",confFile);
+		}
+
+		if(strlen(dnsip) > 0)
+		{
+			fputs("nameserver ",confFile);
+			fputs(dnsip,confFile);
+			fputs("\n",confFile);
+		}
+
+		fclose(confFile);
+	}
 }

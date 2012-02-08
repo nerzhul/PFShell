@@ -108,3 +108,9 @@ Alpha 0.16
 - Implement removing special ACLs from an access-list
 - Improve code performance for adding acl
 - Implement no ip access-group <name> in/out
+
+Alpha 0.17
+- Implement nameserver configuration (ip name-server and ip domain-name)
+- Also implement linked no commands
+- Init empty buffer for execSystemCommand
+- Also fix the major bug into client. Some buffers are not initialized empty => Buffer overflow

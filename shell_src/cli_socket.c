@@ -56,7 +56,8 @@ unsigned short sendPacket(char* data)
 
 void decodePacket(char* pkt)
 {
-	char command[4096];
+	char buffer[4094] = "";
+	char command[4096] = "";
 
 	int offset = 1;
 
@@ -64,11 +65,11 @@ void decodePacket(char* pkt)
 
 	while(offset < strlen(pkt))
 	{
-		command[offset-1] = pkt[offset];
-		++offset;
+		buffer[offset-1] = pkt[offset];
+		offset++;
 	}
 
-	command[offset] = '\0';
+	strcpy(command,buffer);
 
 
 	if(promptMode < MAX_PROMPTS)

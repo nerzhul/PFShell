@@ -28,6 +28,6 @@
 #ifndef __CONFIGURATION_H_
 #define __CONFIGURATION_H_
 
-char* hostname;
+char hostname[100];
 
 #endif

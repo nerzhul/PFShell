@@ -231,6 +231,12 @@ cmdCallback eCMD_save(char* _none)
 	system("/bin/md5 /etc/pf.conf | /usr/bin/awk '{print $4}' > /etc/pf.conf.md5");
 	system("/bin/sha1 /etc/pf.conf | /usr/bin/awk '{print $4}' > /etc/pf.conf.sha1");
 	system("/bin/sha256 /etc/pf.conf | /usr/bin/awk '{print $4}' > /etc/pf.conf.sha256");
+
+	// Save resolv.conf
+	system("cp /etc/resolv.conf /etc/resolv.conf.save");
+	system("/bin/md5 /etc/resolv.conf | /usr/bin/awk '{print $4}' > /etc/resolv.conf.md5");
+	system("/bin/sha1 /etc/resolv.conf | /usr/bin/awk '{print $4}' > /etc/resolv.conf.sha1");
+	system("/bin/sha256 /etc/resolv.conf | /usr/bin/awk '{print $4}' > /etc/resolv.conf.sha256");
 	cb.message = CMDEN_SAVE_SUCCESS();
 	return cb;
 }

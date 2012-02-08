@@ -38,6 +38,7 @@
 
 // Configuration Messages
 #define CMD_WRITE_RUN_FAIL() printError("Writing failed for running-config !!!\n");
+#define CMD_WRITE_RESOLV_FAIL() printError("Writing failed for resolv.conf !!!\n");
 
 // Common Messages
 #define CMDCOMMON_EXIT_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   exit\n");
@@ -59,10 +60,11 @@
 #define CMDCONF_HOSTNAME_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   hostname <string>\n");
 #define CMDCONF_INTERFACE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   interface <name>\n");
 #define CMDCONF_INTERFACE_UNK(A) printError("Unknown interface %s\n",A);
-#define CMDCONF_IP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   ip <route|routing|multicast-routing>\n");
+#define CMDCONF_IP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   ip <domain-name|multicast-routing|name-server|route|routing>\n");
 #define CMDCONF_FIREWALL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   firewall\n");
 #define CMDCONF_IPROUTE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    ip route A.B.C.D M.A.S.K G.A.T.E\n");
 #define CMDCONF_IPNS_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    ip name-server A.B.C.D\n");
+#define CMDCONF_IPDN_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    ip domain-name <name>\n");
 
 // Configure menu No Messages
 #define CMDCONF_NOIP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   no ip <route|routing|multicast-routing>\n");

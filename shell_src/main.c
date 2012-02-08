@@ -34,7 +34,7 @@
 int main(int argc, const char** argv)
 {
 	// Set default hostname
-	hostname = "BSDRouter";
+	strcpy(hostname,"BSDRouter");
 
 	initSignals();
 	initPrompts();
