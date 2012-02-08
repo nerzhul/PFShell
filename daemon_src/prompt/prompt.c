@@ -30,8 +30,8 @@
 
 char* printError(char* str, ...)
 {
-	char buffer[4094];
-	char buffer2[4094];
+	char buffer[4094] = "";
+	char buffer2[4094] = "";
 	va_list args;
 	va_start(args, str);
 
@@ -45,8 +45,8 @@ char* printError(char* str, ...)
 
 char* printSuccess(char* str, ...)
 {
-	char buffer[4094];
-	char buffer2[4094];
+	char buffer[4094] = "";
+	char buffer2[4094] = "";
 	va_list args;
 	va_start(args, str);
 
@@ -60,7 +60,7 @@ char* printSuccess(char* str, ...)
 
 char* setPromptColor(short stdout_stream, short color)
 {
-	char buffer[100];
+	char buffer[100] = "";
 	enum ANSITextAttr
 	{
 		TA_NORMAL=0,

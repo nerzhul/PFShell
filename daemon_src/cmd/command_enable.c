@@ -78,13 +78,13 @@ cmdCallback eCMD_show(char* args)
 		}
 		else if(strcmp(showcmd[0],"acls") == 0)
 		{
-			char buffer[4000];
+			char buffer[4000] = "";
 			strcat(buffer,"------------- Current ACLs -------------\n");
 			unsigned short found = 0;
 			acl* cursor = access_lists;
 			while(cursor != NULL)
 			{
-				char buffer2[1000];
+				char buffer2[1000] = "";
 				sprintf(buffer2,"Access-List %s\n",cursor->name);
 				strcat(buffer,buffer2);
 				access_control* cursor2 = cursor->ac;
@@ -141,7 +141,7 @@ cmdCallback eCMD_show(char* args)
 				}
 				else
 				{
-					char buffer[4000];
+					char buffer[4000] = "";
 					execSystemCommand("/sbin/pfctl -si",buffer);
 					cb.message = buffer;
 				}
@@ -158,7 +158,7 @@ cmdCallback eCMD_show(char* args)
 			}
 			else
 			{
-				char pbuffer[4000];
+				char pbuffer[4000] = "";
 				strcpy(pbuffer,"Running Interfaces:\n");
 				while(iface != NULL)
 				{

@@ -195,8 +195,8 @@ cmdCallback handleCmd(char* _fullcmd, unsigned short promptMode)
 
 void cutFirstWord(char* string,char** result)
 {
-	char firstWord[1024];
-	char followWords[1024];
+	char firstWord[1024] = "";
+	char followWords[1024] = "";
 
 	int offset = 0;
 	int offset2 = 0;
@@ -253,8 +253,8 @@ void cutFirstWord(char* string,char** result)
 
 void cutByChar(char* string,char** result,char cutter)
 {
-	char firstWord[1024];
-	char followWords[1024];
+	char firstWord[1024] = "";
+	char followWords[1024] = "";
 
 	int offset = 0;
 	int offset2 = 0;
@@ -312,7 +312,7 @@ void cutByChar(char* string,char** result,char cutter)
 
 void hsystemcmd(char* cmd)
 {
-	char cmd2[1024];
+	char cmd2[1024] = "";
 	strcpy(cmd2,cmd);
 	strcat(cmd2," > /dev/null 2>&1");
 	system(cmd2);

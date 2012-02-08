@@ -67,7 +67,7 @@ unsigned short loadConfiguration()
 	strcpy(dnsip,"");
 
 	// Read file
-	char path[1035];
+	char path[1035] = "";
 
 	cmdCallback promptMode = {PROMPT_CONF,""};
 	while (fgets(path, sizeof(path), confFile) != NULL) {
@@ -167,7 +167,7 @@ unsigned short writeRunningConfig()
 
 				fputs(cursor2->_saddr,confFile);
 
-				char buffer[1024];
+				char buffer[1024] = "";
 
 				if(cursor2->_sport > 0)
 				{

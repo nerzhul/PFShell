@@ -245,8 +245,8 @@ cmdCallback cCMD_ip(char* args)
 						return cb;
 					}
 
-					char buffer[1024];
-					char cidrbuf[100];
+					char buffer[1024] = "";
+					char cidrbuf[100] = "";
 					sprintf(cidrbuf,"%d",cidr);
 
 					strcpy(buffer,"route add ");
@@ -387,8 +387,8 @@ cmdCallback cCMD_noip(char* args)
 						return cb;
 					}
 
-					char buffer[1024];
-					char cidrbuf[100];
+					char buffer[1024] = "";
+					char cidrbuf[100] = "";
 					sprintf(cidrbuf,"%d",cidr);
 
 					strcpy(buffer,"route delete ");

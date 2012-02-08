@@ -65,7 +65,7 @@ void addInterface(char* name)
 
 void loadInterfaces()
 {
-	char input[1024];
+	char input[1024] = "";
 	char output[1024] = "";
 #ifdef FREEBSD
 	execSystemCommand("for IF in $(/sbin/ifconfig | grep HWaddr | awk '{print $1}'); do echo $IF; done;",output);
@@ -80,7 +80,7 @@ void loadInterfaces()
 		if(strcmp(iface[1],"") != 0)
 		{
 			char* iface2[2];
-			char ifbuffer[1024];
+			char ifbuffer[1024] = "";
 			strcpy(ifbuffer,iface[1]);
 
 			while(strcmp(ifbuffer,"") != 0)
@@ -121,8 +121,8 @@ unsigned short saveInterfaces()
 		{
 			if(getInterfaceState(cursor->name) == 1)
 			{
-				char buffer[1024];
-				char pathbuffer[100];
+				char buffer[1024] = "";
+				char pathbuffer[100] = "";
 				strcpy(pathbuffer,"/etc/hostname.");
 				strcat(pathbuffer,cursor->name);
 
@@ -141,8 +141,8 @@ unsigned short saveInterfaces()
 				{
 					if(is_valid_mask(ipmask[1]) == 0)
 					{
-						char buffer[1024];
-						char pathbuffer[100];
+						char buffer[1024] = "";
+						char pathbuffer[100] = "";
 						strcpy(pathbuffer,"/etc/hostname.");
 						strcat(pathbuffer,cursor->name);
 
@@ -163,8 +163,8 @@ unsigned short saveInterfaces()
 				char* mask[2];
 				cutByChar(ipmask[0],mask,'/');
 
-				char buffer[1024];
-				char pathbuffer[100];
+				char buffer[1024] = "";
+				char pathbuffer[100] = "";
 
 				strcpy(pathbuffer,"/etc/hostname.");
 				strcat(pathbuffer,cursor->name);
@@ -215,7 +215,7 @@ unsigned short setInterfaceIP(char* name, char* ip)
 
 char* getInterfaceIP(char* name)
 {
-	char _ip[50];
+	char _ip[50] = "";
 
 	if(interfaces == NULL)
 		return "";
@@ -271,7 +271,7 @@ unsigned short setInterfaceDesc(char* name, char* desc)
 
 char* getInterfaceDesc(char* name)
 {
-	char _desc[50];
+	char _desc[50] = "";
 
 	if(interfaces == NULL)
 		return "";

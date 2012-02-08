@@ -35,8 +35,8 @@ unsigned short checkSystemIntegrity()
 	printf("Starting configuration checks...");
 	fflush(stdout);
 
-	char buffer[1024];
-	char buffer2[1024];
+	char buffer[1024] = "";
+	char buffer2[1024] = "";
 
 	unsigned short error = 0;
 
@@ -58,6 +58,8 @@ unsigned short checkSystemIntegrity()
 	printf(".");
 	fflush(stdout);
 
+	buffer[1024] = "";
+	buffer2[1024] = "";
 	execSystemCommand("/bin/sha1 /etc/sysctl.conf | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/sysctl.conf.sha1",buffer2);
 
@@ -73,6 +75,8 @@ unsigned short checkSystemIntegrity()
 	printf(".");
 	fflush(stdout);
 
+	buffer[1024] = "";
+	buffer2[1024] = "";
 	execSystemCommand("/bin/sha256 /etc/sysctl.conf | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/sysctl.conf.sha256",buffer2);
 
@@ -89,7 +93,8 @@ unsigned short checkSystemIntegrity()
 	fflush(stdout);
 
 	// Resolv.conf check
-
+	buffer[1024] = "";
+	buffer2[1024] = "";
 	execSystemCommand("/bin/md5 /etc/resolv.conf.save | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/resolv.conf.md5",buffer2);
 
@@ -105,6 +110,8 @@ unsigned short checkSystemIntegrity()
 	printf(".");
 	fflush(stdout);
 
+	buffer[1024] = "";
+	buffer2[1024] = "";
 	execSystemCommand("/bin/sha1 /etc/resolv.conf.save | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/resolv.conf.sha1",buffer2);
 
@@ -120,6 +127,8 @@ unsigned short checkSystemIntegrity()
 	printf(".");
 	fflush(stdout);
 
+	buffer[1024] = "";
+	buffer2[1024] = "";
 	execSystemCommand("/bin/sha256 /etc/resolv.conf.save | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/resolv.conf.sha256",buffer2);
 
@@ -136,6 +145,8 @@ unsigned short checkSystemIntegrity()
 	printf(".");
 	fflush(stdout);
 
+	buffer[1024] = "";
+	buffer2[1024] = "";
 	execSystemCommand("/bin/md5 /opt/PFShell/startup-config  | awk '{print $4}'",buffer);
 	execSystemCommand("cat /opt/PFShell/startup-config.md5",buffer2);
 
@@ -151,6 +162,8 @@ unsigned short checkSystemIntegrity()
 	printf(".");
 	fflush(stdout);
 
+	buffer[1024] = "";
+	buffer2[1024] = "";
 	execSystemCommand("/bin/sha1 /opt/PFShell/startup-config  | awk '{print $4}'",buffer);
 	execSystemCommand("cat /opt/PFShell/startup-config.sha1",buffer2);
 
@@ -166,6 +179,8 @@ unsigned short checkSystemIntegrity()
 	printf(".");
 	fflush(stdout);
 
+	buffer[1024] = "";
+	buffer2[1024] = "";
 	execSystemCommand("/bin/sha256 /opt/PFShell/startup-config  | awk '{print $4}'",buffer);
 	execSystemCommand("cat /opt/PFShell/startup-config.sha256",buffer2);
 
@@ -181,6 +196,8 @@ unsigned short checkSystemIntegrity()
 	printf(".");
 	fflush(stdout);
 
+	buffer[1024] = "";
+	buffer2[1024] = "";
 	execSystemCommand("/bin/md5 /etc/pf.conf | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/pf.conf.md5",buffer2);
 
@@ -197,6 +214,8 @@ unsigned short checkSystemIntegrity()
 	printf(".");
 	fflush(stdout);
 
+	buffer[1024] = "";
+	buffer2[1024] = "";
 	execSystemCommand("/bin/sha1 /etc/pf.conf | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/pf.conf.sha1",buffer2);
 
@@ -213,6 +232,8 @@ unsigned short checkSystemIntegrity()
 	printf(".");
 	fflush(stdout);
 
+	buffer[1024] = "";
+	buffer2[1024] = "";
 	execSystemCommand("/bin/sha256 /etc/pf.conf | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/pf.conf.sha256",buffer2);
 
@@ -231,7 +252,7 @@ unsigned short checkSystemIntegrity()
 unsigned short execSystemCommand(char* cmd, char* output)
 {
 	FILE *fp;
-	char path[1035];
+	char path[1035] = "";
 
 	strcpy(output,"");
 

@@ -114,3 +114,6 @@ Alpha 0.17
 - Also implement linked no commands
 - Init empty buffer for execSystemCommand
 - Also fix the major bug into client. Some buffers are not initialized empty => Buffer overflow
+
+Alpha 0.18 - prev
+- Fix all buffer overflows

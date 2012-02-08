@@ -234,7 +234,7 @@ void removeACL(char* listname, unsigned short proto, unsigned short sport, unsig
 unsigned short readACL(char* args, unsigned short allow, unsigned short remove)
 {
 	char* nexttab[2];
-	char _nextvar[1024];
+	char _nextvar[1024] = "";
 
 	char* name;
 	unsigned short _allow;
@@ -364,7 +364,7 @@ unsigned short writeFirewall()
 					while(cursor3 != NULL)
 					{
 						// @Todo: optimize rules
-						char buffer[1024];
+						char buffer[1024] = "";
 
 						if(cursor3->_allow == 1) strcpy(buffer,"pass ");
 						else strcpy(buffer,"block ");
@@ -383,7 +383,7 @@ unsigned short writeFirewall()
 
 						if(cursor3->_sport != 0)
 						{
-							char bufport[15];
+							char bufport[15] = "";
 							sprintf(bufport,"port %d ",cursor3->_sport);
 							strcat(buffer,bufport);
 						}
@@ -394,7 +394,7 @@ unsigned short writeFirewall()
 
 						if(cursor3->_dport != 0)
 						{
-							char bufport[15];
+							char bufport[15] = "";
 							sprintf(bufport,"port %d ",cursor3->_dport);
 							strcat(buffer,bufport);
 						}
@@ -422,7 +422,7 @@ unsigned short writeFirewall()
 					while(cursor3 != NULL)
 					{
 						// @Todo: optimize rules
-						char buffer[1024];
+						char buffer[1024] = "";
 
 						if(cursor3->_allow == 1) strcpy(buffer,"pass ");
 						else strcpy(buffer,"block ");
@@ -441,7 +441,7 @@ unsigned short writeFirewall()
 
 						if(cursor3->_sport != 0)
 						{
-							char bufport[15];
+							char bufport[15] = "";
 							sprintf(bufport,"port %d ",cursor3->_sport);
 							strcat(buffer,bufport);
 						}
@@ -452,7 +452,7 @@ unsigned short writeFirewall()
 
 						if(cursor3->_dport != 0)
 						{
-							char bufport[15];
+							char bufport[15] = "";
 							sprintf(bufport,"port %d ",cursor3->_dport);
 							strcat(buffer,bufport);
 						}

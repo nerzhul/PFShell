@@ -77,7 +77,7 @@ cmdCallback cifCMD_ip_address(char* args)
 	{
 		if(getInterfaceState(current_iface) == 1)
 		{
-			char buffer[1024];
+			char buffer[1024] = "";
 			strcpy(buffer,"dhclient ");
 			strcat(buffer,current_iface);
 			hsystemcmd(buffer);
@@ -99,8 +99,8 @@ cmdCallback cifCMD_ip_address(char* args)
 			{
 				if(is_valid_mask(ipmask[1]) == 0)
 				{
-					char buffer[1024];
-					char ipbuffer[100];
+					char buffer[1024] = "";
+					char ipbuffer[100] = "";
 
 					strcpy(buffer,"ifconfig ");
 					strcat(buffer,current_iface);
@@ -134,7 +134,7 @@ cmdCallback cifCMD_ip_address(char* args)
 		}
 		else if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
 		{
-			char buffer[1024];
+			char buffer[1024] = "";
 			strcpy(buffer,"ifconfig ");
 			strcat(buffer,current_iface);
 			strcat(buffer," ");
@@ -179,7 +179,7 @@ cmdCallback cifCMD_shutdown(char* _none)
 		return cb;
 	}
 
-	char buffer[1024];
+	char buffer[1024] = "";
 	strcpy(buffer,"ifconfig ");
 	strcat(buffer,current_iface);
 	strcat(buffer," down");
@@ -204,7 +204,7 @@ cmdCallback cifCMD_noshutdown(char* _none)
 		return cb;
 	}
 
-	char buffer[1024];
+	char buffer[1024] = "";
 	strcpy(buffer,"ifconfig ");
 	strcat(buffer,current_iface);
 	strcat(buffer," up");
@@ -213,7 +213,7 @@ cmdCallback cifCMD_noshutdown(char* _none)
 	char* ifconf = getInterfaceIP(current_iface);
 	if(strcmp(ifconf,"DHCP") == 0)
 	{
-		char buffer[1024];
+		char buffer[1024] = "";
 		strcpy(buffer,"dhclient ");
 		strcat(buffer,current_iface);
 		hsystemcmd(buffer);

@@ -74,7 +74,7 @@ void waitAndHandleClients()
 			unsigned short closeSock = 0;
 			while(closeSock == 0)
 			{
-				char buffer[4096];
+				char buffer[4096] = "";
 				int recvsize = recv(csock,buffer,4096,0);
 				if(recvsize == 0 || recvsize < 1)
 				{
@@ -97,7 +97,7 @@ unsigned short closeServerSocket()
 void decodePacket(char* pkt)
 {
 	unsigned short promptMode;
-	char command[4096];
+	char command[4096] = "";
 
 	int offset = 1;
 
@@ -114,7 +114,7 @@ void decodePacket(char* pkt)
 	if(promptMode < MAX_PROMPTS)
 	{
 		cmdCallback cb = handleCmd(command,promptMode);
-		char sendBuffer[4096];
+		char sendBuffer[4096] = "";
 		sprintf(sendBuffer,"%d%s",cb.promptMode,cb.message);
 		sendPacket(sendBuffer);
 	}
