@@ -54,9 +54,14 @@ void addInterface(char* name)
 	else
 	{
 		net_iface* cursor = interfaces;
+		if(strcmp(name,cursor->name) == 0)
+			return;
 
-		while(cursor->next != NULL)
+		while(cursor->next != NULL) {
 			cursor = cursor->next;
+			if(strcmp(name,cursor->name) == 0)
+				return;
+		}
 
 		newIface->prev = cursor;
 		cursor->next = newIface;

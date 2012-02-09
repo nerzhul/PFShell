@@ -117,3 +117,4 @@ Alpha 0.17
 
 Alpha 0.18 - prev
 - Fix all buffer overflows
+- Don't add interface if it already exists
