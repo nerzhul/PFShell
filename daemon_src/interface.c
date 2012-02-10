@@ -46,6 +46,7 @@ void addInterface(char* name)
 	newIface->acl_out = "";
 	newIface->desc = "";
 	newIface->state = 1;
+	newIface->rip_passive = 0;
 
 	if(interfaces == NULL)
 	{

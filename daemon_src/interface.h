@@ -38,6 +38,7 @@ struct net_iface
 	char* acl_out;
 	char* desc;
 	unsigned short state;
+	unsigned short rip_passive;
 
 	net_iface* next;
 	net_iface* prev;

@@ -49,20 +49,24 @@ char* readCmd()
 		tcsetattr(0,TCSANOW,&t);
 		fflush(stdout);
 		tmpchar=getchar();
+		// @TODO: handle up & down
 		if(tmpchar == t.c_cc[VERASE])
 		{
-			printf("\b \b");
-			buffer[offset] = '\0';
-			--offset;
+			if(offset > 0)
+			{
+				printf("\b \b");
+				buffer[offset] = '\0';
+				--offset;
+			}
 		}
 		else if(tmpchar == '\t')
 		{
-			printf("TAB\n");
+			printf("TAB");
 			buffer[offset] = '\0';
 		}
 		else if(tmpchar == '?')
 		{
-			printf("HELP\n");
+			printf("HELP");
 			buffer[offset] = '\0';
 		}
 		else

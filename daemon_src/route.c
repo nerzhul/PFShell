@@ -159,5 +159,9 @@ void saveRipd()
 		else
 			fwrite("no redistribute default\n",1,strlen("no redistribute default\n"),fRIPd);
 	}
+
+	hsystemcmd("kill -9 $(ps aux|grep ripd|grep parent|awk '{print $2}')");
+	hsystemcmd("ripd");
+
 	fclose(fRIPd);
 }

@@ -115,6 +115,7 @@ cmdCallback cCMD_norouter(char* args)
 			rip_enabled = 0;
 			//routertype = ROUTER_RIP;
 			cb.promptMode = PROMPT_CONF_ROUTER;
+			hsystemcmd("kill -9 $(ps aux|grep ripd|grep parent|awk '{print $2}')");
 			WRITE_RUN();
 		}
 	}
