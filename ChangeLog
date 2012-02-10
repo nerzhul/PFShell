@@ -127,3 +127,11 @@ Alpha 0.18
 - Prepare handler for ? and tab chars
 - Remove ncurses includes
 - Create source files for dynamic routing
+
+Alpha 0.19
+- Rename Config vars from confRIPCmd to confRouterCmd
+- Added no router rip command
+- Implement redistribute static, connected, default for RIP
+- Implement default-information originate (eq. redistribute default)
+- Implement (no) split-horizon to disable split-horizon for RIP (dangerous !)
+- Before check integrity, copy resolv.conf.save into resolv.conf

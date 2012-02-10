@@ -130,3 +130,34 @@ void saveSysctl()
 
 	fclose(fSysctl);
 }
+
+void saveRipd()
+{
+	FILE* fRIPd = fopen("/etc/ripd.conf","w+");
+	if(rip_enabled == 1)
+	{
+		fwrite("fib-update yes\n",1,strlen("fib-update yes\n"),fRIPd);
+		fwrite("triggered-updates yes\n",1,strlen("triggered-updates yes\n"),fRIPd);
+
+		if(rip_split_horizon == 0)
+			fwrite("split-horizon none\n",1,strlen("split-horizon none\n"),fRIPd);
+		else
+			fwrite("split-horizon poisoned\n",1,strlen("split-horizon poisoned\n"),fRIPd);
+
+		if(rip_redistrib_conn == 1)
+			fwrite("redistribute connected\n",1,strlen("redistribute connected\n"),fRIPd);
+		else
+			fwrite("no redistribute connected\n",1,strlen("no redistribute connected\n"),fRIPd);
+
+		if(rip_redistrib_static == 1)
+			fwrite("redistribute static\n",1,strlen("redistribute static\n"),fRIPd);
+		else
+			fwrite("no redistribute static\n",1,strlen("no redistribute static\n"),fRIPd);
+
+		if(rip_redistrib_default == 1)
+			fwrite("redistribute default\n",1,strlen("redistribute default\n"),fRIPd);
+		else
+			fwrite("no redistribute default\n",1,strlen("no redistribute default\n"),fRIPd);
+	}
+	fclose(fRIPd);
+}

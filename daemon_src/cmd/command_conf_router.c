@@ -26,9 +26,126 @@
 */
 
 #include "command_conf_router.h"
+#include "configuration.h"
 #include "../prompt/prompt_msg.h"
+#include "route.h"
 
-cmdCallback crouterCMD_exit(char* _none) {
+cmdCallback crouterCMD_RIP_redistrib(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	if(strlen(args) == 0)
+	{
+		cb.message = CMDROUTER_RIP_REDIST_ERROR();
+		return cb;
+	}
+
+	if(strcmp(args,"connected") == 0)
+	{
+		rip_redistrib_conn = 1;
+		WRITE_RUN();
+	}
+	else if(strcmp(args,"static") == 0)
+	{
+		rip_redistrib_static = 1;
+		WRITE_RUN();
+	}
+	else if(strcmp(args,"default") == 0)
+	{
+		rip_redistrib_default = 1;
+		WRITE_RUN();
+	}
+	else
+		cb.message = CMDROUTER_RIP_REDIST_ERROR();
+
+	return cb;
+}
+
+cmdCallback crouterCMD_RIP_noredistrib(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	if(strlen(args) == 0)
+	{
+		return cb;
+	}
+
+	if(strcmp(args,"connected") == 0)
+	{
+		rip_redistrib_conn = 0;
+		WRITE_RUN();
+	}
+	else if(strcmp(args,"static") == 0)
+	{
+		rip_redistrib_static = 0;
+		WRITE_RUN();
+	}
+	else if(strcmp(args,"default") == 0)
+	{
+		rip_redistrib_default = 0;
+		WRITE_RUN();
+	}
+/*	else
+		cb.message = CMDROUTER_RIP_REDIST_ERROR();*/
+
+	return cb;
+}
+
+cmdCallback crouterCMD_RIP_defaultinformation(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	if(strcmp(args,"originate") == 0)
+	{
+		rip_redistrib_default = 1;
+		WRITE_RUN();
+	}
+	else
+		cb.message = CMDROUTER_RIP_DEFORIG_ERROR();
+	return cb;
+}
+
+cmdCallback crouterCMD_RIP_nodefaultinformation(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	if(strcmp(args,"originate") == 0)
+	{
+		rip_redistrib_default = 0;
+		WRITE_RUN();
+	}
+
+	return cb;
+}
+
+cmdCallback crouterCMD_RIP_splithorizon(char* _none)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+
+	if(strlen(_none) > 0)
+	{
+		cb.message = CMDROUTER_RIP_SPLITHORIZ_ERROR();
+	}
+	else
+	{
+		rip_split_horizon = 1;
+		WRITE_RUN();
+	}
+
+	return cb;
+}
+
+cmdCallback crouterCMD_RIP_nosplithorizon(char* _none)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+
+	if(strlen(_none) == 0)
+	{
+		rip_split_horizon = 0;
+		WRITE_RUN();
+	}
+
+	return cb;
+}
+
+cmdCallback crouterCMD_exit(char* _none)
+{
 	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
 
 	if(strlen(_none) > 0)

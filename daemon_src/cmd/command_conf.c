@@ -77,11 +77,46 @@ cmdCallback cCMD_router(char* args)
 		if(strlen(routertype[1]) > 0)
 		{
 			cb.message = CMDCONF_ROUTER_ERROR();
+
 			return cb;
 
 		}
 		if(strcmp(routertype[0],"rip") == 0)
+		{
+			rip_enabled = 1;
 			cb.promptMode = PROMPT_CONF_ROUTER;
+			WRITE_RUN();
+		}
+	}
+
+	return cb;
+}
+
+cmdCallback cCMD_norouter(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF,""};
+
+	if(strlen(args) == 0)
+	{
+		//cb.message = CMDCONF_ROUTER_ERROR();
+	}
+	else
+	{
+		char* routertype[2];
+		cutFirstWord(args,routertype);
+		if(strlen(routertype[1]) > 0)
+		{
+			//cb.message = CMDCONF_ROUTER_ERROR();
+			return cb;
+
+		}
+		if(strcmp(routertype[0],"rip") == 0)
+		{
+			rip_enabled = 0;
+			//routertype = ROUTER_RIP;
+			cb.promptMode = PROMPT_CONF_ROUTER;
+			WRITE_RUN();
+		}
 	}
 
 	return cb;
@@ -112,7 +147,7 @@ cmdCallback cCMD_hostname(char* args)
 				fputs(hostname,fname);
 				fclose(fname);
 			}
-			writeRunningConfig();
+			WRITE_RUN();
 		}
 	}
 

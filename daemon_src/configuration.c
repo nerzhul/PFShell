@@ -140,6 +140,21 @@ unsigned short writeRunningConfig()
 			fputs("\n",confFile);
 			rcursor = rcursor->next;
 		}
+
+		if(rip_enabled == 1)
+		{
+			fputs("router rip\n", confFile);
+			if(rip_redistrib_conn == 1)
+				fputs("redistribute connected\n",confFile);
+			if(rip_redistrib_default == 1)
+				fputs("redistribute default\n",confFile);
+			if(rip_redistrib_static == 1)
+				fputs("redistribute static\n",confFile);
+			if(rip_split_horizon == 0)
+				fputs("no split-horizon\n",confFile);
+			fputs("!\n",confFile);
+		}
+
 		// Firewall
 		fputs("firewall\n",confFile);
 		if(firewallState == 0) fputs("disable\n",confFile);
@@ -251,6 +266,8 @@ unsigned short writeRunningConfig()
 	}
 
 	writeFirewall();
+
+	saveRipd();
 
 	confFile = fopen("/etc/resolv.conf","w");
 	if(confFile == NULL)

@@ -40,7 +40,6 @@ int main(int argc, const char** argv)
 	// @TODO daemonize
 	// @TODO: verify integrity for configuration files
 
-
 	if(checkSystemIntegrity() == 0)
 		printf("\nIntegrity: \x1b[32mOK\x1b[0m\n");
 	else

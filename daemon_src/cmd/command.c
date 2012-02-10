@@ -133,9 +133,23 @@ unsigned short initCmds()
 	confRDCmd[0].name = "exit";
 	confRDCmd[0].handler = &crdCMD_exit;
 
-	// Enable - Configure - Router
-	confRIPCmd[0].name = "exit";
-	confRIPCmd[0].handler = &crouterCMD_exit;
+	// Enable - Configure - Router Commands
+	confRouterCmd[0].name = "exit";
+	confRouterCmd[0].handler = &crouterCMD_exit;
+	confRouterCmd[1].name = "redistribute";
+	confRouterCmd[1].handler = crouterCMD_RIP_redistrib;
+	confRouterCmd[2].name = "default-information";
+	confRouterCmd[2].handler = crouterCMD_RIP_defaultinformation;
+	confRouterCmd[3].name = "split-horizon";
+	confRouterCmd[3].handler = crouterCMD_RIP_splithorizon;
+
+	// Enable - Configure - Router No Commands
+	noconfRouterCmd[0].name = "redistribute";
+	noconfRouterCmd[0].handler = crouterCMD_RIP_noredistrib;
+	noconfRouterCmd[1].name = "default-information";
+	noconfRouterCmd[1].handler = crouterCMD_RIP_nodefaultinformation;
+	noconfRouterCmd[2].name = "split-horizon";
+	noconfRouterCmd[2].handler = crouterCMD_RIP_nosplithorizon;
 
 	masterCmd[0] = userCmd;
 	masterCmd[1] = enableCmd;
@@ -144,7 +158,7 @@ unsigned short initCmds()
 	masterCmd[4] = confFWCmd;
 	masterCmd[5] = confRDCmd;
 	masterCmd[6] = confACLCmd;
-	masterCmd[7] = confRIPCmd;
+	masterCmd[7] = confRouterCmd;
 
 	masternoCmd[0] = nouserCmd;
 	masternoCmd[1] = noenableCmd;
@@ -153,7 +167,7 @@ unsigned short initCmds()
 	masternoCmd[4] = noconfFWCmd;
 	masternoCmd[5] = noconfRDCmd;
 	masternoCmd[6] = noconfACLCmd;
-	masternoCmd[7] = noconfRIPCmd;
+	masternoCmd[7] = noconfRouterCmd;
 
 	return 0;
 }

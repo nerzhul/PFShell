@@ -94,4 +94,9 @@
 // ACL Messages
 #define CMDACL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   <allow|deny> <in|out> <tcp|udp|icmp> <any|A.B.C.D/CIDR> (<port>) <any|A.B.C.D/CIDR> (<port>)\n");
 
+// Router Messages
+#define CMDROUTER_RIP_REDIST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   redistribute <connected|default|static>\n");
+#define CMDROUTER_RIP_DEFORIG_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   default-information originate\n");
+#define CMDROUTER_RIP_SPLITHORIZ_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   split-horizon\n");
+
 #endif

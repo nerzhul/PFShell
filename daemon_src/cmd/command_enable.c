@@ -226,11 +226,18 @@ cmdCallback eCMD_save(char* _none)
 	system("/bin/md5 /etc/sysctl.conf | /usr/bin/awk '{print $4}' > /etc/sysctl.conf.md5");
 	system("/bin/sha1 /etc/sysctl.conf | /usr/bin/awk '{print $4}' > /etc/sysctl.conf.sha1");
 	system("/bin/sha256 /etc/sysctl.conf | /usr/bin/awk '{print $4}' > /etc/sysctl.conf.sha256");
+
 	// Save PacketFilter conf
 	system("cp /etc/pf.conf.run /etc/pf.conf");
 	system("/bin/md5 /etc/pf.conf | /usr/bin/awk '{print $4}' > /etc/pf.conf.md5");
 	system("/bin/sha1 /etc/pf.conf | /usr/bin/awk '{print $4}' > /etc/pf.conf.sha1");
 	system("/bin/sha256 /etc/pf.conf | /usr/bin/awk '{print $4}' > /etc/pf.conf.sha256");
+
+	// Save ripd.conf
+	system("cp /etc/ripd.conf /etc/ripd.conf.save");
+	system("/bin/md5 /etc/ripd.conf | /usr/bin/awk '{print $4}' > /etc/ripd.conf.md5");
+	system("/bin/sha1 /etc/ripd.conf | /usr/bin/awk '{print $4}' > /etc/ripd.conf.sha1");
+	system("/bin/sha256 /etc/ripd.conf | /usr/bin/awk '{print $4}' > /etc/ripd.conf.sha256");
 
 	// Save resolv.conf
 	system("cp /etc/resolv.conf /etc/resolv.conf.save");

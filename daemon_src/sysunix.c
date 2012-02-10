@@ -40,6 +40,9 @@ unsigned short checkSystemIntegrity()
 
 	unsigned short error = 0;
 
+	hsystemcmd("cp /etc/resolv.conf.save /etc/resolv.conf");
+	hsystemcmd("cp /etc/ripd.conf.save /etc/ripd.conf");
+
 	printf(".");
 	fflush(stdout);
 
@@ -140,6 +143,56 @@ unsigned short checkSystemIntegrity()
 		printf("\x1b[31mERROR\x1b[0m\nresolv.conf is corrupted !\n");
 		error = 1;
 	}
+
+	// Ripd.conf check
+	buffer[1024] = "";
+	buffer2[1024] = "";
+	execSystemCommand("/bin/md5 /etc/ripd.conf.save | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("cat /etc/ripd.conf.md5",buffer2);
+
+	printf(".");
+	fflush(stdout);
+
+	if(strcmp(buffer,buffer2) != 0)
+	{
+		printf("\x1b[31mERROR\x1b[0m\nripd.conf is corrupted !\n");
+		error = 1;
+	}
+
+	printf(".");
+	fflush(stdout);
+
+	buffer[1024] = "";
+	buffer2[1024] = "";
+	execSystemCommand("/bin/sha1 /etc/ripd.conf.save | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("cat /etc/ripd.conf.sha1",buffer2);
+
+	printf(".");
+	fflush(stdout);
+
+	if(strcmp(buffer,buffer2) != 0)
+	{
+		printf("\x1b[31mERROR\x1b[0m\nripd.conf is corrupted !\n");
+		error = 1;
+	}
+
+	printf(".");
+	fflush(stdout);
+
+	buffer[1024] = "";
+	buffer2[1024] = "";
+	execSystemCommand("/bin/sha256 /etc/ripd.conf.save | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("cat /etc/ripd.conf.sha256",buffer2);
+
+	printf(".");
+	fflush(stdout);
+
+	if(strcmp(buffer,buffer2) != 0)
+	{
+		printf("\x1b[31mERROR\x1b[0m\nripd.conf is corrupted !\n");
+		error = 1;
+	}
+
 
 	// check Startup Config
 	printf(".");

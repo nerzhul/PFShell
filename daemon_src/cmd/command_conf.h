@@ -35,6 +35,7 @@ cmdCallback cCMD_firewall(char* _none);
 cmdCallback cCMD_hostname(char* args);
 
 cmdCallback cCMD_router(char* args);
+cmdCallback cCMD_norouter(char* args);
 // Iface
 cmdCallback cCMD_interface(char* args);
 cmdCallback cCMD_ip(char* args);

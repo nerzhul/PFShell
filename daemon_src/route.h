@@ -40,10 +40,14 @@ struct route
 	route* prev;
 };
 
+#define ROUTER_RIP	1
+#define ROUTER_OSPF	2
+
 void addRoute(char* ip, char* mask, char* gate);
 void delRoute(char* ip, char* mask, char* gate);
 
 void saveSysctl();
+void saveRipd();
 
 // Pointer for static routes
 route* routes;
@@ -55,5 +59,6 @@ unsigned short rip_enabled;
 unsigned short rip_redistrib_static;
 unsigned short rip_redistrib_conn;
 unsigned short rip_redistrib_default;
+unsigned short rip_split_horizon;
 
 #endif
