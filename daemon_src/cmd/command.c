@@ -36,6 +36,7 @@
 #include "command_conf_if.h"
 #include "command_conf_fw.h"
 #include "command_conf_rd.h"
+#include "command_conf_router.h"
 #include "../prompt/prompt_msg.h"
 
 unsigned short initCmds()
@@ -71,6 +72,8 @@ unsigned short initCmds()
 	confCmd[3].handler = &cCMD_interface;
 	confCmd[4].name = "ip";
 	confCmd[4].handler = &cCMD_ip;
+	confCmd[5].name = "router";
+	confCmd[5].handler = &cCMD_router;
 
 	// Enable - Configure Inverted Commands
 	noconfCmd[0].name = "hostname";
@@ -130,6 +133,10 @@ unsigned short initCmds()
 	confRDCmd[0].name = "exit";
 	confRDCmd[0].handler = &crdCMD_exit;
 
+	// Enable - Configure - Router
+	confRIPCmd[0].name = "exit";
+	confRIPCmd[0].handler = &crouterCMD_exit;
+
 	masterCmd[0] = userCmd;
 	masterCmd[1] = enableCmd;
 	masterCmd[2] = confCmd;
@@ -137,6 +144,7 @@ unsigned short initCmds()
 	masterCmd[4] = confFWCmd;
 	masterCmd[5] = confRDCmd;
 	masterCmd[6] = confACLCmd;
+	masterCmd[7] = confRIPCmd;
 
 	masternoCmd[0] = nouserCmd;
 	masternoCmd[1] = noenableCmd;
@@ -145,6 +153,7 @@ unsigned short initCmds()
 	masternoCmd[4] = noconfFWCmd;
 	masternoCmd[5] = noconfRDCmd;
 	masternoCmd[6] = noconfACLCmd;
+	masternoCmd[7] = noconfRIPCmd;
 
 	return 0;
 }

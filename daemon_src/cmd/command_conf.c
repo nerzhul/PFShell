@@ -62,6 +62,31 @@ cmdCallback cCMD_firewall(char* _none)
 	return cb;
 }
 
+cmdCallback cCMD_router(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF,""};
+
+	if(strlen(args) == 0)
+	{
+		cb.message = CMDCONF_ROUTER_ERROR();
+	}
+	else
+	{
+		char* routertype[2];
+		cutFirstWord(args,routertype);
+		if(strlen(routertype[1]) > 0)
+		{
+			cb.message = CMDCONF_ROUTER_ERROR();
+			return cb;
+
+		}
+		if(strcmp(routertype[0],"rip") == 0)
+			cb.promptMode = PROMPT_CONF_ROUTER;
+	}
+
+	return cb;
+}
+
 cmdCallback cCMD_hostname(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF,""};

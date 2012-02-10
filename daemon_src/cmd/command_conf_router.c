@@ -25,22 +25,18 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __COMMAND_CONF_H__
-#define __COMMAND_CONF_H__
+#include "command_conf_router.h"
+#include "../prompt/prompt_msg.h"
 
-#include "command.h"
+cmdCallback crouterCMD_exit(char* _none) {
+	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
 
-cmdCallback cCMD_exit(char* _none);
-cmdCallback cCMD_firewall(char* _none);
-cmdCallback cCMD_hostname(char* args);
+	if(strlen(_none) > 0)
+	{
+		cb.message = CMDCOMMON_EXIT_ERROR();
+	}
+	else
+		cb.promptMode = PROMPT_CONF;
 
-cmdCallback cCMD_router(char* args);
-// Iface
-cmdCallback cCMD_interface(char* args);
-cmdCallback cCMD_ip(char* args);
-
-// Inverted commands
-cmdCallback cCMD_nohostname(char* args);
-cmdCallback cCMD_noip(char* args);
-
-#endif
+	return cb;
+}

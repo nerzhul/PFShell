@@ -1,6 +1,6 @@
 bin_PROGRAMS = BSDRouterd
 
-AM_CPPFLAGS = -lncurses -lm -std=gnu99
+AM_CPPFLAGS = -lm -std=gnu99
 
 BSDRouterd_SOURCES = \
 	cmd/command.c \
@@ -15,6 +15,8 @@ BSDRouterd_SOURCES = \
 	cmd/command_conf_if.h \
 	cmd/command_conf_rd.c \
 	cmd/command_conf_rd.h \
+	cmd/command_conf_router.c \
+	cmd/command_conf_router.h \
 	cmd/command_enable.c \
 	cmd/command_enable.h \
 	cmd/command_user.c \

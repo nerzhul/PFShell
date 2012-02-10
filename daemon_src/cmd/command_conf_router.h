@@ -25,22 +25,11 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __COMMAND_CONF_H__
-#define __COMMAND_CONF_H__
+#ifndef __COMMAND_CONF_ROUTER_H__
+#define __COMMAND_CONF_ROUTER_H__
 
 #include "command.h"
 
-cmdCallback cCMD_exit(char* _none);
-cmdCallback cCMD_firewall(char* _none);
-cmdCallback cCMD_hostname(char* args);
-
-cmdCallback cCMD_router(char* args);
-// Iface
-cmdCallback cCMD_interface(char* args);
-cmdCallback cCMD_ip(char* args);
-
-// Inverted commands
-cmdCallback cCMD_nohostname(char* args);
-cmdCallback cCMD_noip(char* args);
+cmdCallback crouterCMD_exit(char* _none);
 
 #endif

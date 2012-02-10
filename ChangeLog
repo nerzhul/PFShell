@@ -115,7 +115,7 @@ Alpha 0.17
 - Init empty buffer for execSystemCommand
 - Also fix the major bug into client. Some buffers are not initialized empty => Buffer overflow
 
-Alpha 0.18 - prev
+Alpha 0.18
 - Fix all buffer overflows
 - Don't add interface if it already exists
 - Create bridge for VLAN, prepare 802.1Q
@@ -125,3 +125,5 @@ Alpha 0.18 - prev
 - Also initialise mcastrouting
 - Use termios with getchar input
 - Prepare handler for ? and tab chars
+- Remove ncurses includes
+- Create source files for dynamic routing
