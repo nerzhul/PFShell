@@ -66,6 +66,10 @@ void addInterface(char* name)
 		newIface->prev = cursor;
 		cursor->next = newIface;
 	}
+	char buffer[30] = "";
+	strcpy(buffer,"ifconfig bridge0 add ");
+	strcat(buffer,name);
+	hsystemcmd(buffer);
 }
 
 void loadInterfaces()
@@ -77,6 +81,8 @@ void loadInterfaces()
 #else
 	execSystemCommand("for IF in $(/sbin/ifconfig | grep BROADCAST | awk '{print $1}' | awk -F':' '{print $1}'); do echo $IF; done;",output);
 #endif
+	hsystemcmd("ifconfig bridge0 create");
+
 	char* iface[2];
 	cutFirstWord(output,iface);
 	if(strcmp(iface[0],"") != 0)

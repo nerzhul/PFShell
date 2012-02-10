@@ -118,3 +118,10 @@ Alpha 0.17
 Alpha 0.18 - prev
 - Fix all buffer overflows
 - Don't add interface if it already exists
+- Create bridge for VLAN, prepare 802.1Q
+- Prepare RIP routing
+- Move iprouting & mcastrouting to route.h
+- Move main route pointer to route.h
+- Also initialise mcastrouting
+- Use termios with getchar input
+- Prepare handler for ? and tab chars

@@ -26,20 +26,52 @@
 */
 
 #include <stdio.h>
+#include <termios.h>
 
 #include "command.h"
 
 char* readCmd()
 {
-	char buffer[1024];
+	char buffer[1024] = "";
 	char* cmd;
 	char tmpchar;
 	short offset = 0;
+
 	do
 	{
-		tmpchar = getchar();
-		buffer[offset] = tmpchar;
-		++offset;
+		struct termios t,tfst;
+
+		tcgetattr(0,&t);
+		tfst = t;
+		t.c_lflag &= ~ECHO;
+		t.c_lflag &= ~ICANON;
+
+		tcsetattr(0,TCSANOW,&t);
+		fflush(stdout);
+		tmpchar=getchar();
+		if(tmpchar == t.c_cc[VERASE])
+		{
+			printf("\b \b");
+			buffer[offset] = '\0';
+			--offset;
+		}
+		else if(tmpchar == '\t')
+		{
+			printf("TAB\n");
+			buffer[offset] = '\0';
+		}
+		else if(tmpchar == '?')
+		{
+			printf("HELP\n");
+			buffer[offset] = '\0';
+		}
+		else
+		{
+			putchar(tmpchar);
+			buffer[offset] = tmpchar;
+			++offset;
+		}
+		tcsetattr(0,TCSANOW,&tfst);
 		// @ TODO: handle \t
 	} while(offset < 1023 && tmpchar != '\n' && tmpchar != '\0');
 
@@ -54,5 +86,6 @@ char* readCmd()
 		cmd[offset] = buffer[offset];
 		--offset;
 	}
+
 	return cmd;
 }

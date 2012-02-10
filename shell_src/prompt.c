@@ -65,3 +65,5 @@ void promptCFW() { printf("%s(conf-fw)# ",hostname); }
 void promptCRD() { printf("%s(conf-redundancy)# ",hostname);}
 // Configure prompt for ACLs
 void promptCACL() { printf("%s(conf-acl)# ",hostname);}
+// Configure prompt for router rip && router ospf
+void promptCRouter() { printf("%s(conf-router)# ",hostname);}

@@ -45,4 +45,15 @@ void delRoute(char* ip, char* mask, char* gate);
 
 void saveSysctl();
 
+// Pointer for static routes
+route* routes;
+// sysctl vars
+unsigned short iprouting;
+unsigned short mcastrouting;
+// For RIP
+unsigned short rip_enabled;
+unsigned short rip_redistrib_static;
+unsigned short rip_redistrib_conn;
+unsigned short rip_redistrib_default;
+
 #endif

@@ -38,7 +38,8 @@
 #define PROMPT_CONF_FW		4
 #define PROMPT_CONF_RD		5
 #define PROMPT_CONF_ACL 	6
-#define MAX_PROMPTS		7
+#define PROMPT_CONF_ROUTER	7
+#define MAX_PROMPTS		8
 
 unsigned int initPrompts();
 void prompt();
@@ -50,6 +51,7 @@ void promptCIf();
 void promptCFW();
 void promptCRD();
 void promptCACL();
+void promptCRouter();
 
 typedef struct prompt
 {

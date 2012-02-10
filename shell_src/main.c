@@ -43,7 +43,6 @@ int main(int argc, const char** argv)
 	if(sock_error == 0)
 	{
 		// @ TODO: load hostname from BSDRouterd
-
 		promptMode = PROMPT_USER;
 
 		printf("Type help to see the commands.\n");
@@ -51,7 +50,7 @@ int main(int argc, const char** argv)
 
 		while(1)
 		{
-			char sendBuffer[4096];
+			char sendBuffer[4096] = "";
 			sprintf(sendBuffer,"%d%s",promptMode,readCmd());
 			sendPacket(sendBuffer);
 			if(strlen(sendBuffer) > 1)

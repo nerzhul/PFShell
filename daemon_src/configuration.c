@@ -61,6 +61,12 @@ unsigned short loadConfiguration()
 	loadInterfaces();
 
 	iprouting = 0;
+	mcastrouting = 0;
+
+	rip_enabled = 0;
+	rip_redistrib_static = 0;
+	rip_redistrib_conn = 0;
+	rip_redistrib_default = 0;
 
 	hostname = "PFShell";
 	strcpy(dnssearch,"local");

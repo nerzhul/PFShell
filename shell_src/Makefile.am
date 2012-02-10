@@ -15,6 +15,6 @@ BSDRouterShell_SOURCES = \
 	unix_signal.h
 
 
-BSDRouterShell_LDADD = -lm
+BSDRouterShell_LDADD = -lm -lncurses
 
 BSDRouterShell_LDFLAGS =

@@ -45,10 +45,5 @@ unsigned short pfpolicies[2];
 // Chained Lists
 acl* access_lists;
 net_iface* interfaces;
-route* routes;
-
-// sysctl vars
-unsigned short iprouting;
-unsigned short mcastrouting;
 
 #endif
