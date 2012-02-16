@@ -138,7 +138,7 @@ void saveRipd()
 	// Global configuration
 	if(rip_enabled == 1)
 	{
-		fputs("\n#\n#Global configuration\n#\n",fRIPd);
+		fputs("#\n#Global configuration\n#\n\n",fRIPd);
 
 		fwrite("fib-update yes\n",1,strlen("fib-update yes\n"),fRIPd);
 		fwrite("triggered-updates yes\n",1,strlen("triggered-updates yes\n"),fRIPd);
@@ -164,7 +164,7 @@ void saveRipd()
 			fwrite("no redistribute default\n",1,strlen("no redistribute default\n"),fRIPd);
 	}
 
-	fputs("\n#\n#Interfaces configuration\n#\n",fRIPd);
+	fputs("\n#\n#Interfaces configuration\n#\n\n",fRIPd);
 
 	// Interface specific
 	net_iface* if_cursor = interfaces;

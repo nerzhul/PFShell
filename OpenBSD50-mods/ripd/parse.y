@@ -429,9 +429,9 @@ lookup(char *s)
 	    {"rtlabel",			RTLABEL},
 	    {"split-horizon",		SPLIT_HORIZON},
 	    {"triggered-updates",	TRIGGERED_UPDATES},
-	    {"yes",			YES},
 	    {"keepalive-timer",		KEEPALIVE_TIMER},
-	    {"route-timeout",		ROUTE_TIMEOUT}
+	    {"route-timeout",		ROUTE_TIMEOUT},
+	    {"yes",			YES}
 	};
 	const struct keywords	*p;
 
