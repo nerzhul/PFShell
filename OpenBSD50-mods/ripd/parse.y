@@ -198,7 +198,7 @@ conf_main	:
 			}
 			conf->keepalive_timer = $2;
 		}
-		| ROUTE_TIMEOUT yesno {
+		| ROUTE_TIMEOUT NUMBER {
 			if($2 < 0) {
 				yyerror("invalid route-timeout");
 				YYERROR;
