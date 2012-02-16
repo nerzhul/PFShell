@@ -142,6 +142,10 @@ unsigned short initCmds()
 	confRouterCmd[2].handler = crouterCMD_RIP_defaultinformation;
 	confRouterCmd[3].name = "split-horizon";
 	confRouterCmd[3].handler = crouterCMD_RIP_splithorizon;
+	confRouterCmd[4].name = "passive-interface";
+	confRouterCmd[4].handler = crouterCMD_RIP_passive;
+	confRouterCmd[5].name = "cost";
+	confRouterCmd[5].handler = crouterCMD_RIP_cost;
 
 	// Enable - Configure - Router No Commands
 	noconfRouterCmd[0].name = "redistribute";
@@ -150,6 +154,10 @@ unsigned short initCmds()
 	noconfRouterCmd[1].handler = crouterCMD_RIP_nodefaultinformation;
 	noconfRouterCmd[2].name = "split-horizon";
 	noconfRouterCmd[2].handler = crouterCMD_RIP_nosplithorizon;
+	noconfRouterCmd[3].name = "passive-interface";
+	noconfRouterCmd[3].handler = crouterCMD_RIP_nopassive;
+	noconfRouterCmd[4].name = "cost";
+	noconfRouterCmd[4].handler = crouterCMD_RIP_cost; // Same as no cost
 
 	masterCmd[0] = userCmd;
 	masterCmd[1] = enableCmd;

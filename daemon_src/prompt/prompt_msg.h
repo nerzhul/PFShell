@@ -43,6 +43,7 @@
 // Common Messages
 #define CMDCOMMON_EXIT_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   exit\n");
 #define CMD_UNK() PRINTERROR("Unknown command\n");
+#define CMD_INTERFACE_UNK() PRINTERROR("Unknown interface !\n");
 
 // User menu Messages
 #define CMDUSER_SHOW_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   show (version)\n");
@@ -98,5 +99,6 @@
 #define CMDROUTER_RIP_REDIST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   redistribute <connected|default|static>\n");
 #define CMDROUTER_RIP_DEFORIG_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   default-information originate\n");
 #define CMDROUTER_RIP_SPLITHORIZ_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   split-horizon\n");
-
+#define CMDROUTER_RIP_INTERFACE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   passive-interface <iface>\n");
+#define CMDROUTER_RIP_COST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) cost <iface> <0-16>\n");
 #endif

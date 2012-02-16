@@ -25,6 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <stdlib.h>
 #include "command_conf_router.h"
 #include "configuration.h"
 #include "../prompt/prompt_msg.h"
@@ -140,6 +141,136 @@ cmdCallback crouterCMD_RIP_nosplithorizon(char* _none)
 		rip_split_horizon = 0;
 		WRITE_RUN();
 	}
+
+	return cb;
+}
+
+cmdCallback crouterCMD_RIP_passive(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	if(strlen(args) == 0)
+	{
+		cb.message = CMDROUTER_RIP_INTERFACE_ERROR();
+		return cb;
+	}
+
+	char* iface[2];
+	cutFirstWord(args,iface);
+
+	if(strlen(iface[1]) > 0)
+	{
+		cb.message = CMDROUTER_RIP_INTERFACE_ERROR();
+		return cb;
+	}
+
+	if(setInterfaceRIPPassive(iface[0],1) != 0)
+	{
+		cb.message = CMD_INTERFACE_UNK();
+	}
+	else
+		WRITE_RUN();
+
+	return cb;
+}
+
+cmdCallback crouterCMD_RIP_nopassive(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	if(strlen(args) == 0)
+		return cb;
+
+	char* iface[2];
+	cutFirstWord(args,iface);
+
+	if(strlen(iface[1]) > 0)
+		return cb;
+
+	if(setInterfaceRIPPassive(iface[0],0) != 0)
+	{
+		cb.message = CMD_INTERFACE_UNK();
+	}
+	else
+		WRITE_RUN();
+
+	return cb;
+}
+
+cmdCallback crouterCMD_RIP_cost(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	if(strlen(args) == 0)
+	{
+		cb.message = CMDROUTER_RIP_COST_ERROR();
+		return cb;
+	}
+
+	char* iface[2];
+	cutFirstWord(args,iface);
+
+	if(strlen(iface[1]) == 0)
+	{
+		cb.message = CMDROUTER_RIP_COST_ERROR();
+		return cb;
+	}
+
+	char* cost[2];
+	cutFirstWord(iface[1],cost);
+
+	if(strlen(cost[1]) > 0)
+	{
+		cb.message = CMDROUTER_RIP_COST_ERROR();
+		return cb;
+	}
+
+	int cost = atoi(cost[0]);
+	if(cost < 1 || cost > 16)
+	{
+		cb.message = CMDROUTER_RIP_COST_ERROR();
+		return cb;
+	}
+
+	if(getInterfaceRIPCost(iface[0]) == cost)
+	{
+		setInterfaceRIPCost(iface[0],1);
+		WRITE_RUN();
+	}
+	else
+	{
+		cb.message = CMD_INTERFACE_UNK();
+	}
+
+
+	return cb;
+}
+
+cmdCallback crouterCMD_RIP_nocost(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	if(strlen(args) == 0)
+		return cb;
+
+	char* iface[2];
+	cutFirstWord(args,iface);
+
+	if(strlen(iface[1]) == 0)
+		return cb;
+
+	char* cost[2];
+	cutFirstWord(iface[1],cost);
+
+	if(strlen(cost[1]) > 0)
+		return cb;
+
+	int cost = atoi(cost[0]);
+	if(cost < 1 || cost > 16)
+		return cb;
+
+	if(setInterfaceRIPPassive(iface[0],1) != 0)
+	{
+		cb.message = CMD_INTERFACE_UNK();
+	}
+	else
+		WRITE_RUN();
 
 	return cb;
 }

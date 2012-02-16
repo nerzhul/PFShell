@@ -134,8 +134,12 @@ void saveSysctl()
 void saveRipd()
 {
 	FILE* fRIPd = fopen("/etc/ripd.conf","w+");
+
+	// Global configuration
 	if(rip_enabled == 1)
 	{
+		fputs("\n#\n#Global configuration\n#",fRIPd);
+
 		fwrite("fib-update yes\n",1,strlen("fib-update yes\n"),fRIPd);
 		fwrite("triggered-updates yes\n",1,strlen("triggered-updates yes\n"),fRIPd);
 
@@ -158,6 +162,23 @@ void saveRipd()
 			fwrite("redistribute default\n",1,strlen("redistribute default\n"),fRIPd);
 		else
 			fwrite("no redistribute default\n",1,strlen("no redistribute default\n"),fRIPd);
+	}
+
+	fputs("\n#\n#Interfaces configuration\n#",fRIPd);
+
+	// Interface specific
+	net_iface* if_cursor = interfaces;
+	while(if_cursor != NULL)
+	{
+		fputs("interface ",fRIPd);
+		fputs(if_cursor->name,fRIPd);
+		fputs("{\n",fRIPd);
+		if(if_cursor->rip_passive == 1)
+			fputs("passive\n",fRIPd);
+		if(if_cursor->rip_cost > 1 && if_cursor->rip_cost < 16)
+			fprintf(fRIPd,"cost %d\n",if_cursor->rip_cost);
+		fputs("}\n",fRIPd);
+		if_cursor = if_cursor->next;
 	}
 
 	hsystemcmd("kill -9 $(ps aux|grep ripd|grep parent|awk '{print $2}')");

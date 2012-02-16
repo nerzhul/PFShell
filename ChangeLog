@@ -139,3 +139,5 @@ Alpha 0.19
 Alpha 0.20 - prev
 - Bug & Crash fix when reading command in the shell. Forget to check if offset is positive.
 - Start & restart rip daemon when modifying router rip config
+- Implement passive-interface for RIP
+- Implement cost <interface> <1-16> for RIP (eq to offset-list on CISCO routers)

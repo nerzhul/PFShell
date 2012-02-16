@@ -39,6 +39,7 @@ struct net_iface
 	char* desc;
 	unsigned short state;
 	unsigned short rip_passive;
+	unsigned short rip_cost;
 
 	net_iface* next;
 	net_iface* prev;
@@ -52,9 +53,13 @@ unsigned short setInterfaceIP(char* name, char* ip);
 unsigned short setInterfaceState(char* name, unsigned short state);
 unsigned short setInterfaceACL(char* name, char* aclname, char* direction);
 unsigned short setInterfaceDesc(char* name, char* desc);
+unsigned short setInterfaceRIPPassive(char* name, unsigned short passive);
+unsigned short setInterfaceRIPCost(char* name, unsigned short cost);
 
 char* getInterfaceIP(char* name);
 unsigned short getInterfaceState(char* name);
 char* getInterfaceDesc(char* name);
+unsigned short getInterfaceRIPPassive(char* name);
+unsigned short getInterfaceRIPCost(char* name);
 
 #endif

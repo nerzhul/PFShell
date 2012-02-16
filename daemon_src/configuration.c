@@ -152,6 +152,26 @@ unsigned short writeRunningConfig()
 				fputs("redistribute static\n",confFile);
 			if(rip_split_horizon == 0)
 				fputs("no split-horizon\n",confFile);
+
+			// Passive-Interfaces
+			net_iface* if_cursor = interfaces;
+			while(if_cursor != NULL)
+			{
+				if(if_cursor->rip_passive > 0)
+				{
+					fputs("passive-interface ",confFile);
+					fputs(if_cursor->name,confFile);
+					fputs("\n",confFile);
+				}
+				if_cursor = if_cursor->next;
+			}
+			if_cursor = interfaces;
+			while(if_cursor != NULL)
+			{
+				if(if_cursor->rip_cost > 1 && if_cursor->rip_cost <= 16)
+					fprintf(confFile,"cost %s %d\n",if_cursor->name,if_cursor->rip_offset);
+				if_cursor = if_cursor->next;
+			}
 			fputs("!\n",confFile);
 		}
 
