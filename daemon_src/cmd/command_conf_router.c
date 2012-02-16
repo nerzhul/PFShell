@@ -222,14 +222,14 @@ cmdCallback crouterCMD_RIP_cost(char* args)
 		return cb;
 	}
 
-	int cost = atoi(cost[0]);
-	if(cost < 1 || cost > 16)
+	int icost = atoi(cost[0]);
+	if(icost < 1 || icost > 16)
 	{
 		cb.message = CMDROUTER_RIP_COST_ERROR();
 		return cb;
 	}
 
-	if(getInterfaceRIPCost(iface[0]) == cost)
+	if(getInterfaceRIPCost(iface[0]) == icost)
 	{
 		setInterfaceRIPCost(iface[0],1);
 		WRITE_RUN();
@@ -261,8 +261,8 @@ cmdCallback crouterCMD_RIP_nocost(char* args)
 	if(strlen(cost[1]) > 0)
 		return cb;
 
-	int cost = atoi(cost[0]);
-	if(cost < 1 || cost > 16)
+	int icost = atoi(cost[0]);
+	if(icost < 1 || icost > 16)
 		return cb;
 
 	if(setInterfaceRIPPassive(iface[0],1) != 0)

@@ -169,7 +169,7 @@ unsigned short writeRunningConfig()
 			while(if_cursor != NULL)
 			{
 				if(if_cursor->rip_cost > 1 && if_cursor->rip_cost <= 16)
-					fprintf(confFile,"cost %s %d\n",if_cursor->name,if_cursor->rip_offset);
+					fprintf(confFile,"cost %s %d\n",if_cursor->name,if_cursor->rip_cost);
 				if_cursor = if_cursor->next;
 			}
 			fputs("!\n",confFile);
