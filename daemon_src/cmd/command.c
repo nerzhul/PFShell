@@ -157,7 +157,7 @@ unsigned short initCmds()
 	noconfRouterCmd[3].name = "passive-interface";
 	noconfRouterCmd[3].handler = crouterCMD_RIP_nopassive;
 	noconfRouterCmd[4].name = "cost";
-	noconfRouterCmd[4].handler = crouterCMD_RIP_cost; // Same as no cost
+	noconfRouterCmd[4].handler = crouterCMD_RIP_nocost; // Same as no cost
 
 	masterCmd[0] = userCmd;
 	masterCmd[1] = enableCmd;

@@ -264,13 +264,18 @@ cmdCallback crouterCMD_RIP_nocost(char* args)
 	if(icost < 1 || icost > 16)
 		return cb;
 
+	printf("cost1 %d cost2 %d\n",getInterfaceRIPCost(iface[0]),icost);
 	if(getInterfaceRIPCost(iface[0]) == icost)
 	{
 		setInterfaceRIPCost(iface[0],1);
-		cb.message = CMD_INTERFACE_UNK();
+		printf("test");
+		WRITE_RUN();
+
 	}
 	else
-		WRITE_RUN();
+	{
+		cb.message = CMD_INTERFACE_UNK();
+	}
 
 	return cb;
 }
