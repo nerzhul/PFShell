@@ -101,7 +101,8 @@ typedef struct {
 
 %}
 
-%token	SPLIT_HORIZON TRIGGERED_UPDATES FIBUPDATE REDISTRIBUTE RDOMAIN KEEPALIVE_TIMER ROUTE_TIMEOUT
+%token	SPLIT_HORIZON TRIGGERED_UPDATES FIBUPDATE REDISTRIBUTE RDOMAIN
+%token  KEEPALIVE_TIMER ROUTE_TIMEOUT
 %token	AUTHKEY AUTHTYPE AUTHMD AUTHMDKEYID
 %token	INTERFACE RTLABEL
 %token	COST PASSIVE
@@ -153,7 +154,8 @@ varset		: STRING '=' string {
 		}
 		;
 
-conf_main	: SPLIT_HORIZON STRING {
+conf_main	:
+		SPLIT_HORIZON STRING {
 			/* clean flags first */
 			conf->options &= ~(OPT_SPLIT_HORIZON |
 			    OPT_SPLIT_POISONED);
@@ -170,6 +172,19 @@ conf_main	: SPLIT_HORIZON STRING {
 			}
 			free($2);
 		}
+		| RDOMAIN NUMBER {
+			if ($2 < 0 || $2 > RT_TABLEID_MAX) {
+				yyerror("invalid rdomain");
+				YYERROR;
+			}
+			conf->rdomain = $2;
+		}
+		| FIBUPDATE yesno {
+			if ($2 == 0)
+				conf->flags |= RIPD_FLAG_NO_FIB_UPDATE;
+			else
+				conf->flags &= ~RIPD_FLAG_NO_FIB_UPDATE;
+		}
 		| TRIGGERED_UPDATES yesno {
 			if ($2 == 1)
 				conf->options |= OPT_TRIGGERED_UPDATES;
@@ -183,25 +198,12 @@ conf_main	: SPLIT_HORIZON STRING {
 			}
 			conf->keepalive_timer = $2;
 		}
-		| ROUTE_TIMEOUT NUMBER {
+		| ROUTE_TIMEOUT yesno {
 			if($2 < 0) {
 				yyerror("invalid route-timeout");
 				YYERROR;
 			}
 			conf->route_timeout = $2;
-		}
-		| RDOMAIN NUMBER {
-			if ($2 < 0 || $2 > RT_TABLEID_MAX) {
-				yyerror("invalid rdomain");
-				YYERROR;
-			}
-			conf->rdomain = $2;
-		}
-		| FIBUPDATE yesno {
-			if ($2 == 0)
-				conf->flags |= RIPD_FLAG_NO_FIB_UPDATE;
-			else
-				conf->flags &= ~RIPD_FLAG_NO_FIB_UPDATE;
 		}
 		| no REDISTRIBUTE STRING {
 			struct redistribute	*r;
@@ -421,16 +423,16 @@ lookup(char *s)
 	    {"cost",			COST},
 	    {"demote",			DEMOTE},
 	    {"fib-update",		FIBUPDATE},
+	    {"keepalive-timer",		KEEPALIVE_TIMER},
 	    {"interface",		INTERFACE},
 	    {"no",			NO},
 	    {"passive",			PASSIVE},
 	    {"rdomain",			RDOMAIN},
 	    {"redistribute",		REDISTRIBUTE},
+	    {"route-timeout",		ROUTE_TIMEOUT},
 	    {"rtlabel",			RTLABEL},
 	    {"split-horizon",		SPLIT_HORIZON},
 	    {"triggered-updates",	TRIGGERED_UPDATES},
-	    {"keepalive-timer",		KEEPALIVE_TIMER},
-	    {"route-timeout",		ROUTE_TIMEOUT},
 	    {"yes",			YES}
 	};
 	const struct keywords	*p;
