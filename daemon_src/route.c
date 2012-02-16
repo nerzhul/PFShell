@@ -138,7 +138,7 @@ void saveRipd()
 	// Global configuration
 	if(rip_enabled == 1)
 	{
-		fputs("\n#\n#Global configuration\n#",fRIPd);
+		fputs("\n#\n#Global configuration\n#\n",fRIPd);
 
 		fwrite("fib-update yes\n",1,strlen("fib-update yes\n"),fRIPd);
 		fwrite("triggered-updates yes\n",1,strlen("triggered-updates yes\n"),fRIPd);

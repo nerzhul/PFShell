@@ -52,7 +52,7 @@ route_start_timeout(struct rt_node *rn)
 	struct timeval	 tv;
 
 	timerclear(&tv);
-	tv.tv_sec = ROUTE_TIMEOUT;
+	tv.tv_sec = rdeconf->route_timeout;
 
 	return (evtimer_add(&rn->timeout_timer, &tv));
 }
@@ -105,7 +105,7 @@ route_reset_timers(struct rt_node *r)
 	struct timeval	 tv;
 
 	timerclear(&tv);
-	tv.tv_sec = ROUTE_TIMEOUT;
+	tv.tv_sec = rdeconf->route_timeout;
 	evtimer_del(&r->timeout_timer);
 	evtimer_del(&r->garbage_timer);
 

@@ -34,7 +34,7 @@
 #define	DEFAULT_COST		1
 
 /* timers */
-#define	KEEPALIVE		30
+#define	DEFAULT_KEEPALIVE		30
 #define	OFFSET			10
 #define	FAILED_NBR_TIMEOUT	86400
 

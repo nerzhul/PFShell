@@ -47,7 +47,7 @@ report_timer(int fd, short event, void *arg)
 
 	/* restart report timer */
 	timerclear(&tv);
-	tv.tv_sec = KEEPALIVE + arc4random_uniform(OFFSET);
+	tv.tv_sec = oeconf->keepalive_timer + arc4random_uniform(OFFSET);
 	evtimer_add(&oeconf->report_timer, &tv);
 }
 
@@ -57,7 +57,7 @@ start_report_timer(void)
 	struct timeval	 tv;
 
 	timerclear(&tv);
-	tv.tv_sec = KEEPALIVE + arc4random_uniform(OFFSET);
+	tv.tv_sec = oeconf->keepalive_timer + arc4random_uniform(OFFSET);
 	return (evtimer_add(&oeconf->report_timer, &tv));
 }
 

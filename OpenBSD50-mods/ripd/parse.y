@@ -101,7 +101,7 @@ typedef struct {
 
 %}
 
-%token	SPLIT_HORIZON TRIGGERED_UPDATES FIBUPDATE REDISTRIBUTE RDOMAIN
+%token	SPLIT_HORIZON TRIGGERED_UPDATES FIBUPDATE REDISTRIBUTE RDOMAIN KEEPALIVE_TIMER ROUTE_TIMEOUT
 %token	AUTHKEY AUTHTYPE AUTHMD AUTHMDKEYID
 %token	INTERFACE RTLABEL
 %token	COST PASSIVE
@@ -175,6 +175,20 @@ conf_main	: SPLIT_HORIZON STRING {
 				conf->options |= OPT_TRIGGERED_UPDATES;
 			else
 				conf->options &= ~OPT_TRIGGERED_UPDATES;
+		}
+		| KEEPALIVE_TIMER NUMBER {
+			if($2 < 0) {
+				yyerror("invalid keepalive-timer");
+				YYERROR;
+			}
+			conf->keepalive_timer = $2;
+		}
+		| ROUTE_TIMEOUT NUMBER {
+			if($2 < 0) {
+				yyerror("invalid route-timeout");
+				YYERROR;
+			}
+			conf->route_timeout = $2;
 		}
 		| RDOMAIN NUMBER {
 			if ($2 < 0 || $2 > RT_TABLEID_MAX) {
@@ -415,7 +429,9 @@ lookup(char *s)
 	    {"rtlabel",			RTLABEL},
 	    {"split-horizon",		SPLIT_HORIZON},
 	    {"triggered-updates",	TRIGGERED_UPDATES},
-	    {"yes",			YES}
+	    {"yes",			YES},
+	    {"keepalive-timer",		KEEPALIVE_TIMER},
+	    {"route-timeout",		ROUTE_TIMEOUT}
 	};
 	const struct keywords	*p;
 
@@ -750,6 +766,8 @@ parse_config(char *filename, int opts)
 	defs->auth_type = AUTH_NONE;
 	conf->opts = opts;
 	conf->options = OPT_SPLIT_POISONED;
+	conf->route_timeout = DEFAULT_ROUTE_TIMEOUT;
+	conf->keepalive_timer = DEFAULT_KEEPALIVE;
 	SIMPLEQ_INIT(&conf->redist_list);
 
 	if ((file = pushfile(filename, !(conf->opts & RIPD_OPT_NOACTION))) == NULL) {

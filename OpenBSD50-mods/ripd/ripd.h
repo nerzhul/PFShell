@@ -38,7 +38,7 @@
 #define	NBR_IDSELF		1
 #define	NBR_CNTSTART		(NBR_IDSELF + 1)
 
-#define	ROUTE_TIMEOUT		180
+#define	DEFAULT_ROUTE_TIMEOUT	180
 #define ROUTE_GARBAGE		120
 
 #define	NBR_TIMEOUT		180
@@ -239,6 +239,8 @@ struct ripd_conf {
 	int			 rip_socket;
 	int			 redistribute;
 	u_int			 rdomain;
+	u_int			 keepalive_timer;
+	u_int			 route_timeout;
 };
 
 /* kroute */
