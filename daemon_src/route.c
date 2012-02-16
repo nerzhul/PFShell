@@ -164,7 +164,7 @@ void saveRipd()
 			fwrite("no redistribute default\n",1,strlen("no redistribute default\n"),fRIPd);
 	}
 
-	fputs("\n#\n#Interfaces configuration\n#",fRIPd);
+	fputs("\n#\n#Interfaces configuration\n#\n",fRIPd);
 
 	// Interface specific
 	net_iface* if_cursor = interfaces;
