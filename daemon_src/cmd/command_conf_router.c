@@ -229,9 +229,8 @@ cmdCallback crouterCMD_RIP_cost(char* args)
 		return cb;
 	}
 
-	if(getInterfaceRIPCost(iface[0]) == icost)
+	if(setInterfaceRIPCost(iface[0],icost) == 0)
 	{
-		setInterfaceRIPCost(iface[0],1);
 		WRITE_RUN();
 	}
 	else
@@ -265,8 +264,9 @@ cmdCallback crouterCMD_RIP_nocost(char* args)
 	if(icost < 1 || icost > 16)
 		return cb;
 
-	if(setInterfaceRIPPassive(iface[0],1) != 0)
+	if(getInterfaceRIPCost(iface[0]) == icost)
 	{
+		setInterfaceRIPCost(iface[0],1);
 		cb.message = CMD_INTERFACE_UNK();
 	}
 	else

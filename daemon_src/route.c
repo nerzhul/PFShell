@@ -174,9 +174,9 @@ void saveRipd()
 		fputs(if_cursor->name,fRIPd);
 		fputs("{\n",fRIPd);
 		if(if_cursor->rip_passive == 1)
-			fputs("passive\n",fRIPd);
+			fputs("\tpassive\n",fRIPd);
 		if(if_cursor->rip_cost > 1 && if_cursor->rip_cost < 16)
-			fprintf(fRIPd,"cost %d\n",if_cursor->rip_cost);
+			fprintf(fRIPd,"\tcost %d\n",if_cursor->rip_cost);
 		fputs("}\n",fRIPd);
 		if_cursor = if_cursor->next;
 	}

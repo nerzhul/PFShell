@@ -384,7 +384,7 @@ unsigned short setInterfaceRIPCost(char* name, unsigned short cost)
 			if(strcmp(cursor->name,name) == 0)
 			{
 				found = 1;
-				cursor->rip_passive = cost;
+				cursor->rip_cost = cost;
 			}
 			else
 				cursor = cursor->next;
