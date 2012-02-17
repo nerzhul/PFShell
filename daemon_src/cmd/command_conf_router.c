@@ -199,6 +199,13 @@ cmdCallback crouterCMD_RIP_timer(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
 
+	char* upd_timer[2];
+
+
+	char* fail_timer[2];
+
+
+	char* dead_timeout[2];
 
 	return cb;
 }

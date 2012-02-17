@@ -240,8 +240,8 @@ struct ripd_conf {
 	int			 redistribute;
 	u_int			 rdomain;
 	u_int			 update_timer;
-	u_int			 route_timeout;
 	u_int			 fail_timer;
+	u_int			 dead_timer;
 };
 
 /* kroute */

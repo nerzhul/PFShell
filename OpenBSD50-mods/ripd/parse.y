@@ -102,7 +102,7 @@ typedef struct {
 %}
 
 %token	SPLIT_HORIZON TRIGGERED_UPDATES FIBUPDATE REDISTRIBUTE RDOMAIN
-%token  UPDATE_TIMER ROUTE_TIMEOUT FAIL_TIMER
+%token  UPDATE_TIMER FAIL_TIMER DEAD_TIMER
 %token	AUTHKEY AUTHTYPE AUTHMD AUTHMDKEYID
 %token	INTERFACE RTLABEL
 %token	COST PASSIVE
@@ -198,19 +198,19 @@ conf_main	:
 			}
 			conf->update_timer = $2;
 		}
-		| ROUTE_TIMEOUT NUMBER {
-			if($2 < 0) {
-				yyerror("invalid route-timeout");
-				YYERROR;
-			}
-			conf->route_timeout = $2;
-		}
 		| FAIL_TIMER NUMBER {
 			if($2 < 0) {
 				yyerror("invalid fail-timer");
 				YYERROR;
 			}
-			conf->update_timer = $2;
+			conf->fail_timer = $2;
+		}
+		| DEAD_TIMER NUMBER {
+			if($2 < 0) {
+				yyerror("invalid dead-timer");
+				YYERROR;
+			}
+			conf->dead_timer = $2;
 		}
 		| no REDISTRIBUTE STRING {
 			struct redistribute	*r;
@@ -428,6 +428,7 @@ lookup(char *s)
 	    {"auth-md-keyid",		AUTHMDKEYID},
 	    {"auth-type",		AUTHTYPE},
 	    {"cost",			COST},
+	    {"dead-timer",		DEAD_TIMER},
 	    {"demote",			DEMOTE},
 	    {"fail-timer",		FAIL_TIMER},
 	    {"fib-update",		FIBUPDATE},
@@ -436,7 +437,6 @@ lookup(char *s)
 	    {"passive",			PASSIVE},
 	    {"rdomain",			RDOMAIN},
 	    {"redistribute",		REDISTRIBUTE},
-	    {"route-timeout",		ROUTE_TIMEOUT},
 	    {"rtlabel",			RTLABEL},
 	    {"split-horizon",		SPLIT_HORIZON},
 	    {"triggered-updates",	TRIGGERED_UPDATES},
@@ -776,9 +776,9 @@ parse_config(char *filename, int opts)
 	defs->auth_type = AUTH_NONE;
 	conf->opts = opts;
 	conf->options = OPT_SPLIT_POISONED;
-	conf->route_timeout = DEFAULT_ROUTE_TIMEOUT;
+	conf->fail_timer = DEFAULT_ROUTE_TIMEOUT;
 	conf->update_timer = DEFAULT_KEEPALIVE;
-	conf->fail_timer = DEFAULT_FAILED_NBR_TIMEOUT;
+	conf->dead_timer = DEFAULT_FAILED_NBR_TIMEOUT;
 	SIMPLEQ_INIT(&conf->redist_list);
 
 	if ((file = pushfile(filename, !(conf->opts & RIPD_OPT_NOACTION))) == NULL) {

@@ -61,7 +61,7 @@ unsigned short rip_redistrib_conn;
 unsigned short rip_redistrib_default;
 unsigned short rip_split_horizon;
 unsigned int rip_update_timer;
-unsigned int rip_invalid_timer;
-unsigned int rip_destroy_timer;
+unsigned int rip_fail_timer;
+unsigned int rip_dead_timer;
 
 #endif

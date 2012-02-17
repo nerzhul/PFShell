@@ -438,7 +438,7 @@ rde_check_route(struct rip_route *e)
 			timerclear(&tv);
 			gettimeofday(&now, NULL);
 			evtimer_pending(&rn->timeout_timer, &tv);
-			if (tv.tv_sec - now.tv_sec < rdeconf->route_timeout / 2) {
+			if (tv.tv_sec - now.tv_sec < rdeconf->fail_timer / 2) {
 				rn->nexthop.s_addr = e->nexthop.s_addr;
 				rn->ifindex = e->ifindex;
 				rde_send_change_kroute(rn);

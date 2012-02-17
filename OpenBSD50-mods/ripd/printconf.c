@@ -56,8 +56,8 @@ print_mainconf(struct ripd_conf *conf)
 		printf("triggered-updates no\n");
 
 	printf("update-timer %d\n",conf->update_timer);
-	printf("route-timeout %d\n",conf->route_timeout);
 	printf("fail-timer %d\n",conf->fail_timer);
+	printf("dead-timer %d\n",conf->dead_timer);
 }
 
 const char *

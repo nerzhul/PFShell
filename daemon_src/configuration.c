@@ -68,8 +68,8 @@ unsigned short loadConfiguration()
 	rip_redistrib_conn = 0;
 	rip_redistrib_default = 0;
 	rip_update_timer = 30;
-	rip_invalid_timer = 180;
-	rip_destroy_timer = 240;
+	rip_fail_timer = 180;
+	rip_dead_timer = 240;
 
 	hostname = "PFShell";
 	strcpy(dnssearch,"local");

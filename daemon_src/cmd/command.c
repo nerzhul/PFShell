@@ -146,7 +146,7 @@ unsigned short initCmds()
 	confRouterCmd[4].handler = crouterCMD_RIP_passive;
 	confRouterCmd[5].name = "cost";
 	confRouterCmd[5].handler = crouterCMD_RIP_cost;
-	confRouterCmd[6].name = "timer";
+	confRouterCmd[6].name = "timers";
 	confRouterCmd[6].handler = crouterCMD_RIP_timer;
 
 	// Enable - Configure - Router No Commands
@@ -160,7 +160,7 @@ unsigned short initCmds()
 	noconfRouterCmd[3].handler = crouterCMD_RIP_nopassive;
 	noconfRouterCmd[4].name = "cost";
 	noconfRouterCmd[4].handler = crouterCMD_RIP_nocost;
-	noconfRouterCmd[5].name = "timer";
+	noconfRouterCmd[5].name = "timers";
 	noconfRouterCmd[5].handler = crouterCMD_RIP_notimer;
 
 	masterCmd[0] = userCmd;

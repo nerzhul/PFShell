@@ -277,7 +277,7 @@ nbr_failed_new(struct nbr *nbr)
 	iface = nbr->iface;
 
 	timerclear(&tv);
-	tv.tv_sec = nbr_conf->fail_timer;
+	tv.tv_sec = nbr_conf->dead_timer;
 
 	evtimer_set(&nbr_failed->timeout_timer, nbr_failed_timeout,
 	    nbr_failed);
@@ -342,7 +342,7 @@ nbr_set_timer(struct nbr *nbr)
 	struct timeval	tv;
 
 	timerclear(&tv);
-	tv.tv_sec = nbr_conf->route_timeout;
+	tv.tv_sec = nbr_conf->fail_timer;
 
 	if (evtimer_add(&nbr->timeout_timer, &tv) == -1)
 		fatal("nbr_set_timer");
@@ -385,7 +385,7 @@ nbr_to_ctl(struct nbr *nbr)
 	if (evtimer_pending(&nbr->timeout_timer, &tv)) {
 		timersub(&tv, &now, &res);
 		if (nbr->state & NBR_STA_DOWN)
-			nctl.dead_timer = nbr_conf->route_timeout - res.tv_sec;
+			nctl.dead_timer = nbr_conf->fail_timer - res.tv_sec;
 		else
 			nctl.dead_timer = res.tv_sec;
 	} else
