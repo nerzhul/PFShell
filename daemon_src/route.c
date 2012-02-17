@@ -162,6 +162,15 @@ void saveRipd()
 			fwrite("redistribute default\n",1,strlen("redistribute default\n"),fRIPd);
 		else
 			fwrite("no redistribute default\n",1,strlen("no redistribute default\n"),fRIPd);
+
+		if(rip_update_timer > 0 && rip_update_timer != 30)
+			fprintf(fRIPd,"update-timer %d\n",rip_update_timer);
+
+		if(rip_invalid_timer > 0 && rip_invalid_timer != 180)
+			fprintf(fRIPd,"route-timeout %d\n",rip_invalid_timer);
+
+		if(rip_destroy_timer > 0 && rip_destroy_timer != 240)
+			fprintf(fRIPd,"fail-timer %d\n",rip_destroy_timer);
 	}
 
 	fputs("\n#\n#Interfaces configuration\n#\n\n",fRIPd);

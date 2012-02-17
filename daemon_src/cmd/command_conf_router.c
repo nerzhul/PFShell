@@ -195,6 +195,22 @@ cmdCallback crouterCMD_RIP_nopassive(char* args)
 	return cb;
 }
 
+cmdCallback crouterCMD_RIP_timer(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+
+
+	return cb;
+}
+
+cmdCallback crouterCMD_RIP_notimer(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+
+
+	return cb;
+}
+
 cmdCallback crouterCMD_RIP_cost(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_ROUTER,""};

@@ -141,3 +141,6 @@ Alpha 0.20 - prev
 - Start & restart rip daemon when modifying router rip config
 - Implement passive-interface for RIP
 - Implement cost <interface> <1-16> for RIP (eq to offset-list on CISCO routers)
+- Integrate OpenBSD ripd to solution with modifications
+-- It's possible to manage update, fail and remove_router timers.
+-- Adapt default timers to CISCO standard

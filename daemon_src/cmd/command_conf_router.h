@@ -40,6 +40,8 @@ cmdCallback crouterCMD_RIP_passive(char* args);
 cmdCallback crouterCMD_RIP_nopassive(char* args);
 cmdCallback crouterCMD_RIP_cost(char* args);
 cmdCallback crouterCMD_RIP_nocost(char* args);
+cmdCallback crouterCMD_RIP_timer(char* args);
+cmdCallback crouterCMD_RIP_notimer(char* args);
 cmdCallback crouterCMD_RIP_splithorizon(char* _none);
 cmdCallback crouterCMD_RIP_nosplithorizon(char* _none);
 #endif
