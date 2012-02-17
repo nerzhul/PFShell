@@ -135,7 +135,7 @@ ripe(struct ripd_conf *xconf, int pipe_parent2ripe[2], int pipe_ripe2rde[2],
 		fatal("can't drop privileges");
 
 	event_init();
-	nbr_init(NBR_HASHSIZE);
+	nbr_init(oeconf, NBR_HASHSIZE);
 
 	/* setup signal handler */
 	signal_set(&ev_sigint, SIGINT, ripe_sig_handler, NULL);
@@ -292,7 +292,7 @@ ripe_dispatch_main(int fd, short event, void *bula)
 	if (!shut)
 		imsg_event_add(iev);
 	else {
-		/* this pipe is dead, so remove the event handler */  
+		/* this pipe is dead, so remove the event handler */
 		event_del(&iev->ev);
 		event_loopexit(NULL);
 	}
@@ -439,7 +439,7 @@ ripe_dispatch_rde(int fd, short event, void *bula)
 	if (!shut)
 		imsg_event_add(iev);
 	else {
-		/* this pipe is dead, so remove the event handler */  
+		/* this pipe is dead, so remove the event handler */
 		event_del(&iev->ev);
 		event_loopexit(NULL);
 	}

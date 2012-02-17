@@ -41,7 +41,7 @@
 #define	DEFAULT_ROUTE_TIMEOUT	180
 #define ROUTE_GARBAGE		120
 
-#define	NBR_TIMEOUT		180
+#define	DEFAULT_NBR_TIMEOUT	180
 
 #define RT_BUF_SIZE		16384
 #define MAX_RTSOCK_BUF		128 * 1024
@@ -239,8 +239,9 @@ struct ripd_conf {
 	int			 rip_socket;
 	int			 redistribute;
 	u_int			 rdomain;
-	u_int			 keepalive_timer;
+	u_int			 update_timer;
 	u_int			 route_timeout;
+	u_int			 fail_timer;
 };
 
 /* kroute */

@@ -45,6 +45,8 @@ void	nbr_stop_timer(struct nbr *);
 void	nbr_failed_new(struct nbr *);
 void	nbr_failed_timeout(int, short, void *);
 
+struct ripd_conf	*nbr_conf = NULL;
+
 LIST_HEAD(nbr_head, nbr);
 
 struct nbr_table {
@@ -151,9 +153,11 @@ nbr_fsm(struct nbr *nbr, enum nbr_event event)
 }
 
 void
-nbr_init(u_int32_t hashsize)
+nbr_init(struct ripd_conf* xconf, u_int32_t hashsize)
 {
 	u_int32_t	 hs, i;
+
+	nbr_conf = xconf;
 
 	for (hs = 1; hs < hashsize; hs <<= 1)
 		;
@@ -273,7 +277,7 @@ nbr_failed_new(struct nbr *nbr)
 	iface = nbr->iface;
 
 	timerclear(&tv);
-	tv.tv_sec = FAILED_NBR_TIMEOUT;
+	tv.tv_sec = nbr_conf->fail_timer;
 
 	evtimer_set(&nbr_failed->timeout_timer, nbr_failed_timeout,
 	    nbr_failed);
@@ -338,7 +342,7 @@ nbr_set_timer(struct nbr *nbr)
 	struct timeval	tv;
 
 	timerclear(&tv);
-	tv.tv_sec = NBR_TIMEOUT;
+	tv.tv_sec = nbr_conf->route_timeout;
 
 	if (evtimer_add(&nbr->timeout_timer, &tv) == -1)
 		fatal("nbr_set_timer");
@@ -381,7 +385,7 @@ nbr_to_ctl(struct nbr *nbr)
 	if (evtimer_pending(&nbr->timeout_timer, &tv)) {
 		timersub(&tv, &now, &res);
 		if (nbr->state & NBR_STA_DOWN)
-			nctl.dead_timer = NBR_TIMEOUT - res.tv_sec;
+			nctl.dead_timer = nbr_conf->route_timeout - res.tv_sec;
 		else
 			nctl.dead_timer = res.tv_sec;
 	} else

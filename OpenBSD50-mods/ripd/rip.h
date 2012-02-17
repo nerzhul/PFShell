@@ -35,8 +35,8 @@
 
 /* timers */
 #define	DEFAULT_KEEPALIVE		30
-#define	OFFSET			10
-#define	FAILED_NBR_TIMEOUT	86400
+#define	OFFSET				10
+#define	DEFAULT_FAILED_NBR_TIMEOUT	86400
 
 #define MAX_RIP_ENTRIES		25
 

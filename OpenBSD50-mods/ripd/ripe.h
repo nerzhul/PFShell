@@ -127,7 +127,7 @@ void	 md_list_copy(struct auth_md_head *, struct auth_md_head *);
 void	 md_list_clr(struct auth_md_head *);
 
 /* neighbor.c */
-void		 nbr_init(u_int32_t);
+void		 nbr_init(struct ripd_conf* xconf, u_int32_t);
 struct nbr	*nbr_new(u_int32_t, struct iface *);
 void		 nbr_act_del(struct nbr *);
 
