@@ -58,7 +58,16 @@ int main(int argc, const char** argv)
 	if(sock_error == 0)
 	{
 		printf("BSDRouterd is \x1b[32mrunning\x1b[0m !\n");
+
+		// Now we daemonize
+		pid_t pid = fork();
+		if(pid < 0)
+			printf("\x1b[31mFATAL Fork Error !\x1b[0m !\n");
+		else if(pid > 0)
+			return 0;
+
 		waitAndHandleClients();
+		closeServerSocket();
 	}
 	else if(sock_error == 1)
 		printf("%s",printError("[ERROR] BSDRouterd: TCP/IP Stack error\n"));
@@ -68,6 +77,6 @@ int main(int argc, const char** argv)
 		printf("%s",printError("[ERROR] BSDRouterd: unable to listen port... already in use (error %d)?\n",sock_error));
 	else
 		printf("%s",printError("[ERROR] BSDRouterd: unk error\n"));
-	closeServerSocket();
+
 	return 0;
 }
