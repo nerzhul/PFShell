@@ -185,7 +185,84 @@ cmdCallback eCMD_show(char* args)
 			if(strcmp(ipt[0],"routes") == 0)
 			{
 				char output[10240] = "";
-				execSystemCommand("netstat -rn -f inet",output);
+				system("netstat -rn -f inet | awk '{print $1\" \"$2\" \"$3\" \"$7\" \"$8}' | grep U > /tmp/routes_tmp");
+				FILE* fRoutes = fopen("/tmp/routes_tmp","r");
+				char lines[1035] = "";
+
+				while (fgets(lines, sizeof(lines), fRoutes) != NULL) {
+					char* netaddr[2];
+					cutFirstWord(lines,netaddr);
+
+					if(strlen(netaddr[1]) == 0)
+						continue;
+
+					char* gate[2];
+					cutFirstWord(netaddr[1],gate);
+
+					if(strlen(gate[1]) == 0)
+						continue;
+
+					char* type[2];
+					cutFirstWord(gate[1],type);
+
+					if(strlen(type[1]) == 0)
+						continue;
+
+					char* metric[2];
+					cutFirstWord(type[1],metric);
+
+					if(strlen(metric[1]) == 0)
+						continue;
+
+					char* bypath[2];
+					cutFirstWord(metric[1],bypath);
+
+
+					if(strcmp(type[0],"UC") == 0) // Connected
+					{
+						strcat(output,"C\t");
+						strcat(output,netaddr[0]);
+						strcat(output," ");
+						strcat(output,"is directly connected, ");
+						strcat(output,bypath[0]);
+						strcat(output,"\n");
+					}
+					else if(strcmp(type[0],"UGS") == 0) // Static
+					{
+						strcat(output,"S");
+						if(strcmp(netaddr[0],"default") == 0)
+						{
+							strcat(output,"*\t0.0.0.0/0");
+						}
+						else
+						{
+							strcat(output,"\t");
+							strcat(output,netaddr[0]);
+						}
+						strcat(output," [1/0] via ");
+						strcat(output,gate[0]);
+						strcat(output,"\n");
+					}
+					else if(strcmp(type[0],"UG") == 0)
+					{
+						if(strcmp(metric[0],"32") == 0)
+						{
+							strcat(output,"O\t");
+						}
+						else if(strcmp(metric[0],"40") == 0)
+						{
+							strcat(output,"R\t");
+						}
+						strcat(output,netaddr[0]);
+						strcat(output," [");
+						strcat(output,metric[0]);
+						strcat(output,"] via ");
+						strcat(output,gate[0]);
+						strcat(output,", ");
+						strcat(output,bypath[0]);
+						strcat(output,"\n");
+					}
+				}
 				cb.message = output;
 			}
 			else
