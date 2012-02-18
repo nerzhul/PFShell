@@ -37,8 +37,6 @@ int main(int argc, const char** argv)
 {
 	printf("\x1b[0mBSDRouterd version \x1b[33m%s\x1b[0m\n",VERSION);
 	initCmds();
-	// @TODO daemonize
-	// @TODO: verify integrity for configuration files
 
 	if(checkSystemIntegrity() == 0)
 		printf("\nIntegrity: \x1b[32mOK\x1b[0m\n");
@@ -60,11 +58,11 @@ int main(int argc, const char** argv)
 		printf("BSDRouterd is \x1b[32mrunning\x1b[0m !\n");
 
 		// Now we daemonize
-		pid_t pid = fork();
+		/*pid_t pid = fork();
 		if(pid < 0)
 			printf("\x1b[31mFATAL Fork Error !\x1b[0m !\n");
 		else if(pid > 0)
-			return 0;
+			return 0;*/
 
 		waitAndHandleClients();
 		closeServerSocket();

@@ -144,3 +144,9 @@ Alpha 0.20
 - Integrate OpenBSD ripd to solution with modifications
 -- It's possible to manage update, fail and dead timers.
 -- Adapt default timers to CISCO standard
+
+Alpha 0.21
+- Implement OSPF routing
+-- Implement redistribute static, default, connected with metric and metric-type values
+- Dispatch saveRipd into macro WRITE_RIPD, to restart ripd ONLY if router rip command have succeed, not all commands
+- Use the correct ripd process ! not /usr/sbin/ripd but /opt/bin/ripd

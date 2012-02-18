@@ -77,7 +77,6 @@ cmdCallback cCMD_router(char* args)
 		if(strlen(routertype[1]) > 0)
 		{
 			cb.message = CMDCONF_ROUTER_ERROR();
-
 			return cb;
 
 		}
@@ -85,6 +84,14 @@ cmdCallback cCMD_router(char* args)
 		{
 			rip_enabled = 1;
 			cb.promptMode = PROMPT_CONF_ROUTER;
+			promptRouterType = PROMPT_ROUTER_RIP;
+			WRITE_RUN();
+		}
+		else if(strcmp(routertype[0],"ospf") == 0)
+		{
+			ospf_enabled = 1;
+			cb.promptMode = PROMPT_CONF_ROUTER;
+			promptRouterType = PROMPT_ROUTER_OSPF;
 			WRITE_RUN();
 		}
 	}
@@ -98,7 +105,7 @@ cmdCallback cCMD_norouter(char* args)
 
 	if(strlen(args) == 0)
 	{
-		//cb.message = CMDCONF_ROUTER_ERROR();
+		cb.message = CMDCONF_ROUTER_ERROR();
 	}
 	else
 	{
@@ -106,16 +113,24 @@ cmdCallback cCMD_norouter(char* args)
 		cutFirstWord(args,routertype);
 		if(strlen(routertype[1]) > 0)
 		{
-			//cb.message = CMDCONF_ROUTER_ERROR();
+			cb.message = CMDCONF_ROUTER_ERROR();
 			return cb;
 
 		}
 		if(strcmp(routertype[0],"rip") == 0)
 		{
 			rip_enabled = 0;
-			//routertype = ROUTER_RIP;
+			promptRouterType = PROMPT_ROUTER_NONE;
 			cb.promptMode = PROMPT_CONF_ROUTER;
 			hsystemcmd("kill -9 $(ps aux|grep ripd|grep parent|awk '{print $2}')");
+			WRITE_RUN();
+		}
+		else if(strcmp(routertype[0],"ospf") == 0)
+		{
+			ospf_enabled = 0;
+			promptRouterType = PROMPT_ROUTER_NONE;
+			cb.promptMode = PROMPT_CONF_ROUTER;
+			hsystemcmd("kill -9 $(ps aux|grep ospfd|grep parent|awk '{print $2}')");
 			WRITE_RUN();
 		}
 	}

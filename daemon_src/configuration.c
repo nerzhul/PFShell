@@ -179,6 +179,57 @@ unsigned short writeRunningConfig()
 			fputs("!\n",confFile);
 		}
 
+		if(ospf_enabled == 1)
+		{
+			fputs("router ospf\n", confFile);
+			if(ospf_redistrib_conn == 1)
+			{
+				fputs("redistribute connected",confFile);
+				if(ospf_redistrib_conn_metric != 100 || ospf_redistrib_conn_type != 1)
+				{
+					fprintf(confFile," metric %d",ospf_redistrib_conn_metric);
+					if(ospf_redistrib_conn_type != 1)
+						fprintf(confFile," metric-type %d",ospf_redistrib_conn_type);
+				}
+				fputs("\n",confFile);
+			}
+			if(ospf_redistrib_default == 1)
+			{
+				fputs("redistribute default",confFile);
+				if(ospf_redistrib_default_metric != 100 || ospf_redistrib_default_type != 1)
+				{
+					fprintf(confFile," metric %d",ospf_redistrib_default_metric);
+					if(ospf_redistrib_default_type != 1)
+						fprintf(confFile," metric-type %d",ospf_redistrib_default_type);
+				}
+				fputs("\n",confFile);
+			}
+			if(ospf_redistrib_static == 1)
+			{
+				fputs("redistribute static",confFile);
+				if(ospf_redistrib_static_metric != 100 || ospf_redistrib_static_type != 1)
+				{
+					fprintf(confFile," metric %d",ospf_redistrib_static_metric);
+					if(ospf_redistrib_static_type != 1)
+						fprintf(confFile," metric-type %d",ospf_redistrib_static_type);
+				}
+				fputs("\n",confFile);
+			}
+			// Passive-Interfaces
+			net_iface* if_cursor = interfaces;
+			while(if_cursor != NULL)
+			{
+				if(if_cursor->ospf_passive > 0)
+				{
+					fputs("passive-interface ",confFile);
+					fputs(if_cursor->name,confFile);
+					fputs("\n",confFile);
+				}
+				if_cursor = if_cursor->next;
+			}
+			fputs("!\n",confFile);
+		}
+
 		// Firewall
 		fputs("firewall\n",confFile);
 		if(firewallState == 0) fputs("disable\n",confFile);
@@ -290,8 +341,6 @@ unsigned short writeRunningConfig()
 	}
 
 	writeFirewall();
-
-	saveRipd();
 
 	confFile = fopen("/etc/resolv.conf","w");
 	if(confFile == NULL)

@@ -38,6 +38,7 @@
 #include "command_conf_rd.h"
 #include "command_conf_router.h"
 #include "../prompt/prompt_msg.h"
+#include <../shell_src/prompt.h>
 
 unsigned short initCmds()
 {
@@ -137,7 +138,7 @@ unsigned short initCmds()
 	confRouterCmd[0].name = "exit";
 	confRouterCmd[0].handler = &crouterCMD_exit;
 	confRouterCmd[1].name = "redistribute";
-	confRouterCmd[1].handler = crouterCMD_RIP_redistrib;
+	confRouterCmd[1].handler = crouterCMD_RIP_OSPF_redistrib;
 	confRouterCmd[2].name = "default-information";
 	confRouterCmd[2].handler = crouterCMD_RIP_defaultinformation;
 	confRouterCmd[3].name = "split-horizon";
@@ -151,7 +152,7 @@ unsigned short initCmds()
 
 	// Enable - Configure - Router No Commands
 	noconfRouterCmd[0].name = "redistribute";
-	noconfRouterCmd[0].handler = crouterCMD_RIP_noredistrib;
+	noconfRouterCmd[0].handler = crouterCMD_RIP_OSPF_noredistrib;
 	noconfRouterCmd[1].name = "default-information";
 	noconfRouterCmd[1].handler = crouterCMD_RIP_nodefaultinformation;
 	noconfRouterCmd[2].name = "split-horizon";
@@ -180,6 +181,8 @@ unsigned short initCmds()
 	masternoCmd[5] = noconfRDCmd;
 	masternoCmd[6] = noconfACLCmd;
 	masternoCmd[7] = noconfRouterCmd;
+
+	promptRouterType = PROMPT_ROUTER_NONE;
 
 	return 0;
 }

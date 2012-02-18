@@ -63,7 +63,7 @@
 #define CMDCONF_INTERFACE_UNK(A) printError("Unknown interface %s\n",A);
 #define CMDCONF_IP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   ip <domain-name|multicast-routing|name-server|route|routing>\n");
 #define CMDCONF_FIREWALL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   firewall\n");
-#define CMDCONF_ROUTER_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   router <rip>\n");
+#define CMDCONF_ROUTER_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   (no) router <rip|ospf>\n");
 #define CMDCONF_IPROUTE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    ip route A.B.C.D M.A.S.K G.A.T.E\n");
 #define CMDCONF_IPNS_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    ip name-server A.B.C.D\n");
 #define CMDCONF_IPDN_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    ip domain-name <name>\n");
@@ -96,7 +96,8 @@
 #define CMDACL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   <allow|deny> <in|out> <tcp|udp|icmp> <any|A.B.C.D/CIDR> (<port>) <any|A.B.C.D/CIDR> (<port>)\n");
 
 // Router Messages
-#define CMDROUTER_RIP_REDIST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   redistribute <connected|default|static>\n");
+#define CMDROUTER_RIP_OSPF_REDIST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) redistribute <connected|default|static>\n");
+#define CMDROUTER_OSPF_REDIST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) redistribute <connected|default|static> (metric <1-65535>) (metric-type <1-2>)\n");
 #define CMDROUTER_RIP_DEFORIG_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   default-information originate\n");
 #define CMDROUTER_RIP_SPLITHORIZ_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   split-horizon\n");
 #define CMDROUTER_RIP_INTERFACE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   passive-interface <iface>\n");

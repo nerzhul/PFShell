@@ -33,6 +33,8 @@
 #include "route.h"
 
 #define WRITE_RUN() writeRunningConfig();
+#define WRITE_RIPD() saveRipd();
+#define WRITE_OSPFD() saveOspfd();
 
 unsigned short loadConfiguration();
 unsigned short writeRunningConfig();

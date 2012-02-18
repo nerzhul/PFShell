@@ -185,7 +185,59 @@ void saveRipd()
 	}
 
 	hsystemcmd("kill -9 $(ps aux|grep ripd|grep parent|awk '{print $2}')");
-	hsystemcmd("ripd");
+	hsystemcmd("/opt/bin/ripd");
 
 	fclose(fRIPd);
+}
+
+void saveOspfd()
+{
+	FILE* fOSPFd = fopen("/etc/ospfd.conf","w+");
+
+	// Global configuration
+	if(ospf_enabled == 1)
+	{
+		fputs("#\n#Global configuration\n#\n\n",fOSPFd);
+
+		fputs("fib-update yes\n",fOSPFd);
+
+		if(ospf_redistrib_conn == 1)
+		{
+			fputs("redistribute connected",fOSPFd);
+			if(ospf_redistrib_conn_metric != OSPF_DEFAULT_METRIC || ospf_redistrib_conn_type != OSPF_DEFAULT_METRIC_TYPE)
+				fprintf(fOSPFd," set { metric %d type %d }",ospf_redistrib_conn_metric,ospf_redistrib_conn_type);
+			fputs("\n",fOSPFd);
+		}
+		else
+			fputs("no redistribute connected\n",fOSPFd);
+
+		if(ospf_redistrib_static == 1)
+		{
+			fputs("redistribute static",fOSPFd);
+			if(ospf_redistrib_static_metric != OSPF_DEFAULT_METRIC || ospf_redistrib_static_type != OSPF_DEFAULT_METRIC_TYPE)
+				fprintf(fOSPFd," set { metric %d type %d }",ospf_redistrib_static_metric,ospf_redistrib_static_type);
+			fputs("\n",fOSPFd);
+		}
+		else
+			fputs("no redistribute static\n",fOSPFd);
+
+		if(ospf_redistrib_default == 1)
+		{
+			fputs("redistribute default",fOSPFd);
+			if(ospf_redistrib_default_metric != OSPF_DEFAULT_METRIC || ospf_redistrib_default_type != OSPF_DEFAULT_METRIC_TYPE)
+				fprintf(fOSPFd," set { metric %d type %d }",ospf_redistrib_default_metric,ospf_redistrib_default_type);
+			fputs("\n",fOSPFd);
+		}
+		else
+			fputs("no redistribute default\n",fOSPFd);
+	}
+
+	fputs("\n#\n# Areas configuration\n#\n\n",fOSPFd);
+
+	// @ TODO interfaces & areas
+
+	hsystemcmd("kill -9 $(ps aux|grep ospfd|grep parent|awk '{print $2}')");
+	hsystemcmd("ospfd");
+
+	fclose(fOSPFd);
 }

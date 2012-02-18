@@ -42,6 +42,9 @@
 #define PROMPT_CONF_ROUTER 	7
 #define MAX_PROMPTS		8
 
+#define PROMPT_ROUTER_NONE	0
+#define PROMPT_ROUTER_RIP	1
+#define PROMPT_ROUTER_OSPF	2
 
 #define BLACK 0
 #define RED 1
@@ -67,5 +70,7 @@ char* setPromptColor(short stdout_stream, short color);
 char* resetPromptColor(short stdout_stream);
 
 unsigned short askConfirm();
+
+unsigned short promptRouterType;
 
 #endif

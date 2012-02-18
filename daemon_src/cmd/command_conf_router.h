@@ -32,8 +32,8 @@
 
 cmdCallback crouterCMD_exit(char* _none);
 
-cmdCallback crouterCMD_RIP_redistrib(char* args);
-cmdCallback crouterCMD_RIP_noredistrib(char* args);
+cmdCallback crouterCMD_RIP_OSPF_redistrib(char* args);
+cmdCallback crouterCMD_RIP_OSPF_noredistrib(char* args);
 cmdCallback crouterCMD_RIP_defaultinformation(char* args);
 cmdCallback crouterCMD_RIP_nodefaultinformation(char* args);
 cmdCallback crouterCMD_RIP_passive(char* args);

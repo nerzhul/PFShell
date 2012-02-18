@@ -40,6 +40,11 @@ struct net_iface
 	unsigned short state;
 	unsigned short rip_passive;
 	unsigned short rip_cost;
+	unsigned short ospf_passive;
+	unsigned short ospf_cost;
+	unsigned short ospf_priority;
+	unsigned short ospf_hello_int;
+	unsigned short ospf_dead_int;
 
 	net_iface* next;
 	net_iface* prev;

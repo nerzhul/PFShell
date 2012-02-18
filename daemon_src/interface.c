@@ -48,6 +48,11 @@ void addInterface(char* name)
 	newIface->state = 1;
 	newIface->rip_passive = 0;
 	newIface->rip_cost = 1;
+	newIface->ospf_passive = 0;
+	newIface->ospf_cost = 10;
+	newIface->ospf_priority = 1;
+	newIface->ospf_hello_int = 10;
+	newIface->ospf_dead_int = 40;
 
 	if(interfaces == NULL)
 	{
