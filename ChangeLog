@@ -136,7 +136,7 @@ Alpha 0.19
 - Implement (no) split-horizon to disable split-horizon for RIP (dangerous !)
 - Before check integrity, copy resolv.conf.save into resolv.conf
 
-Alpha 0.20 - prev
+Alpha 0.20
 - Bug & Crash fix when reading command in the shell. Forget to check if offset is positive.
 - Start & restart rip daemon when modifying router rip config
 - Implement passive-interface for RIP

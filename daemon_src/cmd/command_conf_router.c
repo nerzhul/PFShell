@@ -199,21 +199,120 @@ cmdCallback crouterCMD_RIP_timer(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
 
-	char* upd_timer[2];
+	if(strlen(args) == 0)
+	{
+		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
+		return cb;
+	}
 
+	char* upd_timer[2];
+	cutFirstWord(args,upd_timer);
+
+	if(strlen(upd_timer[1]) == 0)
+	{
+		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
+		return cb;
+	}
+
+	int update_t = atoi(upd_timer[0]);
+
+	if(update_t <= 0 || update_t > 600)
+	{
+		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
+		return cb;
+	}
 
 	char* fail_timer[2];
+	cutFirstWord(upd_timer[1],fail_timer);
 
+	if(strlen(fail_timer[1]) == 0)
+	{
+		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
+		return cb;
+	}
 
-	char* dead_timeout[2];
+	int fail_t = atoi(fail_timer[0]);
 
+	if(fail_t <= 0 || fail_t < 2 * update_t)
+	{
+		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
+		return cb;
+	}
+
+	char* dead_timer[2];
+	cutFirstWord(fail_timer[1],dead_timer);
+
+	if(strlen(dead_timer[1]) > 0)
+	{
+		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
+		return cb;
+	}
+
+	int dead_t = atoi(dead_timer[0]);
+
+	if(dead_t <= 0 || dead_t < fail_t)
+	{
+		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
+		return cb;
+	}
+
+	rip_update_timer = update_t;
+	rip_fail_timer = fail_t;
+	rip_dead_timer = dead_t;
+
+	WRITE_RUN();
 	return cb;
 }
 
 cmdCallback crouterCMD_RIP_notimer(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	if(strlen(args) < 1)
+	{
+		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
+		return cb;
+	}
 
+	char* upd_timer[2];
+	cutFirstWord(args,upd_timer);
+
+	if(strlen(upd_timer[1]) == 0)
+	{
+		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
+		return cb;
+	}
+
+	int update_t = atoi(upd_timer[0]);
+
+	char* fail_timer[2];
+	cutFirstWord(upd_timer[1],fail_timer);
+
+	if(strlen(fail_timer[1]) == 0)
+	{
+		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
+		return cb;
+	}
+
+	int fail_t = atoi(fail_timer[0]);
+
+	char* dead_timer[2];
+	cutFirstWord(fail_timer[1],dead_timer);
+
+	if(strlen(dead_timer[1]) > 0)
+	{
+		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
+		return cb;
+	}
+
+	int dead_t = atoi(dead_timer[0]);
+
+	if(update_t == rip_update_timer && fail_t == rip_fail_timer && dead_t == rip_dead_timer)
+	{
+		rip_update_timer = 30;
+		rip_fail_timer = 180;
+		rip_dead_timer = 240;
+		WRITE_RUN();
+	}
 
 	return cb;
 }

@@ -155,7 +155,8 @@ unsigned short writeRunningConfig()
 				fputs("redistribute static\n",confFile);
 			if(rip_split_horizon == 0)
 				fputs("no split-horizon\n",confFile);
-
+			if(rip_update_timer != 30 || rip_fail_timer != 180 || rip_dead_timer != 240)
+				fprintf(confFile,"timers %d %d %d\n",rip_update_timer,rip_fail_timer,rip_dead_timer);
 			// Passive-Interfaces
 			net_iface* if_cursor = interfaces;
 			while(if_cursor != NULL)
