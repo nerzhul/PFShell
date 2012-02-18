@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT - Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -25,65 +25,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stdlib.h>
-#include <ncurses.h>
-#include "command_user.h"
-#include "../prompt/prompt_msg.h"
+#ifndef __CONF_ROUTER_OSPF_H_
+#define __CONF_ROUTER_OSPF_H_
 
-cmdCallback uCMD_enable(char* _none)
-{
-	cmdCallback cb = {PROMPT_USER,""};
-	if(strlen(_none) > 0)
-	{
-		cb.message = CMDUSER_ENABLE_ERROR();
-		return cb;
-	}
-	//  @ TODO
-	//printf("Password: \n");
 
-	cb.promptMode = PROMPT_ENABLE;
-	return cb;
-}
-
-cmdCallback uCMD_exit(char* _none)
-{
-	cmdCallback cb = {PROMPT_USER,""};
-	if(strlen(_none) > 0)
-	{
-		cb.message = CMDCOMMON_EXIT_ERROR();
-		return cb;
-	}
-
-	cb.message = "Bye !\n";
-	return cb;
-}
-
-cmdCallback uCMD_help(char* _none)
-{
-	cmdCallback cb = {PROMPT_USER,""};
-	cb.message = "enable - grant you administrative privileges\nexit   - leave the current terminal\nhelp   - show this help\nshow   - show some informations\n";
-	return cb;
-}
-
-cmdCallback uCMD_show(char* args)
-{
-	cmdCallback cb = {PROMPT_USER,""};
-	if(strlen(args) <= 1)
-	{
-		cb.message = CMDUSER_SHOW_ERROR();
-	}
-	else
-	{
-		char* showcmd[2];
-		cutFirstWord(args,showcmd);
-		if(strcmp(showcmd[0],"version") == 0)
-		{
-				sprintf(cb.message,"PFShell version %s\n",VERSION);
-		}
-		else
-		{
-			cb.message = CMDUSER_SHOW_ERROR();
-		}
-	}
-	return cb;
-}
+#endif

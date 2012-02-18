@@ -27,7 +27,7 @@
 
 #include <stdlib.h>
 #include "command.h"
-#include "command_conf_if.h"
+#include "conf_if.h"
 #include "../firewall.h"
 #include "../configuration.h"
 #include "../interface.h"

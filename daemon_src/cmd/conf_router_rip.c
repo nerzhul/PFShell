@@ -26,7 +26,7 @@
 */
 
 #include <stdlib.h>
-#include "command_conf_router.h"
+#include "conf_router_rip.h"
 #include "configuration.h"
 #include "../prompt/prompt_msg.h"
 #include "route.h"

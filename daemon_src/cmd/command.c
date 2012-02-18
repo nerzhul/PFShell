@@ -29,14 +29,15 @@
 #include <string.h>
 #include <regex.h>
 #include "command.h"
-#include "command_user.h"
-#include "command_enable.h"
-#include "command_conf.h"
-#include "command_conf_acl.h"
-#include "command_conf_if.h"
-#include "command_conf_fw.h"
-#include "command_conf_rd.h"
-#include "command_conf_router.h"
+#include "user.h"
+#include "enable.h"
+#include "conf.h"
+#include "conf_acl.h"
+#include "conf_if.h"
+#include "conf_fw.h"
+#include "conf_rd.h"
+#include "conf_router_rip.h"
+#include "conf_router_ospf.h"
 #include "../prompt/prompt_msg.h"
 #include <../shell_src/prompt.h>
 

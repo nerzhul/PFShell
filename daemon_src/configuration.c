@@ -32,8 +32,8 @@
 #include "interface.h"
 #include "route.h"
 #include "cmd/command.h"
-#include "cmd/command_conf_fw.h"
-#include "cmd/command_conf.h"
+#include "cmd/conf_fw.h"
+#include "cmd/conf.h"
 #include "prompt/prompt_msg.h"
 
 unsigned short loadConfiguration()

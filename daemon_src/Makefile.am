@@ -5,22 +5,24 @@ AM_CPPFLAGS = -lm -std=gnu99
 BSDRouterd_SOURCES = \
 	cmd/command.c \
 	cmd/command.h \
-	cmd/command_conf.c \
-	cmd/command_conf.h \
-	cmd/command_conf_acl.c \
-	cmd/command_conf_acl.h \
-	cmd/command_conf_fw.c \
-	cmd/command_conf_fw.h \
-	cmd/command_conf_if.c \
-	cmd/command_conf_if.h \
-	cmd/command_conf_rd.c \
-	cmd/command_conf_rd.h \
-	cmd/command_conf_router.c \
-	cmd/command_conf_router.h \
-	cmd/command_enable.c \
-	cmd/command_enable.h \
-	cmd/command_user.c \
-	cmd/command_user.h \
+	cmd/conf.c \
+	cmd/conf.h \
+	cmd/conf_acl.c \
+	cmd/conf_acl.h \
+	cmd/conf_fw.c \
+	cmd/conf_fw.h \
+	cmd/conf_if.c \
+	cmd/conf_if.h \
+	cmd/conf_rd.c \
+	cmd/conf_rd.h \
+	cmd/conf_router_ospf.c \
+	cmd/conf_router_ospf.h \
+	cmd/conf_router_rip.c \
+	cmd/conf_router_rip.h \
+	cmd/enable.c \
+	cmd/enable.h \
+	cmd/user.c \
+	cmd/user.h \
 	configuration.c \
 	configuration.h \
 	daemon_socket.c \

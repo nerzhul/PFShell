@@ -25,8 +25,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "command_conf_fw.h"
-#include "command_conf_acl.h"
+#include "conf_fw.h"
+#include "conf_acl.h"
 #include "../firewall.h"
 #include "../prompt/prompt_msg.h"
 #include "../configuration.h"

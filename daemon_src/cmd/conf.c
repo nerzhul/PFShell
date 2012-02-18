@@ -27,8 +27,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "command_conf.h"
-#include "command_conf_if.h"
+#include "conf.h"
+#include "conf_if.h"
 #include "../prompt/prompt_msg.h"
 #include "../configuration.h"
 #include "../iputils.h"

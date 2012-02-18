@@ -25,18 +25,65 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "command_conf_rd.h"
+#include <stdlib.h>
+#include <ncurses.h>
+#include "user.h"
 #include "../prompt/prompt_msg.h"
 
-cmdCallback crdCMD_exit(char* _none) {
-	cmdCallback cb = {PROMPT_CONF_RD,""};
+cmdCallback uCMD_enable(char* _none)
+{
+	cmdCallback cb = {PROMPT_USER,""};
+	if(strlen(_none) > 0)
+	{
+		cb.message = CMDUSER_ENABLE_ERROR();
+		return cb;
+	}
+	//  @ TODO
+	//printf("Password: \n");
 
+	cb.promptMode = PROMPT_ENABLE;
+	return cb;
+}
+
+cmdCallback uCMD_exit(char* _none)
+{
+	cmdCallback cb = {PROMPT_USER,""};
 	if(strlen(_none) > 0)
 	{
 		cb.message = CMDCOMMON_EXIT_ERROR();
+		return cb;
+	}
+
+	cb.message = "Bye !\n";
+	return cb;
+}
+
+cmdCallback uCMD_help(char* _none)
+{
+	cmdCallback cb = {PROMPT_USER,""};
+	cb.message = "enable - grant you administrative privileges\nexit   - leave the current terminal\nhelp   - show this help\nshow   - show some informations\n";
+	return cb;
+}
+
+cmdCallback uCMD_show(char* args)
+{
+	cmdCallback cb = {PROMPT_USER,""};
+	if(strlen(args) <= 1)
+	{
+		cb.message = CMDUSER_SHOW_ERROR();
 	}
 	else
-		cb.promptMode = PROMPT_CONF;
-
+	{
+		char* showcmd[2];
+		cutFirstWord(args,showcmd);
+		if(strcmp(showcmd[0],"version") == 0)
+		{
+				sprintf(cb.message,"PFShell version %s\n",VERSION);
+		}
+		else
+		{
+			cb.message = CMDUSER_SHOW_ERROR();
+		}
+	}
 	return cb;
 }

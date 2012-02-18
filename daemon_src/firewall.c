@@ -29,7 +29,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "cmd/command_conf_acl.h"
+#include "cmd/conf_acl.h"
 #include "firewall.h"
 #include "configuration.h"
 #include <unistd.h>
