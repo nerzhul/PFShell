@@ -60,11 +60,16 @@ unsigned short setInterfaceACL(char* name, char* aclname, char* direction);
 unsigned short setInterfaceDesc(char* name, char* desc);
 unsigned short setInterfaceRIPPassive(char* name, unsigned short passive);
 unsigned short setInterfaceRIPCost(char* name, unsigned short cost);
+unsigned short setInterfaceOSPFPassive(char* name, unsigned short passive);
+unsigned short setInterfaceOSPFCost(char* name, unsigned short cost);
 
 char* getInterfaceIP(char* name);
 unsigned short getInterfaceState(char* name);
 char* getInterfaceDesc(char* name);
 unsigned short getInterfaceRIPPassive(char* name);
 unsigned short getInterfaceRIPCost(char* name);
+unsigned short getInterfaceOSPFPassive(char* name);
+unsigned short getInterfaceOSPFCost(char* name);
+
 
 #endif

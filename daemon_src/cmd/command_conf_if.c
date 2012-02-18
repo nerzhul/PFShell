@@ -58,8 +58,142 @@ cmdCallback cifCMD_ip(char* args)
 		return cifCMD_ip_address(iface[1]);
 	else if(strcmp(iface[0],"access-group") == 0)
 		return cifCMD_access_list(iface[1]);
+	else if(strcmp(iface[0],"ospf") == 0)
+		return cifCMD_ip_ospf(iface[1]);
+	else if(strcmp(iface[0],"rip") == 0)
+		return cifCMD_ip_rip(iface[1]);
 	else
 		cb.message = CMDIF_IP_ERROR();
+	return cb;
+}
+
+cmdCallback cifCMD_ip_rip(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	char* keyword[2];
+	cutFirstWord(args,keyword);
+
+	if(strcmp(keyword[0],"cost") == 0)
+	{
+		char* cost[2];
+		cutFirstWord(keyword[1],cost);
+
+		if(strlen(cost[1]) == 0)
+		{
+			int tmpcost = atoi(cost[0]);
+
+			if(tmpcost > 0 && tmpcost < 17)
+			{
+				setInterfaceRIPCost(current_iface,tmpcost);
+				WRITE_RUN();
+				WRITE_RIPD();
+			}
+			else
+				cb.message = CMDIF_IP_RIP_COST_ERROR();
+		}
+		else
+			cb.message = CMDIF_IP_RIP_COST_ERROR();
+	}
+	else
+		cb.message = CMDIF_IP_RIP_ERROR();
+	return cb;
+}
+
+cmdCallback cifCMD_noip_rip(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	char* keyword[2];
+	cutFirstWord(args,keyword);
+
+	if(strcmp(keyword[0],"cost") == 0)
+	{
+		char* cost[2];
+		cutFirstWord(keyword[1],cost);
+
+		if(strlen(cost[1]) == 0)
+		{
+			int tmpcost = atoi(cost[0]);
+
+			if(tmpcost == getInterfaceRIPCost(current_iface))
+			{
+				setInterfaceRIPCost(current_iface,RIP_DEFAULT_COST);
+				WRITE_RUN();
+				WRITE_RIPD();
+			}
+		}
+		else
+			cb.message = CMDIF_IP_RIP_COST_ERROR();
+	}
+	else
+		cb.message = CMDIF_IP_RIP_ERROR();
+
+	return cb;
+}
+
+cmdCallback cifCMD_ip_ospf(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	char* keyword[2];
+	cutFirstWord(args,keyword);
+
+	if(strcmp(keyword[0],"cost") == 0)
+	{
+		char* cost[2];
+		cutFirstWord(keyword[1],cost);
+
+		if(strlen(cost[1]) == 0)
+		{
+			int tmpcost = atoi(cost[0]);
+
+			if(tmpcost > 0 && tmpcost < 65536)
+			{
+				setInterfaceOSPFCost(current_iface,tmpcost);
+				WRITE_RUN();
+				WRITE_OSPFD();
+			}
+			else
+				cb.message = CMDIF_IP_OSPF_COST_ERROR();
+		}
+		else
+			cb.message = CMDIF_IP_OSPF_COST_ERROR();
+	}
+	else
+		cb.message = CMDIF_IP_OSPF_ERROR();
+	return cb;
+}
+
+cmdCallback cifCMD_noip_ospf(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	char* keyword[2];
+	cutFirstWord(args,keyword);
+
+	if(strcmp(keyword[0],"cost") == 0)
+	{
+		char* cost[2];
+		cutFirstWord(keyword[1],cost);
+
+		if(strlen(cost[1]) == 0)
+		{
+			int tmpcost = atoi(cost[0]);
+
+			if(tmpcost == getInterfaceOSPFCost(current_iface))
+			{
+				setInterfaceOSPFCost(current_iface,OSPF_DEFAULT_COST);
+				WRITE_RUN();
+				WRITE_OSPFD();
+			}
+		}
+		else
+			cb.message = CMDIF_IP_OSPF_COST_ERROR();
+	}
+	else
+		cb.message = CMDIF_IP_OSPF_ERROR();
+
 	return cb;
 }
 
@@ -166,6 +300,10 @@ cmdCallback cifCMD_noip(char* args)
 		return ;
 	else */if(strcmp(iface[0],"access-group") == 0)
 		return cifCMD_noaccess_list(iface[1]);
+	else if(strcmp(iface[0],"ospf") == 0)
+		return cifCMD_noip_ospf(iface[1]);
+	else if(strcmp(iface[0],"rip") == 0)
+		return cifCMD_noip_rip(iface[1]);
 	return cb;
 
 }

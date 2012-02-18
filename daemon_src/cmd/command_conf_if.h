@@ -47,6 +47,14 @@ cmdCallback cifCMD_noaccess_list(char* args);
 cmdCallback cifCMD_shutdown(char* _none);
 cmdCallback cifCMD_noshutdown(char* _none);
 
+// RIP
+cmdCallback cifCMD_ip_rip(char* args);
+cmdCallback cifCMD_noip_rip(char* args);
+
+// OSPF
+cmdCallback cifCMD_ip_ospf(char* args);
+cmdCallback cifCMD_noip_ospf(char* args);
+
 // Misc
 cmdCallback cifCMD_description(char* args);
 cmdCallback cifCMD_nodescription(char* args);

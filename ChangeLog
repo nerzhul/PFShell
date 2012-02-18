@@ -150,3 +150,10 @@ Alpha 0.21
 -- Implement redistribute static, default, connected with metric and metric-type values
 - Dispatch saveRipd into macro WRITE_RIPD, to restart ripd ONLY if router rip command have succeed, not all commands
 - Use the correct ripd process ! not /usr/sbin/ripd but /opt/bin/ripd
+
+Alpha 0.22 - prev
+- OSPF improvements
+-- Implement passive-interface
+-- Implement ip ospf cost <1-65535> on interface
+- RIP improvements
+-- Implement ip rip cost <1-16> on interface -> remove cost <iface> <1-6> from router rip prompt

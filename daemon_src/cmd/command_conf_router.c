@@ -693,12 +693,12 @@ cmdCallback crouterCMD_RIP_nosplithorizon(char* _none)
 	return cb;
 }
 
-cmdCallback crouterCMD_RIP_passive(char* args)
+cmdCallback crouterCMD_RIP_OSPF_passive(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
 	if(strlen(args) == 0)
 	{
-		cb.message = CMDROUTER_RIP_INTERFACE_ERROR();
+		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
 		return cb;
 	}
 
@@ -707,43 +707,79 @@ cmdCallback crouterCMD_RIP_passive(char* args)
 
 	if(strlen(iface[1]) > 0)
 	{
-		cb.message = CMDROUTER_RIP_INTERFACE_ERROR();
+		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
 		return cb;
 	}
 
-	if(setInterfaceRIPPassive(iface[0],1) != 0)
+	if(promptRouterType == PROMPT_ROUTER_RIP)
 	{
-		cb.message = CMD_INTERFACE_UNK();
+		if(setInterfaceRIPPassive(iface[0],1) != 0)
+		{
+			cb.message = CMD_INTERFACE_UNK();
+		}
+		else
+		{
+			WRITE_RUN();
+			WRITE_RIPD();
+		}
 	}
-	else
+	else if(promptRouterType == PROMPT_ROUTER_OSPF)
 	{
-		WRITE_RUN();
-		WRITE_RIPD();
+		if(setInterfaceOSPFPassive(iface[0],1) != 0)
+		{
+			cb.message = CMD_INTERFACE_UNK();
+		}
+		else
+		{
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
 	}
 
 	return cb;
 }
 
-cmdCallback crouterCMD_RIP_nopassive(char* args)
+cmdCallback crouterCMD_RIP_OSPF_nopassive(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
 	if(strlen(args) == 0)
+	{
+		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
 		return cb;
+	}
 
 	char* iface[2];
 	cutFirstWord(args,iface);
 
 	if(strlen(iface[1]) > 0)
+	{
+		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
 		return cb;
-
-	if(setInterfaceRIPPassive(iface[0],0) != 0)
-	{
-		cb.message = CMD_INTERFACE_UNK();
 	}
-	else
+
+	if(promptRouterType == PROMPT_ROUTER_RIP)
 	{
-		WRITE_RUN();
-		WRITE_RIPD();
+		if(setInterfaceRIPPassive(iface[0],0) != 0)
+		{
+			cb.message = CMD_INTERFACE_UNK();
+		}
+		else
+		{
+			WRITE_RUN();
+			WRITE_RIPD();
+		}
+	}
+	else if(promptRouterType == PROMPT_ROUTER_OSPF)
+	{
+		if(setInterfaceOSPFPassive(iface[0],0) != 0)
+		{
+			cb.message = CMD_INTERFACE_UNK();
+		}
+		else
+		{
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
 	}
 
 	return cb;
@@ -868,91 +904,6 @@ cmdCallback crouterCMD_RIP_notimer(char* args)
 		rip_dead_timer = 240;
 		WRITE_RUN();
 		WRITE_RIPD();
-	}
-
-	return cb;
-}
-
-cmdCallback crouterCMD_RIP_cost(char* args)
-{
-	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
-	if(strlen(args) == 0)
-	{
-		cb.message = CMDROUTER_RIP_COST_ERROR();
-		return cb;
-	}
-
-	char* iface[2];
-	cutFirstWord(args,iface);
-
-	if(strlen(iface[1]) == 0)
-	{
-		cb.message = CMDROUTER_RIP_COST_ERROR();
-		return cb;
-	}
-
-	char* cost[2];
-	cutFirstWord(iface[1],cost);
-
-	if(strlen(cost[1]) > 0)
-	{
-		cb.message = CMDROUTER_RIP_COST_ERROR();
-		return cb;
-	}
-
-	int icost = atoi(cost[0]);
-	if(icost < 1 || icost > 16)
-	{
-		cb.message = CMDROUTER_RIP_COST_ERROR();
-		return cb;
-	}
-
-	if(setInterfaceRIPCost(iface[0],icost) == 0)
-	{
-		WRITE_RUN();
-		WRITE_RIPD();
-	}
-	else
-	{
-		cb.message = CMD_INTERFACE_UNK();
-	}
-
-
-	return cb;
-}
-
-cmdCallback crouterCMD_RIP_nocost(char* args)
-{
-	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
-	if(strlen(args) == 0)
-		return cb;
-
-	char* iface[2];
-	cutFirstWord(args,iface);
-
-	if(strlen(iface[1]) == 0)
-		return cb;
-
-	char* cost[2];
-	cutFirstWord(iface[1],cost);
-
-	if(strlen(cost[1]) > 0)
-		return cb;
-
-	int icost = atoi(cost[0]);
-	if(icost < 1 || icost > 16)
-		return cb;
-
-	if(getInterfaceRIPCost(iface[0]) == icost)
-	{
-		setInterfaceRIPCost(iface[0],1);
-		WRITE_RUN();
-		WRITE_RIPD();
-
-	}
-	else
-	{
-		cb.message = CMD_INTERFACE_UNK();
 	}
 
 	return cb;

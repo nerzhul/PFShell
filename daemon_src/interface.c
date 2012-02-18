@@ -47,9 +47,9 @@ void addInterface(char* name)
 	newIface->desc = "";
 	newIface->state = 1;
 	newIface->rip_passive = 0;
-	newIface->rip_cost = 1;
+	newIface->rip_cost = RIP_DEFAULT_COST;
 	newIface->ospf_passive = 0;
-	newIface->ospf_cost = 10;
+	newIface->ospf_cost = OSPF_DEFAULT_COST;
 	newIface->ospf_priority = 1;
 	newIface->ospf_hello_int = 10;
 	newIface->ospf_dead_int = 40;
@@ -372,6 +372,65 @@ unsigned short getInterfaceState(char* name)
 	return result;
 }
 
+unsigned short setInterfaceOSPFCost(char* name, unsigned short cost)
+{
+	if(cost > 16 && cost < 1)
+		return 1;
+
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->ospf_cost = cost;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
+unsigned short getInterfaceOSPFCost(char* name)
+{
+	unsigned short result = -1;
+
+	if(interfaces == NULL)
+		return -1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				result = cursor->ospf_cost;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return -1;
+	}
+
+	return result;
+}
+
 unsigned short setInterfaceRIPCost(char* name, unsigned short cost)
 {
 	if(cost > 16 && cost < 1)
@@ -475,6 +534,62 @@ unsigned short getInterfaceRIPPassive(char* name)
 			{
 				found = 1;
 				result = cursor->rip_passive;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return -1;
+	}
+
+	return result;
+}
+
+unsigned short setInterfaceOSPFPassive(char* name, unsigned short passive)
+{
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->ospf_passive = passive;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
+unsigned short getInterfaceOSPFPassive(char* name)
+{
+	unsigned short result = -1;
+
+	if(interfaces == NULL)
+		return -1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				result = cursor->ospf_passive;
 			}
 			else
 				cursor = cursor->next;

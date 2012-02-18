@@ -169,13 +169,6 @@ unsigned short writeRunningConfig()
 				}
 				if_cursor = if_cursor->next;
 			}
-			if_cursor = interfaces;
-			while(if_cursor != NULL)
-			{
-				if(if_cursor->rip_cost > 1 && if_cursor->rip_cost <= 16)
-					fprintf(confFile,"cost %s %d\n",if_cursor->name,if_cursor->rip_cost);
-				if_cursor = if_cursor->next;
-			}
 			fputs("!\n",confFile);
 		}
 
@@ -329,6 +322,15 @@ unsigned short writeRunningConfig()
 				fputs(" out\n",confFile);
 			}
 
+			if(rip_enabled && if_cursor->rip_cost != RIP_DEFAULT_COST)
+			{
+				fprintf(confFile,"ip rip cost %d\n",if_cursor->rip_cost);
+			}
+
+			if(ospf_enabled && if_cursor->ospf_cost != OSPF_DEFAULT_COST)
+			{
+				fprintf(confFile,"ip ospf cost %d\n",if_cursor->ospf_cost);
+			}
 			fputs("!\n",confFile);
 			if_cursor = if_cursor->next;
 		}

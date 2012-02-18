@@ -73,7 +73,7 @@
 #define CMDCONF_NOIPROUTE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n    no ip route A.B.C.D M.A.S.K G.A.T.E\n");
 
 // Interface Messages
-#define CMDIF_IP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   ip (address) ...\n");
+#define CMDIF_IP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   ip <address|ospf|rip> ...\n");
 #define CMDIF_IPADDR_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   ip address A.B.C.D M.A.S.K\n   ip address A.B.C.D/CIDR\n   ip address DHCP\n");
 #define CMDIF_SHUTDOWN_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   shutdown\n");
 #define CMDIF_NOSHUTDOWN_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   shutdown\n");
@@ -81,6 +81,10 @@
 #define CMDIF_ACCESS_LIST_UNK() PRINTERROR("Error !\n No ACL matches this name\n");
 #define CMDIF_DESC_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   description <string>\n");
 #define CMDIF_FATAL_ERROR() PRINTERROR("Interface Fatal Error !!\n");
+#define CMDIF_IP_RIP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip rip <cost> ...\n");
+#define CMDIF_IP_RIP_COST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip rip cost <1-16>\n");
+#define CMDIF_IP_OSPF_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf <cost> ...\n");
+#define CMDIF_IP_OSPF_COST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf cost <1-65535>\n");
 
 // Firewall Messages
 #define CMDFW_DISABLE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   disable\n");
@@ -100,7 +104,7 @@
 #define CMDROUTER_OSPF_REDIST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) redistribute <connected|default|static> (metric <1-65535>) (metric-type <1-2>)\n");
 #define CMDROUTER_RIP_DEFORIG_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   default-information originate\n");
 #define CMDROUTER_RIP_SPLITHORIZ_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   split-horizon\n");
-#define CMDROUTER_RIP_INTERFACE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   passive-interface <iface>\n");
+#define CMDROUTER_RIP_OSPF_INTERFACE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) passive-interface <iface>\n");
 #define CMDROUTER_RIP_COST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) cost <iface> <0-16>\n");
 #define CMDROUTER_RIP_TIMERS_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) timers <update> <fail> <dead>\n");
 #endif

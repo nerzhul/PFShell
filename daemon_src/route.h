@@ -52,7 +52,11 @@ route* routes;
 // sysctl vars
 unsigned short iprouting;
 unsigned short mcastrouting;
+
 // For RIP
+
+#define RIP_DEFAULT_COST		1
+
 unsigned short rip_enabled;
 unsigned short rip_redistrib_static;
 unsigned short rip_redistrib_conn;
@@ -61,10 +65,12 @@ unsigned short rip_split_horizon;
 unsigned int rip_update_timer;
 unsigned int rip_fail_timer;
 unsigned int rip_dead_timer;
+
 // For OSPF
 
 #define OSPF_DEFAULT_METRIC		100
 #define OSPF_DEFAULT_METRIC_TYPE	1
+#define OSPF_DEFAULT_COST		10
 
 unsigned short ospf_enabled;
 unsigned short ospf_redistrib_static;
