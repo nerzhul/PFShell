@@ -327,6 +327,21 @@ unsigned short writeRunningConfig()
 				fprintf(confFile,"ip rip cost %d\n",if_cursor->rip_cost);
 			}
 
+			if(if_cursor->rip_auth_type != RIP_AUTH_NONE)
+			{
+				fputs("ip rip authentication mode ",confFile);
+				if(if_cursor->rip_auth_type == RIP_AUTH_TEXT)
+					fputs("text",confFile);
+				else if(if_cursor->rip_auth_type == RIP_AUTH_MD5)
+					fputs("md5",confFile);
+				fputs("\n",confFile);
+			}
+
+			if(strlen(if_cursor->rip_auth_pwd) > 0)
+			{
+				fprintf(confFile,"ip rip authentication key-string %s\n",if_cursor->rip_auth_pwd);
+			}
+
 			if(ospf_enabled && if_cursor->ospf_cost != OSPF_DEFAULT_COST)
 			{
 				fprintf(confFile,"ip ospf cost %d\n",if_cursor->ospf_cost);

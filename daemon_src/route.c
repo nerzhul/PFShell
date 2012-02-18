@@ -180,18 +180,36 @@ void saveRipd()
 		fputs("interface ",fRIPd);
 		fputs(if_cursor->name,fRIPd);
 		fputs("{\n",fRIPd);
+
 		if(if_cursor->rip_passive == 1)
 			fputs("\tpassive\n",fRIPd);
 		if(if_cursor->rip_cost > 1 && if_cursor->rip_cost < 16)
 			fprintf(fRIPd,"\tcost %d\n",if_cursor->rip_cost);
+
+		if(if_cursor->rip_auth_type > RIP_AUTH_NONE && strlen(if_cursor->rip_auth_pwd) > 0 && strlen(if_cursor->rip_auth_pwd) < 17)
+		{
+			if(if_cursor->rip_auth_type == RIP_AUTH_TEXT)
+			{
+				fputs("\tauth-type simple\n",fRIPd);
+				fprintf(fRIPd,"\tauth-key %s\n",if_cursor->rip_auth_pwd);
+			}
+			else if(if_cursor->rip_auth_type == RIP_AUTH_MD5)
+			{
+				fputs("\tauth-type crypt\n",fRIPd);
+				fprintf(fRIPd,"\tauth-md 1 \"%s\"\n",if_cursor->rip_auth_pwd);
+				fputs("\tauth-md-keyid 1\n",fRIPd);
+			}
+		}
 		fputs("}\n",fRIPd);
 		if_cursor = if_cursor->next;
 	}
 
-	hsystemcmd("kill -9 $(ps aux|grep ripd|grep parent|awk '{print $2}')");
-	hsystemcmd("/opt/bin/ripd");
-
 	fclose(fRIPd);
+	if(is_loading == 0)
+	{
+		hsystemcmd("kill -9 $(ps aux|grep ripd|grep parent|awk '{print $2}')");
+		system("/opt/bin/ripd");
+	}
 }
 
 void saveOspfd()
@@ -240,8 +258,11 @@ void saveOspfd()
 
 	// @ TODO interfaces & areas
 
-	hsystemcmd("kill -9 $(ps aux|grep ospfd|grep parent|awk '{print $2}')");
-	hsystemcmd("ospfd");
+	if(is_loading == 0)
+	{
+		hsystemcmd("kill -9 $(ps aux|grep ospfd|grep parent|awk '{print $2}')");
+		hsystemcmd("/usr/sbin/ospfd");
+	}
 
 	fclose(fOSPFd);
 }

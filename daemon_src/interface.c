@@ -48,6 +48,8 @@ void addInterface(char* name)
 	newIface->state = 1;
 	newIface->rip_passive = 0;
 	newIface->rip_cost = RIP_DEFAULT_COST;
+	newIface->rip_auth_type = RIP_AUTH_NONE;
+	newIface->rip_auth_pwd = "";
 	newIface->ospf_passive = 0;
 	newIface->ospf_cost = OSPF_DEFAULT_COST;
 	newIface->ospf_priority = 1;
@@ -478,6 +480,122 @@ unsigned short getInterfaceRIPCost(char* name)
 			{
 				found = 1;
 				result = cursor->rip_cost;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return -1;
+	}
+
+	return result;
+}
+
+unsigned short setInterfaceRIPAuthKey(char* name, char* key)
+{
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->rip_auth_pwd = key;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
+char* getInterfaceRIPAuthKey(char* name)
+{
+	char _key[50] = "";
+
+	if(interfaces == NULL)
+		return "";
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				strcpy(_key,cursor->rip_auth_pwd);
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return "";
+	}
+
+	return _key;
+}
+
+
+unsigned short setInterfaceRIPAuthType(char* name, unsigned short type)
+{
+	if(type > RIP_AUTH_MD5 && type < RIP_AUTH_NONE)
+		return 1;
+
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->rip_auth_type = type;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
+unsigned short getInterfaceRIPAuthType(char* name)
+{
+	unsigned short result = -1;
+
+	if(interfaces == NULL)
+		return -1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				result = cursor->rip_auth_type;
 			}
 			else
 				cursor = cursor->next;

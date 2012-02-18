@@ -36,6 +36,7 @@
 #define WRITE_RIPD() saveRipd();
 #define WRITE_OSPFD() saveOspfd();
 
+unsigned short is_loading;
 unsigned short loadConfiguration();
 unsigned short writeRunningConfig();
 

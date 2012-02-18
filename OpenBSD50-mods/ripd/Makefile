@@ -76,11 +76,11 @@ AUTOMAKE = ${SHELL} /home/nerzhul/Desktop/dev/PFShell/missing --run automake-1.1
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -O2
+CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
-DEFS = -DPACKAGE_NAME=\"PFShell\" -DPACKAGE_VERSION=\"alpha\ 0.21\" -DPACKAGE_TARNAME=\"pfshell\" -DPACKAGE_STRING=\"PFShell\ alpha\ 0.21\" -DPACKAGE_VERSION=\"alpha\ 0.21\" -DPACKAGE_STRING=\"PFShell\ alpha\ 0.21\" -DPACKAGE_BUGREPORT=\"loic.blot@frostsapphirestudios.com\" -DPACKAGE_URL=\"\" -DPACKAGE_BUGREPORT=\"loic.blot@frostsapphirestudios.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"pfshell\" -DPACKAGE=\"pfshell\" -DVERSION=\"alpha\ 0.21\" -DVERSION=\"alpha\ 0.21\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STDIO_H=1
+DEFS = -DPACKAGE_NAME=\"PFShell\" -DPACKAGE_TARNAME=\"pfshell\" -DPACKAGE_VERSION=\"alpha\ 0.22\" -DPACKAGE_STRING=\"PFShell\ alpha\ 0.22\" -DPACKAGE_BUGREPORT=\"loic.blot@frostsapphirestudios.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"pfshell\" -DVERSION=\"alpha\ 0.22\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STDIO_H=1
 DEPDIR = .deps
 ECHO_C = 
 ECHO_N = -n
@@ -103,15 +103,15 @@ OBJEXT = o
 PACKAGE = pfshell
 PACKAGE_BUGREPORT = loic.blot@frostsapphirestudios.com
 PACKAGE_NAME = PFShell
-PACKAGE_STRING = PFShell alpha 0.21
+PACKAGE_STRING = PFShell alpha 0.22
 PACKAGE_TARNAME = pfshell
 PACKAGE_URL = 
-PACKAGE_VERSION = alpha 0.21
+PACKAGE_VERSION = alpha 0.22
 PATH_SEPARATOR = :
 SET_MAKE = 
 SHELL = /bin/bash
 STRIP = 
-VERSION = alpha 0.21
+VERSION = alpha 0.22
 YACC = yacc
 YFLAGS = 
 abs_builddir = /home/nerzhul/Desktop/dev/PFShell/OpenBSD50-mods/ripd

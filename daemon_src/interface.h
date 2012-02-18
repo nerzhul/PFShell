@@ -40,6 +40,8 @@ struct net_iface
 	unsigned short state;
 	unsigned short rip_passive;
 	unsigned short rip_cost;
+	unsigned short rip_auth_type;
+	char* rip_auth_pwd;
 	unsigned short ospf_passive;
 	unsigned short ospf_cost;
 	unsigned short ospf_priority;
@@ -58,16 +60,27 @@ unsigned short setInterfaceIP(char* name, char* ip);
 unsigned short setInterfaceState(char* name, unsigned short state);
 unsigned short setInterfaceACL(char* name, char* aclname, char* direction);
 unsigned short setInterfaceDesc(char* name, char* desc);
+// RIP
 unsigned short setInterfaceRIPPassive(char* name, unsigned short passive);
 unsigned short setInterfaceRIPCost(char* name, unsigned short cost);
+unsigned short setInterfaceRIPAuthType(char* name, unsigned short type);
+unsigned short setInterfaceRIPAuthKey(char* name, char* key);
+
+// OSPF
 unsigned short setInterfaceOSPFPassive(char* name, unsigned short passive);
 unsigned short setInterfaceOSPFCost(char* name, unsigned short cost);
 
 char* getInterfaceIP(char* name);
 unsigned short getInterfaceState(char* name);
 char* getInterfaceDesc(char* name);
+
+// RIP
 unsigned short getInterfaceRIPPassive(char* name);
 unsigned short getInterfaceRIPCost(char* name);
+unsigned short getInterfaceRIPAuthType(char* name);
+char* getInterfaceRIPAuthKey(char* name);
+
+// OSPF
 unsigned short getInterfaceOSPFPassive(char* name);
 unsigned short getInterfaceOSPFCost(char* name);
 

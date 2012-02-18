@@ -74,7 +74,61 @@ cmdCallback cifCMD_ip_rip(char* args)
 	char* keyword[2];
 	cutFirstWord(args,keyword);
 
-	if(strcmp(keyword[0],"cost") == 0)
+	if(strcmp(keyword[0],"authentication") == 0)
+	{
+		char* authword[2];
+		cutFirstWord(keyword[1],authword);
+		if(strlen(authword[1]) > 0)
+		{
+			if(strcmp(authword[0],"key-string") == 0)
+			{
+				char* authkey[2];
+				cutFirstWord(authword[1],authkey);
+				if(strlen(authkey[1]) == 0 && strlen(authkey[0]) < 17)
+				{
+					setInterfaceRIPAuthKey(current_iface,authkey[0]);
+					WRITE_RUN();
+					WRITE_RIPD();
+				}
+				else
+					cb.message = CMDROUTER_RIP_AUTHENTICATION_ERROR();
+			}
+			else if(strcmp(authword[0],"mode") == 0)
+			{
+				char* authmode[2];
+				cutFirstWord(authword[1],authmode);
+				if(strlen(authmode[1]) == 0)
+				{
+					if(strcmp(authmode[0],"none") == 0)
+					{
+						setInterfaceRIPAuthType(current_iface,RIP_AUTH_NONE);
+					}
+					else if(strcmp(authmode[0],"text") == 0)
+					{
+						setInterfaceRIPAuthType(current_iface,RIP_AUTH_TEXT);
+					}
+					else if(strcmp(authmode[0],"md5") == 0)
+					{
+						setInterfaceRIPAuthType(current_iface,RIP_AUTH_MD5);
+					}
+					else
+					{
+						cb.message = CMDROUTER_RIP_AUTH_MODE_ERROR();
+						return cb;
+					}
+					WRITE_RUN();
+					WRITE_RIPD();
+				}
+				else
+					cb.message = CMDROUTER_RIP_AUTH_MODE_ERROR();
+			}
+			else
+				cb.message = CMDROUTER_RIP_AUTHENTICATION_ERROR();
+		}
+		else
+			cb.message = CMDROUTER_RIP_AUTHENTICATION_ERROR();
+	}
+	else if(strcmp(keyword[0],"cost") == 0)
 	{
 		char* cost[2];
 		cutFirstWord(keyword[1],cost);
@@ -107,7 +161,56 @@ cmdCallback cifCMD_noip_rip(char* args)
 	char* keyword[2];
 	cutFirstWord(args,keyword);
 
-	if(strcmp(keyword[0],"cost") == 0)
+	if(strcmp(keyword[0],"authentication") == 0)
+	{
+		char* authword[2];
+		cutFirstWord(keyword[1],authword);
+		if(strlen(authword[1]) > 0)
+		{
+			if(strcmp(authword[0],"key-string") == 0)
+			{
+				char* authkey[2];
+				cutFirstWord(authword[1],authkey);
+				if(strlen(authkey[1]) == 0 && strlen(authkey[0]) < 17)
+				{
+					if(strcmp(getInterfaceRIPAuthKey(current_iface),authkey[0]) == 0)
+					{
+						setInterfaceRIPAuthKey(current_iface,"");
+						WRITE_RUN();
+						WRITE_RIPD();
+					}
+				}
+				else
+					cb.message = CMDROUTER_RIP_AUTHENTICATION_ERROR();
+			}
+			else if(strcmp(authword[0],"mode") == 0)
+			{
+				char* authmode[2];
+				cutFirstWord(authword[1],authmode);
+				if(strlen(authmode[1]) == 0)
+				{
+					unsigned short auth_mode = getInterfaceRIPAuthType(current_iface);
+					if(auth_mode == RIP_AUTH_TEXT && strcmp(authmode[0],"text") == 0)
+					{
+						setInterfaceRIPAuthType(current_iface,RIP_AUTH_NONE);
+					}
+					else if(auth_mode == RIP_AUTH_MD5 && strcmp(authmode[0],"md5") == 0)
+					{
+						setInterfaceRIPAuthType(current_iface,RIP_AUTH_NONE);
+					}
+					WRITE_RUN();
+					WRITE_RIPD();
+				}
+				else
+					cb.message = CMDROUTER_RIP_AUTH_MODE_ERROR();
+			}
+			else
+				cb.message = CMDROUTER_RIP_AUTHENTICATION_ERROR();
+		}
+		else
+			cb.message = CMDROUTER_RIP_AUTHENTICATION_ERROR();
+	}
+	else if(strcmp(keyword[0],"cost") == 0)
 	{
 		char* cost[2];
 		cutFirstWord(keyword[1],cost);

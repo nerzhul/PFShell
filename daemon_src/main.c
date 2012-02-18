@@ -36,6 +36,7 @@
 int main(int argc, const char** argv)
 {
 	printf("\x1b[0mBSDRouterd version \x1b[33m%s\x1b[0m\n",VERSION);
+	is_loading = 1;
 	initCmds();
 
 	if(checkSystemIntegrity() == 0)
@@ -55,7 +56,10 @@ int main(int argc, const char** argv)
 	int sock_error = openServerSocket();
 	if(sock_error == 0)
 	{
+		system("/opt/bin/ripd");
+		system("/usr/sbin/ospfd");
 		printf("BSDRouterd is \x1b[32mrunning\x1b[0m !\n");
+		is_loading = 0;
 
 		// Now we daemonize
 		pid_t pid = fork();

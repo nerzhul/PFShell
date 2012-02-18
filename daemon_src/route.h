@@ -57,6 +57,10 @@ unsigned short mcastrouting;
 
 #define RIP_DEFAULT_COST		1
 
+#define RIP_AUTH_NONE	0
+#define RIP_AUTH_TEXT	1
+#define RIP_AUTH_MD5	2
+
 unsigned short rip_enabled;
 unsigned short rip_redistrib_static;
 unsigned short rip_redistrib_conn;
