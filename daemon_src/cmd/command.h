@@ -42,16 +42,17 @@ typedef struct commandHandler
 	cmdCallback (*handler)(char* otherArgs);
 } cmdHdlr;
 
-#define MAX_CMD_TYPES	8
+#define MAX_CMD_TYPES	9
 
-#define MAX_USER_CMD		4
-#define MAX_ENABLE_CMD		4
-#define MAX_CONF_CMD		6
-#define MAX_CONF_IF_CMD 	4
-#define MAX_CONF_FW_CMD		5
-#define MAX_CONF_RD_CMD		1
-#define MAX_CONF_ACL_CMD	3
-#define MAX_CONF_ROUTER_CMD	6
+#define MAX_USER_CMD			4
+#define MAX_ENABLE_CMD			4
+#define MAX_CONF_CMD			6
+#define MAX_CONF_IF_CMD 		4
+#define MAX_CONF_FW_CMD			5
+#define MAX_CONF_RD_CMD			1
+#define MAX_CONF_ACL_CMD		3
+#define MAX_CONF_ROUTER_RIP_CMD		6
+#define MAX_CONF_ROUTER_OSPF_CMD	3
 
 static const unsigned short MAX_CMDS[MAX_CMD_TYPES] =
 {
@@ -62,7 +63,8 @@ static const unsigned short MAX_CMDS[MAX_CMD_TYPES] =
 	MAX_CONF_FW_CMD,
 	MAX_CONF_RD_CMD,
 	MAX_CONF_ACL_CMD,
-	MAX_CONF_ROUTER_CMD
+	MAX_CONF_ROUTER_RIP_CMD,
+	MAX_CONF_ROUTER_OSPF_CMD
 };
 
 cmdHdlr userCmd[MAX_USER_CMD];
@@ -72,7 +74,8 @@ cmdHdlr confIfCmd[MAX_CONF_IF_CMD];
 cmdHdlr confFWCmd[MAX_CONF_FW_CMD];
 cmdHdlr confRDCmd[MAX_CONF_RD_CMD];
 cmdHdlr confACLCmd[MAX_CONF_ACL_CMD];
-cmdHdlr confRouterCmd[MAX_CONF_ROUTER_CMD];
+cmdHdlr confRouterRIPCmd[MAX_CONF_ROUTER_RIP_CMD];
+cmdHdlr confRouterOSPFCmd[MAX_CONF_ROUTER_OSPF_CMD];
 
 cmdHdlr* masterCmd[MAX_CMD_TYPES];
 
@@ -85,7 +88,8 @@ cmdHdlr* masterCmd[MAX_CMD_TYPES];
 #define MAX_CONF_FW_NO_CMD 1
 #define MAX_CONF_RD_NO_CMD 0
 #define MAX_CONF_ACL_NO_CMD 2
-#define MAX_CONF_ROUTER_NO_CMD 5
+#define MAX_CONF_ROUTER_RIP_NO_CMD 5
+#define MAX_CONF_ROUTER_OSPF_NO_CMD 2
 
 static const unsigned short MAX_NO_CMDS[MAX_CMD_TYPES] =
 {
@@ -96,7 +100,8 @@ static const unsigned short MAX_NO_CMDS[MAX_CMD_TYPES] =
 	MAX_CONF_FW_NO_CMD,
 	MAX_CONF_RD_NO_CMD,
 	MAX_CONF_ACL_NO_CMD,
-	MAX_CONF_ROUTER_NO_CMD
+	MAX_CONF_ROUTER_RIP_NO_CMD,
+	MAX_CONF_ROUTER_OSPF_NO_CMD
 };
 
 
@@ -107,7 +112,9 @@ cmdHdlr noconfIfCmd[MAX_CONF_IF_NO_CMD];
 cmdHdlr noconfFWCmd[MAX_CONF_FW_NO_CMD];
 cmdHdlr noconfRDCmd[MAX_CONF_RD_NO_CMD];
 cmdHdlr noconfACLCmd[MAX_CONF_ACL_NO_CMD];
-cmdHdlr noconfRouterCmd[MAX_CONF_ROUTER_NO_CMD];
+cmdHdlr noconfRouterCmd[MAX_CONF_ROUTER_RIP_NO_CMD];
+cmdHdlr noconfRouterRIPCmd[MAX_CONF_ROUTER_RIP_NO_CMD];
+cmdHdlr noconfRouterOSPFCmd[MAX_CONF_ROUTER_OSPF_NO_CMD];
 
 cmdHdlr* masternoCmd[MAX_CMD_TYPES];
 

@@ -25,8 +25,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __COMMAND_CONF_FW_H__
-#define __COMMAND_CONF_FW_H__
+#ifndef __CONF_FW_H__
+#define __CONF_FW_H__
 
 #include "command.h"
 

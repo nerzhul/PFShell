@@ -151,9 +151,12 @@ Alpha 0.21
 - Dispatch saveRipd into macro WRITE_RIPD, to restart ripd ONLY if router rip command have succeed, not all commands
 - Use the correct ripd process ! not /usr/sbin/ripd but /opt/bin/ripd
 
-Alpha 0.22 - prev
+Alpha 0.22
+- Change name for all cmd/command_*.c,h files to cmd/*.c,h
+- Move all router ospf commands to new created conf_router_ospf.x
 - OSPF improvements
 -- Implement passive-interface
 -- Implement ip ospf cost <1-65535> on interface
 - RIP improvements
 -- Implement ip rip cost <1-16> on interface -> remove cost <iface> <1-6> from router rip prompt
+-- Bugfix when generate configuration (timers)

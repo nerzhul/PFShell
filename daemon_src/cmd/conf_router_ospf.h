@@ -28,5 +28,13 @@
 #ifndef __CONF_ROUTER_OSPF_H_
 #define __CONF_ROUTER_OSPF_H_
 
+#include "command.h"
+
+cmdCallback crouterCMD_OSPF_exit(char* _none);
+
+cmdCallback crouterCMD_OSPF_redistrib(char* args);
+cmdCallback crouterCMD_OSPF_noredistrib(char* args);
+cmdCallback crouterCMD_OSPF_passive(char* args);
+cmdCallback crouterCMD_OSPF_nopassive(char* args);
 
 #endif

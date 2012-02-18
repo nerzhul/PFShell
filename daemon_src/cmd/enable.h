@@ -25,8 +25,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __COMMAND_ENABLE_H__
-#define __COMMAND_ENABLE_H__
+#ifndef __ENABLE_H__
+#define __ENABLE_H__
 
 #include "command.h"
 

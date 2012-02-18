@@ -25,19 +25,19 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __COMMAND_CONF_ROUTER_H__
-#define __COMMAND_CONF_ROUTER_H__
+#ifndef __CONF_ROUTER_RIP_H__
+#define __CONF_ROUTER_RIP_H__
 
 #include "command.h"
 
-cmdCallback crouterCMD_exit(char* _none);
+cmdCallback crouterCMD_RIP_exit(char* _none);
 
-cmdCallback crouterCMD_RIP_OSPF_redistrib(char* args);
-cmdCallback crouterCMD_RIP_OSPF_noredistrib(char* args);
+cmdCallback crouterCMD_RIP_redistrib(char* args);
+cmdCallback crouterCMD_RIP_noredistrib(char* args);
 cmdCallback crouterCMD_RIP_defaultinformation(char* args);
 cmdCallback crouterCMD_RIP_nodefaultinformation(char* args);
-cmdCallback crouterCMD_RIP_OSPF_passive(char* args);
-cmdCallback crouterCMD_RIP_OSPF_nopassive(char* args);
+cmdCallback crouterCMD_RIP_passive(char* args);
+cmdCallback crouterCMD_RIP_nopassive(char* args);
 cmdCallback crouterCMD_RIP_timer(char* args);
 cmdCallback crouterCMD_RIP_notimer(char* args);
 cmdCallback crouterCMD_RIP_splithorizon(char* _none);

@@ -25,8 +25,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __COMMAND_CONF_RD_H__
-#define __COMMAND_CONF_RD_H__
+#ifndef __CONF_RD_H__
+#define __CONF_RD_H__
 
 #include "command.h"
 

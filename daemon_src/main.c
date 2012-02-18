@@ -58,11 +58,11 @@ int main(int argc, const char** argv)
 		printf("BSDRouterd is \x1b[32mrunning\x1b[0m !\n");
 
 		// Now we daemonize
-		/*pid_t pid = fork();
+		pid_t pid = fork();
 		if(pid < 0)
 			printf("\x1b[31mFATAL Fork Error !\x1b[0m !\n");
 		else if(pid > 0)
-			return 0;*/
+			return 0;
 
 		waitAndHandleClients();
 		closeServerSocket();

@@ -39,7 +39,7 @@
 #include "conf_router_rip.h"
 #include "conf_router_ospf.h"
 #include "../prompt/prompt_msg.h"
-#include <../shell_src/prompt.h>
+#include "../prompt/prompt.h"
 
 unsigned short initCmds()
 {
@@ -135,31 +135,45 @@ unsigned short initCmds()
 	confRDCmd[0].name = "exit";
 	confRDCmd[0].handler = &crdCMD_exit;
 
-	// Enable - Configure - Router Commands
-	confRouterCmd[0].name = "exit";
-	confRouterCmd[0].handler = &crouterCMD_exit;
-	confRouterCmd[1].name = "redistribute";
-	confRouterCmd[1].handler = crouterCMD_RIP_OSPF_redistrib;
-	confRouterCmd[2].name = "default-information";
-	confRouterCmd[2].handler = crouterCMD_RIP_defaultinformation;
-	confRouterCmd[3].name = "split-horizon";
-	confRouterCmd[3].handler = crouterCMD_RIP_splithorizon;
-	confRouterCmd[4].name = "passive-interface";
-	confRouterCmd[4].handler = crouterCMD_RIP_OSPF_passive;
-	confRouterCmd[5].name = "timers";
-	confRouterCmd[5].handler = crouterCMD_RIP_timer;
+	// Enable - Configure - Router RIP Commands
+	confRouterRIPCmd[0].name = "exit";
+	confRouterRIPCmd[0].handler = &crouterCMD_RIP_exit;
+	confRouterRIPCmd[1].name = "redistribute";
+	confRouterRIPCmd[1].handler = crouterCMD_RIP_redistrib;
+	confRouterRIPCmd[2].name = "default-information";
+	confRouterRIPCmd[2].handler = crouterCMD_RIP_defaultinformation;
+	confRouterRIPCmd[3].name = "split-horizon";
+	confRouterRIPCmd[3].handler = crouterCMD_RIP_splithorizon;
+	confRouterRIPCmd[4].name = "passive-interface";
+	confRouterRIPCmd[4].handler = crouterCMD_RIP_passive;
+	confRouterRIPCmd[5].name = "timers";
+	confRouterRIPCmd[5].handler = crouterCMD_RIP_timer;
 
-	// Enable - Configure - Router No Commands
-	noconfRouterCmd[0].name = "redistribute";
-	noconfRouterCmd[0].handler = crouterCMD_RIP_OSPF_noredistrib;
-	noconfRouterCmd[1].name = "default-information";
-	noconfRouterCmd[1].handler = crouterCMD_RIP_nodefaultinformation;
-	noconfRouterCmd[2].name = "split-horizon";
-	noconfRouterCmd[2].handler = crouterCMD_RIP_nosplithorizon;
-	noconfRouterCmd[3].name = "passive-interface";
-	noconfRouterCmd[3].handler = crouterCMD_RIP_OSPF_nopassive;
-	noconfRouterCmd[4].name = "timers";
-	noconfRouterCmd[4].handler = crouterCMD_RIP_notimer;
+	// Enable - Configure - Router RIP No Commands
+	noconfRouterRIPCmd[0].name = "redistribute";
+	noconfRouterRIPCmd[0].handler = crouterCMD_RIP_noredistrib;
+	noconfRouterRIPCmd[1].name = "default-information";
+	noconfRouterRIPCmd[1].handler = crouterCMD_RIP_nodefaultinformation;
+	noconfRouterRIPCmd[2].name = "split-horizon";
+	noconfRouterRIPCmd[2].handler = crouterCMD_RIP_nosplithorizon;
+	noconfRouterRIPCmd[3].name = "passive-interface";
+	noconfRouterRIPCmd[3].handler = crouterCMD_RIP_nopassive;
+	noconfRouterRIPCmd[4].name = "timers";
+	noconfRouterRIPCmd[4].handler = crouterCMD_RIP_notimer;
+
+	// Enable - Configure - Router OSPF Commands
+	confRouterOSPFCmd[0].name = "exit";
+	confRouterOSPFCmd[0].handler = &crouterCMD_OSPF_exit;
+	confRouterOSPFCmd[1].name = "redistribute";
+	confRouterOSPFCmd[1].handler = crouterCMD_OSPF_redistrib;
+	confRouterOSPFCmd[2].name = "passive-interface";
+	confRouterOSPFCmd[2].handler = crouterCMD_OSPF_passive;
+
+	// Enable - Configure - Router OSPF No Commands
+	noconfRouterOSPFCmd[0].name = "redistribute";
+	noconfRouterOSPFCmd[0].handler = crouterCMD_OSPF_noredistrib;
+	noconfRouterOSPFCmd[1].name = "passive-interface";
+	noconfRouterOSPFCmd[1].handler = crouterCMD_OSPF_nopassive;
 
 	masterCmd[0] = userCmd;
 	masterCmd[1] = enableCmd;
@@ -168,7 +182,8 @@ unsigned short initCmds()
 	masterCmd[4] = confFWCmd;
 	masterCmd[5] = confRDCmd;
 	masterCmd[6] = confACLCmd;
-	masterCmd[7] = confRouterCmd;
+	masterCmd[7] = confRouterRIPCmd;
+	masterCmd[8] = confRouterOSPFCmd;
 
 	masternoCmd[0] = nouserCmd;
 	masternoCmd[1] = noenableCmd;
@@ -177,9 +192,8 @@ unsigned short initCmds()
 	masternoCmd[4] = noconfFWCmd;
 	masternoCmd[5] = noconfRDCmd;
 	masternoCmd[6] = noconfACLCmd;
-	masternoCmd[7] = noconfRouterCmd;
-
-	promptRouterType = PROMPT_ROUTER_NONE;
+	masternoCmd[7] = noconfRouterRIPCmd;
+	masternoCmd[8] = noconfRouterOSPFCmd;
 
 	return 0;
 }

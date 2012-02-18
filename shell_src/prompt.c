@@ -42,6 +42,7 @@ unsigned int initPrompts()
 	promptTable[5].action = &promptCRD;
 	promptTable[6].action = &promptCACL;
 	promptTable[7].action = &promptCRouter;
+	promptTable[8].action = &promptCRouter;
 
 	return 1;
 }

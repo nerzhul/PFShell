@@ -163,8 +163,12 @@ void saveRipd()
 		else
 			fwrite("no redistribute default\n",1,strlen("no redistribute default\n"),fRIPd);
 
-		if(rip_update_timer > 0 && rip_update_timer != 30 || rip_fail_timer > 0 && rip_fail_timer != 180 || rip_dead_timer > 0 && rip_dead_timer != 240)
-			fprintf(fRIPd,"timers %d %d %d\n",rip_update_timer,rip_fail_timer,rip_dead_timer);
+		if(rip_update_timer != 30)
+			fprintf(fRIPd,"update-timer %d\n",rip_update_timer);
+		if(rip_fail_timer != 180)
+			fprintf(fRIPd,"fail-timer %d\n",rip_fail_timer);
+		if(rip_dead_timer != 240)
+			fprintf(fRIPd,"dead-timer %d\n",rip_dead_timer);
 	}
 
 	fputs("\n#\n#Interfaces configuration\n#\n\n",fRIPd);

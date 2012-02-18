@@ -31,15 +31,16 @@
 #include <string.h>
 #include <stdio.h>
 
-#define PROMPT_USER		0
-#define PROMPT_ENABLE		1
-#define PROMPT_CONF		2
-#define PROMPT_CONF_IF		3
-#define PROMPT_CONF_FW		4
-#define PROMPT_CONF_RD		5
-#define PROMPT_CONF_ACL 	6
-#define PROMPT_CONF_ROUTER	7
-#define MAX_PROMPTS		8
+#define PROMPT_USER			0
+#define PROMPT_ENABLE			1
+#define PROMPT_CONF			2
+#define PROMPT_CONF_IF			3
+#define PROMPT_CONF_FW			4
+#define PROMPT_CONF_RD			5
+#define PROMPT_CONF_ACL 		6
+#define PROMPT_CONF_ROUTER_RIP		7
+#define PROMPT_CONF_ROUTER_OSPF		8
+#define MAX_PROMPTS			9
 
 unsigned int initPrompts();
 void prompt();

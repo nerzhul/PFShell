@@ -105,6 +105,5 @@
 #define CMDROUTER_RIP_DEFORIG_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   default-information originate\n");
 #define CMDROUTER_RIP_SPLITHORIZ_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   split-horizon\n");
 #define CMDROUTER_RIP_OSPF_INTERFACE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) passive-interface <iface>\n");
-#define CMDROUTER_RIP_COST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) cost <iface> <0-16>\n");
 #define CMDROUTER_RIP_TIMERS_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) timers <update> <fail> <dead>\n");
 #endif

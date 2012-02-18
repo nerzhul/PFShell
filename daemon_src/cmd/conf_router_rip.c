@@ -30,11 +30,11 @@
 #include "configuration.h"
 #include "../prompt/prompt_msg.h"
 #include "route.h"
-#include <../shell_src/prompt.h>
+#include "../prompt/prompt.h"
 
-cmdCallback crouterCMD_RIP_OSPF_redistrib(char* args)
+cmdCallback crouterCMD_RIP_redistrib(char* args)
 {
-	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 	if(strlen(args) == 0)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
@@ -47,301 +47,48 @@ cmdCallback crouterCMD_RIP_OSPF_redistrib(char* args)
 
 	if(strcmp(redistargs[0],"connected") == 0)
 	{
-		if(promptRouterType == PROMPT_ROUTER_RIP)
+		if(strlen(redistargs[1]) > 0)
 		{
-			if(strlen(redistargs[1]) > 0)
-			{
-				cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-				return cb;
-			}
-			rip_redistrib_conn = 1;
-			WRITE_RUN();
-			WRITE_RIPD();
+			cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+			return cb;
 		}
-		else if(promptRouterType == PROMPT_ROUTER_OSPF)
-		{
-			// Cutting args
-			char* metricsstr[2];
-			cutFirstWord(args,redistargs);
-
-			int metric_val = OSPF_DEFAULT_METRIC;
-			int metric_type_val = OSPF_DEFAULT_METRIC_TYPE;
-			if(strlen(redistargs[1]) > 0)
-			{
-				// Cutting args after redist_type
-				char* metcmd1[2];
-				cutFirstWord(redistargs[1],metcmd1);
-
-				// If its metric & has a value
-				if(strlen(metcmd1[1]) > 0 && strcmp(metcmd1[0],"metric") == 0)
-				{
-					char* metarg1[2];
-					cutFirstWord(metcmd1[1],metarg1);
-
-					// Convert the value
-					int tmp_metric_val = atoi(metarg1[0]);
-
-					// If the value is between 0 and 65535 included
-					if(tmp_metric_val >= 0 && tmp_metric_val <= 65535)
-						metric_val = tmp_metric_val;
-					else
-					{
-						cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-						return cb;
-					}
-
-					// If there is args after metric with value
-					if(strlen(metarg1[1]) > 0)
-					{
-						char* metcmd2[2];
-						cutFirstWord(metarg1[1],metcmd2);
-
-						// If there is a value and keywork is metric-type
-						if(strlen(metcmd2[1]) > 0 && strcmp(metcmd2[0],"metric-type") == 0)
-						{
-							char* metarg2[2];
-							cutFirstWord(metcmd2[1],metarg2);
-
-							// If there is another keyword after the last arg
-							if(strlen(metarg2[1]) > 0)
-							{
-								cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-								return cb;
-							}
-
-							int tmp_metric_type_val = atoi(metarg2[0]);
-
-							// Must be 1 or 2
-							if(tmp_metric_type_val < 1 && tmp_metric_type_val > 2)
-							{
-								cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-								return cb;
-							}
-
-							metric_type_val = tmp_metric_type_val;
-						}
-						else
-						{
-							cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-							return cb;
-						}
-					}
-				}
-				else
-				{
-					cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-					return cb;
-				}
-			}
-			ospf_redistrib_conn = 1;
-			ospf_redistrib_conn_metric = metric_val;
-			ospf_redistrib_conn_type = metric_type_val;
-			WRITE_RUN();
-			WRITE_OSPFD();
-		}
+		rip_redistrib_conn = 1;
 	}
 	else if(strcmp(redistargs[0],"static") == 0)
 	{
-		if(promptRouterType == PROMPT_ROUTER_RIP)
+		if(strlen(redistargs[1]) > 0)
 		{
-			if(strlen(redistargs[1]) > 0)
-			{
-				cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-				return cb;
-			}
-
-			rip_redistrib_static = 1;
-			WRITE_RUN();
-			WRITE_RIPD();
+			cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+			return cb;
 		}
-		else if(promptRouterType == PROMPT_ROUTER_OSPF)
-		{
-			// Cutting args
-			char* metricsstr[2];
-			cutFirstWord(args,redistargs);
 
-			int metric_val = OSPF_DEFAULT_METRIC;
-			int metric_type_val = OSPF_DEFAULT_METRIC_TYPE;
-			if(strlen(redistargs[1]) > 0)
-			{
-				// Cutting args after redist_type
-				char* metcmd1[2];
-				cutFirstWord(redistargs[1],metcmd1);
-
-				// If its metric & has a value
-				if(strlen(metcmd1[1]) > 0 && strcmp(metcmd1[0],"metric") == 0)
-				{
-					char* metarg1[2];
-					cutFirstWord(metcmd1[1],metarg1);
-
-					// Convert the value
-					int tmp_metric_val = atoi(metarg1[0]);
-
-					// If the value is between 0 and 65535 included
-					if(tmp_metric_val >= 0 && tmp_metric_val <= 65535)
-						metric_val = tmp_metric_val;
-					else
-					{
-						cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-						return cb;
-					}
-
-					// If there is args after metric with value
-					if(strlen(metarg1[1]) > 0)
-					{
-						char* metcmd2[2];
-						cutFirstWord(metarg1[1],metcmd2);
-
-						// If there is a value and keywork is metric-type
-						if(strlen(metcmd2[1]) > 0 && strcmp(metcmd2[0],"metric-type") == 0)
-						{
-							char* metarg2[2];
-							cutFirstWord(metcmd2[1],metarg2);
-
-							// If there is another keyword after the last arg
-							if(strlen(metarg2[1]) > 0)
-							{
-								cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-								return cb;
-							}
-
-							int tmp_metric_type_val = atoi(metarg2[0]);
-
-							// Must be 1 or 2
-							if(tmp_metric_type_val < 1 && tmp_metric_type_val > 2)
-							{
-								cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-								return cb;
-							}
-
-							metric_type_val = tmp_metric_type_val;
-						}
-						else
-						{
-							cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-							return cb;
-						}
-					}
-				}
-				else
-				{
-					cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-					return cb;
-				}
-			}
-			ospf_redistrib_static = 1;
-			ospf_redistrib_static_metric = metric_val;
-			ospf_redistrib_static_type = metric_type_val;
-			WRITE_RUN();
-			WRITE_OSPFD();
-		}
+		rip_redistrib_static = 1;
 	}
 	else if(strcmp(redistargs[0],"default") == 0)
 	{
-		if(promptRouterType == PROMPT_ROUTER_RIP)
+		if(strlen(redistargs[1]) > 0)
 		{
-			if(strlen(redistargs[1]) > 0)
-			{
-				cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-				return cb;
-			}
-
-			rip_redistrib_default = 1;
-			WRITE_RUN();
-			WRITE_RIPD();
-		}
-		else if(promptRouterType == PROMPT_ROUTER_OSPF)
-		{
-			// Cutting args
-			char* metricsstr[2];
-			cutFirstWord(args,redistargs);
-
-			int metric_val = OSPF_DEFAULT_METRIC;
-			int metric_type_val = OSPF_DEFAULT_METRIC_TYPE;
-			if(strlen(redistargs[1]) > 0)
-			{
-				// Cutting args after redist_type
-				char* metcmd1[2];
-				cutFirstWord(redistargs[1],metcmd1);
-
-				// If its metric & has a value
-				if(strlen(metcmd1[1]) > 0 && strcmp(metcmd1[0],"metric") == 0)
-				{
-					char* metarg1[2];
-					cutFirstWord(metcmd1[1],metarg1);
-
-					// Convert the value
-					int tmp_metric_val = atoi(metarg1[0]);
-
-					// If the value is between 0 and 65535 included
-					if(tmp_metric_val >= 0 && tmp_metric_val <= 65535)
-						metric_val = tmp_metric_val;
-					else
-					{
-						cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-						return cb;
-					}
-
-					// If there is args after metric with value
-					if(strlen(metarg1[1]) > 0)
-					{
-						char* metcmd2[2];
-						cutFirstWord(metarg1[1],metcmd2);
-
-						// If there is a value and keywork is metric-type
-						if(strlen(metcmd2[1]) > 0 && strcmp(metcmd2[0],"metric-type") == 0)
-						{
-							char* metarg2[2];
-							cutFirstWord(metcmd2[1],metarg2);
-
-							// If there is another keyword after the last arg
-							if(strlen(metarg2[1]) > 0)
-							{
-								cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-								return cb;
-							}
-
-							int tmp_metric_type_val = atoi(metarg2[0]);
-
-							// Must be 1 or 2
-							if(tmp_metric_type_val < 1 && tmp_metric_type_val > 2)
-							{
-								cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-								return cb;
-							}
-
-							metric_type_val = tmp_metric_type_val;
-						}
-						else
-						{
-							cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-							return cb;
-						}
-					}
-				}
-				else
-				{
-					cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-					return cb;
-				}
-			}
-			ospf_redistrib_default = 1;
-			ospf_redistrib_default_metric = metric_val;
-			ospf_redistrib_default_type = metric_type_val;
-			WRITE_RUN();
-			WRITE_OSPFD();
+			cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+			return cb;
 		}
 
+		rip_redistrib_default = 1;
 	}
 	else
+	{
 		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+		return cb;
+	}
+
+	WRITE_RUN();
+	WRITE_RIPD();
 
 	return cb;
 }
 
-cmdCallback crouterCMD_RIP_OSPF_noredistrib(char* args)
+cmdCallback crouterCMD_RIP_noredistrib(char* args)
 {
-	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 	if(strlen(args) == 0)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
@@ -354,270 +101,46 @@ cmdCallback crouterCMD_RIP_OSPF_noredistrib(char* args)
 
 	if(strcmp(redistargs[0],"connected") == 0)
 	{
-		if(promptRouterType == PROMPT_ROUTER_RIP)
+		if(strlen(redistargs[1]) > 0)
 		{
-			if(strlen(redistargs[1]) > 0)
-			{
-				cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-				return cb;
-			}
-			rip_redistrib_conn = 0;
-			WRITE_RUN();
-			WRITE_RIPD();
+			cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+			return cb;
 		}
-		else if(promptRouterType == PROMPT_ROUTER_OSPF)
-		{
-			// Cutting args
-			char* metricsstr[2];
-			cutFirstWord(args,redistargs);
-
-			if(strlen(redistargs[1]) > 0)
-			{
-				// Cutting args after redist_type
-				char* metcmd1[2];
-				cutFirstWord(redistargs[1],metcmd1);
-
-				// If its metric & has a value
-				if(strlen(metcmd1[1]) > 0 && strcmp(metcmd1[0],"metric") == 0)
-				{
-					char* metarg1[2];
-					cutFirstWord(metcmd1[1],metarg1);
-
-					// Convert the value
-					int tmp_metric_val = atoi(metarg1[0]);
-
-					// if value given mismatches saved
-					if(tmp_metric_val != ospf_redistrib_conn_metric)
-						return cb;
-
-					// If there is args after metric with value
-					if(strlen(metarg1[1]) > 0)
-					{
-						char* metcmd2[2];
-						cutFirstWord(metarg1[1],metcmd2);
-
-						// If there is a value and keywork is metric-type
-						if(strlen(metcmd2[1]) > 0 && strcmp(metcmd2[0],"metric-type") == 0)
-						{
-							char* metarg2[2];
-							cutFirstWord(metcmd2[1],metarg2);
-
-							// If there is another keyword after the last arg
-							if(strlen(metarg2[1]) > 0)
-							{
-								cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-								return cb;
-							}
-
-							int tmp_metric_type_val = atoi(metarg2[0]);
-
-							// if value given mismatches saved
-							if(tmp_metric_type_val != ospf_redistrib_conn_type)
-								return cb;
-
-						}
-					} // if no args given, verify if it's default value
-					else if(ospf_redistrib_conn_type != OSPF_DEFAULT_METRIC_TYPE)
-						return cb;
-				}
-				else
-				{
-					cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-					return cb;
-				}
-			} // if no args given, verify if it's default value
-			else if(ospf_redistrib_conn_metric != OSPF_DEFAULT_METRIC)
-				return cb;
-
-			ospf_redistrib_conn = 0;
-			ospf_redistrib_conn_metric = OSPF_DEFAULT_METRIC;
-			ospf_redistrib_conn_type = OSPF_DEFAULT_METRIC_TYPE;
-			WRITE_RUN();
-			WRITE_OSPFD();
-		}
+		rip_redistrib_conn = 0;
 	}
 	else if(strcmp(redistargs[0],"static") == 0)
 	{
-		if(promptRouterType == PROMPT_ROUTER_RIP)
+		if(strlen(redistargs[1]) > 0)
 		{
-			if(strlen(redistargs[1]) > 0)
-			{
-				cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-				return cb;
-			}
-			rip_redistrib_static = 0;
-			WRITE_RUN();
-			WRITE_RIPD();
+			cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+			return cb;
 		}
-		else if(promptRouterType == PROMPT_ROUTER_OSPF)
-		{
-			// Cutting args
-			char* metricsstr[2];
-			cutFirstWord(args,redistargs);
-
-			if(strlen(redistargs[1]) > 0)
-			{
-				// Cutting args after redist_type
-				char* metcmd1[2];
-				cutFirstWord(redistargs[1],metcmd1);
-
-				// If its metric & has a value
-				if(strlen(metcmd1[1]) > 0 && strcmp(metcmd1[0],"metric") == 0)
-				{
-					char* metarg1[2];
-					cutFirstWord(metcmd1[1],metarg1);
-
-					// Convert the value
-					int tmp_metric_val = atoi(metarg1[0]);
-
-					// if value given mismatches saved
-					if(tmp_metric_val != ospf_redistrib_static_metric)
-						return cb;
-
-					// If there is args after metric with value
-					if(strlen(metarg1[1]) > 0)
-					{
-						char* metcmd2[2];
-						cutFirstWord(metarg1[1],metcmd2);
-
-						// If there is a value and keywork is metric-type
-						if(strlen(metcmd2[1]) > 0 && strcmp(metcmd2[0],"metric-type") == 0)
-						{
-							char* metarg2[2];
-							cutFirstWord(metcmd2[1],metarg2);
-
-							// If there is another keyword after the last arg
-							if(strlen(metarg2[1]) > 0)
-							{
-								cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-								return cb;
-							}
-
-							int tmp_metric_type_val = atoi(metarg2[0]);
-
-							// if value given mismatches saved
-							if(tmp_metric_type_val != ospf_redistrib_static_type)
-								return cb;
-
-						}
-					} // if no args given, verify if it's default value
-					else if(ospf_redistrib_conn_type != OSPF_DEFAULT_METRIC_TYPE)
-						return cb;
-				}
-				else
-				{
-					cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-					return cb;
-				}
-			} // if no args given, verify if it's default value
-			else if(ospf_redistrib_static_metric != OSPF_DEFAULT_METRIC)
-				return cb;
-
-			ospf_redistrib_static = 0;
-			ospf_redistrib_static_metric = OSPF_DEFAULT_METRIC;
-			ospf_redistrib_static_type = OSPF_DEFAULT_METRIC_TYPE;
-			WRITE_RUN();
-			WRITE_OSPFD();
-		}
+		rip_redistrib_static = 0;
 	}
 	else if(strcmp(redistargs[0],"default") == 0)
 	{
-		if(promptRouterType == PROMPT_ROUTER_RIP)
+		if(strlen(redistargs[1]) > 0)
 		{
-			if(strlen(redistargs[1]) > 0)
-			{
-				cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-				return cb;
-			}
-			rip_redistrib_default = 0;
-			WRITE_RUN();
-			WRITE_RIPD();
+			cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+			return cb;
 		}
-		else if(promptRouterType == PROMPT_ROUTER_OSPF)
-		{
-			// Cutting args
-			char* metricsstr[2];
-			cutFirstWord(args,redistargs);
-
-			if(strlen(redistargs[1]) > 0)
-			{
-				// Cutting args after redist_type
-				char* metcmd1[2];
-				cutFirstWord(redistargs[1],metcmd1);
-
-				// If its metric & has a value
-				if(strlen(metcmd1[1]) > 0 && strcmp(metcmd1[0],"metric") == 0)
-				{
-					char* metarg1[2];
-					cutFirstWord(metcmd1[1],metarg1);
-
-					// Convert the value
-					int tmp_metric_val = atoi(metarg1[0]);
-
-					// if value given mismatches saved
-					if(tmp_metric_val != ospf_redistrib_default_metric)
-						return cb;
-
-					// If there is args after metric with value
-					if(strlen(metarg1[1]) > 0)
-					{
-						char* metcmd2[2];
-						cutFirstWord(metarg1[1],metcmd2);
-
-						// If there is a value and keywork is metric-type
-						if(strlen(metcmd2[1]) > 0 && strcmp(metcmd2[0],"metric-type") == 0)
-						{
-							char* metarg2[2];
-							cutFirstWord(metcmd2[1],metarg2);
-
-							// If there is another keyword after the last arg
-							if(strlen(metarg2[1]) > 0)
-							{
-								cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-								return cb;
-							}
-
-							int tmp_metric_type_val = atoi(metarg2[0]);
-
-							// if value given mismatches saved
-							if(tmp_metric_type_val != ospf_redistrib_default_type)
-								return cb;
-
-						}
-					} // if no args given, verify if it's default value
-					else if(ospf_redistrib_conn_type != OSPF_DEFAULT_METRIC_TYPE)
-						return cb;
-				}
-				else
-				{
-					cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-					return cb;
-				}
-			} // if no args given, verify if it's default value
-			else if(ospf_redistrib_conn_metric != OSPF_DEFAULT_METRIC)
-				return cb;
-
-			ospf_redistrib_default = 0;
-			ospf_redistrib_default_metric = OSPF_DEFAULT_METRIC;
-			ospf_redistrib_default_type = OSPF_DEFAULT_METRIC_TYPE;
-			WRITE_RUN();
-			WRITE_OSPFD();
-		}
+		rip_redistrib_default = 0;
 	}
 	else
+	{
 		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+		return cb;
+	}
+
+	WRITE_RUN();
+	WRITE_RIPD();
 
 	return cb;
 }
 
 cmdCallback crouterCMD_RIP_defaultinformation(char* args)
 {
-	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
-	if(promptRouterType != PROMPT_ROUTER_RIP)
-	{
-		cb.message = CMD_UNK();
-		return cb;
-	}
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 
 	if(strcmp(args,"originate") == 0)
 	{
@@ -632,12 +155,7 @@ cmdCallback crouterCMD_RIP_defaultinformation(char* args)
 
 cmdCallback crouterCMD_RIP_nodefaultinformation(char* args)
 {
-	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
-	if(promptRouterType != PROMPT_ROUTER_RIP)
-	{
-		cb.message = CMD_UNK();
-		return cb;
-	}
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 
 	if(strcmp(args,"originate") == 0)
 	{
@@ -651,13 +169,7 @@ cmdCallback crouterCMD_RIP_nodefaultinformation(char* args)
 
 cmdCallback crouterCMD_RIP_splithorizon(char* _none)
 {
-	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
-
-	if(promptRouterType != PROMPT_ROUTER_RIP)
-	{
-		cb.message = CMD_UNK();
-		return cb;
-	}
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 
 	if(strlen(_none) > 0)
 	{
@@ -675,13 +187,7 @@ cmdCallback crouterCMD_RIP_splithorizon(char* _none)
 
 cmdCallback crouterCMD_RIP_nosplithorizon(char* _none)
 {
-	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
-
-	if(promptRouterType != PROMPT_ROUTER_RIP)
-	{
-		cb.message = CMD_UNK();
-		return cb;
-	}
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 
 	if(strlen(_none) == 0)
 	{
@@ -693,9 +199,9 @@ cmdCallback crouterCMD_RIP_nosplithorizon(char* _none)
 	return cb;
 }
 
-cmdCallback crouterCMD_RIP_OSPF_passive(char* args)
+cmdCallback crouterCMD_RIP_passive(char* args)
 {
-	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 	if(strlen(args) == 0)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
@@ -711,37 +217,22 @@ cmdCallback crouterCMD_RIP_OSPF_passive(char* args)
 		return cb;
 	}
 
-	if(promptRouterType == PROMPT_ROUTER_RIP)
+	if(setInterfaceRIPPassive(iface[0],1) != 0)
 	{
-		if(setInterfaceRIPPassive(iface[0],1) != 0)
-		{
-			cb.message = CMD_INTERFACE_UNK();
-		}
-		else
-		{
-			WRITE_RUN();
-			WRITE_RIPD();
-		}
+		cb.message = CMD_INTERFACE_UNK();
 	}
-	else if(promptRouterType == PROMPT_ROUTER_OSPF)
+	else
 	{
-		if(setInterfaceOSPFPassive(iface[0],1) != 0)
-		{
-			cb.message = CMD_INTERFACE_UNK();
-		}
-		else
-		{
-			WRITE_RUN();
-			WRITE_OSPFD();
-		}
+		WRITE_RUN();
+		WRITE_RIPD();
 	}
 
 	return cb;
 }
 
-cmdCallback crouterCMD_RIP_OSPF_nopassive(char* args)
+cmdCallback crouterCMD_RIP_nopassive(char* args)
 {
-	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 	if(strlen(args) == 0)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
@@ -757,29 +248,14 @@ cmdCallback crouterCMD_RIP_OSPF_nopassive(char* args)
 		return cb;
 	}
 
-	if(promptRouterType == PROMPT_ROUTER_RIP)
+	if(setInterfaceRIPPassive(iface[0],0) != 0)
 	{
-		if(setInterfaceRIPPassive(iface[0],0) != 0)
-		{
-			cb.message = CMD_INTERFACE_UNK();
-		}
-		else
-		{
-			WRITE_RUN();
-			WRITE_RIPD();
-		}
+		cb.message = CMD_INTERFACE_UNK();
 	}
-	else if(promptRouterType == PROMPT_ROUTER_OSPF)
+	else
 	{
-		if(setInterfaceOSPFPassive(iface[0],0) != 0)
-		{
-			cb.message = CMD_INTERFACE_UNK();
-		}
-		else
-		{
-			WRITE_RUN();
-			WRITE_OSPFD();
-		}
+		WRITE_RUN();
+		WRITE_RIPD();
 	}
 
 	return cb;
@@ -787,7 +263,7 @@ cmdCallback crouterCMD_RIP_OSPF_nopassive(char* args)
 
 cmdCallback crouterCMD_RIP_timer(char* args)
 {
-	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 
 	if(strlen(args) == 0)
 	{
@@ -857,7 +333,7 @@ cmdCallback crouterCMD_RIP_timer(char* args)
 
 cmdCallback crouterCMD_RIP_notimer(char* args)
 {
-	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 	if(strlen(args) < 1)
 	{
 		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
@@ -909,9 +385,9 @@ cmdCallback crouterCMD_RIP_notimer(char* args)
 	return cb;
 }
 
-cmdCallback crouterCMD_exit(char* _none)
+cmdCallback crouterCMD_RIP_exit(char* _none)
 {
-	cmdCallback cb = {PROMPT_CONF_ROUTER,""};
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 
 	if(strlen(_none) > 0)
 	{
