@@ -32,6 +32,45 @@
 #include "route.h"
 #include "../prompt/prompt.h"
 
+cmdCallback crouterCMD_RIP_network(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
+
+	char* iface[2];
+	cutFirstWord(args,iface);
+
+	if(strlen(iface[0]) == 0 || strlen(iface[1]) > 0)
+	{
+		cb.message = CMDROUTER_RIP_NETWORK_ERROR();
+	}
+	else
+	{
+		if(setInterfaceRIPNetwork(iface[0],1) != 0)
+			cb.message = CMD_INTERFACE_UNK();
+	}
+
+	return cb;
+}
+cmdCallback crouterCMD_RIP_nonetwork(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
+
+	char* iface[2];
+	cutFirstWord(args,iface);
+
+	if(strlen(iface[0]) == 0 || strlen(iface[1]) > 0)
+	{
+		cb.message = CMDROUTER_RIP_NETWORK_ERROR();
+	}
+	else
+	{
+		if(setInterfaceRIPNetwork(iface[0],0) != 0)
+			cb.message = CMD_INTERFACE_UNK();
+	}
+
+	return cb;
+}
+
 cmdCallback crouterCMD_RIP_redistrib(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};

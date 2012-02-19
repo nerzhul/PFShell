@@ -28,6 +28,8 @@
 #ifndef __INTERFACE_H_
 #define __INTERFACE_H_
 
+#include <sys/types.h>
+
 typedef struct net_iface net_iface;
 
 struct net_iface
@@ -38,6 +40,7 @@ struct net_iface
 	char* acl_out;
 	char* desc;
 	unsigned short state;
+	uint8_t is_rip_network;
 	unsigned short rip_passive;
 	unsigned short rip_cost;
 	unsigned short rip_auth_type;
@@ -60,11 +63,13 @@ unsigned short setInterfaceIP(char* name, char* ip);
 unsigned short setInterfaceState(char* name, unsigned short state);
 unsigned short setInterfaceACL(char* name, char* aclname, char* direction);
 unsigned short setInterfaceDesc(char* name, char* desc);
+
 // RIP
 unsigned short setInterfaceRIPPassive(char* name, unsigned short passive);
 unsigned short setInterfaceRIPCost(char* name, unsigned short cost);
 unsigned short setInterfaceRIPAuthType(char* name, unsigned short type);
 unsigned short setInterfaceRIPAuthKey(char* name, char* key);
+unsigned short setInterfaceRIPNetwork(char* name, uint8_t net);
 
 // OSPF
 unsigned short setInterfaceOSPFPassive(char* name, unsigned short passive);
@@ -79,6 +84,7 @@ unsigned short getInterfaceRIPPassive(char* name);
 unsigned short getInterfaceRIPCost(char* name);
 unsigned short getInterfaceRIPAuthType(char* name);
 char* getInterfaceRIPAuthKey(char* name);
+uint8_t getInterfaceRIPNetwork(char* name);
 
 // OSPF
 unsigned short getInterfaceOSPFPassive(char* name);

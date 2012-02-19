@@ -107,6 +107,7 @@
 #define CMDROUTER_RIP_OSPF_INTERFACE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) passive-interface <iface>\n");
 #define CMDROUTER_RIP_TIMERS_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) timers <update> <fail> <dead>\n");
 #define CMDROUTER_RIP_AUTHENTICATION_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip authentication <key-string|mode> ...\n");
+#define CMDROUTER_RIP_NETWORK_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) network <iface>\n");
 #define CMDROUTER_RIP_AUTH_MODE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip rip authentication mode <none|md5|text>\n");
 #define CMDROUTER_RIP_AUTH_KEY_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip rip authentication key-string <1-16 chars>\n");
 #endif

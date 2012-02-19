@@ -161,6 +161,18 @@ unsigned short writeRunningConfig()
 			net_iface* if_cursor = interfaces;
 			while(if_cursor != NULL)
 			{
+				if(if_cursor->is_rip_network > 0)
+				{
+					fputs("network ",confFile);
+					fputs(if_cursor->name,confFile);
+					fputs("\n",confFile);
+				}
+				if_cursor = if_cursor->next;
+			}
+			// Reinit cursor to write passive arg, and order file
+			if_cursor = interfaces;
+			while(if_cursor != NULL)
+			{
 				if(if_cursor->rip_passive > 0)
 				{
 					fputs("passive-interface ",confFile);

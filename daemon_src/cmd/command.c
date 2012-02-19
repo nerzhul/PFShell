@@ -148,6 +148,8 @@ unsigned short initCmds()
 	confRouterRIPCmd[4].handler = crouterCMD_RIP_passive;
 	confRouterRIPCmd[5].name = "timers";
 	confRouterRIPCmd[5].handler = crouterCMD_RIP_timer;
+	confRouterRIPCmd[6].name = "network";
+	confRouterRIPCmd[6].handler = crouterCMD_RIP_network;
 
 	// Enable - Configure - Router RIP No Commands
 	noconfRouterRIPCmd[0].name = "redistribute";
@@ -160,6 +162,8 @@ unsigned short initCmds()
 	noconfRouterRIPCmd[3].handler = crouterCMD_RIP_nopassive;
 	noconfRouterRIPCmd[4].name = "timers";
 	noconfRouterRIPCmd[4].handler = crouterCMD_RIP_notimer;
+	noconfRouterRIPCmd[5].name = "network";
+	noconfRouterRIPCmd[5].handler = crouterCMD_RIP_nonetwork;
 
 	// Enable - Configure - Router OSPF Commands
 	confRouterOSPFCmd[0].name = "exit";

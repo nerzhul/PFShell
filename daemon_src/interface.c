@@ -46,6 +46,7 @@ void addInterface(char* name)
 	newIface->acl_out = "";
 	newIface->desc = "";
 	newIface->state = 1;
+	newIface->is_rip_network = 0;
 	newIface->rip_passive = 0;
 	newIface->rip_cost = RIP_DEFAULT_COST;
 	newIface->rip_auth_type = RIP_AUTH_NONE;
@@ -316,6 +317,62 @@ char* getInterfaceDesc(char* name)
 	}
 
 	return _desc;
+}
+
+unsigned short setInterfaceRIPNetwork(char* name, uint8_t network)
+{
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->is_rip_network = network;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
+uint8_t getInterfaceRIPNetwork(char* name)
+{
+	uint8_t result = -1;
+
+	if(interfaces == NULL)
+		return -1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				result = cursor->is_rip_network;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return -1;
+	}
+
+	return result;
 }
 
 unsigned short setInterfaceState(char* name, unsigned short state)
