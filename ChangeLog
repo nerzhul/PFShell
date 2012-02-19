@@ -170,3 +170,4 @@ Alpha 0.24 - prev
 - Change show ip route to a CISCO intepretation
 - Reload ospfd & ripd only when daemon is started
 - Implement network <iface> for RIP to use ripd on an interface. passive-interface is used to save configuration, but don't use rip.
+- Create command cutString to cut a string when a space, \n or \t occurs. Dynamicly manage the memory

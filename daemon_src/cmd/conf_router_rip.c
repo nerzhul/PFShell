@@ -36,10 +36,10 @@ cmdCallback crouterCMD_RIP_network(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 
-	char* iface[2];
-	cutFirstWord(args,iface);
+	char* iface[1];
+	uint8_t nbargs = cutString(args,iface);
 
-	if(strlen(iface[0]) == 0 || strlen(iface[1]) > 0)
+	if(nbargs != 1)
 	{
 		cb.message = CMDROUTER_RIP_NETWORK_ERROR();
 	}
@@ -49,16 +49,17 @@ cmdCallback crouterCMD_RIP_network(char* args)
 			cb.message = CMD_INTERFACE_UNK();
 	}
 
+	freeCutString(iface,nbargs);
 	return cb;
 }
 cmdCallback crouterCMD_RIP_nonetwork(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 
-	char* iface[2];
-	cutFirstWord(args,iface);
+	char* iface[1];
+	uint8_t nbargs = cutString(args,iface);
 
-	if(strlen(iface[0]) == 0 || strlen(iface[1]) > 0)
+	if(nbargs != 1)
 	{
 		cb.message = CMDROUTER_RIP_NETWORK_ERROR();
 	}
@@ -68,6 +69,7 @@ cmdCallback crouterCMD_RIP_nonetwork(char* args)
 			cb.message = CMD_INTERFACE_UNK();
 	}
 
+	freeCutString(iface,nbargs);
 	return cb;
 }
 
@@ -80,39 +82,22 @@ cmdCallback crouterCMD_RIP_redistrib(char* args)
 		return cb;
 	}
 
-	// Cutting args
-	char* redistargs[2];
-	cutFirstWord(args,redistargs);
+
+	char* redistargs[1];
+	uint8_t nbargs = cutString(args,redistargs);
+
+	if(nbargs != 1)
+	{
+		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+		return cb;
+	}
 
 	if(strcmp(redistargs[0],"connected") == 0)
-	{
-		if(strlen(redistargs[1]) > 0)
-		{
-			cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-			return cb;
-		}
 		rip_redistrib_conn = 1;
-	}
 	else if(strcmp(redistargs[0],"static") == 0)
-	{
-		if(strlen(redistargs[1]) > 0)
-		{
-			cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-			return cb;
-		}
-
 		rip_redistrib_static = 1;
-	}
 	else if(strcmp(redistargs[0],"default") == 0)
-	{
-		if(strlen(redistargs[1]) > 0)
-		{
-			cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-			return cb;
-		}
-
 		rip_redistrib_default = 1;
-	}
 	else
 	{
 		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
@@ -122,6 +107,7 @@ cmdCallback crouterCMD_RIP_redistrib(char* args)
 	WRITE_RUN();
 	WRITE_RIPD();
 
+	freeCutString(redistargs,nbargs);
 	return cb;
 }
 
@@ -134,37 +120,21 @@ cmdCallback crouterCMD_RIP_noredistrib(char* args)
 		return cb;
 	}
 
-	// Cutting args
-	char* redistargs[2];
-	cutFirstWord(args,redistargs);
+	char* redistargs[1];
+	uint8_t nbargs = cutString(args,redistargs);
+
+	if(nbargs != 1)
+	{
+		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+		return cb;
+	}
 
 	if(strcmp(redistargs[0],"connected") == 0)
-	{
-		if(strlen(redistargs[1]) > 0)
-		{
-			cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-			return cb;
-		}
 		rip_redistrib_conn = 0;
-	}
 	else if(strcmp(redistargs[0],"static") == 0)
-	{
-		if(strlen(redistargs[1]) > 0)
-		{
-			cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-			return cb;
-		}
 		rip_redistrib_static = 0;
-	}
 	else if(strcmp(redistargs[0],"default") == 0)
-	{
-		if(strlen(redistargs[1]) > 0)
-		{
-			cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-			return cb;
-		}
 		rip_redistrib_default = 0;
-	}
 	else
 	{
 		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
@@ -174,6 +144,7 @@ cmdCallback crouterCMD_RIP_noredistrib(char* args)
 	WRITE_RUN();
 	WRITE_RIPD();
 
+	freeCutString(redistargs,nbargs);
 	return cb;
 }
 
@@ -247,10 +218,10 @@ cmdCallback crouterCMD_RIP_passive(char* args)
 		return cb;
 	}
 
-	char* iface[2];
-	cutFirstWord(args,iface);
+	char* iface[1];
+	uint8_t nbargs = cutString(args,iface);
 
-	if(strlen(iface[1]) > 0)
+	if(nbargs != 1)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
 		return cb;
@@ -266,6 +237,7 @@ cmdCallback crouterCMD_RIP_passive(char* args)
 		WRITE_RIPD();
 	}
 
+	freeCutString(iface,nbargs);
 	return cb;
 }
 
@@ -278,10 +250,10 @@ cmdCallback crouterCMD_RIP_nopassive(char* args)
 		return cb;
 	}
 
-	char* iface[2];
-	cutFirstWord(args,iface);
+	char* iface[1];
+	uint8_t nbargs = cutString(args,iface);
 
-	if(strlen(iface[1]) > 0)
+	if(nbargs != 1)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
 		return cb;
@@ -297,6 +269,7 @@ cmdCallback crouterCMD_RIP_nopassive(char* args)
 		WRITE_RIPD();
 	}
 
+	freeCutString(iface,nbargs);
 	return cb;
 }
 
@@ -310,16 +283,16 @@ cmdCallback crouterCMD_RIP_timer(char* args)
 		return cb;
 	}
 
-	char* upd_timer[2];
-	cutFirstWord(args,upd_timer);
+	char* timers[3];
+	uint8_t nbargs = cutString(args,timers);
 
-	if(strlen(upd_timer[1]) == 0)
+	if(nbargs != 3)
 	{
 		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
 		return cb;
 	}
 
-	int update_t = atoi(upd_timer[0]);
+	int update_t = atoi(timers[0]);
 
 	if(update_t <= 0 || update_t > 600)
 	{
@@ -327,16 +300,7 @@ cmdCallback crouterCMD_RIP_timer(char* args)
 		return cb;
 	}
 
-	char* fail_timer[2];
-	cutFirstWord(upd_timer[1],fail_timer);
-
-	if(strlen(fail_timer[1]) == 0)
-	{
-		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
-		return cb;
-	}
-
-	int fail_t = atoi(fail_timer[0]);
+	int fail_t = atoi(timers[1]);
 
 	if(fail_t <= 0 || fail_t < 2 * update_t)
 	{
@@ -344,16 +308,7 @@ cmdCallback crouterCMD_RIP_timer(char* args)
 		return cb;
 	}
 
-	char* dead_timer[2];
-	cutFirstWord(fail_timer[1],dead_timer);
-
-	if(strlen(dead_timer[1]) > 0)
-	{
-		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
-		return cb;
-	}
-
-	int dead_t = atoi(dead_timer[0]);
+	int dead_t = atoi(timers[2]);
 
 	if(dead_t <= 0 || dead_t < fail_t)
 	{
@@ -367,6 +322,8 @@ cmdCallback crouterCMD_RIP_timer(char* args)
 
 	WRITE_RUN();
 	WRITE_RIPD();
+
+	freeCutString(timers,nbargs);
 	return cb;
 }
 
@@ -379,38 +336,18 @@ cmdCallback crouterCMD_RIP_notimer(char* args)
 		return cb;
 	}
 
-	char* upd_timer[2];
-	cutFirstWord(args,upd_timer);
+	char* timers[3];
+	uint8_t nbargs = cutString(args,timers);
 
-	if(strlen(upd_timer[1]) == 0)
+	if(nbargs != 3)
 	{
 		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
 		return cb;
 	}
 
-	int update_t = atoi(upd_timer[0]);
-
-	char* fail_timer[2];
-	cutFirstWord(upd_timer[1],fail_timer);
-
-	if(strlen(fail_timer[1]) == 0)
-	{
-		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
-		return cb;
-	}
-
-	int fail_t = atoi(fail_timer[0]);
-
-	char* dead_timer[2];
-	cutFirstWord(fail_timer[1],dead_timer);
-
-	if(strlen(dead_timer[1]) > 0)
-	{
-		cb.message = CMDROUTER_RIP_TIMERS_ERROR();
-		return cb;
-	}
-
-	int dead_t = atoi(dead_timer[0]);
+	int update_t = atoi(timers[0]);
+	int fail_t = atoi(timers[1]);
+	int dead_t = atoi(timers[2]);
 
 	if(update_t == rip_update_timer && fail_t == rip_fail_timer && dead_t == rip_dead_timer)
 	{
@@ -421,6 +358,7 @@ cmdCallback crouterCMD_RIP_notimer(char* args)
 		WRITE_RIPD();
 	}
 
+	freeCutString(timers,nbargs);
 	return cb;
 }
 

@@ -28,6 +28,8 @@
 #ifndef __COMMAND_H__
 #define __COMMAND_H__
 
+#include <sys/types.h>
+
 #define CMD_ASKCONFIRM() askConfirm();
 
 typedef struct cmdCallback
@@ -122,6 +124,8 @@ unsigned short initCmds();
 
 void cutFirstWord(char*,char**);
 void cutByChar(char*, char**, char cutter);
+uint8_t cutString(char* string,char** result);
+void freeCutString(char** elem,uint8_t size);
 
 cmdCallback handleCmd(char* _cmd, unsigned short promptMode);
 

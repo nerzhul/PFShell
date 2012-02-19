@@ -304,6 +304,66 @@ void cutFirstWord(char* string,char** result)
 	}
 }
 
+uint8_t cutString(char* string,char** result)
+{
+	uint16_t space_count = 0;
+	uint32_t offset = 0;
+
+	// Count spaces
+	while(offset <= strlen(string))
+	{
+		if(string[offset] == ' ' || string[offset] == '\n' || string[offset] == '\t')
+			++space_count;
+
+		++offset;
+	}
+
+	offset = 0;
+	uint8_t word_nb = 0;
+
+	char buffer[512] = "";
+	uint16_t buffer_offset = 0;
+
+	while(offset <= strlen(string))
+	{
+		if(string[offset] == ' ' || string[offset] == '\n' || string[offset] == '\t')
+		{
+			*(result+word_nb) = (char*)malloc(buffer_offset*sizeof(char));
+			*(result+word_nb) = strdup(buffer);
+			++word_nb;
+			strcpy(buffer,"");
+			buffer_offset = 0;
+		}
+		else
+		{
+			buffer[buffer_offset] = string[offset];
+			++buffer_offset;
+		}
+		++offset;
+	}
+	if(strlen(buffer) > 1)
+	{
+		*(result+word_nb) = (char*)malloc(buffer_offset*sizeof(char));
+		*(result+word_nb) = strdup(buffer);
+		++word_nb;
+	}
+
+	return word_nb;
+}
+
+void freeCutString(char** elem,uint8_t size)
+{
+	if(elem == NULL)
+		return;
+
+	for(uint8_t i=0;i<size;i++)
+	{
+		if(elem[i] != NULL)
+			free(elem[i]);
+	}
+}
+
+
 void cutByChar(char* string,char** result,char cutter)
 {
 	char firstWord[1024] = "";
