@@ -177,9 +177,13 @@ cmdCallback cCMD_interface(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF,""};
 
-	if(strlen(args) == 0)
+	char* iface[1];
+	uint8_t nbargs = cutString(args,iface);
+
+	if(nbargs != 1)
 	{
 		cb.message = CMDCONF_INTERFACE_ERROR();
+		freeCutString(iface,nbargs);
 		return cb;
 	}
 
@@ -200,12 +204,14 @@ cmdCallback cCMD_interface(char* args)
 	if(found == 0)
 	{
 		cb.message = CMDCONF_INTERFACE_UNK(args);
+		freeCutString(iface,nbargs);
 		return cb;
 	}
 
 	current_iface = args;
 	cb.promptMode = PROMPT_CONF_IF;
 
+	freeCutString(iface,nbargs);
 	return cb;
 }
 
@@ -213,26 +219,29 @@ cmdCallback cCMD_ip(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF,""};
 
-	if(strlen(args) == 0)
+	char* _ip[4];
+	uint8_t nbargs = cutString(args,_ip);
+
+	if(nbargs < 1)
 	{
 		cb.message = CMDCONF_IP_ERROR();
+		freeCutString(_ip,nbargs);
 		return cb;
 	}
 
 	char* ipcmd[2];
 	cutFirstWord(args,ipcmd);
 
-	if(strcmp(ipcmd[0],"domain-name") == 0)
+	if(strcmp(_ip[0],"domain-name") == 0)
 	{
-		if(strlen(ipcmd[1]) < 2)
+		if(nbargs != 2)
 		{
 			cb.message = CMDCONF_IPDN_ERROR();
+			freeCutString(_ip,nbargs);
 			return cb;
 		}
 
-		char* dname[2];
-		cutFirstWord(ipcmd[1],dname);
-		if(regexp(dname[0],"^([a-zA-Z0-9][a-zA-Z0-9_-]*(\.[a-zA-Z0-9][a-zA-Z0-9_-]*)+)$") == 0 && strlen(dname[1]) < 1)
+		if(regexp(_ip[1],"^([a-zA-Z0-9][a-zA-Z0-9_-]*(\.[a-zA-Z0-9][a-zA-Z0-9_-]*)+)$") == 0)
 		{
 			strcpy(dnssearch,dname[0]);
 			WRITE_RUN();
@@ -240,84 +249,70 @@ cmdCallback cCMD_ip(char* args)
 		else
 			cb.message = CMDCONF_IPDN_ERROR();
 	}
-	else if(strcmp(ipcmd[0],"multicast-routing") == 0)
+	else if(strcmp(_ip[0],"multicast-routing") == 0)
 	{
-		if(strlen(ipcmd[1]) > 0)
+		if(nbargs != 1)
 		{
 			cb.message = CMDCONF_IP_ERROR();
+			freeCutString(_ip,nbargs);
 			return cb;
 		}
 
 		mcastrouting = 1;
-		hsystemcmd("/usr/sbin/sysctl net.inet.ip.mforwarding=1");
-		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.mforwarding=1");
+		hsystemcmd("/usr/sbin/sysctl -w net.inet.ip.mforwarding=1");
+		hsystemcmd("/usr/sbin/sysctl -w net.inet6.ip6.mforwarding=1");
 		WRITE_RUN();
 	}
-	else if(strcmp(ipcmd[0],"name-server") == 0)
+	else if(strcmp(_ip[0],"name-server") == 0)
 	{
-		if(strlen(ipcmd[1]) < 6)
+		if(_ip != 2)
 		{
 			cb.message = CMDCONF_IPNS_ERROR();
+			freeCutString(_ip,nbargs);
 			return cb;
 		}
 
-		char* netip[2];
-		cutFirstWord(ipcmd[1],netip);
-		if(regexp(netip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0
-			&& strlen(netip[1]) < 1)
+		if(regexp(_ip[1],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
 		{
-			strcpy(dnsip,netip[0]);
+			strcpy(dnsip,_ip[1]);
 			WRITE_RUN();
 		}
 		else
 		{
 			cb.message = CMDCONF_IPNS_ERROR();
+			freeCutString(_ip,nbargs);
 			return cb;
 		}
 	}
-	else if(strcmp(ipcmd[0],"route") == 0)
+	else if(strcmp(_ip[0],"route") == 0)
 	{
-		if(strlen(ipcmd[1]) < 15)
+		if(nbargs != 4)
 		{
 			cb.message = CMDCONF_IPROUTE_ERROR();
+			freeCutString(_ip,nbargs);
 			return cb;
 		}
 
-		char* netip[2];
-		cutFirstWord(ipcmd[1],netip);
-
-		if(regexp(netip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+		if(regexp(_ip[1],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
 		{
-			char* maskip[2];
-
-			cutFirstWord(netip[1],maskip);
-
-			if(is_valid_mask(maskip[0]) == 0)
+			if(is_valid_mask(_ip[2]) == 0)
 			{
-				unsigned short cidr = calc_cidr(maskip[0]);
-				char* gateip[2];
-				cutFirstWord(maskip[1],gateip);
+				unsigned short cidr = calc_cidr(_ip[2]);
 
-				if(regexp(gateip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+				if(regexp(_ip[3],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
 				{
-					if(strlen(gateip[1]) > 0)
-					{
-						cb.message = CMDCONF_IPROUTE_ERROR();
-						return cb;
-					}
-
 					char buffer[1024] = "";
 					char cidrbuf[100] = "";
 					sprintf(cidrbuf,"%d",cidr);
 
 					strcpy(buffer,"route add ");
-					strcat(buffer,netip[0]);
+					strcat(buffer,_ip[1]);
 					strcat(buffer,"/");
 					strcat(buffer,cidrbuf);
 					strcat(buffer," ");
-					strcat(buffer,gateip[0]);
+					strcat(buffer,_ip[3]);
 
-					addRoute(netip[0],maskip[0],gateip[0]);
+					addRoute(_ip[1],_ip[2],_ip[3]);
 
 					hsystemcmd(buffer);
 
@@ -326,37 +321,42 @@ cmdCallback cCMD_ip(char* args)
 				else
 				{
 					cb.message = CMDCONF_IPROUTE_ERROR();
+					freeCutString(_ip,nbargs);
 					return cb;
 				}
 			}
 			else
 			{
 				cb.message = CMDCONF_IPROUTE_ERROR();
+				freeCutString(_ip,nbargs);
 				return cb;
 			}
 		}
 		else
 		{
 			cb.message = CMDCONF_IPROUTE_ERROR();
+			freeCutString(_ip,nbargs);
 			return cb;
 		}
 	}
-	else if(strcmp(ipcmd[0],"routing") == 0)
+	else if(strcmp(_ip[0],"routing") == 0)
 	{
-		if(strlen(ipcmd[1]) > 0)
+		if(nbargs != 1)
 		{
 			cb.message = CMDCONF_IP_ERROR();
+			freeCutString(_ip,nbargs);
 			return cb;
 		}
 
 		iprouting = 1;
-		hsystemcmd("/usr/sbin/sysctl net.inet.ip.forwarding=1");
-		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.forwarding=1");
+		hsystemcmd("/usr/sbin/sysctl -w net.inet.ip.forwarding=1");
+		hsystemcmd("/usr/sbin/sysctl -w net.inet6.ip6.forwarding=1");
 		WRITE_RUN();
 	}
 	else
 		cb.message = CMDCONF_IP_ERROR();
 
+	freeCutString(_ip,nbargs);
 	return cb;
 }
 
@@ -364,102 +364,96 @@ cmdCallback cCMD_noip(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF,""};
 
-	if(strlen(args) == 0)
+	char* _ip[4];
+	uint8_t nbargs = cutString(args,_ip);
+
+	if(nbargs < 1)
 	{
 		cb.message = CMDCONF_NOIP_ERROR();
 		return cb;
 	}
 
-	char* ipcmd[2];
-	cutFirstWord(args,ipcmd);
-
-	if(strcmp(ipcmd[0],"domain-name") == 0)
+	if(strcmp(_ip[0],"domain-name") == 0)
 	{
-		if(strlen(ipcmd[1]) < 15)
+		if(nbargs != 2)
+		{
+			freeCutString(_ip,nbargs);
 			return cb;
+		}
 
-		char* netip[2];
-		cutFirstWord(ipcmd[1],netip);
-
-		if(strcmp(netip[0],dnssearch) == 0 && strlen(netip[1]) < 1)
+		if(strcmp(_ip[1],dnssearch) == 0)
 		{
 			strcpy(dnssearch,"");
 			WRITE_RUN();
 		}
 		else
+		{
+			freeCutString(_ip,nbargs);
 			return cb;
+		}
 	}
-	else if(strcmp(ipcmd[0],"multicast-routing") == 0)
+	else if(strcmp(_ip[0],"multicast-routing") == 0)
 	{
-		if(strlen(ipcmd[1]) > 0)
+		if(nbargs == 1)
 		{
 			cb.message = CMDCONF_NOIP_ERROR();
+			freeCutString(_ip,nbargs);
 			return cb;
 		}
 
 		mcastrouting = 0;
-		hsystemcmd("/usr/sbin/sysctl net.inet.ip.mforwarding=0");
-		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.mforwarding=0");
+		hsystemcmd("/usr/sbin/sysctl -w net.inet.ip.mforwarding=0");
+		hsystemcmd("/usr/sbin/sysctl -w net.inet6.ip6.mforwarding=0");
 		WRITE_RUN();
 	}
-	else if(strcmp(ipcmd[0],"name-server") == 0)
+	else if(strcmp(_ip[0],"name-server") == 0)
 	{
-		if(strlen(ipcmd[1]) < 15)
+		if(nbargs != 2)
+		{
+			freeCutString(_ip,nbargs);
 			return cb;
+		}
 
-		char* netip[2];
-		cutFirstWord(ipcmd[1],netip);
-
-		if(strcmp(netip[0],dnsip) == 0 && strlen(netip[1]) < 1)
+		if(strcmp(_ip[1],dnsip) == 0)
 		{
 			strcpy(dnsip,"");
 			WRITE_RUN();
 		}
 		else
+		{
+			freeCutString(_ip,nbargs);
 			return cb;
+		}
 	}
-	else if(strcmp(ipcmd[0],"route") == 0)
+	else if(strcmp(_ip[0],"route") == 0)
 	{
-		if(strlen(ipcmd[1]) < 15)
+		if(nbargs != 4)
 		{
 			cb.message = CMDCONF_NOIPROUTE_ERROR();
+			freeCutString(_ip,nbargs);
 			return cb;
 		}
 
-		char* netip[2];
-		cutFirstWord(ipcmd[1],netip);
-
-		if(regexp(netip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+		if(regexp(_ip[1],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
 		{
-			char* maskip[2];
-
-			cutFirstWord(netip[1],maskip);
-
-			if(is_valid_mask(maskip[0]) == 0)
+			if(is_valid_mask(_ip[2]) == 0)
 			{
-				unsigned short cidr = calc_cidr(maskip[0]);
-				char* gateip[2];
-				cutFirstWord(maskip[1],gateip);
-				if(regexp(gateip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
-				{
-					if(strlen(gateip[1]) > 0)
-					{
-						cb.message = CMDCONF_NOIPROUTE_ERROR();
-						return cb;
-					}
+				unsigned short cidr = calc_cidr(_ip[2]);
 
+				if(regexp(_ip[3],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+				{
 					char buffer[1024] = "";
 					char cidrbuf[100] = "";
 					sprintf(cidrbuf,"%d",cidr);
 
 					strcpy(buffer,"route delete ");
-					strcat(buffer,netip[0]);
+					strcat(buffer,_ip[1]);
 					strcat(buffer,"/");
 					strcat(buffer,cidrbuf);
 					strcat(buffer," ");
-					strcat(buffer,gateip[0]);
+					strcat(buffer,_ip[3]);
 
-					delRoute(netip[0],maskip[0],gateip[0]);
+					delRoute(_ip[1],_ip[2],_ip[3]);
 
 					hsystemcmd(buffer);
 
@@ -468,34 +462,39 @@ cmdCallback cCMD_noip(char* args)
 				else
 				{
 					cb.message = CMDCONF_NOIPROUTE_ERROR();
+					freeCutString(_ip,nbargs);
 					return cb;
 				}
 			}
 			else
 			{
 				cb.message = CMDCONF_NOIPROUTE_ERROR();
+				freeCutString(_ip,nbargs);
 				return cb;
 			}
 		}
 		else
 		{
 			cb.message = CMDCONF_NOIPROUTE_ERROR();
+			freeCutString(_ip,nbargs);
 			return cb;
 		}
 	}
-	else if(strcmp(ipcmd[0],"routing") == 0)
+	else if(strcmp(_ip[0],"routing") == 0)
 	{
-		if(strlen(ipcmd[1]) > 0)
+		if(nbargs != 1)
 		{
 			cb.message = CMDCONF_NOIP_ERROR();
+			freeCutString(_ip,nbargs);
 			return cb;
 		}
 
 		iprouting = 0;
-		hsystemcmd("/usr/sbin/sysctl net.inet.ip.forwarding=0");
-		hsystemcmd("/usr/sbin/sysctl net.inet6.ip6.forwarding=0");
+		hsystemcmd("/usr/sbin/sysctl -w net.inet.ip.forwarding=0");
+		hsystemcmd("/usr/sbin/sysctl -w net.inet6.ip6.forwarding=0");
 		WRITE_RUN();
 	}
 
+	freeCutString(_ip,nbargs);
 	return cb;
 }
