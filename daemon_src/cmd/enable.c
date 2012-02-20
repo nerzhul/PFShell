@@ -304,6 +304,12 @@ cmdCallback eCMD_save(char* _none)
 	system("/bin/sha1 /etc/sysctl.conf | /usr/bin/awk '{print $4}' > /etc/sysctl.conf.sha1");
 	system("/bin/sha256 /etc/sysctl.conf | /usr/bin/awk '{print $4}' > /etc/sysctl.conf.sha256");
 
+	WRITE_HOSTNAME();
+	system("cp /etc/myname.run /etc/myname");
+	system("/bin/md5 /etc/myname | /usr/bin/awk '{print $4}' > /etc/myname.md5");
+	system("/bin/sha1 /etc/myname | /usr/bin/awk '{print $4}' > /etc/myname.sha1");
+	system("/bin/sha256 /etc/myname | /usr/bin/awk '{print $4}' > /etc/myname.sha256");
+
 	// Save PacketFilter conf
 	system("cp /etc/pf.conf.run /etc/pf.conf");
 	system("/bin/md5 /etc/pf.conf | /usr/bin/awk '{print $4}' > /etc/pf.conf.md5");

@@ -96,6 +96,55 @@ unsigned short checkSystemIntegrity()
 	printf(".");
 	fflush(stdout);
 
+	// /etc/myname check
+	buffer[1024] = "";
+	buffer2[1024] = "";
+	execSystemCommand("/bin/md5 /etc/myname | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("cat /etc/myname.md5",buffer2);
+
+	printf(".");
+	fflush(stdout);
+
+	if(strcmp(buffer,buffer2) != 0)
+	{
+		printf("\x1b[31mERROR\x1b[0m\n/etc/myname is corrupted !\n");
+		error = 1;
+	}
+
+	printf(".");
+	fflush(stdout);
+
+	buffer[1024] = "";
+	buffer2[1024] = "";
+	execSystemCommand("/bin/sha1 /etc/myname.save | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("cat /etc/myname.sha1",buffer2);
+
+	printf(".");
+	fflush(stdout);
+
+	if(strcmp(buffer,buffer2) != 0)
+	{
+		printf("\x1b[31mERROR\x1b[0m\n/etc/myname is corrupted !\n");
+		error = 1;
+	}
+
+	printf(".");
+	fflush(stdout);
+
+	buffer[1024] = "";
+	buffer2[1024] = "";
+	execSystemCommand("/bin/sha256 /etc/myname.save | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("cat /etc/myname.sha256",buffer2);
+
+	printf(".");
+	fflush(stdout);
+
+	if(strcmp(buffer,buffer2) != 0)
+	{
+		printf("\x1b[31mERROR\x1b[0m\n/etc/myname is corrupted !\n");
+		error = 1;
+	}
+
 	// Resolv.conf check
 	buffer[1024] = "";
 	buffer2[1024] = "";

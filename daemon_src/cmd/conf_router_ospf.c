@@ -78,7 +78,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 				else
 				{
 					cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-					freeCutString(redistargs);
+					freeCutString(redistargs,nbargs);
 					return cb;
 				}
 
@@ -102,7 +102,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 					else
 					{
 						cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-						freeCutString(redistargs);
+						freeCutString(redistargs,nbargs);
 						return cb;
 					}
 				}
@@ -136,7 +136,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 				else
 				{
 					cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-					freeCutString(redistargs);
+					freeCutString(redistargs,nbargs);
 					return cb;
 				}
 
@@ -152,7 +152,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 						if(tmp_metric_type_val < 1 && tmp_metric_type_val > 2)
 						{
 							cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-							freeCutString(redistargs);
+							freeCutString(redistargs,nbargs);
 							return cb;
 						}
 
@@ -161,7 +161,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 					else
 					{
 						cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-						freeCutString(redistargs);
+						freeCutString(redistargs,nbargs);
 						return cb;
 					}
 				}
@@ -169,7 +169,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 			else
 			{
 				cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-				freeCutString(redistargs);
+				freeCutString(redistargs,nbargs);
 				return cb;
 			}
 		}
@@ -195,7 +195,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 				else
 				{
 					cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-					freeCutString(redistargs);
+					freeCutString(redistargs,nbargs);
 					return cb;
 				}
 
@@ -211,7 +211,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 						if(tmp_metric_type_val < 1 && tmp_metric_type_val > 2)
 						{
 							cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-							freeCutString(redistargs);
+							freeCutString(redistargs,nbargs);
 							return cb;
 						}
 
@@ -220,7 +220,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 					else
 					{
 						cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-						freeCutString(redistargs);
+						freeCutString(redistargs,nbargs);
 						return cb;
 					}
 				}
@@ -228,7 +228,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 			else
 			{
 				cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-				freeCutString(redistargs);
+				freeCutString(redistargs,nbargs);
 				return cb;
 			}
 		}
@@ -239,14 +239,14 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 	else
 	{
 		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-		freeCutString(redistargs);
+		freeCutString(redistargs,nbargs);
 		return cb;
 	}
 
 	WRITE_RUN();
 	WRITE_OSPFD();
 
-	freeCutString(redistargs);
+	freeCutString(redistargs,nbargs);
 	return cb;
 }
 
@@ -256,7 +256,7 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 	if(strlen(args) == 0)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-		freeCutString(redistargs);
+		freeCutString(redistargs,nbargs);
 		return cb;
 	}
 
@@ -277,7 +277,7 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 				// if value given mismatches saved
 				if(tmp_metric_val != ospf_redistrib_conn_metric)
 				{
-					freeCutString(redistargs);
+					freeCutString(redistargs,nbargs);
 					return cb;
 				}
 
@@ -292,7 +292,7 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 						// if value given mismatches saved
 						if(tmp_metric_type_val != ospf_redistrib_conn_type)
 						{
-							freeCutString(redistargs);
+							freeCutString(redistargs,nbargs);
 							return cb;
 						}
 
@@ -300,20 +300,20 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 				} // if no args given, verify if it's default value
 				else if(ospf_redistrib_conn_type != OSPF_DEFAULT_METRIC_TYPE)
 				{
-					freeCutString(redistargs);
+					freeCutString(redistargs,nbargs);
 					return cb;
 				}
 			}
 			else
 			{
 				cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-				freeCutString(redistargs);
+				freeCutString(redistargs,nbargs);
 				return cb;
 			}
 		} // if no args given, verify if it's default value
 		else if(ospf_redistrib_conn_metric != OSPF_DEFAULT_METRIC)
 		{
-			freeCutString(redistargs);
+			freeCutString(redistargs,nbargs);
 			return cb;
 		}
 
@@ -334,7 +334,7 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 				// if value given mismatches saved
 				if(tmp_metric_val != ospf_redistrib_static_metric)
 				{
-					freeCutString(redistargs);
+					freeCutString(redistargs,nbargs);
 					return cb;
 				}
 
@@ -349,7 +349,7 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 						// if value given mismatches saved
 						if(tmp_metric_type_val != ospf_redistrib_static_type)
 						{
-							freeCutString(redistargs);
+							freeCutString(redistargs,nbargs);
 							return cb;
 						}
 
@@ -357,20 +357,20 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 				} // if no args given, verify if it's default value
 				else if(ospf_redistrib_conn_type != OSPF_DEFAULT_METRIC_TYPE)
 				{
-					freeCutString(redistargs);
+					freeCutString(redistargs,nbargs);
 					return cb;
 				}
 			}
 			else
 			{
 				cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-				freeCutString(redistargs);
+				freeCutString(redistargs,nbargs);
 				return cb;
 			}
 		} // if no args given, verify if it's default value
 		else if(ospf_redistrib_static_metric != OSPF_DEFAULT_METRIC)
 		{
-			freeCutString(redistargs);
+			freeCutString(redistargs,nbargs);
 			return cb;
 		}
 
@@ -391,7 +391,7 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 				// if value given mismatches saved
 				if(tmp_metric_val != ospf_redistrib_default_metric)
 				{
-					freeCutString(redistargs);
+					freeCutString(redistargs,nbargs);
 					return cb;
 				}
 
@@ -406,7 +406,7 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 						// if value given mismatches saved
 						if(tmp_metric_type_val != ospf_redistrib_default_type)
 						{
-							freeCutString(redistargs);
+							freeCutString(redistargs,nbargs);
 							return cb;
 						}
 
@@ -414,20 +414,20 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 				} // if no args given, verify if it's default value
 				else if(ospf_redistrib_conn_type != OSPF_DEFAULT_METRIC_TYPE)
 				{
-					freeCutString(redistargs);
+					freeCutString(redistargs,nbargs);
 					return cb;
 				}
 			}
 			else
 			{
 				cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-				freeCutString(redistargs);
+				freeCutString(redistargs,nbargs);
 				return cb;
 			}
 		} // if no args given, verify if it's default value
 		else if(ospf_redistrib_conn_metric != OSPF_DEFAULT_METRIC)
 		{
-			freeCutString(redistargs);
+			freeCutString(redistargs,nbargs);
 			return cb;
 		}
 
@@ -438,14 +438,14 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 	else
 	{
 		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-		freeCutString(redistargs);
+		freeCutString(redistargs,nbargs);
 		return cb;
 	}
 
 	WRITE_RUN();
 	WRITE_OSPFD();
 
-	freeCutString(redistargs);
+	freeCutString(redistargs,nbargs);
 	return cb;
 }
 
@@ -465,7 +465,7 @@ cmdCallback crouterCMD_OSPF_passive(char* args)
 	if(nbargs > 1)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
-		freeCutString(iface);
+		freeCutString(iface,nbargs);
 		return cb;
 	}
 
@@ -479,7 +479,7 @@ cmdCallback crouterCMD_OSPF_passive(char* args)
 		WRITE_OSPFD();
 	}
 
-	freeCutString(iface);
+	freeCutString(iface,nbargs);
 	return cb;
 }
 
@@ -498,7 +498,7 @@ cmdCallback crouterCMD_OSPF_nopassive(char* args)
 	if(nbargs > 1)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
-		freeCutString(iface);
+		freeCutString(iface,nbargs);
 		return cb;
 	}
 
@@ -512,6 +512,6 @@ cmdCallback crouterCMD_OSPF_nopassive(char* args)
 		WRITE_OSPFD();
 	}
 
-	freeCutString(iface);
+	freeCutString(iface,nbargs);
 	return cb;
 }

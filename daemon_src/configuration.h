@@ -35,10 +35,12 @@
 #define WRITE_RUN() writeRunningConfig();
 #define WRITE_RIPD() saveRipd();
 #define WRITE_OSPFD() saveOspfd();
+#define WRITE_HOSTNAME() saveHostname();
 
 unsigned short is_loading;
 unsigned short loadConfiguration();
 unsigned short writeRunningConfig();
+uint8_t saveHostname();
 
 char* hostname;
 char dnssearch[100];

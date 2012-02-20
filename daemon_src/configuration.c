@@ -364,9 +364,9 @@ unsigned short writeRunningConfig()
 
 		fclose(confFile);
 
-		hsystemcmd("/bin/md5 /opt/PFShell/running-config | awk '{print $4}' > /opt/PFShell/running-config.md5");
-		hsystemcmd("/bin/sha1 /opt/PFShell/running-config | awk '{print $4}' > /opt/PFShell/running-config.sha1");
-		hsystemcmd("/bin/sha256 /opt/PFShell/running-config | awk '{print $4}' > /opt/PFShell/running-config.sha256");
+		system("/bin/md5 /opt/PFShell/running-config | awk '{print $4}' > /opt/PFShell/running-config.md5");
+		system("/bin/sha1 /opt/PFShell/running-config | awk '{print $4}' > /opt/PFShell/running-config.sha1");
+		system("/bin/sha256 /opt/PFShell/running-config | awk '{print $4}' > /opt/PFShell/running-config.sha256");
 	}
 
 	writeFirewall();
@@ -393,5 +393,15 @@ unsigned short writeRunningConfig()
 		}
 
 		fclose(confFile);
+	}
+}
+
+uint8_t saveHostname()
+{
+	FILE* fname = fopen("/etc/myname.run","w");
+	if(fname != NULL)
+	{
+		fputs(hostname,fname);
+		fclose(fname);
 	}
 }

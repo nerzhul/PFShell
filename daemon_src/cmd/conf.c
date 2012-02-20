@@ -66,20 +66,15 @@ cmdCallback cCMD_router(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF,""};
 
-	if(strlen(args) == 0)
+	char* routertype[1];
+	uint8_t nbargs = cutString(args,routertype);
+
+	if(nbargs != 1)
 	{
 		cb.message = CMDCONF_ROUTER_ERROR();
 	}
 	else
 	{
-		char* routertype[2];
-		cutFirstWord(args,routertype);
-		if(strlen(routertype[1]) > 0)
-		{
-			cb.message = CMDCONF_ROUTER_ERROR();
-			return cb;
-
-		}
 		if(strcmp(routertype[0],"rip") == 0)
 		{
 			rip_enabled = 1;
@@ -94,6 +89,7 @@ cmdCallback cCMD_router(char* args)
 		}
 	}
 
+	freeCutString(routertype,nbargs);
 	return cb;
 }
 
@@ -101,20 +97,15 @@ cmdCallback cCMD_norouter(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF,""};
 
-	if(strlen(args) == 0)
+	char* routertype[1];
+	uint8_t nbargs = cutString(args,routertype);
+
+	if(nbargs != 1)
 	{
 		cb.message = CMDCONF_ROUTER_ERROR();
 	}
 	else
 	{
-		char* routertype[2];
-		cutFirstWord(args,routertype);
-		if(strlen(routertype[1]) > 0)
-		{
-			cb.message = CMDCONF_ROUTER_ERROR();
-			return cb;
-
-		}
 		if(strcmp(routertype[0],"rip") == 0)
 		{
 			rip_enabled = 0;
@@ -131,6 +122,7 @@ cmdCallback cCMD_norouter(char* args)
 		}
 	}
 
+	freeCutString(routertype,nbargs);
 	return cb;
 }
 
@@ -138,31 +130,21 @@ cmdCallback cCMD_hostname(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF,""};
 
-	if(strlen(args) <= 1)
+	char* hname[1];
+	uint8_t nbargs = cutString(args,hname);
+
+	if(nbargs != 1)
 	{
 		cb.message = CMDCONF_HOSTNAME_ERROR();
 	}
 	else
 	{
-		char* _hostname[2];
-		cutFirstWord(args,_hostname);
-		if(strlen(_hostname[1]) > 0)
-		{
-			cb.message = CMDCONF_HOSTNAME_ERROR();
-		}
-		else
-		{
-			hostname = _hostname[0];
-			FILE* fname = fopen("/etc/myname","w+");
-			if(fname != NULL)
-			{
-				fputs(hostname,fname);
-				fclose(fname);
-			}
-			WRITE_RUN();
-		}
+		hostname = hname[0];
+		WRITE_RUN();
+		WRITE_HOSTNAME();
 	}
 
+	freeCutString(hname,nbargs);
 	return cb;
 }
 
@@ -170,17 +152,24 @@ cmdCallback cCMD_nohostname(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF,""};
 
-	if(strlen(args) > 1)
+	char* hname[1];
+	uint8_t nbargs = cutString(args,hname);
+
+	if(nbargs != 1)
 	{
-		char* _hostname[2];
-		cutFirstWord(args,_hostname);
-		if(strlen(_hostname[1]) == 0 && strcmp(_hostname[0],hostname) == 0)
+		cb.message = CMDCONF_HOSTNAME_ERROR();
+	}
+	else
+	{
+		if(strcmp(hname[0],hostname) == 0)
 		{
 			hostname = "PFShell";
-			writeRunningConfig();
+			WRITE_RUN();
+			WRITE_HOSTNAME();
 		}
 	}
 
+	freeCutString(hname,nbargs);
 	return cb;
 }
 
