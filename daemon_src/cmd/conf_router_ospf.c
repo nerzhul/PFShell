@@ -56,31 +56,21 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 	}
 
 	// Cutting args
-	char* redistargs[2];
-	cutFirstWord(args,redistargs);
+	char* redistargs[5];
+	uint8_t nbargs = cutString(args,redistargs);
 
 	if(strcmp(redistargs[0],"connected") == 0)
 	{
-		// Cutting args
-		char* metricsstr[2];
-		cutFirstWord(args,redistargs);
 
 		int metric_val = OSPF_DEFAULT_METRIC;
 		int metric_type_val = OSPF_DEFAULT_METRIC_TYPE;
-		if(strlen(redistargs[1]) > 0)
+		if(nbargs >= 3)
 		{
-			// Cutting args after redist_type
-			char* metcmd1[2];
-			cutFirstWord(redistargs[1],metcmd1);
-
 			// If its metric & has a value
-			if(strlen(metcmd1[1]) > 0 && strcmp(metcmd1[0],"metric") == 0)
+			if(strcmp(redistargs[1],"metric") == 0)
 			{
-				char* metarg1[2];
-				cutFirstWord(metcmd1[1],metarg1);
-
 				// Convert the value
-				int tmp_metric_val = atoi(metarg1[0]);
+				int tmp_metric_val = atoi(redistargs[2]);
 
 				// If the value is between 0 and 65535 included
 				if(tmp_metric_val >= 0 && tmp_metric_val <= 65535)
@@ -88,29 +78,17 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 				else
 				{
 					cb.message = CMDROUTER_OSPF_REDIST_ERROR();
+					freeCutString(redistargs);
 					return cb;
 				}
 
 				// If there is args after metric with value
-				if(strlen(metarg1[1]) > 0)
+				if(nbargs == 5)
 				{
-					char* metcmd2[2];
-					cutFirstWord(metarg1[1],metcmd2);
-
 					// If there is a value and keywork is metric-type
-					if(strlen(metcmd2[1]) > 0 && strcmp(metcmd2[0],"metric-type") == 0)
+					if(strcmp(redistargs[3],"metric-type") == 0)
 					{
-						char* metarg2[2];
-						cutFirstWord(metcmd2[1],metarg2);
-
-						// If there is another keyword after the last arg
-						if(strlen(metarg2[1]) > 0)
-						{
-							cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-							return cb;
-						}
-
-						int tmp_metric_type_val = atoi(metarg2[0]);
+						int tmp_metric_type_val = atoi(redistargs[4]);
 
 						// Must be 1 or 2
 						if(tmp_metric_type_val < 1 && tmp_metric_type_val > 2)
@@ -124,6 +102,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 					else
 					{
 						cb.message = CMDROUTER_OSPF_REDIST_ERROR();
+						freeCutString(redistargs);
 						return cb;
 					}
 				}
@@ -141,26 +120,15 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 	}
 	else if(strcmp(redistargs[0],"static") == 0)
 	{
-		// Cutting args
-		char* metricsstr[2];
-		cutFirstWord(args,redistargs);
-
 		int metric_val = OSPF_DEFAULT_METRIC;
 		int metric_type_val = OSPF_DEFAULT_METRIC_TYPE;
-		if(strlen(redistargs[1]) > 0)
+		if(nbargs >= 3)
 		{
-			// Cutting args after redist_type
-			char* metcmd1[2];
-			cutFirstWord(redistargs[1],metcmd1);
-
 			// If its metric & has a value
-			if(strlen(metcmd1[1]) > 0 && strcmp(metcmd1[0],"metric") == 0)
+			if(strcmp(redistargs[1],"metric") == 0)
 			{
-				char* metarg1[2];
-				cutFirstWord(metcmd1[1],metarg1);
-
 				// Convert the value
-				int tmp_metric_val = atoi(metarg1[0]);
+				int tmp_metric_val = atoi(redistargs[2]);
 
 				// If the value is between 0 and 65535 included
 				if(tmp_metric_val >= 0 && tmp_metric_val <= 65535)
@@ -168,34 +136,23 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 				else
 				{
 					cb.message = CMDROUTER_OSPF_REDIST_ERROR();
+					freeCutString(redistargs);
 					return cb;
 				}
 
 				// If there is args after metric with value
-				if(strlen(metarg1[1]) > 0)
+				if(nbargs == 5)
 				{
-					char* metcmd2[2];
-					cutFirstWord(metarg1[1],metcmd2);
-
 					// If there is a value and keywork is metric-type
-					if(strlen(metcmd2[1]) > 0 && strcmp(metcmd2[0],"metric-type") == 0)
+					if(strcmp(redistargs[3],"metric-type") == 0)
 					{
-						char* metarg2[2];
-						cutFirstWord(metcmd2[1],metarg2);
-
-						// If there is another keyword after the last arg
-						if(strlen(metarg2[1]) > 0)
-						{
-							cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-							return cb;
-						}
-
-						int tmp_metric_type_val = atoi(metarg2[0]);
+						int tmp_metric_type_val = atoi(redistargs[4]);
 
 						// Must be 1 or 2
 						if(tmp_metric_type_val < 1 && tmp_metric_type_val > 2)
 						{
 							cb.message = CMDROUTER_OSPF_REDIST_ERROR();
+							freeCutString(redistargs);
 							return cb;
 						}
 
@@ -204,6 +161,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 					else
 					{
 						cb.message = CMDROUTER_OSPF_REDIST_ERROR();
+						freeCutString(redistargs);
 						return cb;
 					}
 				}
@@ -211,6 +169,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 			else
 			{
 				cb.message = CMDROUTER_OSPF_REDIST_ERROR();
+				freeCutString(redistargs);
 				return cb;
 			}
 		}
@@ -220,26 +179,15 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 	}
 	else if(strcmp(redistargs[0],"default") == 0)
 	{
-		// Cutting args
-		char* metricsstr[2];
-		cutFirstWord(args,redistargs);
-
 		int metric_val = OSPF_DEFAULT_METRIC;
 		int metric_type_val = OSPF_DEFAULT_METRIC_TYPE;
-		if(strlen(redistargs[1]) > 0)
+		if(nbargs >= 3)
 		{
-			// Cutting args after redist_type
-			char* metcmd1[2];
-			cutFirstWord(redistargs[1],metcmd1);
-
 			// If its metric & has a value
-			if(strlen(metcmd1[1]) > 0 && strcmp(metcmd1[0],"metric") == 0)
+			if(strcmp(redistargs[1],"metric") == 0)
 			{
-				char* metarg1[2];
-				cutFirstWord(metcmd1[1],metarg1);
-
 				// Convert the value
-				int tmp_metric_val = atoi(metarg1[0]);
+				int tmp_metric_val = atoi(redistargs[2]);
 
 				// If the value is between 0 and 65535 included
 				if(tmp_metric_val >= 0 && tmp_metric_val <= 65535)
@@ -247,34 +195,23 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 				else
 				{
 					cb.message = CMDROUTER_OSPF_REDIST_ERROR();
+					freeCutString(redistargs);
 					return cb;
 				}
 
 				// If there is args after metric with value
-				if(strlen(metarg1[1]) > 0)
+				if(nbargs == 5)
 				{
-					char* metcmd2[2];
-					cutFirstWord(metarg1[1],metcmd2);
-
 					// If there is a value and keywork is metric-type
-					if(strlen(metcmd2[1]) > 0 && strcmp(metcmd2[0],"metric-type") == 0)
+					if(strcmp(redistargs[3],"metric-type") == 0)
 					{
-						char* metarg2[2];
-						cutFirstWord(metcmd2[1],metarg2);
-
-						// If there is another keyword after the last arg
-						if(strlen(metarg2[1]) > 0)
-						{
-							cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-							return cb;
-						}
-
-						int tmp_metric_type_val = atoi(metarg2[0]);
+						int tmp_metric_type_val = atoi(redistargs[4]);
 
 						// Must be 1 or 2
 						if(tmp_metric_type_val < 1 && tmp_metric_type_val > 2)
 						{
 							cb.message = CMDROUTER_OSPF_REDIST_ERROR();
+							freeCutString(redistargs);
 							return cb;
 						}
 
@@ -283,6 +220,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 					else
 					{
 						cb.message = CMDROUTER_OSPF_REDIST_ERROR();
+						freeCutString(redistargs);
 						return cb;
 					}
 				}
@@ -290,6 +228,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 			else
 			{
 				cb.message = CMDROUTER_OSPF_REDIST_ERROR();
+				freeCutString(redistargs);
 				return cb;
 			}
 		}
@@ -300,12 +239,14 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 	else
 	{
 		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+		freeCutString(redistargs);
 		return cb;
 	}
 
 	WRITE_RUN();
 	WRITE_OSPFD();
 
+	freeCutString(redistargs);
 	return cb;
 }
 
@@ -315,76 +256,66 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 	if(strlen(args) == 0)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+		freeCutString(redistargs);
 		return cb;
 	}
 
 	// Cutting args
-	char* redistargs[2];
-	cutFirstWord(args,redistargs);
+	char* redistargs[5];
+	uint8_t nbargs = cutString(args,redistargs);
 
 	if(strcmp(redistargs[0],"connected") == 0)
 	{
-		// Cutting args
-		char* metricsstr[2];
-		cutFirstWord(args,redistargs);
-
-		if(strlen(redistargs[1]) > 0)
+		if(nbargs >= 3)
 		{
-			// Cutting args after redist_type
-			char* metcmd1[2];
-			cutFirstWord(redistargs[1],metcmd1);
-
 			// If its metric & has a value
-			if(strlen(metcmd1[1]) > 0 && strcmp(metcmd1[0],"metric") == 0)
+			if(strcmp(redistargs[1],"metric") == 0)
 			{
-				char* metarg1[2];
-				cutFirstWord(metcmd1[1],metarg1);
-
 				// Convert the value
-				int tmp_metric_val = atoi(metarg1[0]);
+				int tmp_metric_val = atoi(redistargs[2]);
 
 				// if value given mismatches saved
 				if(tmp_metric_val != ospf_redistrib_conn_metric)
+				{
+					freeCutString(redistargs);
 					return cb;
+				}
 
 				// If there is args after metric with value
-				if(strlen(metarg1[1]) > 0)
+				if(nbargs == 5)
 				{
-					char* metcmd2[2];
-					cutFirstWord(metarg1[1],metcmd2);
-
 					// If there is a value and keywork is metric-type
-					if(strlen(metcmd2[1]) > 0 && strcmp(metcmd2[0],"metric-type") == 0)
+					if(strcmp(redistargs[3],"metric-type") == 0)
 					{
-						char* metarg2[2];
-						cutFirstWord(metcmd2[1],metarg2);
-
-						// If there is another keyword after the last arg
-						if(strlen(metarg2[1]) > 0)
-						{
-							cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-							return cb;
-						}
-
-						int tmp_metric_type_val = atoi(metarg2[0]);
+						int tmp_metric_type_val = atoi(redistargs[4]);
 
 						// if value given mismatches saved
 						if(tmp_metric_type_val != ospf_redistrib_conn_type)
+						{
+							freeCutString(redistargs);
 							return cb;
+						}
 
 					}
 				} // if no args given, verify if it's default value
 				else if(ospf_redistrib_conn_type != OSPF_DEFAULT_METRIC_TYPE)
+				{
+					freeCutString(redistargs);
 					return cb;
+				}
 			}
 			else
 			{
 				cb.message = CMDROUTER_OSPF_REDIST_ERROR();
+				freeCutString(redistargs);
 				return cb;
 			}
 		} // if no args given, verify if it's default value
 		else if(ospf_redistrib_conn_metric != OSPF_DEFAULT_METRIC)
+		{
+			freeCutString(redistargs);
 			return cb;
+		}
 
 		ospf_redistrib_conn = 0;
 		ospf_redistrib_conn_metric = OSPF_DEFAULT_METRIC;
@@ -392,67 +323,56 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 	}
 	else if(strcmp(redistargs[0],"static") == 0)
 	{
-		// Cutting args
-		char* metricsstr[2];
-		cutFirstWord(args,redistargs);
-
-		if(strlen(redistargs[1]) > 0)
+		if(nbargs >= 3)
 		{
-			// Cutting args after redist_type
-			char* metcmd1[2];
-			cutFirstWord(redistargs[1],metcmd1);
-
 			// If its metric & has a value
-			if(strlen(metcmd1[1]) > 0 && strcmp(metcmd1[0],"metric") == 0)
+			if(strcmp(redistargs[1],"metric") == 0)
 			{
-				char* metarg1[2];
-				cutFirstWord(metcmd1[1],metarg1);
-
 				// Convert the value
-				int tmp_metric_val = atoi(metarg1[0]);
+				int tmp_metric_val = atoi(redistargs[2]);
 
 				// if value given mismatches saved
 				if(tmp_metric_val != ospf_redistrib_static_metric)
+				{
+					freeCutString(redistargs);
 					return cb;
+				}
 
 				// If there is args after metric with value
-				if(strlen(metarg1[1]) > 0)
+				if(nbargs == 5)
 				{
-					char* metcmd2[2];
-					cutFirstWord(metarg1[1],metcmd2);
-
 					// If there is a value and keywork is metric-type
-					if(strlen(metcmd2[1]) > 0 && strcmp(metcmd2[0],"metric-type") == 0)
+					if(strcmp(redistargs[3],"metric-type") == 0)
 					{
-						char* metarg2[2];
-						cutFirstWord(metcmd2[1],metarg2);
-
-						// If there is another keyword after the last arg
-						if(strlen(metarg2[1]) > 0)
-						{
-							cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-							return cb;
-						}
-
-						int tmp_metric_type_val = atoi(metarg2[0]);
+						int tmp_metric_type_val = atoi(redistargs[4]);
 
 						// if value given mismatches saved
 						if(tmp_metric_type_val != ospf_redistrib_static_type)
+						{
+							freeCutString(redistargs);
 							return cb;
+						}
 
 					}
 				} // if no args given, verify if it's default value
 				else if(ospf_redistrib_conn_type != OSPF_DEFAULT_METRIC_TYPE)
+				{
+					freeCutString(redistargs);
 					return cb;
+				}
 			}
 			else
 			{
 				cb.message = CMDROUTER_OSPF_REDIST_ERROR();
+				freeCutString(redistargs);
 				return cb;
 			}
 		} // if no args given, verify if it's default value
 		else if(ospf_redistrib_static_metric != OSPF_DEFAULT_METRIC)
+		{
+			freeCutString(redistargs);
 			return cb;
+		}
 
 		ospf_redistrib_static = 0;
 		ospf_redistrib_static_metric = OSPF_DEFAULT_METRIC;
@@ -460,67 +380,56 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 	}
 	else if(strcmp(redistargs[0],"default") == 0)
 	{
-		// Cutting args
-		char* metricsstr[2];
-		cutFirstWord(args,redistargs);
-
-		if(strlen(redistargs[1]) > 0)
+		if(nbargs >= 3)
 		{
-			// Cutting args after redist_type
-			char* metcmd1[2];
-			cutFirstWord(redistargs[1],metcmd1);
-
 			// If its metric & has a value
-			if(strlen(metcmd1[1]) > 0 && strcmp(metcmd1[0],"metric") == 0)
+			if(strcmp(redistargs[1],"metric") == 0)
 			{
-				char* metarg1[2];
-				cutFirstWord(metcmd1[1],metarg1);
-
 				// Convert the value
-				int tmp_metric_val = atoi(metarg1[0]);
+				int tmp_metric_val = atoi(redistargs[2]);
 
 				// if value given mismatches saved
 				if(tmp_metric_val != ospf_redistrib_default_metric)
+				{
+					freeCutString(redistargs);
 					return cb;
+				}
 
 				// If there is args after metric with value
-				if(strlen(metarg1[1]) > 0)
+				if(nbargs == 5)
 				{
-					char* metcmd2[2];
-					cutFirstWord(metarg1[1],metcmd2);
-
 					// If there is a value and keywork is metric-type
-					if(strlen(metcmd2[1]) > 0 && strcmp(metcmd2[0],"metric-type") == 0)
+					if(strcmp(redistargs[3],"metric-type") == 0)
 					{
-						char* metarg2[2];
-						cutFirstWord(metcmd2[1],metarg2);
-
-						// If there is another keyword after the last arg
-						if(strlen(metarg2[1]) > 0)
-						{
-							cb.message = CMDROUTER_OSPF_REDIST_ERROR();
-							return cb;
-						}
-
-						int tmp_metric_type_val = atoi(metarg2[0]);
+						int tmp_metric_type_val = atoi(redistargs[4]);
 
 						// if value given mismatches saved
 						if(tmp_metric_type_val != ospf_redistrib_default_type)
+						{
+							freeCutString(redistargs);
 							return cb;
+						}
 
 					}
 				} // if no args given, verify if it's default value
 				else if(ospf_redistrib_conn_type != OSPF_DEFAULT_METRIC_TYPE)
+				{
+					freeCutString(redistargs);
 					return cb;
+				}
 			}
 			else
 			{
 				cb.message = CMDROUTER_OSPF_REDIST_ERROR();
+				freeCutString(redistargs);
 				return cb;
 			}
 		} // if no args given, verify if it's default value
 		else if(ospf_redistrib_conn_metric != OSPF_DEFAULT_METRIC)
+		{
+			freeCutString(redistargs);
 			return cb;
+		}
 
 		ospf_redistrib_default = 0;
 		ospf_redistrib_default_metric = OSPF_DEFAULT_METRIC;
@@ -529,12 +438,14 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 	else
 	{
 		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+		freeCutString(redistargs);
 		return cb;
 	}
 
 	WRITE_RUN();
 	WRITE_OSPFD();
 
+	freeCutString(redistargs);
 	return cb;
 }
 
@@ -548,12 +459,13 @@ cmdCallback crouterCMD_OSPF_passive(char* args)
 		return cb;
 	}
 
-	char* iface[2];
-	cutFirstWord(args,iface);
+	char* iface[1];
+	uint8_t nbargs = cutString(args,iface);
 
-	if(strlen(iface[1]) > 0)
+	if(nbargs > 1)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
+		freeCutString(iface);
 		return cb;
 	}
 
@@ -567,6 +479,7 @@ cmdCallback crouterCMD_OSPF_passive(char* args)
 		WRITE_OSPFD();
 	}
 
+	freeCutString(iface);
 	return cb;
 }
 
@@ -579,12 +492,13 @@ cmdCallback crouterCMD_OSPF_nopassive(char* args)
 		return cb;
 	}
 
-	char* iface[2];
-	cutFirstWord(args,iface);
+	char* iface[1];
+	uint8_t nbargs = cutString(args,iface);
 
-	if(strlen(iface[1]) > 0)
+	if(nbargs > 1)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
+		freeCutString(iface);
 		return cb;
 	}
 
@@ -598,5 +512,6 @@ cmdCallback crouterCMD_OSPF_nopassive(char* args)
 		WRITE_OSPFD();
 	}
 
+	freeCutString(iface);
 	return cb;
 }

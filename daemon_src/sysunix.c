@@ -42,6 +42,7 @@ unsigned short checkSystemIntegrity()
 
 	hsystemcmd("cp /etc/resolv.conf.save /etc/resolv.conf");
 	hsystemcmd("cp /etc/ripd.conf.save /etc/ripd.conf");
+	hsystemcmd("cp /etc/ospfd.conf.save /etc/ospfd.conf");
 
 	printf(".");
 	fflush(stdout);
@@ -193,6 +194,54 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
+	// ospfd.conf check
+	buffer[1024] = "";
+	buffer2[1024] = "";
+	execSystemCommand("/bin/md5 /etc/ospfd.conf.save | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("cat /etc/ospfd.conf.md5",buffer2);
+
+	printf(".");
+	fflush(stdout);
+
+	if(strcmp(buffer,buffer2) != 0)
+	{
+		printf("\x1b[31mERROR\x1b[0m\nospfd.conf is corrupted !\n");
+		error = 1;
+	}
+
+	printf(".");
+	fflush(stdout);
+
+	buffer[1024] = "";
+	buffer2[1024] = "";
+	execSystemCommand("/bin/sha1 /etc/ospfd.conf.save | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("cat /etc/ospfd.conf.sha1",buffer2);
+
+	printf(".");
+	fflush(stdout);
+
+	if(strcmp(buffer,buffer2) != 0)
+	{
+		printf("\x1b[31mERROR\x1b[0m\nospfd.conf is corrupted !\n");
+		error = 1;
+	}
+
+	printf(".");
+	fflush(stdout);
+
+	buffer[1024] = "";
+	buffer2[1024] = "";
+	execSystemCommand("/bin/sha256 /etc/ospfd.conf.save | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("cat /etc/ospfd.conf.sha256",buffer2);
+
+	printf(".");
+	fflush(stdout);
+
+	if(strcmp(buffer,buffer2) != 0)
+	{
+		printf("\x1b[31mERROR\x1b[0m\nospfd.conf is corrupted !\n");
+		error = 1;
+	}
 
 	// check Startup Config
 	printf(".");

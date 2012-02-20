@@ -316,6 +316,12 @@ cmdCallback eCMD_save(char* _none)
 	system("/bin/sha1 /etc/ripd.conf | /usr/bin/awk '{print $4}' > /etc/ripd.conf.sha1");
 	system("/bin/sha256 /etc/ripd.conf | /usr/bin/awk '{print $4}' > /etc/ripd.conf.sha256");
 
+	// Save ospfd.conf
+	system("cp /etc/ospfd.conf /etc/ospfd.conf.save");
+	system("/bin/md5 /etc/ospfd.conf | /usr/bin/awk '{print $4}' > /etc/ospfd.conf.md5");
+	system("/bin/sha1 /etc/ospfd.conf | /usr/bin/awk '{print $4}' > /etc/ospfd.conf.sha1");
+	system("/bin/sha256 /etc/ospfd.conf | /usr/bin/awk '{print $4}' > /etc/ospfd.conf.sha256");
+
 	// Save resolv.conf
 	system("cp /etc/resolv.conf /etc/resolv.conf.save");
 	system("/bin/md5 /etc/resolv.conf | /usr/bin/awk '{print $4}' > /etc/resolv.conf.md5");
