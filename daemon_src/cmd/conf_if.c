@@ -71,56 +71,52 @@ cmdCallback cifCMD_ip_rip(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
-	char* keyword[2];
-	cutFirstWord(args,keyword);
+	char* keywords[3];
+	uint8_t nbargs = cutString(args,keywords);
 
+	if(nbargs < 2)
+	{
+		cb.message = CMDIF_IP_RIP_ERROR();
+		freeCutString(keywords,nbargs);
+		return cb;
+	}
 	if(strcmp(keyword[0],"authentication") == 0)
 	{
-		char* authword[2];
-		cutFirstWord(keyword[1],authword);
-		if(strlen(authword[1]) > 0)
+		if(nbargs == 3)
 		{
-			if(strcmp(authword[0],"key-string") == 0)
+			if(strcmp(keywords[1],"key-string") == 0)
 			{
-				char* authkey[2];
-				cutFirstWord(authword[1],authkey);
-				if(strlen(authkey[1]) == 0 && strlen(authkey[0]) < 17)
+				if(strlen(keywords[2]) < 17)
 				{
-					setInterfaceRIPAuthKey(current_iface,authkey[0]);
+					setInterfaceRIPAuthKey(current_iface,keywords[2]);
 					WRITE_RUN();
 					WRITE_RIPD();
 				}
 				else
 					cb.message = CMDROUTER_RIP_AUTHENTICATION_ERROR();
 			}
-			else if(strcmp(authword[0],"mode") == 0)
+			else if(strcmp(keywords[1],"mode") == 0)
 			{
-				char* authmode[2];
-				cutFirstWord(authword[1],authmode);
-				if(strlen(authmode[1]) == 0)
-				{
-					if(strcmp(authmode[0],"none") == 0)
+					if(strcmp(keywords[2],"none") == 0)
 					{
 						setInterfaceRIPAuthType(current_iface,RIP_AUTH_NONE);
 					}
-					else if(strcmp(authmode[0],"text") == 0)
+					else if(strcmp(keywords[2],"text") == 0)
 					{
 						setInterfaceRIPAuthType(current_iface,RIP_AUTH_TEXT);
 					}
-					else if(strcmp(authmode[0],"md5") == 0)
+					else if(strcmp(keywords[2],"md5") == 0)
 					{
 						setInterfaceRIPAuthType(current_iface,RIP_AUTH_MD5);
 					}
 					else
 					{
 						cb.message = CMDROUTER_RIP_AUTH_MODE_ERROR();
+						freeCutString(keywords,nbargs);
 						return cb;
 					}
 					WRITE_RUN();
 					WRITE_RIPD();
-				}
-				else
-					cb.message = CMDROUTER_RIP_AUTH_MODE_ERROR();
 			}
 			else
 				cb.message = CMDROUTER_RIP_AUTHENTICATION_ERROR();
@@ -130,12 +126,9 @@ cmdCallback cifCMD_ip_rip(char* args)
 	}
 	else if(strcmp(keyword[0],"cost") == 0)
 	{
-		char* cost[2];
-		cutFirstWord(keyword[1],cost);
-
-		if(strlen(cost[1]) == 0)
+		if(nbargs == 2)
 		{
-			int tmpcost = atoi(cost[0]);
+			int tmpcost = atoi(keyword[1]);
 
 			if(tmpcost > 0 && tmpcost < 17)
 			{
@@ -151,6 +144,8 @@ cmdCallback cifCMD_ip_rip(char* args)
 	}
 	else
 		cb.message = CMDIF_IP_RIP_ERROR();
+
+	freeCutString(keywords,nbargs);
 	return cb;
 }
 
@@ -158,22 +153,18 @@ cmdCallback cifCMD_noip_rip(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
-	char* keyword[2];
-	cutFirstWord(args,keyword);
+	char* keywords[3];
+	uint8_t nbargs = cutString(args,keywords);
 
-	if(strcmp(keyword[0],"authentication") == 0)
+	if(strcmp(keywords[0],"authentication") == 0)
 	{
-		char* authword[2];
-		cutFirstWord(keyword[1],authword);
-		if(strlen(authword[1]) > 0)
+		if(nbargs == 3)
 		{
-			if(strcmp(authword[0],"key-string") == 0)
+			if(strcmp(keywords[1],"key-string") == 0)
 			{
-				char* authkey[2];
-				cutFirstWord(authword[1],authkey);
-				if(strlen(authkey[1]) == 0 && strlen(authkey[0]) < 17)
+				if(strlen(keywords[2]) < 17)
 				{
-					if(strcmp(getInterfaceRIPAuthKey(current_iface),authkey[0]) == 0)
+					if(strcmp(getInterfaceRIPAuthKey(current_iface),keywords[2]) == 0)
 					{
 						setInterfaceRIPAuthKey(current_iface,"");
 						WRITE_RUN();
@@ -183,26 +174,19 @@ cmdCallback cifCMD_noip_rip(char* args)
 				else
 					cb.message = CMDROUTER_RIP_AUTHENTICATION_ERROR();
 			}
-			else if(strcmp(authword[0],"mode") == 0)
+			else if(strcmp(keywords[1],"mode") == 0)
 			{
-				char* authmode[2];
-				cutFirstWord(authword[1],authmode);
-				if(strlen(authmode[1]) == 0)
+				unsigned short auth_mode = getInterfaceRIPAuthType(current_iface);
+				if(auth_mode == RIP_AUTH_TEXT && strcmp(keywords[2],"text") == 0)
 				{
-					unsigned short auth_mode = getInterfaceRIPAuthType(current_iface);
-					if(auth_mode == RIP_AUTH_TEXT && strcmp(authmode[0],"text") == 0)
-					{
-						setInterfaceRIPAuthType(current_iface,RIP_AUTH_NONE);
-					}
-					else if(auth_mode == RIP_AUTH_MD5 && strcmp(authmode[0],"md5") == 0)
-					{
-						setInterfaceRIPAuthType(current_iface,RIP_AUTH_NONE);
-					}
-					WRITE_RUN();
-					WRITE_RIPD();
+					setInterfaceRIPAuthType(current_iface,RIP_AUTH_NONE);
 				}
-				else
-					cb.message = CMDROUTER_RIP_AUTH_MODE_ERROR();
+				else if(auth_mode == RIP_AUTH_MD5 && strcmp(keywords[2],"md5") == 0)
+				{
+					setInterfaceRIPAuthType(current_iface,RIP_AUTH_NONE);
+				}
+				WRITE_RUN();
+				WRITE_RIPD();
 			}
 			else
 				cb.message = CMDROUTER_RIP_AUTHENTICATION_ERROR();
@@ -210,14 +194,11 @@ cmdCallback cifCMD_noip_rip(char* args)
 		else
 			cb.message = CMDROUTER_RIP_AUTHENTICATION_ERROR();
 	}
-	else if(strcmp(keyword[0],"cost") == 0)
+	else if(strcmp(keywords[0],"cost") == 0)
 	{
-		char* cost[2];
-		cutFirstWord(keyword[1],cost);
-
-		if(strlen(cost[1]) == 0)
+		if(nbargs == 2)
 		{
-			int tmpcost = atoi(cost[0]);
+			int tmpcost = atoi(keywords[1]);
 
 			if(tmpcost == getInterfaceRIPCost(current_iface))
 			{
@@ -232,6 +213,7 @@ cmdCallback cifCMD_noip_rip(char* args)
 	else
 		cb.message = CMDIF_IP_RIP_ERROR();
 
+	freeCutString(keywords,nbargs);
 	return cb;
 }
 
@@ -239,32 +221,34 @@ cmdCallback cifCMD_ip_ospf(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
-	char* keyword[2];
-	cutFirstWord(args,keyword);
+	char* keywords[2];
+	uint8_t nbargs = cutString(args,keywords);
 
-	if(strcmp(keyword[0],"cost") == 0)
+	if(nbargs != 2)
 	{
-		char* cost[2];
-		cutFirstWord(keyword[1],cost);
+		cb.message = CMDIF_IP_OSPF_ERROR();
+		freeCutString(keywords,nbargs);
+		return cb;
+	}
 
-		if(strlen(cost[1]) == 0)
+	if(strcmp(keywords[0],"cost") == 0)
+	{
+		int tmpcost = atoi(keywords[1]);
+
+		if(tmpcost > 0 && tmpcost < 65536)
 		{
-			int tmpcost = atoi(cost[0]);
-
-			if(tmpcost > 0 && tmpcost < 65536)
-			{
-				setInterfaceOSPFCost(current_iface,tmpcost);
-				WRITE_RUN();
-				WRITE_OSPFD();
-			}
-			else
-				cb.message = CMDIF_IP_OSPF_COST_ERROR();
+			setInterfaceOSPFCost(current_iface,tmpcost);
+			WRITE_RUN();
+			WRITE_OSPFD();
 		}
 		else
 			cb.message = CMDIF_IP_OSPF_COST_ERROR();
+		}
 	}
 	else
 		cb.message = CMDIF_IP_OSPF_ERROR();
+
+	freeCutString(keywords,nbargs);
 	return cb;
 }
 
@@ -272,45 +256,50 @@ cmdCallback cifCMD_noip_ospf(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
-	char* keyword[2];
-	cutFirstWord(args,keyword);
+	char* keywords[2];
+	uint8_t nbargs = cutString(args,keywords);
 
-	if(strcmp(keyword[0],"cost") == 0)
+	if(nbargs != 2)
 	{
-		char* cost[2];
-		cutFirstWord(keyword[1],cost);
+		cb.message = CMDIF_IP_OSPF_ERROR();
+		freeCutString(keywords,nbargs);
+		return cb;
+	}
 
-		if(strlen(cost[1]) == 0)
+	if(strcmp(keywords[0],"cost") == 0)
+	{
+		int tmpcost = atoi(keywords[1]);
+
+		if(tmpcost == getInterfaceOSPFCost(current_iface))
 		{
-			int tmpcost = atoi(cost[0]);
-
-			if(tmpcost == getInterfaceOSPFCost(current_iface))
-			{
-				setInterfaceOSPFCost(current_iface,OSPF_DEFAULT_COST);
-				WRITE_RUN();
-				WRITE_OSPFD();
-			}
+			setInterfaceOSPFCost(current_iface,OSPF_DEFAULT_COST);
+			WRITE_RUN();
+			WRITE_OSPFD();
 		}
-		else
-			cb.message = CMDIF_IP_OSPF_COST_ERROR();
 	}
 	else
 		cb.message = CMDIF_IP_OSPF_ERROR();
 
+	freeCutString(keywords,nbargs);
 	return cb;
 }
 
 cmdCallback cifCMD_ip_address(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_IF,""};
-	if(strlen(args) < 4)
+
+	char* _ip[2];
+	uint8_t nbargs = cutString(args,_ip);
+
+	if(nbargs < 1)
 	{
 		cb.message = CMDIF_IPADDR_ERROR();
+		freeCutString(_ip,nbargs);
 		return cb;
 
 	}
 
-	if(strcmp(args,"DHCP") == 0)
+	if(nbargs == 1 && strcmp(_ip[0],"DHCP") == 0)
 	{
 		if(getInterfaceState(current_iface) == 1)
 		{
@@ -323,18 +312,18 @@ cmdCallback cifCMD_ip_address(char* args)
 		if(setInterfaceIP(current_iface,"DHCP") != 0)
 		{
 			cb.message = CMDIF_FATAL_ERROR();
+			freeCutString(_ip,nbargs);
 			return cb;
 		}
 	}
 	else
 	{
-		char* ipmask[2];
-		cutFirstWord(args,ipmask);
-		if(strlen(ipmask[1]) > 1)
+
+		if(nbargs == 2)
 		{
-			if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+			if(regexp(_ip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
 			{
-				if(is_valid_mask(ipmask[1]) == 0)
+				if(is_valid_mask(_ip[1]) == 0)
 				{
 					char buffer[1024] = "";
 					char ipbuffer[100] = "";
@@ -343,9 +332,9 @@ cmdCallback cifCMD_ip_address(char* args)
 					strcat(buffer,current_iface);
 					strcat(buffer," ");
 
-					strcpy(ipbuffer,ipmask[0]);
+					strcpy(ipbuffer,_ip[0]);
 					strcat(ipbuffer," ");
-					strcat(ipbuffer,ipmask[1]);
+					strcat(ipbuffer,_ip[1]);
 					strcat(buffer,ipbuffer);
 
 					hsystemcmd(buffer);
@@ -353,6 +342,7 @@ cmdCallback cifCMD_ip_address(char* args)
 					if(setInterfaceIP(current_iface,ipbuffer) != 0)
 					{
 						cb.message = CMDIF_FATAL_ERROR();
+						freeCutString(_ip,nbargs);
 						return cb;
 					}
 
@@ -360,16 +350,18 @@ cmdCallback cifCMD_ip_address(char* args)
 				else
 				{
 					cb.message = CMDIF_IPADDR_ERROR();
+					freeCutString(_ip,nbargs);
 					return cb;
 				}
 			}
 			else
 			{
 				cb.message = CMDIF_IPADDR_ERROR();
+				freeCutString(_ip,nbargs);
 				return cb;
 			}
 		}
-		else if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
+		else if(regexp(_ip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
 		{
 			char buffer[1024] = "";
 			strcpy(buffer,"ifconfig ");
@@ -378,19 +370,22 @@ cmdCallback cifCMD_ip_address(char* args)
 			strcat(buffer,ipmask[0]);
 			hsystemcmd(buffer);
 
-			if(setInterfaceIP(current_iface,ipmask[0]) != 0)
+			if(setInterfaceIP(current_iface,_ip[0]) != 0)
 			{
 				cb.message = CMDIF_FATAL_ERROR();
+				freeCutString(_ip,nbargs);
 				return cb;
 			}
 		}
 		else
 		{
 			cb.message = CMDIF_IPADDR_ERROR();
+			freeCutString(_ip,nbargs);
 			return cb;
 		}
 	}
 	WRITE_RUN();
+	freeCutString(_ip,nbargs);
 	return cb;
 }
 
@@ -481,61 +476,69 @@ cmdCallback cifCMD_noshutdown(char* _none)
 cmdCallback cifCMD_access_list(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_IF,""};
-	if(strlen(args) < 3)
+
+	char* acls[2];
+	uint8_t nbargs = cutString(args,acls);
+
+	if(nbargs != 2)
 	{
 		cb.message = CMDIF_ACCESS_LIST_ERROR();
+		freeCutString(acls,nbargs);
 		return cb;
 	}
 
-	char* aclname[2];
-	cutFirstWord(args,aclname);
-
-	char* inout[2];
-	cutFirstWord(aclname[1],inout);
-	if(strcmp(inout[0],"in") != 0 && strcmp(inout[0],"out") != 0)
+	if(strcmp(acls[1],"in") != 0 && strcmp(acls[1],"out") != 0)
 	{
 		cb.message = CMDIF_ACCESS_LIST_ERROR();
+		freeCutString(acls,nbargs);
 		return cb;
 	}
 
-	acl* cursor = access_lists;
 	if(access_lists == NULL)
 	{
 		cb.message = CMDIF_ACCESS_LIST_UNK();
+		freeCutString(acls,nbargs);
 		return cb;
 	}
 
-	if(setInterfaceACL(current_iface,aclname[0],inout[0]) != 0)
+	if(setInterfaceACL(current_iface,acls[0],acls[1]) != 0)
 		cb.message = CMDIF_ACCESS_LIST_UNK();
 
 	WRITE_RUN();
+	freeCutString(acls,nbargs);
 	return cb;
 }
 
 cmdCallback cifCMD_noaccess_list(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_IF,""};
-	if(strlen(args) < 3)
+
+	char* acls[2];
+	uint8_t nbargs = cutString(args,acls);
+
+	if(nbargs != 2)
 	{
 		cb.message = CMDIF_ACCESS_LIST_ERROR();
+		freeCutString(acls,nbargs);
 		return cb;
 	}
 
-	char* aclname[2];
-	cutFirstWord(args,aclname);
-
-	char* inout[2];
-	cutFirstWord(aclname[1],inout);
-	if(strcmp(inout[0],"in") != 0 && strcmp(inout[0],"out") != 0)
+	if(strcmp(acls[1],"in") != 0 && strcmp(inout[1],"out") != 0)
+	{
+		freeCutString(acls,nbargs);
 		return cb;
+	}
 
-	acl* cursor = access_lists;
 	if(access_lists == NULL)
+	{
+		freeCutString(acls,nbargs);
 		return cb;
+	}
 
-	setInterfaceACL(current_iface,"",inout[0]);
+	setInterfaceACL(current_iface,"",inout[1]);
 
 	WRITE_RUN();
+	freeCutString(acls,nbargs);
 	return cb;
 }
 

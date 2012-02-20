@@ -151,7 +151,7 @@ cmdCallback cfwCMD_enable(char* _none)
 	hsystemcmd("/sbin/pfctl -e");
 	hsystemcmd("/sbin/pfctl -f /etc/pf.conf.run");
 	firewallState = 1;
-	CMDFW_ENABLE_SUCCESS();
+	cb.message = CMDFW_ENABLE_SUCCESS();
 	return cb;
 }
 
@@ -189,6 +189,5 @@ cmdCallback cfwCMD_noacl(char* args)
 cmdCallback cfwCMD_show_packetfilter(char* _none)
 {
 	cmdCallback cb = {PROMPT_CONF_FW,""};
-	system("/sbin/pfctl -s rule");
 	return cb;
 }
