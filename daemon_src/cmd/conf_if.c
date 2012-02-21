@@ -80,7 +80,7 @@ cmdCallback cifCMD_ip_rip(char* args)
 		freeCutString(keywords,nbargs);
 		return cb;
 	}
-	if(strcmp(keyword[0],"authentication") == 0)
+	if(strcmp(keywords[0],"authentication") == 0)
 	{
 		if(nbargs == 3)
 		{
@@ -124,11 +124,11 @@ cmdCallback cifCMD_ip_rip(char* args)
 		else
 			cb.message = CMDROUTER_RIP_AUTHENTICATION_ERROR();
 	}
-	else if(strcmp(keyword[0],"cost") == 0)
+	else if(strcmp(keywords[0],"cost") == 0)
 	{
 		if(nbargs == 2)
 		{
-			int tmpcost = atoi(keyword[1]);
+			int tmpcost = atoi(keywords[1]);
 
 			if(tmpcost > 0 && tmpcost < 17)
 			{
@@ -242,6 +242,7 @@ cmdCallback cifCMD_ip_ospf(char* args)
 			WRITE_OSPFD();
 		}
 		else
+		{
 			cb.message = CMDIF_IP_OSPF_COST_ERROR();
 		}
 	}
@@ -367,7 +368,7 @@ cmdCallback cifCMD_ip_address(char* args)
 			strcpy(buffer,"ifconfig ");
 			strcat(buffer,current_iface);
 			strcat(buffer," ");
-			strcat(buffer,ipmask[0]);
+			strcat(buffer,_ip[0]);
 			hsystemcmd(buffer);
 
 			if(setInterfaceIP(current_iface,_ip[0]) != 0)
@@ -523,7 +524,7 @@ cmdCallback cifCMD_noaccess_list(char* args)
 		return cb;
 	}
 
-	if(strcmp(acls[1],"in") != 0 && strcmp(inout[1],"out") != 0)
+	if(strcmp(acls[1],"in") != 0 && strcmp(acls[1],"out") != 0)
 	{
 		freeCutString(acls,nbargs);
 		return cb;
@@ -535,7 +536,7 @@ cmdCallback cifCMD_noaccess_list(char* args)
 		return cb;
 	}
 
-	setInterfaceACL(current_iface,"",inout[1]);
+	setInterfaceACL(current_iface,"",acls[1]);
 
 	WRITE_RUN();
 	freeCutString(acls,nbargs);

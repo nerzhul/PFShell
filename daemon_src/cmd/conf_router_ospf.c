@@ -256,7 +256,6 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 	if(strlen(args) == 0)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
-		freeCutString(redistargs,nbargs);
 		return cb;
 	}
 

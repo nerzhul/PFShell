@@ -243,7 +243,7 @@ cmdCallback cCMD_ip(char* args)
 
 		if(regexp(_ip[1],"^([a-zA-Z0-9][a-zA-Z0-9_-]*(\.[a-zA-Z0-9][a-zA-Z0-9_-]*)+)$") == 0)
 		{
-			strcpy(dnssearch,dname[0]);
+			strcpy(dnssearch,_ip[1]);
 			WRITE_RUN();
 		}
 		else
@@ -265,7 +265,7 @@ cmdCallback cCMD_ip(char* args)
 	}
 	else if(strcmp(_ip[0],"name-server") == 0)
 	{
-		if(_ip != 2)
+		if(nbargs != 2)
 		{
 			cb.message = CMDCONF_IPNS_ERROR();
 			freeCutString(_ip,nbargs);
