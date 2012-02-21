@@ -30,6 +30,7 @@
 #include "../interface.h"
 #include "../prompt/prompt_msg.h"
 #include "../route.h"
+#include "../string_mgmt.h"
 #include "../sysunix.h"
 
 cmdCallback eCMD_configure(char* args)
@@ -190,76 +191,54 @@ cmdCallback eCMD_show(char* args)
 				char lines[1035] = "";
 
 				while (fgets(lines, sizeof(lines), fRoutes) != NULL) {
-					char* netaddr[2];
-					cutFirstWord(lines,netaddr);
+					char* entries[5];
+					uint8_t nbargs = cutString(lines,entries);
 
-					if(strlen(netaddr[1]) == 0)
+					if(nbargs != 5)
 						continue;
 
-					char* gate[2];
-					cutFirstWord(netaddr[1],gate);
-
-					if(strlen(gate[1]) == 0)
-						continue;
-
-					char* type[2];
-					cutFirstWord(gate[1],type);
-
-					if(strlen(type[1]) == 0)
-						continue;
-
-					char* metric[2];
-					cutFirstWord(type[1],metric);
-
-					if(strlen(metric[1]) == 0)
-						continue;
-
-					char* bypath[2];
-					cutFirstWord(metric[1],bypath);
-
-
-					if(strcmp(type[0],"UC") == 0) // Connected
+					if(strcmp(entries[2],"UC") == 0) // Connected
 					{
 						strcat(output,"C\t");
-						strcat(output,netaddr[0]);
+						strcat(output,entries[0]);
 						strcat(output," ");
 						strcat(output,"is directly connected, ");
-						strcat(output,bypath[0]);
+						strcat(output,entries[4]);
 						strcat(output,"\n");
 					}
-					else if(strcmp(type[0],"UGS") == 0) // Static
+					else if(strcmp(entries[2],"UGS") == 0) // Static
 					{
 						strcat(output,"S");
-						if(strcmp(netaddr[0],"default") == 0)
+						if(strcmp(entries[0],"default") == 0)
 						{
 							strcat(output,"*\t0.0.0.0/0");
 						}
 						else
 						{
 							strcat(output,"\t");
-							strcat(output,netaddr[0]);
+							strcat(output,entries[0]);
 						}
 						strcat(output," [1/0] via ");
-						strcat(output,gate[0]);
+						strcat(output,entries[1]);
 						strcat(output,"\n");
 					}
-					else if(strcmp(type[0],"UG") == 0)
+					else if(strcmp(entries[2],"UG") == 0)
 					{
-						if(strcmp(metric[0],"32") == 0)
+						if(strcmp(entries[3],"32") == 0)
 						{
 							strcat(output,"O\t");
 						}
-						else if(strcmp(metric[0],"40") == 0)
+						else if(strcmp(entries[3],"40") == 0)
 						{
 							strcat(output,"R\t");
 						}
-						strcat(output,netaddr[0]);
+						strcat(output,entries[0]);
 						strcat(output," [");
-						strcat(output,metric[0]);
+						strcat(output,entries[3]);
 						strcat(output,"] via ");
-						strcat(output,gate[0]);
+						strcat(output,entries[1]);
 						strcat(output,", ");
-						strcat(output,bypath[0]);
+						strcat(output,entries[4]);
 						strcat(output,"\n");
 					}
 				}

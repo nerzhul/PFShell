@@ -183,3 +183,7 @@ Alpha 0.24
 -- Implement ip ospf transmit-delay
 -- Implement ip ospf retransmit-interval
 -- Implement ip ospf priority
+
+Alpha 0.25 - prev
+- cleanup for show ip routes
+- OSPF Areas
