@@ -50,6 +50,10 @@ struct net_iface
 	unsigned short ospf_priority;
 	unsigned short ospf_hello_int;
 	unsigned short ospf_dead_int;
+	unsigned short ospf_transmit_delay;
+	unsigned short ospf_retransmit_delay;
+	unsigned short ospf_auth_type;
+	char* ospf_auth_pwd;
 
 	net_iface* next;
 	net_iface* prev;
@@ -74,6 +78,11 @@ unsigned short setInterfaceRIPNetwork(char* name, uint8_t net);
 // OSPF
 unsigned short setInterfaceOSPFPassive(char* name, unsigned short passive);
 unsigned short setInterfaceOSPFCost(char* name, unsigned short cost);
+unsigned short setInterfaceOSPFPriority(char* name, unsigned short cost);
+unsigned short setInterfaceOSPFDead(char* name, unsigned int cost);
+unsigned short setInterfaceOSPFHello(char* name, unsigned short cost);
+unsigned short setInterfaceOSPFTransmit(char* name, unsigned short cost);
+unsigned short setInterfaceOSPFRetransmit(char* name, unsigned short cost);
 
 char* getInterfaceIP(char* name);
 unsigned short getInterfaceState(char* name);
@@ -89,6 +98,11 @@ uint8_t getInterfaceRIPNetwork(char* name);
 // OSPF
 unsigned short getInterfaceOSPFPassive(char* name);
 unsigned short getInterfaceOSPFCost(char* name);
+unsigned short getInterfaceOSPFPriority(char* name);
+unsigned int getInterfaceOSPFDead(char* name);
+unsigned short getInterfaceOSPFHello(char* name);
+unsigned short getInterfaceOSPFTransmit(char* name);
+unsigned short getInterfaceOSPFRetransmit(char* name);
 
 
 #endif

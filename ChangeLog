@@ -173,3 +173,13 @@ Alpha 0.24 - prev
 - Create command cutString to cut a string when a space, \n or \t occurs. Dynamicly manage the memory
 - Create string_mgmt to manage strings (cutting, regexp...)
 - Create new function helper for is_valid_ip and is_valid_ip_cidr
+- Create new function helper for is_numeric
+- stability fixes
+- OSPF:
+-- Implement router-id A.B.C.D
+-- Implement timers spf <delay> <hold>
+-- Implement ip ospf hello-interval
+-- Implement ip ospf dead-interval
+-- Implement ip ospf transmit-delay
+-- Implement ip ospf retransmit-interval
+-- Implement ip ospf priority

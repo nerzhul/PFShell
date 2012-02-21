@@ -83,8 +83,14 @@
 #define CMDIF_FATAL_ERROR() PRINTERROR("Interface Fatal Error !!\n");
 #define CMDIF_IP_RIP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip rip <cost> ...\n");
 #define CMDIF_IP_RIP_COST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip rip cost <1-16>\n");
-#define CMDIF_IP_OSPF_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf <cost> ...\n");
+#define CMDIF_IP_OSPF_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf <cost|dead-interval|hello-interval|priority|retransmit-interval|transmit-delay> ...\n");
 #define CMDIF_IP_OSPF_COST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf cost <1-65535>\n");
+#define CMDIF_IP_OSPF_PRIORITY_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf priority <0-255>\n");
+#define CMDIF_IP_OSPF_HELLO_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf hello-interval <1-65535>\n");
+#define CMDIF_IP_OSPF_DEAD_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf dead-interval <2-2147483647>\n");
+#define CMDIF_IP_OSPF_TRANSMIT_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf transmit-delay <1-3600>\n");
+#define CMDIF_IP_OSPF_RETRANSMIT_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf retransmit-interval <5-3600>\n");
+
 
 // Firewall Messages
 #define CMDFW_DISABLE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   disable\n");
@@ -112,5 +118,5 @@
 #define CMDROUTER_RIP_AUTH_KEY_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip rip authentication key-string <1-16 chars>\n");
 
 #define CMDROUTER_OSPF_ROUTERID_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) router-id A.B.C.D <iface>\n");
-#define CMDROUTER_OSPF_TIMERS_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) timers spf <delay> <holdtime> <iface>\n");
+#define CMDROUTER_OSPF_TIMERS_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) timers spf <delay 1-10> <holdtime 1-5> <iface>\n");
 #endif

@@ -247,6 +247,81 @@ cmdCallback cifCMD_ip_ospf(char* args)
 			cb.message = CMDIF_IP_OSPF_COST_ERROR();
 		}
 	}
+	else if(strcmp(keywords[0],"priority") == 0)
+	{
+		int tmpvar = atoi(keywords[1]);
+
+		if(tmpvar >= 0 && tmpvar <= 255)
+		{
+			setInterfaceOSPFPriority(current_iface,tmpvar);
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+		else
+		{
+			cb.message = CMDIF_IP_OSPF_PRIORITY_ERROR();
+		}
+	}
+	else if(strcmp(keywords[0],"hello-interval") == 0)
+	{
+		int tmpvar = atoi(keywords[1]);
+
+		if(tmpvar > 0 && tmpvar < 65536)
+		{
+			setInterfaceOSPFHello(current_iface,tmpvar);
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+		else
+		{
+			cb.message = CMDIF_IP_OSPF_HELLO_ERROR();
+		}
+	}
+	else if(strcmp(keywords[0],"dead-interval") == 0)
+	{
+		int tmpvar = atoi(keywords[1]);
+
+		if(tmpvar >= 2 && tmpvar < 2147483647)
+		{
+			setInterfaceOSPFDead(current_iface,tmpvar);
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+		else
+		{
+			cb.message = CMDIF_IP_OSPF_DEAD_ERROR();
+		}
+	}
+	else if(strcmp(keywords[0],"transmit-delay") == 0)
+	{
+		int tmpvar = atoi(keywords[1]);
+
+		if(tmpvar > 0 && tmpvar <= 3600)
+		{
+			setInterfaceOSPFTransmit(current_iface,tmpvar);
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+		else
+		{
+			cb.message = CMDIF_IP_OSPF_TRANSMIT_ERROR();
+		}
+	}
+	else if(strcmp(keywords[0],"retransmit-interval") == 0)
+	{
+		int tmpvar = atoi(keywords[1]);
+
+		if(tmpvar >= 5 && tmpvar <= 3600)
+		{
+			setInterfaceOSPFRetransmit(current_iface,tmpvar);
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+		else
+		{
+			cb.message = CMDIF_IP_OSPF_RETRANSMIT_ERROR();
+		}
+	}
 	else
 		cb.message = CMDIF_IP_OSPF_ERROR();
 
@@ -277,6 +352,81 @@ cmdCallback cifCMD_noip_ospf(char* args)
 			setInterfaceOSPFCost(current_iface,OSPF_DEFAULT_COST);
 			WRITE_RUN();
 			WRITE_OSPFD();
+		}
+	}
+	else if(strcmp(keywords[0],"priority") == 0)
+	{
+		int tmpvar = atoi(keywords[1]);
+
+		if(tmpvar == getInterfaceOSPFPriority(current_iface))
+		{
+			setInterfaceOSPFPriority(current_iface,1);
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+		else
+		{
+			cb.message = CMDIF_IP_OSPF_PRIORITY_ERROR();
+		}
+	}
+	else if(strcmp(keywords[0],"hello-interval") == 0)
+	{
+		int tmpvar = atoi(keywords[1]);
+
+		if(tmpvar == getInterfaceOSPFHello(current_iface))
+		{
+			setInterfaceOSPFHello(current_iface,10);
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+		else
+		{
+			cb.message = CMDIF_IP_OSPF_HELLO_ERROR();
+		}
+	}
+	else if(strcmp(keywords[0],"dead-interval") == 0)
+	{
+		int tmpvar = atoi(keywords[1]);
+
+		if(tmpvar == getInterfaceOSPFDead(current_iface))
+		{
+			setInterfaceOSPFDead(current_iface,40);
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+		else
+		{
+			cb.message = CMDIF_IP_OSPF_DEAD_ERROR();
+		}
+	}
+	else if(strcmp(keywords[0],"transmit-delay") == 0)
+	{
+		int tmpvar = atoi(keywords[1]);
+
+		if(tmpvar == getInterfaceOSPFTransmit(current_iface))
+		{
+			setInterfaceOSPFTransmit(current_iface,1);
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+		else
+		{
+			cb.message = CMDIF_IP_OSPF_TRANSMIT_ERROR();
+		}
+	}
+	else if(strcmp(keywords[0],"retransmit-interval") == 0)
+	{
+		int tmpvar = atoi(keywords[1]);
+
+		if(tmpvar == getInterfaceOSPFRetransmit(current_iface))
+		{
+			setInterfaceOSPFRetransmit(current_iface,5);
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+		else
+		{
+			cb.message = CMDIF_IP_OSPF_RETRANSMIT_ERROR();
 		}
 	}
 	else

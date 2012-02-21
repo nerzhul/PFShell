@@ -326,11 +326,7 @@ unsigned short writeRunningConfig()
 			fputs("\n",confFile);
 
 			if(strlen(if_cursor->desc) > 0)
-			{
-				fputs("description ",confFile);
-				fputs(if_cursor->desc,confFile);
-				fputs("\n",confFile);
-			}
+				fprintf(confFile,"description %s\n",if_cursor->desc);
 
 			if(strlen(if_cursor->ip) > 0)
 			{
@@ -356,7 +352,7 @@ unsigned short writeRunningConfig()
 				fputs(" out\n",confFile);
 			}
 
-			if(rip_enabled && if_cursor->rip_cost != RIP_DEFAULT_COST)
+			if(if_cursor->rip_cost != RIP_DEFAULT_COST)
 			{
 				fprintf(confFile,"ip rip cost %d\n",if_cursor->rip_cost);
 			}
@@ -371,14 +367,42 @@ unsigned short writeRunningConfig()
 				fputs("\n",confFile);
 			}
 
-			if(strlen(if_cursor->rip_auth_pwd) > 0)
+			if(strlen(if_cursor->rip_auth_pwd) > 0 && strlen(if_cursor->rip_auth_pwd) <= 16)
 			{
 				fprintf(confFile,"ip rip authentication key-string %s\n",if_cursor->rip_auth_pwd);
 			}
 
-			if(ospf_enabled && if_cursor->ospf_cost != OSPF_DEFAULT_COST)
-			{
+			if(if_cursor->ospf_cost != OSPF_DEFAULT_COST)
 				fprintf(confFile,"ip ospf cost %d\n",if_cursor->ospf_cost);
+
+			if(if_cursor->ospf_priority != 1)
+				fprintf(confFile,"ip ospf priority %d\n",if_cursor->ospf_priority);
+
+			if(if_cursor->ospf_hello_int != 10)
+				fprintf(confFile,"ip ospf hello-interval %d\n",if_cursor->ospf_hello_int);
+
+			if(if_cursor->ospf_dead_int != 40)
+				fprintf(confFile,"ip ospf dead-interval %d\n",if_cursor->ospf_dead_int);
+
+			if(if_cursor->ospf_transmit_delay != 1)
+				fprintf(confFile,"ip ospf transmit-delay %d\n",if_cursor->ospf_transmit_delay);
+
+			if(if_cursor->ospf_retransmit_delay != 5)
+				fprintf(confFile,"ip ospf retransmit-interval %d\n",if_cursor->ospf_retransmit_delay);
+
+			if(if_cursor->ospf_auth_type != RIP_AUTH_NONE)
+			{
+				fputs("ip ospf authentication mode ",confFile);
+				if(if_cursor->ospf_auth_type == RIP_AUTH_TEXT)
+					fputs("text",confFile);
+				else if(if_cursor->ospf_auth_type == RIP_AUTH_MD5)
+					fputs("md5",confFile);
+				fputs("\n",confFile);
+			}
+
+			if(strlen(if_cursor->ospf_auth_pwd) > 0 && strlen(if_cursor->ospf_auth_pwd) <= 16)
+			{
+				fprintf(confFile,"ip ospf authentication key-string %s\n",if_cursor->ospf_auth_pwd);
 			}
 			fputs("!\n",confFile);
 			if_cursor = if_cursor->next;

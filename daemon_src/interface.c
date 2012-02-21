@@ -57,6 +57,10 @@ void addInterface(char* name)
 	newIface->ospf_priority = 1;
 	newIface->ospf_hello_int = 10;
 	newIface->ospf_dead_int = 40;
+	newIface->ospf_transmit_delay = 1;
+	newIface->ospf_retransmit_delay = 5;
+	newIface->ospf_auth_type = RIP_AUTH_NONE;
+	newIface->ospf_auth_pwd = "";
 
 	if(interfaces == NULL)
 	{
@@ -480,6 +484,301 @@ unsigned short getInterfaceOSPFCost(char* name)
 			{
 				found = 1;
 				result = cursor->ospf_cost;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return -1;
+	}
+
+	return result;
+}
+
+unsigned short setInterfaceOSPFPriority(char* name, unsigned short prio)
+{
+	if(prio > 255 && prio < 0)
+		return 1;
+
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->ospf_priority = prio;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
+unsigned short getInterfaceOSPFPriority(char* name)
+{
+	unsigned short result = -1;
+
+	if(interfaces == NULL)
+		return -1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				result = cursor->ospf_priority;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return -1;
+	}
+
+	return result;
+}
+
+unsigned short setInterfaceOSPFHello(char* name, unsigned short hello)
+{
+	if(hello > 65535 && hello < 1)
+		return 1;
+
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->ospf_hello_int = hello;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
+unsigned short getInterfaceOSPFHello(char* name)
+{
+	unsigned short result = -1;
+
+	if(interfaces == NULL)
+		return -1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				result = cursor->ospf_hello_int;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return -1;
+	}
+
+	return result;
+}
+
+unsigned short setInterfaceOSPFDead(char* name, unsigned int dead)
+{
+	if(dead > 2147483647 && dead < 2)
+		return 1;
+
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->ospf_dead_int = dead;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
+unsigned int getInterfaceOSPFDead(char* name)
+{
+	unsigned int result = -1;
+
+	if(interfaces == NULL)
+		return -1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				result = cursor->ospf_dead_int;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return -1;
+	}
+
+	return result;
+}
+
+unsigned short setInterfaceOSPFTransmit(char* name, unsigned short transmit)
+{
+	if(transmit > 3600 && transmit < 1)
+		return 1;
+
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->ospf_transmit_delay = transmit;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
+unsigned short getInterfaceOSPFTransmit(char* name)
+{
+	unsigned short result = -1;
+
+	if(interfaces == NULL)
+		return -1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				result = cursor->ospf_transmit_delay;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return -1;
+	}
+
+	return result;
+}
+
+unsigned short setInterfaceOSPFRetransmit(char* name, unsigned short transmit)
+{
+	if(transmit > 3600 && transmit < 5)
+		return 1;
+
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->ospf_retransmit_delay = transmit;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
+unsigned short getInterfaceOSPFRetransmit(char* name)
+{
+	unsigned short result = -1;
+
+	if(interfaces == NULL)
+		return -1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				result = cursor->ospf_retransmit_delay;
 			}
 			else
 				cursor = cursor->next;

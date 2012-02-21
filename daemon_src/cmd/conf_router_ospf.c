@@ -616,6 +616,13 @@ cmdCallback crouterCMD_OSPF_notimers(char* args)
 	int spf_del = atoi(timers[1]);
 	int spf_hold = atoi(timers[2]);
 
+	if(spf_hold > 5 || spf_hold < 1 || spf_del > 10 || spf_del < 1)
+	{
+		cb.message = CMDROUTER_OSPF_TIMERS_ERROR();
+		freeCutString(timers,nbargs);
+		return cb;
+	}
+
 	if(spf_del == ospf_delay_timer && spf_hold == ospf_holdtime_timer)
 	{
 		ospf_delay_timer = OSPF_DEFAULT_DELAY;
