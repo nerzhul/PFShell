@@ -28,9 +28,11 @@
 #include <stdlib.h>
 #include "conf_router_ospf.h"
 #include "configuration.h"
-#include "../prompt/prompt_msg.h"
-#include "route.h"
 #include "../prompt/prompt.h"
+#include "../prompt/prompt_msg.h"
+#include "../string_mgmt.h"
+#include "route.h"
+
 
 cmdCallback crouterCMD_OSPF_exit(char* _none)
 {
@@ -528,7 +530,14 @@ cmdCallback crouterCMD_OSPF_routerid(char* args)
 	}
 	else
 	{
-
+		if(is_valid_ip(rid[0]) == 0)
+		{
+			ospf_router_id = rid[0];
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+		else
+			cb.message = CMDROUTER_OSPF_ROUTERID_ERROR();
 	}
 
 	freeCutString(rid,nbargs);
@@ -548,7 +557,14 @@ cmdCallback crouterCMD_OSPF_norouterid(char* args)
 	}
 	else
 	{
-
+		if(strcmp(rid[0],ospf_router_id) == 0)
+		{
+			ospf_router_id = "";
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+		else
+			cb.message = CMDROUTER_OSPF_ROUTERID_ERROR();
 	}
 
 	freeCutString(rid,nbargs);

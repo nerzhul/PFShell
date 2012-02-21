@@ -89,6 +89,6 @@ unsigned short ospf_redistrib_default_metric;
 unsigned short ospf_stub_router; // @ TODO
 unsigned int ospf_delay_timer; // @ TODO
 unsigned int ospf_holdtime_timer; // @ TODO
-char* ospf_router_id; // @ TODO
+char* ospf_router_id;
 
 #endif

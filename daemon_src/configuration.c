@@ -31,6 +31,7 @@
 #include "firewall.h"
 #include "interface.h"
 #include "route.h"
+#include "string_mgmt.h"
 #include "cmd/command.h"
 #include "cmd/conf_fw.h"
 #include "cmd/conf.h"
@@ -71,6 +72,18 @@ unsigned short loadConfiguration()
 	rip_update_timer = 30;
 	rip_fail_timer = 180;
 	rip_dead_timer = 240;
+
+	ospf_enabled = 0;
+	ospf_redistrib_conn = 0;
+	ospf_redistrib_conn_metric = OSPF_DEFAULT_COST;
+	ospf_redistrib_conn_type = OSPF_DEFAULT_METRIC_TYPE;
+	ospf_redistrib_default = 0;
+	ospf_redistrib_default_metric = OSPF_DEFAULT_COST;
+	ospf_redistrib_default_type = OSPF_DEFAULT_METRIC_TYPE;
+	ospf_redistrib_static = 0;
+	ospf_redistrib_static_metric = OSPF_DEFAULT_COST;
+	ospf_redistrib_static_type = OSPF_DEFAULT_METRIC_TYPE;
+	ospf_router_id = "";
 
 	hostname = "PFShell";
 	strcpy(dnssearch,"local");
@@ -188,6 +201,8 @@ unsigned short writeRunningConfig()
 		if(ospf_enabled == 1)
 		{
 			fputs("router ospf\n", confFile);
+			if(is_valid_ip(ospf_router_id) == 0)
+				fprintf(confFile,"router-id %s\n",ospf_router_id);
 			if(ospf_redistrib_conn == 1)
 			{
 				fputs("redistribute connected",confFile);

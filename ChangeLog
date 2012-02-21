@@ -171,3 +171,5 @@ Alpha 0.24 - prev
 - Reload ospfd & ripd only when daemon is started
 - Implement network <iface> for RIP to use ripd on an interface. passive-interface is used to save configuration, but don't use rip.
 - Create command cutString to cut a string when a space, \n or \t occurs. Dynamicly manage the memory
+- Create string_mgmt to manage strings (cutting, regexp...)
+- Create new function helper for is_valid_ip and is_valid_ip_cidr

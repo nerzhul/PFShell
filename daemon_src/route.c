@@ -30,6 +30,7 @@
 #include <string.h>
 #include "route.h"
 #include "configuration.h"
+#include "string_mgmt.h"
 
 void addRoute(char* ip, char* mask, char* gate)
 {
@@ -225,6 +226,10 @@ void saveOspfd()
 		fputs("#\n#Global configuration\n#\n\n",fOSPFd);
 
 		fputs("fib-update yes\n",fOSPFd);
+
+		if(is_valid_ip(ospf_router_id) == 0)
+			fprintf(fOSPFd,"router-id %s\n",ospf_router_id);
+
 
 		if(ospf_redistrib_conn == 1)
 		{
