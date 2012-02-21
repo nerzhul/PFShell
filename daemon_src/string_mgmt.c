@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <regex.h>
+#include <ctype.h>
 #include "string_mgmt.h"
 
 void cutFirstWord(char* string,char** result)
@@ -110,12 +111,12 @@ uint8_t cutString(char* string,char** result)
 
 	while(offset <= strlen(string))
 	{
-		if(string[offset] == ' ' || string[offset] == '\n' || string[offset] == '\t')
+		if(string[offset] == ' ' || string[offset] == '\n' || string[offset] == '\t' || string[offset] == '\0')
 		{
 			*(result+word_nb) = (char*)malloc(buffer_offset*sizeof(char));
 			*(result+word_nb) = strdup(buffer);
 			++word_nb;
-			strcpy(buffer,"");
+			bzero(buffer,512);
 			buffer_offset = 0;
 		}
 		else
@@ -125,7 +126,7 @@ uint8_t cutString(char* string,char** result)
 		}
 		++offset;
 	}
-	if(strlen(buffer) > 1)
+	if(strlen(buffer) > 0)
 	{
 		*(result+word_nb) = (char*)malloc(buffer_offset*sizeof(char));
 		*(result+word_nb) = strdup(buffer);
@@ -217,5 +218,11 @@ unsigned short regexp(char* str, char* pattern)
 		regfree (&preg);
 		if (match == 0) return 0;
 	}
+	return 1;
+}
+
+uint8_t is_numeric(char* str)
+{
+	if(regexp(str,"^[0-9]+$") == 0)	return 0;
 	return 1;
 }

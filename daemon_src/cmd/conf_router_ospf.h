@@ -38,5 +38,7 @@ cmdCallback crouterCMD_OSPF_passive(char* args);
 cmdCallback crouterCMD_OSPF_nopassive(char* args);
 cmdCallback crouterCMD_OSPF_routerid(char* args);
 cmdCallback crouterCMD_OSPF_norouterid(char* args);
+cmdCallback crouterCMD_OSPF_timers(char* args);
+cmdCallback crouterCMD_OSPF_notimers(char* args);
 
 #endif

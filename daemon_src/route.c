@@ -230,6 +230,11 @@ void saveOspfd()
 		if(is_valid_ip(ospf_router_id) == 0)
 			fprintf(fOSPFd,"router-id %s\n",ospf_router_id);
 
+		if(ospf_delay_timer != OSPF_DEFAULT_DELAY)
+			fprintf(fOSPFd,"spf-delay %d\n",ospf_delay_timer);
+
+		if(ospf_holdtime_timer != OSPF_DEFAULT_HOLDTIME)
+			fprintf(fOSPFd,"spf-holdtime %d\n",ospf_holdtime_timer);
 
 		if(ospf_redistrib_conn == 1)
 		{

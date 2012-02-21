@@ -112,4 +112,5 @@
 #define CMDROUTER_RIP_AUTH_KEY_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip rip authentication key-string <1-16 chars>\n");
 
 #define CMDROUTER_OSPF_ROUTERID_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) router-id A.B.C.D <iface>\n");
+#define CMDROUTER_OSPF_TIMERS_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) timers spf <delay> <holdtime> <iface>\n");
 #endif

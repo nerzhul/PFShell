@@ -84,6 +84,8 @@ unsigned short loadConfiguration()
 	ospf_redistrib_static_metric = OSPF_DEFAULT_COST;
 	ospf_redistrib_static_type = OSPF_DEFAULT_METRIC_TYPE;
 	ospf_router_id = "";
+	ospf_delay_timer = OSPF_DEFAULT_DELAY;
+	ospf_holdtime_timer = OSPF_DEFAULT_HOLDTIME;
 
 	hostname = "PFShell";
 	strcpy(dnssearch,"local");
@@ -203,6 +205,10 @@ unsigned short writeRunningConfig()
 			fputs("router ospf\n", confFile);
 			if(is_valid_ip(ospf_router_id) == 0)
 				fprintf(confFile,"router-id %s\n",ospf_router_id);
+
+			if(ospf_delay_timer != OSPF_DEFAULT_DELAY || ospf_holdtime_timer != OSPF_DEFAULT_HOLDTIME)
+				fprintf(confFile,"timers spf %d %d\n",ospf_delay_timer,ospf_holdtime_timer);
+
 			if(ospf_redistrib_conn == 1)
 			{
 				fputs("redistribute connected",confFile);

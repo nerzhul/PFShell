@@ -570,3 +570,64 @@ cmdCallback crouterCMD_OSPF_norouterid(char* args)
 	freeCutString(rid,nbargs);
 	return cb;
 }
+
+cmdCallback crouterCMD_OSPF_timers(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
+
+	char* timers[3];
+	uint8_t nbargs = cutString(args,timers);
+
+	printf("TEST3 '%s'\n",timers[1]);
+	printf("TEST34 '%s'\n",timers[2]);
+	if(is_numeric(timers[2]) != 0) printf("TEST4 %s\n",timers[2]);
+
+	if(nbargs != 3 || strcmp(timers[0],"spf") != 0 || is_numeric(timers[1]) != 0 || is_numeric(timers[2]) != 0)
+	{
+		cb.message = CMDROUTER_OSPF_TIMERS_ERROR();
+		freeCutString(timers,nbargs);
+		return cb;
+	}
+
+	int spf_del = atoi(timers[1]);
+	int spf_hold = atoi(timers[2]);
+
+	if(spf_del > 0 && spf_hold > 0)
+	{
+		ospf_delay_timer = spf_del;
+		ospf_holdtime_timer = spf_hold;
+		WRITE_RUN();
+		WRITE_OSPFD();
+	}
+
+	freeCutString(timers,nbargs);
+	return cb;
+}
+cmdCallback crouterCMD_OSPF_notimers(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
+
+	char* timers[3];
+	uint8_t nbargs = cutString(args,timers);
+
+	if(nbargs != 3 || strcmp(timers[0],"spf") != 0 || is_numeric(timers[1]) != 0 || is_numeric(timers[2]) != 0)
+	{
+		cb.message = CMDROUTER_OSPF_TIMERS_ERROR();
+		freeCutString(timers,nbargs);
+		return cb;
+	}
+
+	int spf_del = atoi(timers[1]);
+	int spf_hold = atoi(timers[2]);
+
+	if(spf_del == ospf_delay_timer && spf_hold == ospf_holdtime_timer)
+	{
+		ospf_delay_timer = OSPF_DEFAULT_DELAY;
+		ospf_holdtime_timer = OSPF_DEFAULT_HOLDTIME;
+		WRITE_RUN();
+		WRITE_OSPFD();
+	}
+
+	freeCutString(timers,nbargs);
+	return cb;
+}

@@ -75,6 +75,8 @@ unsigned int rip_dead_timer;
 #define OSPF_DEFAULT_METRIC		100
 #define OSPF_DEFAULT_METRIC_TYPE	1
 #define OSPF_DEFAULT_COST		10
+#define OSPF_DEFAULT_DELAY		1
+#define OSPF_DEFAULT_HOLDTIME		5
 
 unsigned short ospf_enabled;
 unsigned short ospf_redistrib_static;

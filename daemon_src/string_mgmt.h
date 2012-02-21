@@ -35,5 +35,6 @@ void cutFirstWord(char*,char**);
 void cutByChar(char*, char**, char cutter);
 uint8_t cutString(char* string,char** result);
 void freeCutString(char** elem, uint8_t size);
+uint8_t is_numeric(char* str);
 
 #endif
