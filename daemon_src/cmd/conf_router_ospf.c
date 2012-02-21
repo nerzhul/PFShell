@@ -578,10 +578,6 @@ cmdCallback crouterCMD_OSPF_timers(char* args)
 	char* timers[3];
 	uint8_t nbargs = cutString(args,timers);
 
-	printf("TEST3 '%s'\n",timers[1]);
-	printf("TEST34 '%s'\n",timers[2]);
-	if(is_numeric(timers[2]) != 0) printf("TEST4 %s\n",timers[2]);
-
 	if(nbargs != 3 || strcmp(timers[0],"spf") != 0 || is_numeric(timers[1]) != 0 || is_numeric(timers[2]) != 0)
 	{
 		cb.message = CMDROUTER_OSPF_TIMERS_ERROR();
