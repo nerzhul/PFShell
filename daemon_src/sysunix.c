@@ -116,7 +116,7 @@ unsigned short checkSystemIntegrity()
 
 	buffer[1024] = "";
 	buffer2[1024] = "";
-	execSystemCommand("/bin/sha1 /etc/myname.save | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("/bin/sha1 /etc/myname | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/myname.sha1",buffer2);
 
 	printf(".");
@@ -133,7 +133,7 @@ unsigned short checkSystemIntegrity()
 
 	buffer[1024] = "";
 	buffer2[1024] = "";
-	execSystemCommand("/bin/sha256 /etc/myname.save | /usr/bin/awk '{print $4}'",buffer);
+	execSystemCommand("/bin/sha256 /etc/myname | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/myname.sha256",buffer2);
 
 	printf(".");
