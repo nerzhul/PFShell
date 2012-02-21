@@ -78,6 +78,24 @@ unsigned int rip_dead_timer;
 #define OSPF_DEFAULT_DELAY		1
 #define OSPF_DEFAULT_HOLDTIME		5
 
+typedef struct ospf_area ospf_area;
+
+struct ospf_area
+{
+	char* id;
+	char* ifacelist;
+	uint8_t stub;
+	ospf_area* next;
+	ospf_area* prev;
+};
+
+void addOSPFArea(char* id);
+void delOSPFArea(char* id);
+// addIfaceToOSPFArea(char* iface, char* id); @ TODO
+// delIfaceFromOSPArea(char* iface, char* id); @ TODO
+
+ospf_area* ospfareas;
+
 unsigned short ospf_enabled;
 unsigned short ospf_redistrib_static;
 unsigned short ospf_redistrib_static_type;
@@ -89,8 +107,8 @@ unsigned short ospf_redistrib_default;
 unsigned short ospf_redistrib_default_type;
 unsigned short ospf_redistrib_default_metric;
 unsigned short ospf_stub_router; // @ TODO
-unsigned int ospf_delay_timer; // @ TODO
-unsigned int ospf_holdtime_timer; // @ TODO
+unsigned int ospf_delay_timer;
+unsigned int ospf_holdtime_timer;
 char* ospf_router_id;
 
 #endif

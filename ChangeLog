@@ -166,7 +166,7 @@ Alpha 0.23
 -- Implement ip rip authentication mode none,text,md5 for each interface
 -- Implement ip rip authentication key-string for each interface
 
-Alpha 0.24 - prev
+Alpha 0.24
 - Change show ip route to a CISCO intepretation
 - Reload ospfd & ripd only when daemon is started
 - Implement network <iface> for RIP to use ripd on an interface. passive-interface is used to save configuration, but don't use rip.

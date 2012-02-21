@@ -61,13 +61,40 @@ void addRoute(char* ip, char* mask, char* gate)
 	}
 }
 
+void addOSPFArea(char* id)
+{
+	ospf_area* oa = (ospf_area*)malloc(sizeof(ospf_area));
+
+	oa->id = (char*)malloc(strlen(id)*sizeof(char));
+	strcpy(oa->id,id);
+	oa->ifacelist = "";
+	oa->stub = 0;
+	oa->next = NULL;
+	oa->prev = NULL;
+
+	if(ospfareas == NULL)
+	{
+		ospfareas = oa;
+	}
+	else
+	{
+		ospf_area* cursor = ospfareas;
+
+		while(cursor->next != NULL)
+			cursor = cursor->next;
+
+		oa->prev = cursor;
+		cursor->next = oa;
+	}
+}
+
 void delRoute(char* ip, char* mask, char* gate)
 {
 	if(routes == NULL)
 		return;
 
 
-	unsigned short found = 0;
+	uint8_t found = 0;
 	route* cursor = routes;
 
 	while(cursor != NULL && found == 0)
@@ -84,6 +111,41 @@ void delRoute(char* ip, char* mask, char* gate)
 					cursor->prev->next = cursor->next;
 				else
 					routes = cursor->next;
+
+				if(cursor->next != NULL)
+					cursor->next->prev = cursor->prev;
+
+			}
+			free(tmpcursor);
+		}
+		else
+			cursor = cursor->next;
+	}
+}
+
+void delOSPFArea(char* id)
+{
+	if(ospfareas == NULL)
+		return;
+
+
+	uint8_t found = 0;
+	ospf_area* cursor = ospfareas;
+
+	while(cursor != NULL && found == 0)
+	{
+		if(strcmp(cursor->id,id) == 0)
+		{
+			found = 1;
+			ospf_area* tmpcursor = cursor;
+			if(cursor == ospfareas && cursor->next == NULL)
+				ospfareas = NULL;
+			else
+			{
+				if(cursor->prev != NULL)
+					cursor->prev->next = cursor->next;
+				else
+					ospfareas = cursor->next;
 
 				if(cursor->next != NULL)
 					cursor->next->prev = cursor->prev;
