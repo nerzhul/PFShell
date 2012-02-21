@@ -275,7 +275,7 @@ unsigned short readACL(char* args, unsigned short allow, unsigned short remove)
 	}
 	else
 	{
-		if(regexp(nexttab[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
+		if(is_valid_ip_and_cidr(nexttab[0]) == 0)
 		{
 			_saddr = (char*)malloc(strlen(nexttab[0])*sizeof(char));
 			strcpy(_saddr,nexttab[0]);
@@ -289,7 +289,7 @@ unsigned short readACL(char* args, unsigned short allow, unsigned short remove)
 
 	// atoi func get first segment of IP and traduce it into port, we must check if next is IP
 	unsigned short notport = 0;
-	if(regexp(nexttab[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
+	if(is_valid_ip_and_cidr(nexttab[0]) == 0)
 		notport = 1;
 
 	int port = atoi(nexttab[0]);
@@ -311,7 +311,7 @@ unsigned short readACL(char* args, unsigned short allow, unsigned short remove)
 	}
 	else
 	{
-		if(regexp(nexttab[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([8-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
+		if(is_valid_ip_and_cidr(nexttab[0]) == 0)
 		{
 			_daddr = (char*)malloc(strlen(nexttab[0])*sizeof(char));
 			strcpy(_daddr,nexttab[0]);

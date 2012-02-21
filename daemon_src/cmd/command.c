@@ -26,8 +26,6 @@
 */
 
 #include <stdlib.h>
-#include <string.h>
-#include <regex.h>
 #include "command.h"
 #include "user.h"
 #include "enable.h"
@@ -38,6 +36,7 @@
 #include "conf_rd.h"
 #include "conf_router_rip.h"
 #include "conf_router_ospf.h"
+#include "../string_mgmt.h"
 #include "../prompt/prompt_msg.h"
 #include "../prompt/prompt.h"
 
@@ -246,201 +245,10 @@ cmdCallback handleCmd(char* _fullcmd, unsigned short promptMode)
 	return cb;
 }
 
-void cutFirstWord(char* string,char** result)
-{
-	char firstWord[1024] = "";
-	char followWords[1024] = "";
-
-	int offset = 0;
-	int offset2 = 0;
-	short first_written = 0;
-
-	while(offset <= strlen(string))
-	{
-		if(!first_written)
-		{
-			if(string[offset] == ' ' || string[offset] == '\n')
-			{
-				first_written = 1;
-				firstWord[offset] = '\0';
-			}
-			else
-				firstWord[offset] = string[offset];
-		}
-		else
-		{
-			followWords[offset2] = string[offset];
-			++offset2;
-		}
-
-		++offset;
-	}
-
-	if(first_written)
-	{
-		followWords[offset] = '\0';
-
-		result[0] = (char*) malloc(offset*sizeof(char));
-		result[1] = (char*) malloc(offset2*sizeof(char));
-
-		offset = strlen(firstWord);
-		while(offset >= 0)
-		{
-			result[0][offset] = firstWord[offset];
-			--offset;
-		}
-
-		offset = strlen(followWords);
-		while(offset >= 0)
-		{
-			result[1][offset] = followWords[offset];
-			--offset;
-		}
-	}
-	else
-	{
-		result[0] = string;
-		result[1] = "";
-	}
-}
-
-uint8_t cutString(char* string,char** result)
-{
-	uint16_t space_count = 0;
-	uint32_t offset = 0;
-
-	// Count spaces
-	while(offset <= strlen(string))
-	{
-		if(string[offset] == ' ' || string[offset] == '\n' || string[offset] == '\t')
-			++space_count;
-
-		++offset;
-	}
-
-	offset = 0;
-	uint8_t word_nb = 0;
-
-	char buffer[512] = "";
-	uint16_t buffer_offset = 0;
-
-	while(offset <= strlen(string))
-	{
-		if(string[offset] == ' ' || string[offset] == '\n' || string[offset] == '\t')
-		{
-			*(result+word_nb) = (char*)malloc(buffer_offset*sizeof(char));
-			*(result+word_nb) = strdup(buffer);
-			++word_nb;
-			strcpy(buffer,"");
-			buffer_offset = 0;
-		}
-		else
-		{
-			buffer[buffer_offset] = string[offset];
-			++buffer_offset;
-		}
-		++offset;
-	}
-	if(strlen(buffer) > 1)
-	{
-		*(result+word_nb) = (char*)malloc(buffer_offset*sizeof(char));
-		*(result+word_nb) = strdup(buffer);
-		++word_nb;
-	}
-
-	return word_nb;
-}
-
-void freeCutString(char** elem,uint8_t size)
-{
-	if(elem == NULL)
-		return;
-
-	for(uint8_t i=0;i<size;i++)
-	{
-		if(elem[i] != NULL)
-			free(elem[i]);
-	}
-}
-
-
-void cutByChar(char* string,char** result,char cutter)
-{
-	char firstWord[1024] = "";
-	char followWords[1024] = "";
-
-	int offset = 0;
-	int offset2 = 0;
-	short first_written = 0;
-
-	while(offset <= strlen(string))
-	{
-		if(!first_written)
-		{
-			if(string[offset] == cutter)
-			{
-				first_written = 1;
-				firstWord[offset] = '\0';
-			}
-			else
-				firstWord[offset] = string[offset];
-		}
-		else
-		{
-			followWords[offset2] = string[offset];
-			++offset2;
-		}
-
-		++offset;
-	}
-
-	if(first_written)
-	{
-		followWords[offset] = '\0';
-
-		result[0] = (char*) malloc(offset*sizeof(char));
-		result[1] = (char*) malloc(offset2*sizeof(char));
-
-		offset = strlen(firstWord);
-		while(offset >= 0)
-		{
-			result[0][offset] = firstWord[offset];
-			--offset;
-		}
-
-		offset = strlen(followWords);
-		while(offset >= 0)
-		{
-			result[1][offset] = followWords[offset];
-			--offset;
-		}
-	}
-	else
-	{
-		result[0] = string;
-		result[1] = "";
-	}
-}
-
-
 void hsystemcmd(char* cmd)
 {
 	char cmd2[1024] = "";
 	strcpy(cmd2,cmd);
 	strcat(cmd2," > /dev/null 2>&1");
 	system(cmd2);
-}
-
-unsigned short regexp(char* str, char* pattern)
-{
-	int err,match;
-	regex_t preg;
-	err = regcomp(&preg, pattern, REG_EXTENDED);
-	if(err == 0)
-	{
-		match = regexec(&preg, str, 0, NULL, 0);
-		regfree (&preg);
-		if (match == 0) return 0;
-	}
-	return 1;
 }

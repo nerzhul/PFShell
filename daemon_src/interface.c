@@ -32,6 +32,7 @@
 #include "configuration.h"
 #include "cmd/command.h"
 #include "iputils.h"
+#include "string_mgmt.h"
 #include "sysunix.h"
 
 void addInterface(char* name)
@@ -95,6 +96,7 @@ void loadInterfaces()
 
 	char* iface[2];
 	cutFirstWord(output,iface);
+
 	if(strcmp(iface[0],"") != 0)
 	{
 		addInterface(iface[0]);
@@ -158,7 +160,7 @@ unsigned short saveInterfaces()
 			cutFirstWord(cursor->ip,ipmask);
 			if(strlen(ipmask[1]) > 1)
 			{
-				if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+				if(is_valid_ip(ipmask[0]) == 0)
 				{
 					if(is_valid_mask(ipmask[1]) == 0)
 					{
@@ -179,7 +181,7 @@ unsigned short saveInterfaces()
 					}
 				}
 			}
-			else if(regexp(ipmask[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
+			else if(is_valid_ip_and_cidr(ipmask[0]) == 0)
 			{
 				char* mask[2];
 				cutByChar(ipmask[0],mask,'/');

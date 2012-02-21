@@ -32,6 +32,7 @@
 #include <string.h>
 #include <math.h>
 #include "iputils.h"
+#include "string_mgmt.h"
 
 char* calc_broadcast(char* IP, char* mask)
 {
@@ -118,4 +119,18 @@ unsigned int calc_num_broadcast(unsigned int IP,unsigned int mask)
 unsigned int calc_num_network(unsigned int IP,unsigned int mask)
 {
 	return (IP & mask);
+}
+
+uint8_t is_valid_ip(char* ip)
+{
+	if(regexp(ip,"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+		return 0;
+	return 1;
+}
+
+uint8_t is_valid_ip_and_cidr(char* str)
+{
+	if(regexp(str,"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
+		return 0;
+	return 1;
 }

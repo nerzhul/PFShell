@@ -39,6 +39,8 @@ BSDRouterd_SOURCES = \
 	prompt/prompt_msg.h \
 	route.c \
 	route.h \
+	string_mgmt.c \
+	string_mgmt.h \
 	sysunix.c \
 	sysunix.h
 

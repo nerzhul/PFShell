@@ -33,6 +33,7 @@
 #include "../interface.h"
 #include "../prompt/prompt_msg.h"
 #include "../iputils.h"
+#include "../string_mgmt.h"
 
 cmdCallback cifCMD_exit(char* _none)
 {
@@ -322,7 +323,7 @@ cmdCallback cifCMD_ip_address(char* args)
 
 		if(nbargs == 2)
 		{
-			if(regexp(_ip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") == 0)
+			if(is_valid_ip(_ip[0]) == 0)
 			{
 				if(is_valid_mask(_ip[1]) == 0)
 				{
@@ -362,7 +363,7 @@ cmdCallback cifCMD_ip_address(char* args)
 				return cb;
 			}
 		}
-		else if(regexp(_ip[0],"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])((/([0-9]|[1-2][0-9]|3[0-2]))?)$") == 0)
+		else if(is_valid_ip_and_cidr(_ip[0]) == 0)
 		{
 			char buffer[1024] = "";
 			strcpy(buffer,"ifconfig ");

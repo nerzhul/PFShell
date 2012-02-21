@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -25,17 +25,15 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __IP_UTILS_H_
-#define __IP_UTILS_H_
+#ifndef __STRING_MGMT_H__
+#define __STRING_MGMT_H__
 
-char* calc_broadcast(char* IP, char* mask);
-char*  calc_network(char*  IP,char*  mask);
-short calc_cidr(char* mask);
-char* calc_mask_from_cidr(char* cidr);
-unsigned short is_valid_mask(char* mask);
-// Not used for now
-unsigned int calc_num_broadcast(unsigned int IP,unsigned int mask);
-unsigned int calc_num_network(unsigned int IP,unsigned int mask);
-uint8_t is_valid_ip(char* ip);
-uint8_t is_valid_ip_and_cidr(char* str);
+#include <sys/types.h>
+
+unsigned short regexp(char* str, char* pattern);
+void cutFirstWord(char*,char**);
+void cutByChar(char*, char**, char cutter);
+uint8_t cutString(char* string,char** result);
+void freeCutString(char** elem, uint8_t size);
+
 #endif

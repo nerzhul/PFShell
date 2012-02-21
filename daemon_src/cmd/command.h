@@ -122,14 +122,7 @@ cmdHdlr* masternoCmd[MAX_CMD_TYPES];
 
 unsigned short initCmds();
 
-void cutFirstWord(char*,char**);
-void cutByChar(char*, char**, char cutter);
-uint8_t cutString(char* string,char** result);
-void freeCutString(char** elem,uint8_t size);
-
 cmdCallback handleCmd(char* _cmd, unsigned short promptMode);
-
-unsigned short regexp(char* str, char* pattern);
 
 void hsystemcmd(char* cmd);
 

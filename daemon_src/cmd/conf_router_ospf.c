@@ -514,3 +514,43 @@ cmdCallback crouterCMD_OSPF_nopassive(char* args)
 	freeCutString(iface,nbargs);
 	return cb;
 }
+
+cmdCallback crouterCMD_OSPF_routerid(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
+
+	char* rid[1];
+	uint8_t nbargs = cutString(args,rid);
+
+	if(nbargs != 1)
+	{
+		cb.message = CMDROUTER_OSPF_ROUTERID_ERROR();
+	}
+	else
+	{
+
+	}
+
+	freeCutString(rid,nbargs);
+	return cb;
+}
+
+cmdCallback crouterCMD_OSPF_norouterid(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
+
+	char* rid[1];
+	uint8_t nbargs = cutString(args,rid);
+
+	if(nbargs != 1)
+	{
+		cb.message = CMDROUTER_OSPF_ROUTERID_ERROR();
+	}
+	else
+	{
+
+	}
+
+	freeCutString(rid,nbargs);
+	return cb;
+}

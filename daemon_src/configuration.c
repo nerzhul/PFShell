@@ -64,6 +64,7 @@ unsigned short loadConfiguration()
 	mcastrouting = 0;
 
 	rip_enabled = 0;
+	rip_split_horizon = 1;
 	rip_redistrib_static = 0;
 	rip_redistrib_conn = 0;
 	rip_redistrib_default = 0;
