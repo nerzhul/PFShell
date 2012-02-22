@@ -54,7 +54,7 @@ typedef struct commandHandler
 #define MAX_CONF_RD_CMD			1
 #define MAX_CONF_ACL_CMD		3
 #define MAX_CONF_ROUTER_RIP_CMD		7
-#define MAX_CONF_ROUTER_OSPF_CMD	5
+#define MAX_CONF_ROUTER_OSPF_CMD	6
 
 static const unsigned short MAX_CMDS[MAX_CMD_TYPES] =
 {
@@ -91,7 +91,7 @@ cmdHdlr* masterCmd[MAX_CMD_TYPES];
 #define MAX_CONF_RD_NO_CMD 0
 #define MAX_CONF_ACL_NO_CMD 2
 #define MAX_CONF_ROUTER_RIP_NO_CMD 6
-#define MAX_CONF_ROUTER_OSPF_NO_CMD 4
+#define MAX_CONF_ROUTER_OSPF_NO_CMD 5
 
 static const unsigned short MAX_NO_CMDS[MAX_CMD_TYPES] =
 {

@@ -83,7 +83,7 @@
 #define CMDIF_FATAL_ERROR() PRINTERROR("Interface Fatal Error !!\n");
 #define CMDIF_IP_RIP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip rip <cost> ...\n");
 #define CMDIF_IP_RIP_COST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip rip cost <1-16>\n");
-#define CMDIF_IP_OSPF_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf <cost|dead-interval|hello-interval|priority|retransmit-interval|transmit-delay> ...\n");
+#define CMDIF_IP_OSPF_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf <authentication|cost|dead-interval|hello-interval|priority|retransmit-interval|transmit-delay> ...\n");
 #define CMDIF_IP_OSPF_COST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf cost <1-65535>\n");
 #define CMDIF_IP_OSPF_PRIORITY_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf priority <0-255>\n");
 #define CMDIF_IP_OSPF_HELLO_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf hello-interval <1-65535>\n");
@@ -112,11 +112,16 @@
 #define CMDROUTER_RIP_SPLITHORIZ_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   split-horizon\n");
 #define CMDROUTER_RIP_OSPF_INTERFACE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) passive-interface <iface>\n");
 #define CMDROUTER_RIP_TIMERS_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) timers <update> <fail> <dead>\n");
-#define CMDROUTER_RIP_AUTHENTICATION_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip authentication <key-string|mode> ...\n");
+#define CMDROUTER_RIP_AUTHENTICATION_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip rip authentication <key-string|mode> ...\n");
 #define CMDROUTER_RIP_NETWORK_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) network <iface>\n");
 #define CMDROUTER_RIP_AUTH_MODE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip rip authentication mode <none|md5|text>\n");
 #define CMDROUTER_RIP_AUTH_KEY_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip rip authentication key-string <1-16 chars>\n");
 
 #define CMDROUTER_OSPF_ROUTERID_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) router-id A.B.C.D <iface>\n");
 #define CMDROUTER_OSPF_TIMERS_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) timers spf <delay 1-10> <holdtime 1-5> <iface>\n");
+#define CMDROUTER_OSPF_NETWORK_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) network <iface> area <id|A.B.C.D>\n");
+#define CMDROUTER_OSPF_AUTH_MODE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf authentication mode <none|md5|text>\n");
+#define CMDROUTER_OSPF_AUTH_KEY_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf authentication key-string <1-16 chars>\n");
+#define CMDROUTER_OSPF_AUTHENTICATION_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf authentication <key-string|mode> ...\n");
+#define CMDROUTER_OSPF_AREA_IFACE_ERROR() PRINTERROR("Error ! This interface is already in an area. Please deconfigure the area before.\n");
 #endif

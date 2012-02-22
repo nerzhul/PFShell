@@ -175,6 +175,8 @@ unsigned short initCmds()
 	confRouterOSPFCmd[3].handler = crouterCMD_OSPF_routerid;
 	confRouterOSPFCmd[4].name = "timers";
 	confRouterOSPFCmd[4].handler = crouterCMD_OSPF_timers;
+	confRouterOSPFCmd[5].name = "network";
+	confRouterOSPFCmd[5].handler = crouterCMD_OSPF_network;
 
 	// Enable - Configure - Router OSPF No Commands
 	noconfRouterOSPFCmd[0].name = "redistribute";
@@ -185,6 +187,8 @@ unsigned short initCmds()
 	noconfRouterOSPFCmd[2].handler = crouterCMD_OSPF_norouterid;
 	noconfRouterOSPFCmd[3].name = "timers";
 	noconfRouterOSPFCmd[3].handler = crouterCMD_OSPF_notimers;
+	noconfRouterOSPFCmd[4].name = "network";
+	noconfRouterOSPFCmd[4].handler = crouterCMD_OSPF_nonetwork;
 
 	masterCmd[0] = userCmd;
 	masterCmd[1] = enableCmd;

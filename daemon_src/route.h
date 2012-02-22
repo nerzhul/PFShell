@@ -82,17 +82,17 @@ typedef struct ospf_area ospf_area;
 
 struct ospf_area
 {
-	char* id;
+	uint32_t id;
 	char* ifacelist;
 	uint8_t stub;
 	ospf_area* next;
 	ospf_area* prev;
 };
 
-void addOSPFArea(char* id);
-void delOSPFArea(char* id);
-// addIfaceToOSPFArea(char* iface, char* id); @ TODO
-// delIfaceFromOSPArea(char* iface, char* id); @ TODO
+void addOSPFArea(uint32_t id);
+void delOSPFArea(uint32_t id);
+uint8_t addIfaceToOSPFArea(char* iface, uint32_t id);
+void delIfaceFromOSPFArea(char* iface, uint32_t id);
 
 ospf_area* ospfareas;
 

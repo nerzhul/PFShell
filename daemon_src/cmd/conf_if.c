@@ -81,6 +81,7 @@ cmdCallback cifCMD_ip_rip(char* args)
 		freeCutString(keywords,nbargs);
 		return cb;
 	}
+
 	if(strcmp(keywords[0],"authentication") == 0)
 	{
 		if(nbargs == 3)
@@ -225,15 +226,66 @@ cmdCallback cifCMD_ip_ospf(char* args)
 	char* keywords[2];
 	uint8_t nbargs = cutString(args,keywords);
 
-	if(nbargs != 2)
+	if(nbargs == 0 || nbargs > 3)
 	{
 		cb.message = CMDIF_IP_OSPF_ERROR();
 		freeCutString(keywords,nbargs);
 		return cb;
 	}
 
-	if(strcmp(keywords[0],"cost") == 0)
+	if(strcmp(keywords[0],"authentication") == 0)
 	{
+		if(nbargs == 3)
+		{
+			if(strcmp(keywords[1],"key-string") == 0)
+			{
+				if(strlen(keywords[2]) < 17)
+				{
+					setInterfaceOSPFAuthKey(current_iface,keywords[2]);
+					WRITE_RUN();
+					WRITE_RIPD();
+				}
+				else
+					cb.message = CMDROUTER_OSPF_AUTHENTICATION_ERROR();
+			}
+			else if(strcmp(keywords[1],"mode") == 0)
+			{
+					if(strcmp(keywords[2],"none") == 0)
+					{
+						setInterfaceOSPFAuthType(current_iface,RIP_AUTH_NONE);
+					}
+					else if(strcmp(keywords[2],"text") == 0)
+					{
+						setInterfaceOSPFAuthType(current_iface,RIP_AUTH_TEXT);
+					}
+					else if(strcmp(keywords[2],"md5") == 0)
+					{
+						setInterfaceOSPFAuthType(current_iface,RIP_AUTH_MD5);
+					}
+					else
+					{
+						cb.message = CMDROUTER_OSPF_AUTH_MODE_ERROR();
+						freeCutString(keywords,nbargs);
+						return cb;
+					}
+					WRITE_RUN();
+					WRITE_RIPD();
+			}
+			else
+				cb.message = CMDROUTER_OSPF_AUTHENTICATION_ERROR();
+		}
+		else
+			cb.message = CMDROUTER_OSPF_AUTHENTICATION_ERROR();
+	}
+	else if(strcmp(keywords[0],"cost") == 0)
+	{
+		if(nbargs != 2)
+		{
+			cb.message = CMDIF_IP_OSPF_ERROR();
+			freeCutString(keywords,nbargs);
+			return cb;
+		}
+
 		int tmpcost = atoi(keywords[1]);
 
 		if(tmpcost > 0 && tmpcost < 65536)
@@ -249,6 +301,13 @@ cmdCallback cifCMD_ip_ospf(char* args)
 	}
 	else if(strcmp(keywords[0],"priority") == 0)
 	{
+		if(nbargs != 2)
+		{
+			cb.message = CMDIF_IP_OSPF_ERROR();
+			freeCutString(keywords,nbargs);
+			return cb;
+		}
+
 		int tmpvar = atoi(keywords[1]);
 
 		if(tmpvar >= 0 && tmpvar <= 255)
@@ -264,6 +323,13 @@ cmdCallback cifCMD_ip_ospf(char* args)
 	}
 	else if(strcmp(keywords[0],"hello-interval") == 0)
 	{
+		if(nbargs != 2)
+		{
+			cb.message = CMDIF_IP_OSPF_ERROR();
+			freeCutString(keywords,nbargs);
+			return cb;
+		}
+
 		int tmpvar = atoi(keywords[1]);
 
 		if(tmpvar > 0 && tmpvar < 65536)
@@ -279,6 +345,13 @@ cmdCallback cifCMD_ip_ospf(char* args)
 	}
 	else if(strcmp(keywords[0],"dead-interval") == 0)
 	{
+		if(nbargs != 2)
+		{
+			cb.message = CMDIF_IP_OSPF_ERROR();
+			freeCutString(keywords,nbargs);
+			return cb;
+		}
+
 		int tmpvar = atoi(keywords[1]);
 
 		if(tmpvar >= 2 && tmpvar < 2147483647)
@@ -294,6 +367,13 @@ cmdCallback cifCMD_ip_ospf(char* args)
 	}
 	else if(strcmp(keywords[0],"transmit-delay") == 0)
 	{
+		if(nbargs != 2)
+		{
+			cb.message = CMDIF_IP_OSPF_ERROR();
+			freeCutString(keywords,nbargs);
+			return cb;
+		}
+
 		int tmpvar = atoi(keywords[1]);
 
 		if(tmpvar > 0 && tmpvar <= 3600)
@@ -309,6 +389,13 @@ cmdCallback cifCMD_ip_ospf(char* args)
 	}
 	else if(strcmp(keywords[0],"retransmit-interval") == 0)
 	{
+		if(nbargs != 2)
+		{
+			cb.message = CMDIF_IP_OSPF_ERROR();
+			freeCutString(keywords,nbargs);
+			return cb;
+		}
+
 		int tmpvar = atoi(keywords[1]);
 
 		if(tmpvar >= 5 && tmpvar <= 3600)
@@ -343,7 +430,45 @@ cmdCallback cifCMD_noip_ospf(char* args)
 		return cb;
 	}
 
-	if(strcmp(keywords[0],"cost") == 0)
+	if(strcmp(keywords[0],"authentication") == 0)
+	{
+		if(nbargs == 3)
+		{
+			if(strcmp(keywords[1],"key-string") == 0)
+			{
+				if(strlen(keywords[2]) < 17)
+				{
+					if(strcmp(getInterfaceOSPFAuthKey(current_iface),keywords[2]) == 0)
+					{
+						setInterfaceOSPFAuthKey(current_iface,"");
+						WRITE_RUN();
+						WRITE_RIPD();
+					}
+				}
+				else
+					cb.message = CMDROUTER_OSPF_AUTHENTICATION_ERROR();
+			}
+			else if(strcmp(keywords[1],"mode") == 0)
+			{
+				unsigned short auth_mode = getInterfaceOSPFAuthType(current_iface);
+				if(auth_mode == RIP_AUTH_TEXT && strcmp(keywords[2],"text") == 0)
+				{
+					setInterfaceOSPFAuthType(current_iface,RIP_AUTH_NONE);
+				}
+				else if(auth_mode == RIP_AUTH_MD5 && strcmp(keywords[2],"md5") == 0)
+				{
+					setInterfaceOSPFAuthType(current_iface,RIP_AUTH_NONE);
+				}
+				WRITE_RUN();
+				WRITE_RIPD();
+			}
+			else
+				cb.message = CMDROUTER_OSPF_AUTHENTICATION_ERROR();
+		}
+		else
+			cb.message = CMDROUTER_OSPF_AUTHENTICATION_ERROR();
+	}
+	else if(strcmp(keywords[0],"cost") == 0)
 	{
 		int tmpcost = atoi(keywords[1]);
 

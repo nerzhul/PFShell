@@ -28,6 +28,8 @@
 #include <stdlib.h>
 #include "conf_router_ospf.h"
 #include "configuration.h"
+#include "interface.h"
+#include "iputils.h"
 #include "../prompt/prompt.h"
 #include "../prompt/prompt_msg.h"
 #include "../string_mgmt.h"
@@ -632,5 +634,121 @@ cmdCallback crouterCMD_OSPF_notimers(char* args)
 	}
 
 	freeCutString(timers,nbargs);
+	return cb;
+}
+
+cmdCallback crouterCMD_OSPF_network(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
+
+	char* netarea[3];
+	uint8_t nbargs = cutString(args,netarea);
+
+	if(nbargs != 3)
+	{
+
+		cb.message = CMDROUTER_OSPF_NETWORK_ERROR();
+		freeCutString(netarea,nbargs);
+		return cb;
+	}
+
+	if(strcmp(netarea[1],"area") != 0)
+	{
+		cb.message = CMDROUTER_OSPF_NETWORK_ERROR();
+		freeCutString(netarea,nbargs);
+		return cb;
+	}
+
+	if(is_interface(netarea[0]) != 0)
+	{
+		cb.message = CMD_INTERFACE_UNK();
+		freeCutString(netarea,nbargs);
+		return cb;
+	}
+
+	if(is_numeric(netarea[2]) == 0)
+	{
+		uint32_t area = atoi(netarea[2]);
+		if(addIfaceToOSPFArea(netarea[0],area) != 0)
+		{
+			cb.message = CMDROUTER_OSPF_AREA_IFACE_ERROR();
+		}
+		else
+		{
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+	}
+	else if(is_valid_ip(netarea[2]) == 0)
+	{
+		uint32_t area = convert_ip_to_int(netarea[2]);
+		if(addIfaceToOSPFArea(netarea[0],area) != 0)
+		{
+			cb.message = CMDROUTER_OSPF_AREA_IFACE_ERROR();
+		}
+		else
+		{
+			WRITE_RUN();
+			WRITE_OSPFD();
+		}
+	}
+	else
+	{
+		cb.message = CMDROUTER_OSPF_NETWORK_ERROR();
+	}
+
+	freeCutString(netarea,nbargs);
+	return cb;
+}
+
+cmdCallback crouterCMD_OSPF_nonetwork(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
+
+	char* netarea[3];
+	uint8_t nbargs = cutString(args,netarea);
+
+	if(nbargs != 3)
+	{
+
+		cb.message = CMDROUTER_OSPF_NETWORK_ERROR();
+		freeCutString(netarea,nbargs);
+		return cb;
+	}
+
+	if(strcmp(netarea[1],"area") != 0)
+	{
+		cb.message = CMDROUTER_OSPF_NETWORK_ERROR();
+		freeCutString(netarea,nbargs);
+		return cb;
+	}
+
+	if(is_interface(netarea[0]) != 0)
+	{
+		cb.message = CMD_INTERFACE_UNK();
+		freeCutString(netarea,nbargs);
+		return cb;
+	}
+
+	if(is_numeric(netarea[2]) == 0)
+	{
+		uint32_t area = atoi(netarea[2]);
+		delIfaceFromOSPFArea(netarea[0],area);
+		WRITE_RUN();
+		WRITE_OSPFD();
+	}
+	else if(is_valid_ip(netarea[2]) == 0)
+	{
+		uint32_t area = convert_ip_to_int(netarea[2]);
+		delIfaceFromOSPFArea(netarea[0],area);
+		WRITE_RUN();
+		WRITE_OSPFD();
+	}
+	else
+	{
+		cb.message = CMDROUTER_OSPF_NETWORK_ERROR();
+	}
+
+	freeCutString(netarea,nbargs);
 	return cb;
 }

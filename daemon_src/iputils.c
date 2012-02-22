@@ -134,3 +134,17 @@ uint8_t is_valid_ip_and_cidr(char* str)
 		return 0;
 	return 1;
 }
+
+uint32_t convert_ip_to_int(char* ip)
+{
+	struct in_addr _IP;
+	inet_aton(ip,&_IP);
+	return ntohl(_IP.s_addr);
+}
+
+char* convert_int_to_ip(uint32_t ip)
+{
+	struct in_addr _IP;
+	_IP.s_addr = (in_addr_t)ntohl(ip);
+	return inet_ntoa(_IP);
+}

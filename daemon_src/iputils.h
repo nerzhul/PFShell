@@ -38,4 +38,6 @@ unsigned int calc_num_broadcast(unsigned int IP,unsigned int mask);
 unsigned int calc_num_network(unsigned int IP,unsigned int mask);
 uint8_t is_valid_ip(char* ip);
 uint8_t is_valid_ip_and_cidr(char* str);
+uint32_t convert_ip_to_int(char* ip);
+char* convert_int_to_ip(uint32_t ip);
 #endif

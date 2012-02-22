@@ -186,4 +186,6 @@ Alpha 0.24
 
 Alpha 0.25 - prev
 - cleanup for show ip routes
-- OSPF Areas
+- create helper to detect if an inteface exist
+- Implement OSPF Areas
+- Implement OSPF authentication

@@ -28,8 +28,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+
 #include "route.h"
 #include "configuration.h"
+#include "iputils.h"
 #include "string_mgmt.h"
 
 void addRoute(char* ip, char* mask, char* gate)
@@ -61,12 +64,11 @@ void addRoute(char* ip, char* mask, char* gate)
 	}
 }
 
-void addOSPFArea(char* id)
+void addOSPFArea(uint32_t id)
 {
 	ospf_area* oa = (ospf_area*)malloc(sizeof(ospf_area));
 
-	oa->id = (char*)malloc(strlen(id)*sizeof(char));
-	strcpy(oa->id,id);
+	oa->id = id;
 	oa->ifacelist = "";
 	oa->stub = 0;
 	oa->next = NULL;
@@ -123,7 +125,7 @@ void delRoute(char* ip, char* mask, char* gate)
 	}
 }
 
-void delOSPFArea(char* id)
+void delOSPFArea(uint32_t id)
 {
 	if(ospfareas == NULL)
 		return;
@@ -134,7 +136,7 @@ void delOSPFArea(char* id)
 
 	while(cursor != NULL && found == 0)
 	{
-		if(strcmp(cursor->id,id) == 0)
+		if(cursor->id == id)
 		{
 			found = 1;
 			ospf_area* tmpcursor = cursor;
@@ -155,6 +157,131 @@ void delOSPFArea(char* id)
 		}
 		else
 			cursor = cursor->next;
+	}
+}
+
+uint8_t addIfaceToOSPFArea(char* iface, uint32_t id)
+{
+	if(ospfareas == NULL)
+	{
+		addOSPFArea(id);
+		addIfaceToOSPFArea(iface,id);
+	}
+	else
+	{
+		ospf_area* cursor = ospfareas;
+		ospf_area* oa = NULL;
+		while(cursor != NULL)
+		{
+			if(cursor->ifacelist != NULL && strlen(cursor->ifacelist) > 0)
+			{
+				char* ifaceBuffer[256];
+				uint8_t nbifaces = cutString(cursor->ifacelist,ifaceBuffer);
+				for(uint8_t i=0;i<nbifaces;i++)
+				{
+					if(strcmp(ifaceBuffer[i],iface) == 0)
+					{
+						freeCutString(ifaceBuffer,nbifaces);
+						return 1;
+					}
+				}
+			}
+			cursor = cursor->next;
+		}
+
+
+		cursor = ospfareas;
+		while(cursor != NULL && oa == NULL)
+		{
+			if(cursor->id == id)
+				oa = cursor;
+			else
+				cursor = cursor->next;
+		}
+
+		if(oa == NULL)
+		{
+			addOSPFArea(id);
+			addIfaceToOSPFArea(iface,id);
+		}
+		else
+		{
+			if(oa->ifacelist == NULL || strlen(oa->ifacelist) == 0)
+			{
+				oa->ifacelist = (char*)malloc(1024*sizeof(char));
+				bzero(oa->ifacelist,1024);
+				strcpy(oa->ifacelist,iface);
+			}
+			else
+			{
+				char* ifaceBuffer[256];
+				uint8_t nbifaces = cutString(oa->ifacelist,ifaceBuffer);
+				for(uint8_t i=0;i<nbifaces;i++)
+				{
+					if(strcmp(ifaceBuffer[i],iface) == 0)
+					{
+						freeCutString(ifaceBuffer,nbifaces);
+						return 0;
+					}
+				}
+				strcat(oa->ifacelist," ");
+				strcat(oa->ifacelist,iface);
+				freeCutString(ifaceBuffer,nbifaces);
+			}
+
+		}
+	}
+
+	return 0;
+}
+
+void delIfaceFromOSPFArea(char* iface, uint32_t id)
+{
+	if(ospfareas == NULL)
+		return;
+	else
+	{
+		ospf_area* cursor = ospfareas;
+		ospf_area* oa = NULL;
+		while(cursor != NULL && oa == NULL)
+		{
+			if(cursor->id == id)
+				oa = cursor;
+			else
+				cursor = cursor->next;
+		}
+
+		if(oa == NULL)
+			return;
+		else
+		{
+			char buffer[1024] = "";
+			char* ifaceBuffer[256];
+			uint8_t nbifaces = cutString(oa->ifacelist,ifaceBuffer);
+			if(oa->ifacelist != NULL);
+				free(oa->ifacelist);
+
+			uint8_t first = 0;
+			for(uint8_t i=0;i<nbifaces;i++)
+			{
+				if(strcmp(ifaceBuffer[i],iface) == 0)
+					continue;
+
+				if(first == 0) first = 1;
+				else strcat(buffer," ");
+
+				strcat(buffer,ifaceBuffer[i]);
+			}
+
+			if(strcmp(buffer,"") != 0)
+			{
+				oa->ifacelist = (char*)malloc((strlen(buffer)+1)*sizeof(char));
+				strcpy(oa->ifacelist,buffer);
+			}
+			else
+				delOSPFArea(id);
+			freeCutString(ifaceBuffer,nbifaces);
+		}
 	}
 }
 
@@ -288,6 +415,7 @@ void saveOspfd()
 		fputs("#\n#Global configuration\n#\n\n",fOSPFd);
 
 		fputs("fib-update yes\n",fOSPFd);
+		fputs("rfc1583compat yes\n",fOSPFd);
 
 		if(is_valid_ip(ospf_router_id) == 0)
 			fprintf(fOSPFd,"router-id %s\n",ospf_router_id);
@@ -331,13 +459,64 @@ void saveOspfd()
 
 	fputs("\n#\n# Areas configuration\n#\n\n",fOSPFd);
 
-	// @ TODO interfaces & areas
+	ospf_area* cursor = ospfareas;
+	while(cursor != NULL)
+	{
+		if(strlen(cursor->ifacelist) > 0)
+		{
+			fprintf(fOSPFd,"area %s {\n",convert_int_to_ip(cursor->id));
+			char* ifbuffer[256];
+			uint8_t nbif = cutString(cursor->ifacelist,ifbuffer);
+			for(uint8_t i=0;i<nbif;i++)
+			{
+				fprintf(fOSPFd,"\tinterface %s {\n",ifbuffer[i]);
+				net_iface* cursor2 = interfaces;
+				uint8_t found = 0;
+				while(cursor2 != NULL && found == 0)
+				{
+					if(strcmp(cursor2->name,ifbuffer[i]) == 0)
+						found = 1;
+					else cursor2 = cursor2->next;
+				}
+				if(cursor2->ospf_hello_int != 10)
+					fprintf(fOSPFd,"\t\thello-interval %d\n",cursor2->ospf_hello_int);
+				if(cursor2->ospf_cost != 10)
+					fprintf(fOSPFd,"\t\tmetric %d\n",cursor2->ospf_cost);
+				if(cursor2->ospf_passive == 1)
+					fprintf(fOSPFd,"\t\tpassive\n");
+				if(cursor2->ospf_retransmit_delay != 5)
+					fprintf(fOSPFd,"\t\tretransmit-interval %d\n",cursor2->ospf_retransmit_delay);
+				if(cursor2->ospf_dead_int != 40)
+					fprintf(fOSPFd,"\t\trouter-dead-time %d\n",cursor2->ospf_dead_int);
+				if(cursor2->ospf_priority != 1)
+					fprintf(fOSPFd,"\t\trouter-priority %d\n",cursor2->ospf_priority);
+				if(cursor2->ospf_transmit_delay != 1)
+					fprintf(fOSPFd,"\t\ttransmit-delay %d\n",cursor2->ospf_transmit_delay);
+
+				if(cursor2->ospf_auth_type > RIP_AUTH_NONE && strlen(cursor2->ospf_auth_pwd) > 0 && strlen(cursor2->ospf_auth_pwd) < 17)
+				{
+					if(cursor2->ospf_auth_type == RIP_AUTH_TEXT)
+					{
+						fputs("\t\tauth-type simple\n",fOSPFd);
+						fprintf(fOSPFd,"\t\tauth-key %s\n",cursor2->ospf_auth_pwd);
+					}
+					else if(cursor2->ospf_auth_type == RIP_AUTH_MD5)
+					{
+						fputs("\t\tauth-type crypt\n",fOSPFd);
+						fprintf(fOSPFd,"\tauth-md 1 \"%s\"\n",cursor2->ospf_auth_pwd);
+						fputs("\t\tauth-md-keyid 1\n",fOSPFd);
+					}
+				}
+				fputs("\t}\n",fOSPFd);
+			}
+			freeCutString(ifbuffer,nbif);
+			fputs("}\n",fOSPFd);
+		}
+		cursor = cursor->next;
+	}
 
 	if(is_loading == 0)
-	{
-		hsystemcmd("kill -9 $(ps aux|grep ospfd|grep parent|awk '{print $2}')");
-		hsystemcmd("/usr/sbin/ospfd");
-	}
+		hsystemcmd("/usr/sbin/ospfctl reload");
 
 	fclose(fOSPFd);
 }

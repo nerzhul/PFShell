@@ -61,6 +61,7 @@ void addInterface(char* name)
 	newIface->ospf_retransmit_delay = 5;
 	newIface->ospf_auth_type = RIP_AUTH_NONE;
 	newIface->ospf_auth_pwd = "";
+	newIface->ospf_area_id = 0;
 
 	if(interfaces == NULL)
 	{
@@ -850,6 +851,33 @@ unsigned short getInterfaceRIPCost(char* name)
 	return result;
 }
 
+unsigned short setInterfaceOSPFAuthKey(char* name, char* key)
+{
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->ospf_auth_pwd = key;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
 unsigned short setInterfaceRIPAuthKey(char* name, char* key)
 {
 	if(interfaces == NULL)
@@ -875,6 +903,35 @@ unsigned short setInterfaceRIPAuthKey(char* name, char* key)
 	}
 
 	return 0;
+}
+
+char* getInterfaceOSPFAuthKey(char* name)
+{
+	char _key[50] = "";
+
+	if(interfaces == NULL)
+		return "";
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				strcpy(_key,cursor->ospf_auth_pwd);
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return "";
+	}
+
+	return _key;
 }
 
 char* getInterfaceRIPAuthKey(char* name)
@@ -906,6 +963,35 @@ char* getInterfaceRIPAuthKey(char* name)
 	return _key;
 }
 
+unsigned short setInterfaceOSPFAuthType(char* name, unsigned short type)
+{
+	if(type > RIP_AUTH_MD5 && type < RIP_AUTH_NONE)
+		return 1;
+
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->ospf_auth_type = type;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
 
 unsigned short setInterfaceRIPAuthType(char* name, unsigned short type)
 {
@@ -935,6 +1021,35 @@ unsigned short setInterfaceRIPAuthType(char* name, unsigned short type)
 	}
 
 	return 0;
+}
+
+unsigned short getInterfaceOSPFAuthType(char* name)
+{
+	unsigned short result = -1;
+
+	if(interfaces == NULL)
+		return -1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				result = cursor->ospf_auth_type;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return -1;
+	}
+
+	return result;
 }
 
 unsigned short getInterfaceRIPAuthType(char* name)
@@ -1135,4 +1250,22 @@ unsigned short setInterfaceACL(char* name, char* aclname, char* direction)
 	}
 
 	return 0;
+}
+
+uint8_t is_interface(char* name)
+{
+	if(interfaces == NULL)
+		return 1;
+
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
+			return 0;
+		else
+			cursor = cursor->next;
+	}
+
+	return 1;
 }

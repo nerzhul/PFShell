@@ -30,6 +30,7 @@
 #include "configuration.h"
 #include "firewall.h"
 #include "interface.h"
+#include "iputils.h"
 #include "route.h"
 #include "string_mgmt.h"
 #include "cmd/command.h"
@@ -247,12 +248,21 @@ unsigned short writeRunningConfig()
 			while(if_cursor != NULL)
 			{
 				if(if_cursor->ospf_passive > 0)
-				{
-					fputs("passive-interface ",confFile);
-					fputs(if_cursor->name,confFile);
-					fputs("\n",confFile);
-				}
+					fprintf(confFile,"passive-interface %s\n",if_cursor->name);
 				if_cursor = if_cursor->next;
+			}
+			// Areas
+			ospf_area* oa = ospfareas;
+			while(oa != NULL)
+			{
+				char* iflist[256];
+				uint8_t ifnb = cutString(oa->ifacelist,iflist);
+				for(uint8_t i=0;i<ifnb;i++)
+					fprintf(confFile,"network %s area %s\n",iflist[i],convert_int_to_ip(oa->id));
+
+				freeCutString(iflist,ifnb);
+
+				oa = oa->next;
 			}
 			fputs("!\n",confFile);
 		}
