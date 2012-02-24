@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -39,6 +39,7 @@ struct net_iface
 	char* acl_in;
 	char* acl_out;
 	char* desc;
+	uint16_t vlan;
 	unsigned short state;
 	uint8_t is_rip_network;
 	unsigned short rip_passive;
@@ -66,7 +67,10 @@ unsigned short saveInterfaces();
 
 uint8_t is_interface(char* name);
 
+int8_t getInterfacePosition(char* name);
+
 unsigned short setInterfaceIP(char* name, char* ip);
+unsigned short setInterfaceVLAN(char* name, uint16_t vlan);
 unsigned short setInterfaceState(char* name, unsigned short state);
 unsigned short setInterfaceACL(char* name, char* aclname, char* direction);
 unsigned short setInterfaceDesc(char* name, char* desc);
@@ -90,6 +94,7 @@ unsigned short setInterfaceOSPFAuthType(char* name, unsigned short type);
 unsigned short setInterfaceOSPFAuthKey(char* name, char* key);
 
 char* getInterfaceIP(char* name);
+uint16_t getInterfaceVLAN(char* name);
 unsigned short getInterfaceState(char* name);
 char* getInterfaceDesc(char* name);
 

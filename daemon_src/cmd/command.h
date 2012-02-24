@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -49,7 +49,7 @@ typedef struct commandHandler
 #define MAX_USER_CMD			4
 #define MAX_ENABLE_CMD			4
 #define MAX_CONF_CMD			6
-#define MAX_CONF_IF_CMD 		4
+#define MAX_CONF_IF_CMD 		5
 #define MAX_CONF_FW_CMD			5
 #define MAX_CONF_RD_CMD			1
 #define MAX_CONF_ACL_CMD		3
@@ -86,7 +86,7 @@ cmdHdlr* masterCmd[MAX_CMD_TYPES];
 #define MAX_USER_NO_CMD 0
 #define MAX_ENABLE_NO_CMD 0
 #define MAX_CONF_NO_CMD 2
-#define MAX_CONF_IF_NO_CMD 3
+#define MAX_CONF_IF_NO_CMD 4
 #define MAX_CONF_FW_NO_CMD 1
 #define MAX_CONF_RD_NO_CMD 0
 #define MAX_CONF_ACL_NO_CMD 2

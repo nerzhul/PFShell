@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -188,29 +188,65 @@ cmdCallback cCMD_interface(char* args)
 		return cb;
 	}
 
-	net_iface* cursor = interfaces;
-	short found = 0;
+	char* subiface[2];
+	cutByChar(iface[0],subiface,'.');
 
-	if(cursor != NULL)
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		while(found == 0 && cursor != NULL)
+		if(strlen(subiface[1]) == 0 && strcmp(cursor->name,subiface[0]) == 0)
 		{
-			if(strcmp(cursor->name,args) == 0)
-				found = 1;
-			else
-				cursor = cursor->next;
+			current_iface = subiface[0];
+			current_iface_id = 0;
+			cb.promptMode = PROMPT_CONF_IF;
+			freeCutString(iface,nbargs);
+			return cb;
 		}
+		else if(strcmp(cursor->name,iface[0]) == 0)
+		{
+			if(strlen(subiface[1]) > 0)
+			{
+				current_iface = iface[0];
+				current_iface_id = atoi(subiface[1]);
+				cb.promptMode = PROMPT_CONF_IF;
+			}
+			freeCutString(iface,nbargs);
+			return cb;
+		}
+		else
+			cursor = cursor->next;
 	}
 
-	if(found == 0)
+	if(strlen(subiface[1]) == 0 || is_numeric(subiface[1]) != 0)
 	{
-		cb.message = CMDCONF_INTERFACE_UNK(args);
+		cb.message = CMDCONF_INTERFACE_ERROR();
 		freeCutString(iface,nbargs);
 		return cb;
 	}
 
-	current_iface = args;
-	cb.promptMode = PROMPT_CONF_IF;
+	int if_id = atoi(subiface[1]);
+	if(if_id <= 0 || if_id > 1005)
+	{
+		cb.message = CMDCONF_INTERFACE_ERROR();
+		freeCutString(iface,nbargs);
+		return cb;
+	}
+
+	addInterface(iface[0]);
+	int8_t pos = getInterfacePosition(iface[0]);
+	if(pos != -1)
+	{
+		char cmdbuffer[200];
+		sprintf(cmdbuffer,"ifconfig vlan%d%d vlan 0 vlandev %s",pos,if_id,subiface[0]);
+		hsystemcmd(cmdbuffer);
+
+		cb.promptMode = PROMPT_CONF_IF;
+		current_iface = iface[0];
+		current_iface_id = if_id;
+
+		WRITE_RUN();
+	}
 
 	freeCutString(iface,nbargs);
 	return cb;

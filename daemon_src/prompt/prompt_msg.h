@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -59,7 +59,7 @@
 
 // Configure menu Messages
 #define CMDCONF_HOSTNAME_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   hostname <string>\n");
-#define CMDCONF_INTERFACE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   interface <name>\n");
+#define CMDCONF_INTERFACE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   interface <name>(.<1-1005>)\n");
 #define CMDCONF_INTERFACE_UNK(A) printError("Unknown interface %s\n",A);
 #define CMDCONF_IP_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   ip <domain-name|multicast-routing|name-server|route|routing>\n");
 #define CMDCONF_FIREWALL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is: \n   firewall\n");
@@ -90,6 +90,7 @@
 #define CMDIF_IP_OSPF_DEAD_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf dead-interval <2-2147483647>\n");
 #define CMDIF_IP_OSPF_TRANSMIT_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf transmit-delay <1-3600>\n");
 #define CMDIF_IP_OSPF_RETRANSMIT_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf retransmit-interval <5-3600>\n");
+#define CMDIF_ENCAPSULATION_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) encapsulation dot1q <1-1005>\n");
 
 
 // Firewall Messages

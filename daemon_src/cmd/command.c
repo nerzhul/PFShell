@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -91,6 +91,8 @@ unsigned short initCmds()
 	confIfCmd[2].handler = &cifCMD_ip;
 	confIfCmd[3].name = "description";
 	confIfCmd[3].handler = &cifCMD_description;
+	confIfCmd[4].name = "encapsulation";
+	confIfCmd[4].handler = &cifCMD_encap;
 
 	// Enable - Configure - Interface Inverted commands
 	noconfIfCmd[0].name = "shutdown";
@@ -99,6 +101,8 @@ unsigned short initCmds()
 	noconfIfCmd[1].handler = &cifCMD_noip;
 	noconfIfCmd[2].name = "description";
 	noconfIfCmd[2].handler = &cifCMD_nodescription;
+	noconfIfCmd[3].name = "encapsulation";
+	noconfIfCmd[3].handler = &cifCMD_noencap;
 
 	// Enable - Configure - Firewall Commands
 	confFWCmd[0].name = "exit";

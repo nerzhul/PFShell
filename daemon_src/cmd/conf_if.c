@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -46,6 +46,7 @@ cmdCallback cifCMD_exit(char* _none)
 	{
 		cb.promptMode = PROMPT_CONF;
 		current_iface = "";
+		current_iface_id = 0;
 	}
 	return cb;
 }
@@ -602,21 +603,18 @@ cmdCallback cifCMD_ip_address(char* args)
 			{
 				if(is_valid_mask(_ip[1]) == 0)
 				{
-					char buffer[1024] = "";
-					char ipbuffer[100] = "";
+					char buffer[512] = "";
 
-					strcpy(buffer,"ifconfig ");
-					strcat(buffer,current_iface);
-					strcat(buffer," ");
+					if(current_iface_id == 0)
+						sprintf(buffer,"ifconfig %s %s netmask %s",current_iface,_ip[0],_ip[1]);
+					else
+						sprintf(buffer,"ifconfig vlan%d%d %s netmask %s",getInterfacePosition(current_iface),current_iface_id,_ip[0],_ip[1]);
+					system(buffer);
 
-					strcpy(ipbuffer,_ip[0]);
-					strcat(ipbuffer," ");
-					strcat(ipbuffer,_ip[1]);
-					strcat(buffer,ipbuffer);
+					bzero(buffer,512);
+					sprintf(buffer,"%s %s",_ip[0],_ip[1]);
 
-					hsystemcmd(buffer);
-
-					if(setInterfaceIP(current_iface,ipbuffer) != 0)
+					if(setInterfaceIP(current_iface,buffer) != 0)
 					{
 						cb.message = CMDIF_FATAL_ERROR();
 						freeCutString(_ip,nbargs);
@@ -640,12 +638,12 @@ cmdCallback cifCMD_ip_address(char* args)
 		}
 		else if(is_valid_ip_and_cidr(_ip[0]) == 0)
 		{
-			char buffer[1024] = "";
-			strcpy(buffer,"ifconfig ");
-			strcat(buffer,current_iface);
-			strcat(buffer," ");
-			strcat(buffer,_ip[0]);
-			hsystemcmd(buffer);
+			char buffer[512] = "";
+			if(current_iface_id == 0)
+				sprintf(buffer,"ifconfig %s %s",current_iface,_ip[0]);
+			else
+				sprintf(buffer,"ifconfig vlan%d%d %s",getInterfacePosition(current_iface),current_iface_id,_ip[0]);
+			system(buffer);
 
 			if(setInterfaceIP(current_iface,_ip[0]) != 0)
 			{
@@ -692,10 +690,11 @@ cmdCallback cifCMD_shutdown(char* _none)
 		return cb;
 	}
 
-	char buffer[1024] = "";
-	strcpy(buffer,"ifconfig ");
-	strcat(buffer,current_iface);
-	strcat(buffer," down");
+	char buffer[100] = "";
+	if(current_iface_id == 0)
+		sprintf(buffer,"ifconfig %s down",current_iface);
+	else
+		sprintf(buffer,"ifconfig vlan%d%d down",getInterfacePosition(current_iface),current_iface,current_iface_id);
 	system(buffer);
 
 	if(setInterfaceState(current_iface,0) != 0)
@@ -717,27 +716,43 @@ cmdCallback cifCMD_noshutdown(char* _none)
 		return cb;
 	}
 
-	char buffer[1024] = "";
-	strcpy(buffer,"ifconfig ");
-	strcat(buffer,current_iface);
-	strcat(buffer," up");
+	char buffer[100] = "";
+	if(current_iface_id == 0)
+		sprintf(buffer,"ifconfig %s up",current_iface);
+	else
+		sprintf(buffer,"ifconfig vlan%d%d up",getInterfacePosition(current_iface),current_iface_id);
 	system(buffer);
 
 	char* ifconf = getInterfaceIP(current_iface);
 	if(strcmp(ifconf,"DHCP") == 0)
 	{
-		char buffer[1024] = "";
-		strcpy(buffer,"dhclient ");
-		strcat(buffer,current_iface);
-		hsystemcmd(buffer);
+		char buffer[100] = "";
+		if(current_iface_id == 0)
+			sprintf(buffer,"dhclient %s",current_iface);
+		else
+			sprintf(buffer,"dhclient vlan%d%d",getInterfacePosition(current_iface),current_iface_id);
+		system(buffer);
 	}
 	else if(strlen(ifconf) > 0)
 	{
-		strcpy(buffer,"ifconfig ");
-		strcat(buffer,current_iface);
-		strcat(buffer," ");
-		strcat(buffer,ifconf);
-		hsystemcmd(buffer);
+		char* _ip[2];
+		uint8_t nbargs = cutString(ifconf,_ip);
+		if(nbargs == 1)
+		{
+			if(current_iface_id == 0)
+				sprintf(buffer,"ifconfig %s %s",current_iface,_ip[0]);
+			else
+				sprintf(buffer,"ifconfig vlan%d%d %s",getInterfacePosition(current_iface),current_iface_id,_ip[0]);
+			system(buffer);
+		}
+		else
+		{
+			if(current_iface_id == 0)
+				sprintf(buffer,"ifconfig %s %s netmask %s",current_iface,_ip[0],_ip[1]);
+			else
+				sprintf(buffer,"ifconfig vlan%d%d %s netmask %s",getInterfacePosition(current_iface),current_iface_id,_ip[0],_ip[1]);
+			system(buffer);
+		}
 	}
 
 	if(setInterfaceState(current_iface,1) != 0)
@@ -851,5 +866,112 @@ cmdCallback cifCMD_nodescription(char* args)
 	}
 
 	WRITE_RUN();
+	return cb;
+}
+
+cmdCallback cifCMD_encap(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	if(current_iface_id == 0)
+	{
+		cb.message = CMD_UNK();
+		return cb;
+	}
+
+	char* enc[2];
+	uint8_t nbargs = cutString(args,enc);
+
+	if(nbargs != 2)
+	{
+		cb.message = CMDIF_ENCAPSULATION_ERROR();
+		freeCutString(enc,nbargs);
+		return cb;
+	}
+
+	if(strcmp(enc[0],"dot1q") == 0)
+	{
+		if(is_numeric(enc[1]) != 0)
+		{
+			cb.message = CMDIF_ENCAPSULATION_ERROR();
+			freeCutString(enc,nbargs);
+			return cb;
+		}
+
+		int vlanid = atoi(enc[1]);
+		if(vlanid < 0 || vlanid > 1005)
+		{
+			cb.message = CMDIF_ENCAPSULATION_ERROR();
+			freeCutString(enc,nbargs);
+			return cb;
+		}
+
+		setInterfaceVLAN(current_iface,vlanid);
+		char cmdbuffer[200];
+		sprintf(cmdbuffer,"ifconfig vlan%d%d vlan %d",getInterfacePosition(current_iface),current_iface_id,vlanid);
+		hsystemcmd(cmdbuffer);
+		WRITE_RUN();
+	}
+	else
+	{
+		cb.message = CMDIF_ENCAPSULATION_ERROR();
+		freeCutString(enc,nbargs);
+		return cb;
+	}
+
+	freeCutString(enc,nbargs);
+	return cb;
+}
+
+cmdCallback cifCMD_noencap(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	if(current_iface_id == 0)
+	{
+		cb.message = CMD_UNK();
+		return cb;
+	}
+
+	char* enc[2];
+	uint8_t nbargs = cutString(args,enc);
+
+	if(nbargs != 2)
+	{
+		cb.message = CMDIF_ENCAPSULATION_ERROR();
+		freeCutString(enc,nbargs);
+		return cb;
+	}
+
+	if(strcmp(enc[0],"dot1q") == 0)
+	{
+		if(is_numeric(enc[1]) != 0)
+		{
+			cb.message = CMDIF_ENCAPSULATION_ERROR();
+			freeCutString(enc,nbargs);
+			return cb;
+		}
+
+		int vlanid = atoi(enc[1]);
+		if(vlanid != getInterfaceVLAN(current_iface))
+		{
+			freeCutString(enc,nbargs);
+			return cb;
+		}
+
+		setInterfaceVLAN(current_iface,0);
+		char cmdbuffer[200];
+		sprintf(cmdbuffer,"ifconfig vlan%d%d vlan 0",getInterfacePosition(current_iface),current_iface_id);
+		hsystemcmd(cmdbuffer);
+		WRITE_RUN();
+	}
+	else
+	{
+		cb.message = CMDIF_ENCAPSULATION_ERROR();
+		freeCutString(enc,nbargs);
+		return cb;
+	}
+
+	freeCutString(enc,nbargs);
 	return cb;
 }

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -338,34 +338,23 @@ unsigned short writeRunningConfig()
 			if(strlen(if_cursor->desc) > 0)
 				fprintf(confFile,"description %s\n",if_cursor->desc);
 
+			if(if_cursor->vlan > 0 && if_cursor->vlan <= 1005)
+				fprintf(confFile,"encapsulation dot1q %d\n",if_cursor->vlan);
+
 			if(strlen(if_cursor->ip) > 0)
-			{
-				fputs("ip address ",confFile);
-				fputs(if_cursor->ip,confFile);
-				fputs("\n",confFile);
-			}
+				fprintf(confFile,"ip address %s\n",if_cursor->ip);
 
 			if(if_cursor->state == 0)
 				fputs("shutdown\n",confFile);
 
 			if(strlen(if_cursor->acl_in) > 0)
-			{
-				fputs("ip access-group ",confFile);
-				fputs(if_cursor->acl_in,confFile);
-				fputs(" in\n",confFile);
-			}
+				fprintf(confFile,"ip access-group %s in\n",if_cursor->acl_in);
 
 			if(strlen(if_cursor->acl_out) > 0)
-			{
-				fputs("ip access-group ",confFile);
-				fputs(if_cursor->acl_out,confFile);
-				fputs(" out\n",confFile);
-			}
+				fprintf(confFile,"ip access-group %s out\n",if_cursor->acl_out);
 
 			if(if_cursor->rip_cost != RIP_DEFAULT_COST)
-			{
 				fprintf(confFile,"ip rip cost %d\n",if_cursor->rip_cost);
-			}
 
 			if(if_cursor->rip_auth_type != RIP_AUTH_NONE)
 			{
@@ -378,9 +367,7 @@ unsigned short writeRunningConfig()
 			}
 
 			if(strlen(if_cursor->rip_auth_pwd) > 0 && strlen(if_cursor->rip_auth_pwd) <= 16)
-			{
 				fprintf(confFile,"ip rip authentication key-string %s\n",if_cursor->rip_auth_pwd);
-			}
 
 			if(if_cursor->ospf_cost != OSPF_DEFAULT_COST)
 				fprintf(confFile,"ip ospf cost %d\n",if_cursor->ospf_cost);
@@ -411,9 +398,7 @@ unsigned short writeRunningConfig()
 			}
 
 			if(strlen(if_cursor->ospf_auth_pwd) > 0 && strlen(if_cursor->ospf_auth_pwd) <= 16)
-			{
 				fprintf(confFile,"ip ospf authentication key-string %s\n",if_cursor->ospf_auth_pwd);
-			}
 			fputs("!\n",confFile);
 			if_cursor = if_cursor->next;
 		}

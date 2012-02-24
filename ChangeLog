@@ -184,8 +184,19 @@ Alpha 0.24
 -- Implement ip ospf retransmit-interval
 -- Implement ip ospf priority
 
-Alpha 0.25 - prev
+Alpha 0.25
 - cleanup for show ip routes
 - create helper to detect if an inteface exist
 - Implement OSPF Areas
 - Implement OSPF authentication
+- OSPF is now ready
+
+Alpha 0.26
+- Implement sub-ifaces with dot1q vlan tagging
+- Crashfix for improbable crash when save ospfd configuration
+- Cleanup code for writeRunningConfig
+- Bugfix for ifconfig command when ip address is writen with explicit netmask
+- Reduce some buffer size
+- Implement thing to don't load vlanX interface when use loadInterface command
+- pkill ospfd & ripd when start daemon
+- rewrite loadInterfaces properly with filtering

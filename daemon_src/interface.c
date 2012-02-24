@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -46,6 +46,7 @@ void addInterface(char* name)
 	newIface->acl_in = "";
 	newIface->acl_out = "";
 	newIface->desc = "";
+	newIface->vlan = 0;
 	newIface->state = 1;
 	newIface->is_rip_network = 0;
 	newIface->rip_passive = 0;
@@ -82,58 +83,29 @@ void addInterface(char* name)
 		newIface->prev = cursor;
 		cursor->next = newIface;
 	}
-	char buffer[30] = "";
-	strcpy(buffer,"ifconfig bridge0 add ");
-	strcat(buffer,name);
-	hsystemcmd(buffer);
 }
 
 void loadInterfaces()
 {
-	char input[1024] = "";
 	char output[1024] = "";
 #ifdef FREEBSD
 	execSystemCommand("for IF in $(/sbin/ifconfig | grep HWaddr | awk '{print $1}'); do echo $IF; done;",output);
 #else
 	execSystemCommand("for IF in $(/sbin/ifconfig | grep BROADCAST | awk '{print $1}' | awk -F':' '{print $1}'); do echo $IF; done;",output);
 #endif
-	hsystemcmd("ifconfig bridge0 create");
+	if(strcmp(output,"") == 0)
+		return;
 
-	char* iface[2];
-	cutFirstWord(output,iface);
+	char* iface[128];
+	uint8_t nbif = cutString(output,iface);
 
-	if(strcmp(iface[0],"") != 0)
+	for(uint8_t i=0;i<nbif;i++)
 	{
-		addInterface(iface[0]);
-		if(strcmp(iface[1],"") != 0)
-		{
-			char* iface2[2];
-			char ifbuffer[1024] = "";
-			strcpy(ifbuffer,iface[1]);
+		if(strlen(iface[i]) < 2 || strlen(iface[i]) > 4 && iface[i][0] == 'v' && iface[i][1] == 'l' && iface[i][2] == 'a' && iface[i][3] == 'n')
+			continue;
 
-			while(strcmp(ifbuffer,"") != 0)
-			{
-				cutFirstWord(ifbuffer,iface2);
-				net_iface* cursor = interfaces;
-				if(cursor == NULL)
-					addInterface(iface2[0]);
-				else
-				{
-					unsigned short found = 0;
-					while(cursor != NULL && found == 0)
-					{
-						if(strcmp(cursor->name,iface2[0]) != 0)
-							cursor = cursor->next;
-						else
-							found = 1;
-					}
-
-					if(found == 0)
-						addInterface(iface2[0]);
-				}
-				strcpy(ifbuffer,iface2[1]);
-			}
-		}
+		if(getInterfacePosition(iface[i]) == -1)
+			addInterface(iface[i]);
 	}
 }
 
@@ -239,6 +211,31 @@ unsigned short setInterfaceIP(char* name, char* ip)
 	}
 
 	return 0;
+}
+
+int8_t getInterfacePosition(char* name)
+{
+	int8_t pos = 0;
+
+	if(interfaces == NULL)
+		return -1;
+	else
+	{
+		net_iface* cursor = interfaces;
+
+		while(cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+				return pos;
+			else
+			{
+				pos++;
+				cursor = cursor->next;
+			}
+		}
+	}
+
+	return -1;
 }
 
 char* getInterfaceIP(char* name)
@@ -382,6 +379,33 @@ uint8_t getInterfaceRIPNetwork(char* name)
 	return result;
 }
 
+unsigned short setInterfaceVLAN(char* name, uint16_t vlan)
+{
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->vlan = vlan;
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
 unsigned short setInterfaceState(char* name, unsigned short state)
 {
 	if(interfaces == NULL)
@@ -407,6 +431,28 @@ unsigned short setInterfaceState(char* name, unsigned short state)
 	}
 
 	return 0;
+}
+
+uint16_t getInterfaceVLAN(char* name)
+{
+	unsigned short result = -1;
+
+	if(interfaces == NULL)
+		return -1;
+	else
+	{
+		net_iface* cursor = interfaces;
+
+		while(cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+				return cursor->vlan;
+			else
+				cursor = cursor->next;
+		}
+	}
+
+	return result;
 }
 
 unsigned short getInterfaceState(char* name)

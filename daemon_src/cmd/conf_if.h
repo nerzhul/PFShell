@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -31,6 +31,7 @@
 #include "command.h"
 
 char* current_iface;
+uint16_t current_iface_id;
 
 cmdCallback cifCMD_exit(char* _none);
 
@@ -58,5 +59,7 @@ cmdCallback cifCMD_noip_ospf(char* args);
 // Misc
 cmdCallback cifCMD_description(char* args);
 cmdCallback cifCMD_nodescription(char* args);
+cmdCallback cifCMD_encap(char* args);
+cmdCallback cifCMD_noencap(char* args);
 
 #endif

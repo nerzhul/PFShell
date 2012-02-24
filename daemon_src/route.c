@@ -370,7 +370,15 @@ void saveRipd()
 		if(if_cursor->is_rip_network > 0)
 		{
 			fputs("interface ",fRIPd);
-			fputs(if_cursor->name,fRIPd);
+
+			// If there is a '.' it's a sub-iface,
+			char* ifnbuffer[2];
+			cutByChar(if_cursor->name,ifnbuffer,'.');
+
+			if(strlen(ifnbuffer[1]) == 0)
+				fputs(if_cursor->name,fRIPd);
+			else
+				fprintf(fRIPd,"vlan%d%s",getInterfacePosition(if_cursor->name),ifnbuffer[1]);
 			fputs("{\n",fRIPd);
 
 			if(if_cursor->rip_passive == 1)
@@ -469,7 +477,6 @@ void saveOspfd()
 			uint8_t nbif = cutString(cursor->ifacelist,ifbuffer);
 			for(uint8_t i=0;i<nbif;i++)
 			{
-				fprintf(fOSPFd,"\tinterface %s {\n",ifbuffer[i]);
 				net_iface* cursor2 = interfaces;
 				uint8_t found = 0;
 				while(cursor2 != NULL && found == 0)
@@ -478,36 +485,41 @@ void saveOspfd()
 						found = 1;
 					else cursor2 = cursor2->next;
 				}
-				if(cursor2->ospf_hello_int != 10)
-					fprintf(fOSPFd,"\t\thello-interval %d\n",cursor2->ospf_hello_int);
-				if(cursor2->ospf_cost != 10)
-					fprintf(fOSPFd,"\t\tmetric %d\n",cursor2->ospf_cost);
-				if(cursor2->ospf_passive == 1)
-					fprintf(fOSPFd,"\t\tpassive\n");
-				if(cursor2->ospf_retransmit_delay != 5)
-					fprintf(fOSPFd,"\t\tretransmit-interval %d\n",cursor2->ospf_retransmit_delay);
-				if(cursor2->ospf_dead_int != 40)
-					fprintf(fOSPFd,"\t\trouter-dead-time %d\n",cursor2->ospf_dead_int);
-				if(cursor2->ospf_priority != 1)
-					fprintf(fOSPFd,"\t\trouter-priority %d\n",cursor2->ospf_priority);
-				if(cursor2->ospf_transmit_delay != 1)
-					fprintf(fOSPFd,"\t\ttransmit-delay %d\n",cursor2->ospf_transmit_delay);
 
-				if(cursor2->ospf_auth_type > RIP_AUTH_NONE && strlen(cursor2->ospf_auth_pwd) > 0 && strlen(cursor2->ospf_auth_pwd) < 17)
+				if(found == 1)
 				{
-					if(cursor2->ospf_auth_type == RIP_AUTH_TEXT)
+					fprintf(fOSPFd,"\tinterface %s {\n",ifbuffer[i]);
+					if(cursor2->ospf_hello_int != 10)
+						fprintf(fOSPFd,"\t\thello-interval %d\n",cursor2->ospf_hello_int);
+					if(cursor2->ospf_cost != 10)
+						fprintf(fOSPFd,"\t\tmetric %d\n",cursor2->ospf_cost);
+					if(cursor2->ospf_passive == 1)
+						fprintf(fOSPFd,"\t\tpassive\n");
+					if(cursor2->ospf_retransmit_delay != 5)
+						fprintf(fOSPFd,"\t\tretransmit-interval %d\n",cursor2->ospf_retransmit_delay);
+					if(cursor2->ospf_dead_int != 40)
+						fprintf(fOSPFd,"\t\trouter-dead-time %d\n",cursor2->ospf_dead_int);
+					if(cursor2->ospf_priority != 1)
+						fprintf(fOSPFd,"\t\trouter-priority %d\n",cursor2->ospf_priority);
+					if(cursor2->ospf_transmit_delay != 1)
+						fprintf(fOSPFd,"\t\ttransmit-delay %d\n",cursor2->ospf_transmit_delay);
+
+					if(cursor2->ospf_auth_type > RIP_AUTH_NONE && strlen(cursor2->ospf_auth_pwd) > 0 && strlen(cursor2->ospf_auth_pwd) < 17)
 					{
-						fputs("\t\tauth-type simple\n",fOSPFd);
-						fprintf(fOSPFd,"\t\tauth-key %s\n",cursor2->ospf_auth_pwd);
+						if(cursor2->ospf_auth_type == RIP_AUTH_TEXT)
+						{
+							fputs("\t\tauth-type simple\n",fOSPFd);
+							fprintf(fOSPFd,"\t\tauth-key %s\n",cursor2->ospf_auth_pwd);
+						}
+						else if(cursor2->ospf_auth_type == RIP_AUTH_MD5)
+						{
+							fputs("\t\tauth-type crypt\n",fOSPFd);
+							fprintf(fOSPFd,"\tauth-md 1 \"%s\"\n",cursor2->ospf_auth_pwd);
+							fputs("\t\tauth-md-keyid 1\n",fOSPFd);
+						}
 					}
-					else if(cursor2->ospf_auth_type == RIP_AUTH_MD5)
-					{
-						fputs("\t\tauth-type crypt\n",fOSPFd);
-						fprintf(fOSPFd,"\tauth-md 1 \"%s\"\n",cursor2->ospf_auth_pwd);
-						fputs("\t\tauth-md-keyid 1\n",fOSPFd);
-					}
+					fputs("\t}\n",fOSPFd);
 				}
-				fputs("\t}\n",fOSPFd);
 			}
 			freeCutString(ifbuffer,nbif);
 			fputs("}\n",fOSPFd);

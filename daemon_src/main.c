@@ -47,6 +47,10 @@ int main(int argc, const char** argv)
 	// Flush routes to manage it with the software
 	hsystemcmd("route flush");
 
+	// Kill ripd & ospfd to replace configuration
+	hsystemcmd("pkill ripd");
+	hsystemcmd("pkill ospfd");
+
 	if(!loadConfiguration())
 	{
 		printf("\x1b[31mSystem configuration is corrupted\x1b[0m !\n");
