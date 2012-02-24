@@ -197,6 +197,8 @@ Alpha 0.26
 - Cleanup code for writeRunningConfig
 - Bugfix for ifconfig command when ip address is writen with explicit netmask
 - Reduce some buffer size
-- Implement thing to don't load vlanX interface when use loadInterface command
 - pkill ospfd & ripd when start daemon
 - rewrite loadInterfaces properly with filtering
+
+Alpha 0.27 - prev
+- 802.1Q interfaces can now be used for OSPF & RIP

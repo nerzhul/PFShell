@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -9,7 +9,7 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * Neither the name of the Frost Sapphire Studios nor the
+*     * Neither the name of Frost Sapphire Studios nor the
 *       names of its contributors may be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
@@ -488,7 +488,17 @@ void saveOspfd()
 
 				if(found == 1)
 				{
-					fprintf(fOSPFd,"\tinterface %s {\n",ifbuffer[i]);
+					// If there is a '.' it's a sub-iface,
+					char* ifnbuffer[2];
+					cutByChar(ifbuffer[i],ifnbuffer,'.');
+
+					if(strlen(ifnbuffer[1]) == 0)
+						fprintf(fOSPFd,"\tinterface %s {\n",ifbuffer[i]);
+					else
+						fprintf(fOSPFd,"\tinterface vlan%d%s {\n",getInterfacePosition(ifbuffer[i]),ifnbuffer[1]);
+
+
+
 					if(cursor2->ospf_hello_int != 10)
 						fprintf(fOSPFd,"\t\thello-interval %d\n",cursor2->ospf_hello_int);
 					if(cursor2->ospf_cost != 10)
