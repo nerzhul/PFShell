@@ -81,6 +81,8 @@ unsigned short initCmds()
 	noconfCmd[0].handler = &cCMD_nohostname;
 	noconfCmd[1].name = "ip";
 	noconfCmd[1].handler = &cCMD_noip;
+	noconfCmd[2].name = "interface";
+	noconfCmd[2].handler = &cCMD_nointerface;
 
 	// Enable - Configure - Interface Commands
 	confIfCmd[0].name = "exit";

@@ -252,6 +252,59 @@ cmdCallback cCMD_interface(char* args)
 	return cb;
 }
 
+cmdCallback cCMD_nointerface(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF,""};
+
+	char* iface[1];
+	uint8_t nbargs = cutString(args,iface);
+
+	if(nbargs != 1)
+	{
+		cb.message = CMDCONF_INTERFACE_ERROR();
+		freeCutString(iface,nbargs);
+		return cb;
+	}
+
+	char* subiface[2];
+	cutByChar(iface[0],subiface,'.');
+
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
+	{
+		if(strlen(subiface[1]) == 0 && strcmp(cursor->name,subiface[0]) == 0)
+		{
+			// @ TODO: cleanup interface datas
+			freeCutString(iface,nbargs);
+			return cb;
+		}
+		else if(strcmp(cursor->name,iface[0]) == 0)
+		{
+			if(strlen(subiface[1]) > 0)
+			{
+				int8_t pos = getInterfacePosition(iface[0]);
+				if(pos != -1)
+				{
+					int if_id = atoi(subiface[1]);
+					char cmdbuffer[200];
+					sprintf(cmdbuffer,"ifconfig vlan%d%d destroy",pos,if_id);
+					hsystemcmd(cmdbuffer);
+					delInterface(iface[0]);
+					WRITE_RUN();
+				}
+			}
+			freeCutString(iface,nbargs);
+			return cb;
+		}
+		else
+			cursor = cursor->next;
+	}
+
+	freeCutString(iface,nbargs);
+	return cb;
+}
+
 cmdCallback cCMD_ip(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF,""};

@@ -62,6 +62,7 @@ struct net_iface
 };
 
 void addInterface(char* name);
+void delInterface(char* name);
 void loadInterfaces();
 unsigned short saveInterfaces();
 

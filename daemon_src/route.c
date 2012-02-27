@@ -239,49 +239,47 @@ void delIfaceFromOSPFArea(char* iface, uint32_t id)
 {
 	if(ospfareas == NULL)
 		return;
+
+	ospf_area* cursor = ospfareas;
+	ospf_area* oa = NULL;
+	while(cursor != NULL && oa == NULL)
+	{
+		if(cursor->id == id)
+			oa = cursor;
+		else
+			cursor = cursor->next;
+	}
+
+	if(oa == NULL)
+		return;
 	else
 	{
-		ospf_area* cursor = ospfareas;
-		ospf_area* oa = NULL;
-		while(cursor != NULL && oa == NULL)
+		char buffer[1024] = "";
+		char* ifaceBuffer[256];
+		uint8_t nbifaces = cutString(oa->ifacelist,ifaceBuffer);
+		if(oa->ifacelist != NULL);
+			free(oa->ifacelist);
+
+		uint8_t first = 0;
+		for(uint8_t i=0;i<nbifaces;i++)
 		{
-			if(cursor->id == id)
-				oa = cursor;
-			else
-				cursor = cursor->next;
+			if(strcmp(ifaceBuffer[i],iface) == 0)
+				continue;
+
+			if(first == 0) first = 1;
+			else strcat(buffer," ");
+
+			strcat(buffer,ifaceBuffer[i]);
 		}
 
-		if(oa == NULL)
-			return;
+		if(strcmp(buffer,"") != 0)
+		{
+			oa->ifacelist = (char*)malloc((strlen(buffer)+1)*sizeof(char));
+			strcpy(oa->ifacelist,buffer);
+		}
 		else
-		{
-			char buffer[1024] = "";
-			char* ifaceBuffer[256];
-			uint8_t nbifaces = cutString(oa->ifacelist,ifaceBuffer);
-			if(oa->ifacelist != NULL);
-				free(oa->ifacelist);
-
-			uint8_t first = 0;
-			for(uint8_t i=0;i<nbifaces;i++)
-			{
-				if(strcmp(ifaceBuffer[i],iface) == 0)
-					continue;
-
-				if(first == 0) first = 1;
-				else strcat(buffer," ");
-
-				strcat(buffer,ifaceBuffer[i]);
-			}
-
-			if(strcmp(buffer,"") != 0)
-			{
-				oa->ifacelist = (char*)malloc((strlen(buffer)+1)*sizeof(char));
-				strcpy(oa->ifacelist,buffer);
-			}
-			else
-				delOSPFArea(id);
-			freeCutString(ifaceBuffer,nbifaces);
-		}
+			delOSPFArea(id);
+		freeCutString(ifaceBuffer,nbifaces);
 	}
 }
 

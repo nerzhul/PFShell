@@ -85,6 +85,42 @@ void addInterface(char* name)
 	}
 }
 
+void delInterface(char* name)
+{
+	if(interfaces == NULL)
+		return;
+
+
+	uint8_t found = 0;
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL && found == 0)
+	{
+		if(strcmp(cursor->name,name) == 0)
+		{
+			found = 1;
+			net_iface* tmpcursor = cursor;
+			if(cursor == interfaces && cursor->next == NULL)
+				interfaces = NULL;
+			else
+			{
+				if(cursor->prev != NULL)
+					cursor->prev->next = cursor->next;
+				else
+					interfaces = cursor->next;
+
+				if(cursor->next != NULL)
+					cursor->next->prev = cursor->prev;
+
+			}
+			free(tmpcursor);
+		}
+		else
+			cursor = cursor->next;
+	}
+}
+
+
 void loadInterfaces()
 {
 	char output[1024] = "";

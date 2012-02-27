@@ -42,6 +42,8 @@ cmdCallback cCMD_ip(char* args);
 
 // Inverted commands
 cmdCallback cCMD_nohostname(char* args);
+
+cmdCallback cCMD_nointerface(char* args);
 cmdCallback cCMD_noip(char* args);
 
 #endif

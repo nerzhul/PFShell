@@ -201,4 +201,4 @@ Alpha 0.26
 - rewrite loadInterfaces properly with filtering
 
 Alpha 0.27 - prev
-- 802.1Q interfaces can now be used for OSPF & RIP
+- 802.1Q interfaces can now be used for OSPF & RIP (and deleted)
