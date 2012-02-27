@@ -47,9 +47,10 @@ int main(int argc, const char** argv)
 	// Flush routes to manage it with the software
 	hsystemcmd("route flush");
 
-	// Kill ripd & ospfd to replace configuration
+	// Kill ripd, ospfd and all dhcrelay processes
 	hsystemcmd("pkill ripd");
 	hsystemcmd("pkill ospfd");
+	hsystemcmd("pkill dhcrelay");
 
 	if(!loadConfiguration())
 	{

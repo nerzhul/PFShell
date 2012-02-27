@@ -91,6 +91,7 @@
 #define CMDIF_IP_OSPF_TRANSMIT_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf transmit-delay <1-3600>\n");
 #define CMDIF_IP_OSPF_RETRANSMIT_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf retransmit-interval <5-3600>\n");
 #define CMDIF_ENCAPSULATION_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) encapsulation dot1q <1-1005>\n");
+#define CMDIF_IP_HELPER_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip helper-address A.B.C.D\n");
 
 
 // Firewall Messages

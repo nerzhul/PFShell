@@ -241,6 +241,10 @@ cmdCallback cCMD_interface(char* args)
 		sprintf(cmdbuffer,"ifconfig vlan%d%d vlan 0 vlandev %s",pos,if_id,subiface[0]);
 		hsystemcmd(cmdbuffer);
 
+		bzero(cmdbuffer,200);
+		sprintf(cmdbuffer,"ifconfig vlan%d%d down",pos,if_id,subiface[0]);
+		hsystemcmd(cmdbuffer);
+
 		cb.promptMode = PROMPT_CONF_IF;
 		current_iface = iface[0];
 		current_iface_id = if_id;

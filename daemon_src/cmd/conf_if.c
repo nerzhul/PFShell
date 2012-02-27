@@ -54,16 +54,18 @@ cmdCallback cifCMD_exit(char* _none)
 cmdCallback cifCMD_ip(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_IF,""};
-	char* iface[2];
-	cutFirstWord(args,iface);
-	if(strcmp(iface[0],"address") == 0)
-		return cifCMD_ip_address(iface[1]);
-	else if(strcmp(iface[0],"access-group") == 0)
-		return cifCMD_access_list(iface[1]);
-	else if(strcmp(iface[0],"ospf") == 0)
-		return cifCMD_ip_ospf(iface[1]);
-	else if(strcmp(iface[0],"rip") == 0)
-		return cifCMD_ip_rip(iface[1]);
+	char* subcmd[2];
+	cutFirstWord(args,subcmd);
+	if(strcmp(subcmd[0],"address") == 0)
+		return cifCMD_ip_address(subcmd[1]);
+	else if(strcmp(subcmd[0],"access-group") == 0)
+		return cifCMD_access_list(subcmd[1]);
+	else if(strcmp(subcmd[0],"helper-address") == 0)
+		return cifCMD_ip_helper(subcmd[1]);
+	else if(strcmp(subcmd[0],"ospf") == 0)
+		return cifCMD_ip_ospf(subcmd[1]);
+	else if(strcmp(subcmd[0],"rip") == 0)
+		return cifCMD_ip_rip(subcmd[1]);
 	else
 		cb.message = CMDIF_IP_ERROR();
 	return cb;
@@ -585,6 +587,7 @@ cmdCallback cifCMD_ip_address(char* args)
 			strcpy(buffer,"dhclient ");
 			strcat(buffer,current_iface);
 			hsystemcmd(buffer);
+			launchInterfaceIPHelpers(current_iface);
 		}
 
 		if(setInterfaceIP(current_iface,"DHCP") != 0)
@@ -621,6 +624,8 @@ cmdCallback cifCMD_ip_address(char* args)
 						return cb;
 					}
 
+					launchInterfaceIPHelpers(current_iface);
+
 				}
 				else
 				{
@@ -651,6 +656,8 @@ cmdCallback cifCMD_ip_address(char* args)
 				freeCutString(_ip,nbargs);
 				return cb;
 			}
+
+			launchInterfaceIPHelpers(current_iface);
 		}
 		else
 		{
@@ -667,16 +674,18 @@ cmdCallback cifCMD_ip_address(char* args)
 cmdCallback cifCMD_noip(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_IF,""};
-	char* iface[2];
-	cutFirstWord(args,iface);
+	char* subcmd[2];
+	cutFirstWord(args,subcmd);
 	/*if(strcmp(iface[0],"address") == 0)
 		return ;
-	else */if(strcmp(iface[0],"access-group") == 0)
-		return cifCMD_noaccess_list(iface[1]);
-	else if(strcmp(iface[0],"ospf") == 0)
-		return cifCMD_noip_ospf(iface[1]);
-	else if(strcmp(iface[0],"rip") == 0)
-		return cifCMD_noip_rip(iface[1]);
+	else */if(strcmp(subcmd[0],"access-group") == 0)
+		return cifCMD_noaccess_list(subcmd[1]);
+	else if(strcmp(subcmd[0],"helper-address") == 0)
+		return cifCMD_noip_helper(subcmd[1]);
+	else if(strcmp(subcmd[0],"ospf") == 0)
+		return cifCMD_noip_ospf(subcmd[1]);
+	else if(strcmp(subcmd[0],"rip") == 0)
+		return cifCMD_noip_rip(subcmd[1]);
 	return cb;
 
 }
@@ -761,6 +770,7 @@ cmdCallback cifCMD_noshutdown(char* _none)
 		return cb;
 	}
 
+	launchInterfaceIPHelpers(current_iface);
 	WRITE_RUN();
 	return cb;
 }
@@ -973,5 +983,60 @@ cmdCallback cifCMD_noencap(char* args)
 	}
 
 	freeCutString(enc,nbargs);
+	return cb;
+}
+
+cmdCallback cifCMD_ip_helper(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	char* iphelper[1];
+	uint8_t nbargs = cutString(args,iphelper);
+
+	if(nbargs != 1 || is_valid_ip(iphelper[0]) != 0)
+	{
+		cb.message = CMDIF_IP_HELPER_ERROR();
+		freeCutString(iphelper,nbargs);
+		return cb;
+	}
+
+	if(addInterfaceIPHelper(current_iface,iphelper[0]) == 0)
+	{
+		char buffer[50] = "";
+		if(current_iface_id == 0)
+			sprintf(buffer,"dhcrelay -i %s %s",current_iface,iphelper[0]);
+		else
+			sprintf(buffer,"dhcrelay -i vlan%d%d %s",getInterfacePosition(current_iface),current_iface_id,iphelper[0]);
+		system(buffer);
+	}
+
+	freeCutString(iphelper,nbargs);
+	return cb;
+}
+
+cmdCallback cifCMD_noip_helper(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	char* iphelper[1];
+	uint8_t nbargs = cutString(args,iphelper);
+
+	if(nbargs != 1 || is_valid_ip(iphelper[0]) != 0)
+	{
+		cb.message = CMDIF_IP_HELPER_ERROR();
+		freeCutString(iphelper,nbargs);
+		return cb;
+	}
+
+	delInterfaceIPHelper(current_iface,iphelper[0]);
+
+	char buffer[150] = "";
+	if(current_iface_id == 0)
+		sprintf(buffer,"kill -9 $(ps ax |grep dhcrelay|grep %s|grep %s|awk '{print $1}')",current_iface,iphelper[0]);
+	else
+		sprintf(buffer,"kill -9 $(ps ax |grep dhcrelay|grep vlan%d%d|grep %s|awk '{print $1}')",getInterfacePosition(current_iface),current_iface_id,iphelper[0]);
+	system(buffer);
+
+	freeCutString(iphelper,nbargs);
 	return cb;
 }

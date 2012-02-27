@@ -347,6 +347,17 @@ unsigned short writeRunningConfig()
 			if(if_cursor->state == 0)
 				fputs("shutdown\n",confFile);
 
+			if(strlen(if_cursor->ip_helper_list) > 0)
+			{
+				char* helpers[64];
+				uint8_t nbhelpers = cutString(if_cursor->ip_helper_list,helpers);
+				for(uint8_t i=0;i<nbhelpers;i++)
+				{
+					if(is_valid_ip(helpers[i]) == 0)
+						fprintf(confFile,"ip helper-address %s\n",helpers[i]);
+				}
+			}
+
 			if(strlen(if_cursor->acl_in) > 0)
 				fprintf(confFile,"ip access-group %s in\n",if_cursor->acl_in);
 

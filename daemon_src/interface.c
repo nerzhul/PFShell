@@ -48,6 +48,7 @@ void addInterface(char* name)
 	newIface->desc = "";
 	newIface->vlan = 0;
 	newIface->state = 1;
+	newIface->ip_helper_list = "";
 	newIface->is_rip_network = 0;
 	newIface->rip_passive = 0;
 	newIface->rip_cost = RIP_DEFAULT_COST;
@@ -1167,25 +1168,23 @@ unsigned short setInterfaceRIPPassive(char* name, unsigned short passive)
 {
 	if(interfaces == NULL)
 		return 1;
-	else
+
+	net_iface* cursor = interfaces;
+	unsigned short found = 0;
+
+	while(found == 0 && cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->rip_passive = passive;
-			}
-			else
-				cursor = cursor->next;
+			found = 1;
+			cursor->rip_passive = passive;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
+
+	if(found == 0)
+		return 1;
 
 	return 0;
 }
@@ -1279,57 +1278,55 @@ unsigned short setInterfaceACL(char* name, char* aclname, char* direction)
 {
 	if(interfaces == NULL)
 		return 1;
-	else
-	{
+
 		net_iface* cursor = interfaces;
-		unsigned short found = 0;
+	unsigned short found = 0;
 
-		while(found == 0 && cursor != NULL)
+	while(found == 0 && cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
+			found = 1;
+
+			if(strlen(aclname) != 0)
 			{
-				found = 1;
+				acl* cursor2 = access_lists;
+				unsigned short found2 = 0;
 
-				if(strlen(aclname) != 0)
+				while(found2 == 0 && cursor2 != NULL)
 				{
-					acl* cursor2 = access_lists;
-					unsigned short found2 = 0;
-
-					while(found2 == 0 && cursor2 != NULL)
+					if(strcmp(cursor2->name,aclname) == 0)
 					{
-						if(strcmp(cursor2->name,aclname) == 0)
-						{
-							found2 = 1;
+						found2 = 1;
 
-							if(strcmp(direction,"in") == 0)
-								cursor->acl_in = aclname;
-							else if(strcmp(direction,"out") == 0)
-								cursor->acl_out = aclname;
-							else
-								return 1;
-						}
+						if(strcmp(direction,"in") == 0)
+							cursor->acl_in = aclname;
+						else if(strcmp(direction,"out") == 0)
+							cursor->acl_out = aclname;
 						else
-							cursor2 = cursor2->next;
+							return 1;
 					}
+					else
+						cursor2 = cursor2->next;
+				}
 
-					if(found2 == 0)
-						return 1;
-				}
-				else
-				{
-					if(strcmp(direction,"in") == 0)
-						cursor->acl_in = "";
-					else if(strcmp(direction,"out") == 0)
-						cursor->acl_out = "";
-				}
+				if(found2 == 0)
+					return 1;
 			}
 			else
-				cursor = cursor->next;
+			{
+				if(strcmp(direction,"in") == 0)
+					cursor->acl_in = "";
+				else if(strcmp(direction,"out") == 0)
+					cursor->acl_out = "";
+			}
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
+
+	if(found == 0)
+		return 1;
 
 	return 0;
 }
@@ -1350,4 +1347,150 @@ uint8_t is_interface(char* name)
 	}
 
 	return 1;
+}
+
+uint8_t addInterfaceIPHelper(char* name, char* ip)
+{
+	if(interfaces == NULL)
+		return 1;
+
+	if(is_valid_ip(ip) != 0)
+		return 2;
+
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
+		{
+			char* helpers[64];
+			uint8_t nbhelpers = cutString(cursor->ip_helper_list,helpers);
+			for(uint8_t i=0;i<nbhelpers;i++)
+			{
+				if(strcmp(helpers[i],ip) == 0)
+					return 3;
+			}
+
+			char* buffer = (char*)malloc((strlen(cursor->ip_helper_list)+1+1+15)*sizeof(char));
+			strcpy(buffer,cursor->ip_helper_list);
+			strcat(buffer," ");
+			strcat(buffer,ip);
+
+			if(strlen(cursor->ip_helper_list) > 0)
+				free(cursor->ip_helper_list);
+
+			cursor->ip_helper_list = (char*)malloc((strlen(cursor->ip_helper_list)+1+1+15)*sizeof(char));
+			bzero(cursor->ip_helper_list,strlen(cursor->ip_helper_list)+1+1+15);
+			strcpy(cursor->ip_helper_list,buffer);
+
+			WRITE_RUN();
+			return 0;
+		}
+		else
+			cursor = cursor->next;
+	}
+
+	return 1;
+}
+
+void delInterfaceIPHelper(char* name, char* ip)
+{
+	if(interfaces == NULL)
+		return 1;
+
+	if(is_valid_ip(ip) != 0)
+		return 2;
+
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
+		{
+			char* buffer = (char*)malloc(strlen(cursor->ip_helper_list)*sizeof(char));
+			bzero(buffer,strlen(cursor->ip_helper_list));
+
+			char* helpers[64];
+			uint8_t nbhelpers = cutString(cursor->ip_helper_list,helpers);
+
+			uint8_t first = 1;
+			for(uint8_t i=0;i<nbhelpers;i++)
+			{
+				if(strcmp(helpers[i],ip) != 0)
+				{
+					if(first != 1)
+						strcat(buffer," ");
+					if(first == 1) first = 0;
+					strcat(buffer,helpers[i]);
+				}
+			}
+
+			cursor->ip_helper_list = (char*)malloc(strlen(buffer)*sizeof(char));
+			bzero(cursor->ip_helper_list,strlen(buffer));
+			strcpy(cursor->ip_helper_list,buffer);
+
+			WRITE_RUN();
+			return 0;
+		}
+		else
+			cursor = cursor->next;
+	}
+
+	return 1;
+}
+
+char* getInterfaceIPHelpers(char* name)
+{
+	if(interfaces == NULL)
+		return NULL;
+
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->ip_helper_list;
+		else
+			cursor = cursor->next;
+	}
+
+	return NULL;
+}
+
+void launchInterfaceIPHelpers(char* name)
+{
+	if(interfaces == NULL)
+		return;
+
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
+		{
+			char* helpers[64];
+			uint8_t nbhelpers = cutString(cursor->ip_helper_list,helpers);
+
+			char* subiface[2];
+			cutByChar(name,subiface,'.');
+
+			for(uint8_t i=0;i<nbhelpers;i++)
+			{
+				if(is_valid_ip(helpers[i]) == 0)
+				{
+					char buffer[50] = "";
+					if(strlen(subiface[1]) == 0)
+						sprintf(buffer,"dhcrelay -i %s %s",cursor->name,helpers[i]);
+					else
+						sprintf(buffer,"dhcrelay -i vlan%d%s %s",getInterfacePosition(cursor->name),subiface[1],helpers[i]);
+					system(buffer);
+				}
+			}
+
+			freeCutString(subiface,strlen(subiface[1]) > 0 ? 2 : 1);
+			return;
+		}
+		else
+			cursor = cursor->next;
+	}
 }

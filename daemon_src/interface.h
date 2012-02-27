@@ -41,6 +41,7 @@ struct net_iface
 	char* desc;
 	uint16_t vlan;
 	unsigned short state;
+	char* ip_helper_list;
 	uint8_t is_rip_network;
 	unsigned short rip_passive;
 	unsigned short rip_cost;
@@ -75,6 +76,12 @@ unsigned short setInterfaceVLAN(char* name, uint16_t vlan);
 unsigned short setInterfaceState(char* name, unsigned short state);
 unsigned short setInterfaceACL(char* name, char* aclname, char* direction);
 unsigned short setInterfaceDesc(char* name, char* desc);
+
+// Ip Helpers
+uint8_t addInterfaceIPHelper(char* name, char* ip);
+void delInterfaceIPHelper(char* name, char* ip);
+char* getInterfaceIPHelpers(char* name);
+void launchInterfaceIPHelpers(char* name);
 
 // RIP
 unsigned short setInterfaceRIPPassive(char* name, unsigned short passive);
