@@ -55,7 +55,7 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
 	if(strlen(args) == 0)
 	{
-		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+		cb.message = CMDROUTER_OSPF_REDISTGENERAL_ERROR();
 		return cb;
 	}
 
@@ -240,9 +240,75 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 		ospf_redistrib_default_metric = metric_val;
 		ospf_redistrib_default_type = metric_type_val;
 	}
+	else if(is_valid_ip_and_cidr(redistargs[0]) == 0)
+	{
+		if(nbargs >= 1)
+		{
+			int metric_val = OSPF_DEFAULT_METRIC;
+			int metric_type_val = OSPF_DEFAULT_METRIC_TYPE;
+			if(nbargs >= 3)
+			{
+				// If its metric & has a value
+				if(strcmp(redistargs[1],"metric") == 0)
+				{
+					// Convert the value
+					int tmp_metric_val = atoi(redistargs[2]);
+
+					// If the value is between 0 and 65535 included
+					if(tmp_metric_val >= 0 && tmp_metric_val <= 65535)
+						metric_val = tmp_metric_val;
+					else
+					{
+						cb.message = CMDROUTER_OSPF_REDISTGENERAL_ERROR();
+						freeCutString(redistargs,nbargs);
+						return cb;
+					}
+
+					// If there is args after metric with value
+					if(nbargs == 5)
+					{
+						// If there is a value and keywork is metric-type
+						if(strcmp(redistargs[3],"metric-type") == 0)
+						{
+							int tmp_metric_type_val = atoi(redistargs[4]);
+
+							// Must be 1 or 2
+							if(tmp_metric_type_val < 1 && tmp_metric_type_val > 2)
+							{
+								cb.message = CMDROUTER_OSPF_REDISTGENERAL_ERROR();
+								freeCutString(redistargs,nbargs);
+								return cb;
+							}
+
+							metric_type_val = tmp_metric_type_val;
+						}
+						else
+						{
+							cb.message = CMDROUTER_OSPF_REDISTGENERAL_ERROR();
+							freeCutString(redistargs,nbargs);
+							return cb;
+						}
+					}
+				}
+				else
+				{
+					cb.message = CMDROUTER_OSPF_REDISTGENERAL_ERROR();
+					freeCutString(redistargs,nbargs);
+					return cb;
+				}
+			}
+			addRedistNetForOSPF(redistargs[0],metric_type_val,metric_val);
+		}
+		else
+		{
+			cb.message = CMDROUTER_OSPF_REDISTGENERAL_ERROR();
+			freeCutString(redistargs,nbargs);
+			return cb;
+		}
+	}
 	else
 	{
-		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+		cb.message = CMDROUTER_OSPF_REDISTGENERAL_ERROR();
 		freeCutString(redistargs,nbargs);
 		return cb;
 	}
@@ -259,7 +325,7 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
 	if(strlen(args) == 0)
 	{
-		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+		cb.message = CMDROUTER_OSPF_REDISTGENERAL_ERROR();
 		return cb;
 	}
 
@@ -438,9 +504,22 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 		ospf_redistrib_default_metric = OSPF_DEFAULT_METRIC;
 		ospf_redistrib_default_type = OSPF_DEFAULT_METRIC_TYPE;
 	}
+	else if(is_valid_ip_and_cidr(redistargs[0]) == 0)
+	{
+		if(nbargs == 1)
+		{
+			delRedistNetForOSPF(redistargs[0]);
+		}
+		else
+		{
+			cb.message = CMDROUTER_OSPF_REDISTGENERAL_ERROR();
+			freeCutString(redistargs,nbargs);
+			return cb;
+		}
+	}
 	else
 	{
-		cb.message = CMDROUTER_RIP_OSPF_REDIST_ERROR();
+		cb.message = CMDROUTER_OSPF_REDISTGENERAL_ERROR();
 		freeCutString(redistargs,nbargs);
 		return cb;
 	}
@@ -768,7 +847,6 @@ cmdCallback crouterCMD_OSPF_area(char* args)
 	}
 
 	uint32_t area_id = convert_ip_to_int(area[0]);
-	printf("area %d %s\n",area_id,area[0]);
 	if(nbargs == 2)
 		setOSPFAreaStub(area_id,1,1);
 	else

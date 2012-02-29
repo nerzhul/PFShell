@@ -203,3 +203,5 @@ Alpha 0.26
 Alpha 0.27 - prev
 - 802.1Q interfaces can now be used for OSPF & RIP (and deleted)
 - Implement ip helper-address for relay DHCP request to another network
+- Implement OSPF stub areas (with no-summary opt)
+- Implement OSPF redistribute A.B.C.D/CIDR (+metric & type)

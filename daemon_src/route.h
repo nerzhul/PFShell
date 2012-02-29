@@ -90,6 +90,17 @@ struct ospf_area
 	ospf_area* prev;
 };
 
+typedef struct ospf_redist_net ospf_redist_net;
+
+struct ospf_redist_net
+{
+	char* net;
+	uint8_t type;
+	uint32_t metric;
+	ospf_redist_net* next;
+	ospf_redist_net* prev;
+};
+
 void addOSPFArea(uint32_t id);
 void delOSPFArea(uint32_t id);
 void setOSPFAreaStub(uint32_t id,uint8_t stub,uint8_t sum);
@@ -97,8 +108,11 @@ uint8_t getOSPFAreaStub(uint32_t id);
 uint8_t getOSPFAreaStubSummary(uint32_t id);
 uint8_t addIfaceToOSPFArea(char* iface, uint32_t id);
 void delIfaceFromOSPFArea(char* iface, uint32_t id);
+uint8_t addRedistNetForOSPF(char* net,uint8_t type, uint32_t metric);
+void delRedistNetForOSPF(char* net);
 
 ospf_area* ospfareas;
+ospf_redist_net* ospfredistnets;
 
 unsigned short ospf_enabled;
 unsigned short ospf_redistrib_static;
@@ -114,5 +128,6 @@ unsigned short ospf_stub_router; // @ TODO
 unsigned int ospf_delay_timer;
 unsigned int ospf_holdtime_timer;
 char* ospf_router_id;
+
 
 #endif

@@ -27,6 +27,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <sys/types.h>
+
 #include "configuration.h"
 #include "firewall.h"
 #include "interface.h"
@@ -37,6 +39,7 @@
 #include "cmd/conf_fw.h"
 #include "cmd/conf.h"
 #include "prompt/prompt_msg.h"
+
 
 unsigned short loadConfiguration()
 {
@@ -84,6 +87,7 @@ unsigned short loadConfiguration()
 	ospf_redistrib_static = 0;
 	ospf_redistrib_static_metric = OSPF_DEFAULT_COST;
 	ospf_redistrib_static_type = OSPF_DEFAULT_METRIC_TYPE;
+	ospfredistnets = NULL;
 	ospf_router_id = "";
 	ospf_delay_timer = OSPF_DEFAULT_DELAY;
 	ospf_holdtime_timer = OSPF_DEFAULT_HOLDTIME;
@@ -242,6 +246,20 @@ unsigned short writeRunningConfig()
 						fprintf(confFile," metric-type %d",ospf_redistrib_static_type);
 				}
 				fputs("\n",confFile);
+			}
+
+			ospf_redist_net* orn_cursor = ospfredistnets;
+			while(orn_cursor != NULL)
+			{
+				fprintf(confFile,"redistribute %s",orn_cursor->net);
+				if(orn_cursor->metric != OSPF_DEFAULT_METRIC || orn_cursor->type != OSPF_DEFAULT_METRIC_TYPE)
+				{
+					fprintf(confFile," metric %d",orn_cursor->metric);
+					if(orn_cursor->type != 1)
+						fprintf(confFile," metric-type %d",orn_cursor->type);
+				}
+				fputs("\n",confFile);
+				orn_cursor = orn_cursor->next;
 			}
 			// Passive-Interfaces
 			net_iface* if_cursor = interfaces;

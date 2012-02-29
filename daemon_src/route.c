@@ -346,6 +346,83 @@ void delIfaceFromOSPFArea(char* iface, uint32_t id)
 	}
 }
 
+uint8_t addRedistNetForOSPF(char* net,uint8_t type, uint32_t metric)
+{
+	ospf_redist_net* orn = (ospf_redist_net*)malloc(sizeof(ospf_redist_net));
+
+	orn->net = (char*)malloc((1+strlen(net))*sizeof(char));
+	strcpy(orn->net,net);
+	orn->metric = metric;
+	orn->type = type;
+	orn->next = NULL;
+	orn->prev = NULL;
+
+	if(ospfredistnets == NULL)
+	{
+		ospfredistnets = orn;
+	}
+	else
+	{
+		ospf_redist_net* cursor = ospfredistnets;
+
+		while(cursor != NULL)
+		{
+			if(strcmp(cursor->net,net) == 0)
+			{
+				cursor->metric = metric;
+				cursor->type = type;
+				return 0;
+			}
+			cursor = cursor->next;
+		}
+
+		cursor = ospfredistnets;
+
+		while(cursor->next != NULL)
+			cursor = cursor->next;
+
+		orn->prev = cursor;
+		cursor->next = orn;
+	}
+
+	return 0;
+}
+
+void delRedistNetForOSPF(char* net)
+{
+	if(ospfredistnets == NULL)
+		return;
+
+
+	uint8_t found = 0;
+	ospf_redist_net* cursor = ospfredistnets;
+
+	while(cursor != NULL && found == 0)
+	{
+		if(strcmp(cursor->net,net) == 0)
+		{
+			found = 1;
+			ospf_redist_net* tmpcursor = cursor;
+			if(cursor == ospfredistnets && cursor->next == NULL)
+				ospfredistnets = NULL;
+			else
+			{
+				if(cursor->prev != NULL)
+					cursor->prev->next = cursor->next;
+				else
+					ospfredistnets = cursor->next;
+
+				if(cursor->next != NULL)
+					cursor->next->prev = cursor->prev;
+
+			}
+			free(tmpcursor);
+		}
+		else
+			cursor = cursor->next;
+	}
+}
+
 void saveSysctl()
 {
 	FILE* fSysctl = fopen("/etc/sysctl.conf","w+");
@@ -524,7 +601,19 @@ void saveOspfd()
 		}
 		else
 			fputs("no redistribute default\n",fOSPFd);
+
+		ospf_redist_net* orn_cursor = ospfredistnets;
+		while(orn_cursor != NULL)
+		{
+			fprintf(fOSPFd,"redistribute %s",orn_cursor->net);
+			if(orn_cursor->metric != OSPF_DEFAULT_METRIC || orn_cursor->type != OSPF_DEFAULT_METRIC_TYPE)
+				fprintf(fOSPFd," set { metric %d type %d }",orn_cursor->metric,orn_cursor->type);
+			fputs("\n",fOSPFd);
+			orn_cursor = orn_cursor->next;
+		}
 	}
+
+
 
 	fputs("\n#\n# Areas configuration\n#\n\n",fOSPFd);
 

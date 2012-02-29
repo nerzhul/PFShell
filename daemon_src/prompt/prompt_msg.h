@@ -110,6 +110,7 @@
 // Router Messages
 #define CMDROUTER_RIP_OSPF_REDIST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) redistribute <connected|default|static>\n");
 #define CMDROUTER_OSPF_REDIST_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) redistribute <connected|default|static> (metric <1-65535>) (metric-type <1-2>)\n");
+#define CMDROUTER_OSPF_REDISTGENERAL_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) redistribute <connected|default|static|A.B.C.D/CIDR>\n");
 #define CMDROUTER_RIP_DEFORIG_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   default-information originate\n");
 #define CMDROUTER_RIP_SPLITHORIZ_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   split-horizon\n");
 #define CMDROUTER_RIP_OSPF_INTERFACE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) passive-interface <iface>\n");
