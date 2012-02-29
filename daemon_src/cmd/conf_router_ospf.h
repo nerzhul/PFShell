@@ -42,5 +42,6 @@ cmdCallback crouterCMD_OSPF_timers(char* args);
 cmdCallback crouterCMD_OSPF_notimers(char* args);
 cmdCallback crouterCMD_OSPF_network(char* args);
 cmdCallback crouterCMD_OSPF_nonetwork(char* args);
-
+cmdCallback crouterCMD_OSPF_area(char* args);
+cmdCallback crouterCMD_OSPF_noarea(char* args);
 #endif

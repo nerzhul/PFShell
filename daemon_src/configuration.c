@@ -262,6 +262,9 @@ unsigned short writeRunningConfig()
 
 				freeCutString(iflist,ifnb);
 
+				if(oa->stub > 0)
+					fprintf(confFile,"area %s stub%s\n",convert_int_to_ip(oa->id),(oa->stub_summary == 0) ? " no-summary" : "");
+
 				oa = oa->next;
 			}
 			fputs("!\n",confFile);

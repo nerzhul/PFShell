@@ -752,3 +752,57 @@ cmdCallback crouterCMD_OSPF_nonetwork(char* args)
 	freeCutString(netarea,nbargs);
 	return cb;
 }
+
+cmdCallback crouterCMD_OSPF_area(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
+
+	char* area[2];
+	uint8_t nbargs = cutString(args,area);
+
+	if(nbargs < 2 || nbargs > 3 || is_valid_ip(area[0]) != 0 || strcmp(area[1],"stub") != 0 || (nbargs == 3 && strcmp(area[2],"no-summary") != 0))
+	{
+		cb.message = CMDROUTER_OSPF_AREA_STUB_ERROR();
+		freeCutString(area,nbargs);
+		return cb;
+	}
+
+	uint32_t area_id = convert_ip_to_int(area[0]);
+	printf("area %d %s\n",area_id,area[0]);
+	if(nbargs == 2)
+		setOSPFAreaStub(area_id,1,1);
+	else
+		setOSPFAreaStub(area_id,1,0);
+
+	WRITE_RUN();
+	WRITE_OSPFD();
+	freeCutString(area,nbargs);
+	return cb;
+}
+
+cmdCallback crouterCMD_OSPF_noarea(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
+
+	char* area[2];
+	uint8_t nbargs = cutString(args,area);
+
+	if(nbargs < 2 || nbargs > 3 || is_valid_ip(area[0]) != 0 || strcmp(area[1],"stub") != 0 || nbargs == 3 && strcmp(area[2],"no-summary") != 0)
+	{
+		cb.message = CMDROUTER_OSPF_AREA_STUB_ERROR();
+		freeCutString(area,nbargs);
+		return cb;
+	}
+
+	if(nbargs == 2 || getOSPFAreaStubSummary(convert_ip_to_int(area[0])) == 1)
+	{
+		uint32_t area_id = convert_ip_to_int(area[0]);
+
+		setOSPFAreaStub(area_id,0,0);
+		WRITE_RUN();
+		WRITE_OSPFD();
+	}
+
+	freeCutString(area,nbargs);
+	return cb;
+}

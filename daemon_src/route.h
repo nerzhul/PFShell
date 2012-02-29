@@ -85,12 +85,16 @@ struct ospf_area
 	uint32_t id;
 	char* ifacelist;
 	uint8_t stub;
+	uint8_t stub_summary;
 	ospf_area* next;
 	ospf_area* prev;
 };
 
 void addOSPFArea(uint32_t id);
 void delOSPFArea(uint32_t id);
+void setOSPFAreaStub(uint32_t id,uint8_t stub,uint8_t sum);
+uint8_t getOSPFAreaStub(uint32_t id);
+uint8_t getOSPFAreaStubSummary(uint32_t id);
 uint8_t addIfaceToOSPFArea(char* iface, uint32_t id);
 void delIfaceFromOSPFArea(char* iface, uint32_t id);
 

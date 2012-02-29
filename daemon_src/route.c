@@ -71,6 +71,7 @@ void addOSPFArea(uint32_t id)
 	oa->id = id;
 	oa->ifacelist = "";
 	oa->stub = 0;
+	oa->stub_summary = 0;
 	oa->next = NULL;
 	oa->prev = NULL;
 
@@ -88,6 +89,68 @@ void addOSPFArea(uint32_t id)
 		oa->prev = cursor;
 		cursor->next = oa;
 	}
+}
+
+void setOSPFAreaStub(uint32_t id, uint8_t stub, uint8_t sum)
+{
+	if(ospfareas == NULL)
+		return;
+
+	ospf_area* cursor = ospfareas;
+
+	while(cursor != NULL)
+	{
+		if(cursor->id == id)
+		{
+			cursor->stub = stub;
+			cursor->stub_summary = sum;
+			return;
+		}
+		else
+			cursor = cursor->next;
+	}
+}
+
+uint8_t getOSPFAreaStub(uint32_t id)
+{
+	if(ospfareas == NULL)
+		return -1;
+
+
+	ospf_area* cursor = ospfareas;
+
+	while(cursor != NULL)
+	{
+		if(cursor->id == id)
+		{
+			return cursor->stub;
+		}
+		else
+			cursor = cursor->next;
+	}
+
+	return -1;
+}
+
+uint8_t getOSPFAreaStubSummary(uint32_t id)
+{
+	if(ospfareas == NULL)
+		return -1;
+
+
+	ospf_area* cursor = ospfareas;
+
+	while(cursor != NULL)
+	{
+		if(cursor->id == id)
+		{
+			return cursor->stub_summary;
+		}
+		else
+			cursor = cursor->next;
+	}
+
+	return -1;
 }
 
 void delRoute(char* ip, char* mask, char* gate)
@@ -471,6 +534,8 @@ void saveOspfd()
 		if(strlen(cursor->ifacelist) > 0)
 		{
 			fprintf(fOSPFd,"area %s {\n",convert_int_to_ip(cursor->id));
+			if(cursor->stub > 0)
+				fprintf(fOSPFd,"\tstub%s\n",(cursor->stub_summary > 0) ? " redistribute default" : "");
 			char* ifbuffer[256];
 			uint8_t nbif = cutString(cursor->ifacelist,ifbuffer);
 			for(uint8_t i=0;i<nbif;i++)

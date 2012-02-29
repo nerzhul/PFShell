@@ -126,4 +126,5 @@
 #define CMDROUTER_OSPF_AUTH_KEY_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf authentication key-string <1-16 chars>\n");
 #define CMDROUTER_OSPF_AUTHENTICATION_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf authentication <key-string|mode> ...\n");
 #define CMDROUTER_OSPF_AREA_IFACE_ERROR() PRINTERROR("Error ! This interface is already in an area. Please deconfigure the area before.\n");
+#define CMDROUTER_OSPF_AREA_STUB_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) area A.B.C.D stub (no-summary)\n");
 #endif
