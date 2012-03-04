@@ -275,7 +275,9 @@ unsigned short writeRunningConfig()
 			{
 				char* iflist[256];
 				uint8_t ifnb = cutString(oa->ifacelist,iflist);
-				for(uint8_t i=0;i<ifnb;i++)
+
+				uint8_t i;
+				for(i=0;i<ifnb;i++)
 					fprintf(confFile,"network %s area %s\n",iflist[i],convert_int_to_ip(oa->id));
 
 				freeCutString(iflist,ifnb);
@@ -372,7 +374,9 @@ unsigned short writeRunningConfig()
 			{
 				char* helpers[64];
 				uint8_t nbhelpers = cutString(if_cursor->ip_helper_list,helpers);
-				for(uint8_t i=0;i<nbhelpers;i++)
+
+				uint8_t i;
+				for(i=0;i<nbhelpers;i++)
 				{
 					if(is_valid_ip(helpers[i]) == 0)
 						fprintf(confFile,"ip helper-address %s\n",helpers[i]);

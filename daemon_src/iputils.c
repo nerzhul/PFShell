@@ -73,7 +73,8 @@ short calc_cidr(char* mask)
 
 	__mask = ntohl(_mask.s_addr);
 
-	for(short i=0;i<32;i++)
+	short i;
+	for(i=0;i<32;i++)
 	{
 		if((__mask & (1L<<i)) == 0)
 			cidr++;
@@ -100,7 +101,8 @@ short unsigned int is_valid_mask(char* mask)
 
 	__mask = ntohl(_mask.s_addr);
 
-	for(short i=0;i<32;i++)
+	short i;
+	for(i=0;i<32;i++)
 	{
 		if((__mask & (1L<<i)) != 0 && zerofound == 0)
 			zerofound = 1;

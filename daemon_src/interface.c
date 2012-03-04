@@ -136,7 +136,8 @@ void loadInterfaces()
 	char* iface[128];
 	uint8_t nbif = cutString(output,iface);
 
-	for(uint8_t i=0;i<nbif;i++)
+	uint8_t i;
+	for(i=0;i<nbif;i++)
 	{
 		if(strlen(iface[i]) < 2 || strlen(iface[i]) > 4 && iface[i][0] == 'v' && iface[i][1] == 'l' && iface[i][2] == 'a' && iface[i][3] == 'n')
 			continue;
@@ -1365,7 +1366,9 @@ uint8_t addInterfaceIPHelper(char* name, char* ip)
 		{
 			char* helpers[64];
 			uint8_t nbhelpers = cutString(cursor->ip_helper_list,helpers);
-			for(uint8_t i=0;i<nbhelpers;i++)
+
+			uint8_t i;
+			for(i=0;i<nbhelpers;i++)
 			{
 				if(strcmp(helpers[i],ip) == 0)
 					return 3;
@@ -1414,7 +1417,9 @@ void delInterfaceIPHelper(char* name, char* ip)
 			uint8_t nbhelpers = cutString(cursor->ip_helper_list,helpers);
 
 			uint8_t first = 1;
-			for(uint8_t i=0;i<nbhelpers;i++)
+
+			uint8_t i;
+			for(i=0;i<nbhelpers;i++)
 			{
 				if(strcmp(helpers[i],ip) != 0)
 				{
@@ -1474,7 +1479,8 @@ void launchInterfaceIPHelpers(char* name)
 			char* subiface[2];
 			cutByChar(name,subiface,'.');
 
-			for(uint8_t i=0;i<nbhelpers;i++)
+			uint8_t i;
+			for(i=0;i<nbhelpers;i++)
 			{
 				if(is_valid_ip(helpers[i]) == 0)
 				{

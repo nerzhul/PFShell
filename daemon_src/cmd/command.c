@@ -149,7 +149,7 @@ cmdCallback handleCmd(char* _fullcmd, unsigned short promptMode)
 	{
 		char* nocmd[2];
 		cutFirstWord(cmd[1],nocmd);
-		while(i < MAX_NO_CMDS[promptMode])
+		while(i < MAX_CMDS[promptMode])
 		{
 			if(strcmp(nocmd[0],masterCmd[promptMode][i].name) == 0 && masterCmd[promptMode][i].invhandler != NULL)
 			{

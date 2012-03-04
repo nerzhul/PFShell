@@ -205,3 +205,4 @@ Alpha 0.27 - prev
 - Implement ip helper-address for relay DHCP request to another network
 - Implement OSPF stub areas (with no-summary opt)
 - Implement OSPF redistribute A.B.C.D/CIDR (+metric & type)
+- Rewrite command handler in proper way

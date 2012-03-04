@@ -240,7 +240,9 @@ uint8_t addIfaceToOSPFArea(char* iface, uint32_t id)
 			{
 				char* ifaceBuffer[256];
 				uint8_t nbifaces = cutString(cursor->ifacelist,ifaceBuffer);
-				for(uint8_t i=0;i<nbifaces;i++)
+
+				uint8_t i;
+				for(i=0;i<nbifaces;i++)
 				{
 					if(strcmp(ifaceBuffer[i],iface) == 0)
 					{
@@ -279,7 +281,9 @@ uint8_t addIfaceToOSPFArea(char* iface, uint32_t id)
 			{
 				char* ifaceBuffer[256];
 				uint8_t nbifaces = cutString(oa->ifacelist,ifaceBuffer);
-				for(uint8_t i=0;i<nbifaces;i++)
+
+				uint8_t i;
+				for(i=0;i<nbifaces;i++)
 				{
 					if(strcmp(ifaceBuffer[i],iface) == 0)
 					{
@@ -324,7 +328,9 @@ void delIfaceFromOSPFArea(char* iface, uint32_t id)
 			free(oa->ifacelist);
 
 		uint8_t first = 0;
-		for(uint8_t i=0;i<nbifaces;i++)
+
+		uint8_t i;
+		for(i=0;i<nbifaces;i++)
 		{
 			if(strcmp(ifaceBuffer[i],iface) == 0)
 				continue;
@@ -627,7 +633,9 @@ void saveOspfd()
 				fprintf(fOSPFd,"\tstub%s\n",(cursor->stub_summary > 0) ? " redistribute default" : "");
 			char* ifbuffer[256];
 			uint8_t nbif = cutString(cursor->ifacelist,ifbuffer);
-			for(uint8_t i=0;i<nbif;i++)
+
+			uint8_t i;
+			for(i=0;i<nbif;i++)
 			{
 				net_iface* cursor2 = interfaces;
 				uint8_t found = 0;

@@ -141,7 +141,8 @@ void freeCutString(char** elem,uint8_t size)
 	if(elem == NULL)
 		return;
 
-	for(uint8_t i=0;i<size;i++)
+	uint8_t i;
+	for(i=0;i<size;i++)
 	{
 		if(elem[i] != NULL)
 			free(elem[i]);
