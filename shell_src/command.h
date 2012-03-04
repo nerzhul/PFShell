@@ -28,6 +28,6 @@
 #ifndef __COMMAND_H__
 #define __COMMAND_H__
 
-char* readCmd();
+char* readCmd(void);
 
 #endif

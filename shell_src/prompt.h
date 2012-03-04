@@ -42,21 +42,21 @@
 #define PROMPT_CONF_ROUTER_OSPF		8
 #define MAX_PROMPTS			9
 
-unsigned int initPrompts();
-void prompt();
+unsigned int initPrompts(void);
+void prompt(void);
 
-void promptU();
-void promptE();
-void promptC();
-void promptCIf();
-void promptCFW();
-void promptCRD();
-void promptCACL();
-void promptCRouter();
+void promptU(void);
+void promptE(void);
+void promptC(void);
+void promptCIf(void);
+void promptCFW(void);
+void promptCRD(void);
+void promptCACL(void);
+void promptCRouter(void);
 
 typedef struct prompt
 {
-	void (*action)();
+	void (*action)(void);
 } prompts;
 
 prompts promptTable[MAX_PROMPTS];

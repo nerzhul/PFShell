@@ -63,7 +63,7 @@ void sigterm_handler(int param)
 	fflush(stdout);
 }
 
-unsigned short initSignals()
+unsigned short initSignals(void)
 {
 	signal(SIGINT,sigint_handler);
 	signal(SIGTERM,sigterm_handler);

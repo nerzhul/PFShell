@@ -25,6 +25,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <string.h>
 #include "cli_socket.h"
 #include "command.h"
 #include "configuration.h"
@@ -34,7 +35,7 @@
 int main(int argc, const char** argv)
 {
 	// Set default hostname
-	strcpy(hostname,"BSDRouter");
+	strncpy(hostname,"BSDRouter",128);
 
 	initSignals();
 	initPrompts();
@@ -51,7 +52,7 @@ int main(int argc, const char** argv)
 		while(1)
 		{
 			char sendBuffer[4096] = "";
-			sprintf(sendBuffer,"%d%s",promptMode,readCmd());
+			snprintf(sendBuffer,4096,"%d%s",promptMode,readCmd());
 			sendPacket(sendBuffer);
 			if(strlen(sendBuffer) > 1)
 			{

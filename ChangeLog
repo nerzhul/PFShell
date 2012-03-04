@@ -200,7 +200,7 @@ Alpha 0.26
 - pkill ospfd & ripd when start daemon
 - rewrite loadInterfaces properly with filtering
 
-Alpha 0.27 - prev
+Alpha 0.27
 - 802.1Q interfaces can now be used for OSPF & RIP (and deleted)
 - Implement ip helper-address for relay DHCP request to another network
 - Implement OSPF stub areas (with no-summary opt)
@@ -210,3 +210,4 @@ Alpha 0.27 - prev
 - Fix some compile warns
 - sysunix buffers are now correctly reinit
 - Memory improvement by setting uint8_t instead of unsigned short (uint16_t)
+- BSDRouterShell is now fully warn fixed

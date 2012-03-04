@@ -29,7 +29,7 @@
 
 #include "configuration.h"
 
-unsigned int initPrompts()
+unsigned int initPrompts(void)
 {
 	// Set default mode to usermode
 	promptMode = PROMPT_USER;
@@ -47,25 +47,25 @@ unsigned int initPrompts()
 	return 1;
 }
 
-void prompt()
+void prompt(void)
 {
 	fflush(stdout);
 	(*promptTable[promptMode].action)();
 }
 
 // User prompt
-void promptU() { printf("%s> ",hostname); }
+void promptU(void) { printf("%s> ",hostname); }
 // Enable prompt
-void promptE() { printf("%s# ",hostname); }
+void promptE(void) { printf("%s# ",hostname); }
 // Configure prompt
-void promptC() { printf("%s(conf)# ",hostname);}
+void promptC(void) { printf("%s(conf)# ",hostname);}
 // Configure prompt for Network Interfaces
-void promptCIf() { printf("%s(conf-iface)# ",hostname);}
+void promptCIf(void) { printf("%s(conf-iface)# ",hostname);}
 // Configure prompt for Firewall
-void promptCFW() { printf("%s(conf-fw)# ",hostname); }
+void promptCFW(void) { printf("%s(conf-fw)# ",hostname); }
 // Configure prompt for CARP redundancy
-void promptCRD() { printf("%s(conf-redundancy)# ",hostname);}
+void promptCRD(void) { printf("%s(conf-redundancy)# ",hostname);}
 // Configure prompt for ACLs
-void promptCACL() { printf("%s(conf-acl)# ",hostname);}
+void promptCACL(void) { printf("%s(conf-acl)# ",hostname);}
 // Configure prompt for router rip && router ospf
-void promptCRouter() { printf("%s(conf-router)# ",hostname);}
+void promptCRouter(void) { printf("%s(conf-router)# ",hostname);}

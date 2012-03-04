@@ -25,10 +25,12 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <stdlib.h>
+#include <string.h>
 #include "cli_socket.h"
 #include "prompt.h"
 
-unsigned short openShellSocket()
+unsigned short openShellSocket(void)
 {
 	csock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if(csock == INVALID_SOCKET)
@@ -43,7 +45,7 @@ unsigned short openShellSocket()
 	return 0;
 }
 
-unsigned short closeShellSocket()
+unsigned short closeShellSocket(void)
 {
 	closesocket(csock);
 	return 0;
@@ -63,13 +65,13 @@ void decodePacket(char* pkt)
 
 	promptMode = (int)(char)pkt[0]-(int)'0';
 
-	while(offset < strlen(pkt))
+	while(offset < (int)strlen(pkt))
 	{
 		buffer[offset-1] = pkt[offset];
 		offset++;
 	}
 
-	strcpy(command,buffer);
+	strncpy(command,buffer,4096);
 
 
 	if(promptMode < MAX_PROMPTS)

@@ -44,8 +44,8 @@ typedef struct sockaddr SOCKADDR;
 SOCKET csock;
 SOCKADDR_IN csin;
 
-unsigned short openShellSocket();
-unsigned short closeShellSocket();
+unsigned short openShellSocket(void);
+unsigned short closeShellSocket(void);
 unsigned short sendPacket(char* data);
 void decodePacket(char* pkt);
 

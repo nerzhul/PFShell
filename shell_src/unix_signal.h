@@ -28,7 +28,7 @@
 #ifndef __UNIX_SIGNAL_H__
 #define __UNIX_SIGNAL_H__
 
-unsigned short initSignals();
+unsigned short initSignals(void);
 
 // handlers
 void sigint_handler(int param);

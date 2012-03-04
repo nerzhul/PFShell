@@ -18,7 +18,7 @@ CFLAGS+= -Wstrict-prototypes -Wmissing-prototypes
 CFLAGS+= -Wmissing-declarations
 CFLAGS+= -Wshadow -Wpointer-arith -Wcast-qual
 CFLAGS+= -Wsign-compare
-CFLAGS+= -DVERSION=\"alpha\ 0.26\"
+CFLAGS+= -DVERSION=\"alpha\ 0.27\"
 LDADD+= -lm
 
 .include <bsd.prog.mk>
