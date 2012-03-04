@@ -40,166 +40,86 @@
 #include "../prompt/prompt_msg.h"
 #include "../prompt/prompt.h"
 
+cmdHdlr userCmd[MAX_USER_CMD] =
+{
+	{"exit",		&uCMD_exit,		NULL},
+	{"enable",		&uCMD_enable,		NULL},
+	{"help",		&uCMD_help,		NULL},
+	{"show",		&uCMD_show,		NULL}
+};
+
+cmdHdlr enableCmd[MAX_ENABLE_CMD] =
+{
+	{"configure",		&eCMD_configure,	NULL},
+	{"exit",		&eCMD_exit,		NULL},
+	{"save",		&eCMD_save,		NULL},
+	{"show",		eCMD_show,		NULL}
+};
+
+cmdHdlr confCmd[MAX_CONF_CMD] =
+{
+	{"exit",		&eCMD_exit,		NULL},
+	{"firewall",		&cCMD_firewall,		NULL},
+	{"hostname",		&cCMD_hostname,		&cCMD_nohostname},
+	{"interface",		&cCMD_interface,	&cCMD_nointerface},
+	{"ip",			&cCMD_ip,		&cCMD_noip},
+	{"router",		&cCMD_router,		NULL}
+};
+
+cmdHdlr confIfCmd[MAX_CONF_IF_CMD] =
+{
+	{"description",		&cifCMD_description,	&cifCMD_nodescription},
+	{"encapsulation",	&cifCMD_encap,		&cifCMD_noencap},
+	{"exit",		&cifCMD_exit,		NULL},
+	{"ip",			&cifCMD_ip,		&cifCMD_noip},
+	{"shutdown",		&cifCMD_shutdown,	&cifCMD_noshutdown}
+};
+
+cmdHdlr confFWCmd[MAX_CONF_FW_CMD] =
+{
+	{"access-list",		&cfwCMD_acl,		&cfwCMD_noacl},
+	{"default",		&cfwCMD_default,	NULL},
+	{"disable",		&cfwCMD_disable,	&cfwCMD_enable},
+	{"enable",		&cfwCMD_enable,		&cfwCMD_disable},
+	{"exit",		&cfwCMD_exit,		NULL}
+};
+
+cmdHdlr confACLCmd[MAX_CONF_ACL_CMD] =
+{
+	{"allow",		&caclCMD_allow_acl,	&caclCMD_noallow_acl},
+	{"deny",		&caclCMD_deny_acl,	&caclCMD_nodeny_acl},
+	{"exit",		&caclCMD_exit,		NULL}
+};
+
+cmdHdlr confRDCmd[MAX_CONF_RD_CMD] =
+{
+	{"exit",		&crdCMD_exit,		NULL},
+};
+
+cmdHdlr confRouterRIPCmd[MAX_CONF_ROUTER_RIP_CMD] =
+{
+	{"default-information",	&crouterCMD_RIP_defaultinformation,	&crouterCMD_RIP_nodefaultinformation},
+	{"exit",		&crouterCMD_RIP_exit,			NULL},
+	{"network",		&crouterCMD_RIP_network,		&crouterCMD_RIP_nonetwork},
+	{"passive-interface",	&crouterCMD_RIP_passive,		&crouterCMD_RIP_nopassive},
+	{"redistribute",	&crouterCMD_RIP_redistrib,		&crouterCMD_RIP_noredistrib},
+	{"split-horizon",	&crouterCMD_RIP_splithorizon,		&crouterCMD_RIP_nosplithorizon},
+	{"timers",		&crouterCMD_RIP_timer,			crouterCMD_RIP_notimer}
+};
+
+cmdHdlr confRouterOSPFCmd[MAX_CONF_ROUTER_OSPF_CMD] =
+{
+	{"area",		&crouterCMD_OSPF_area,		&crouterCMD_OSPF_noarea},
+	{"exit",		&crouterCMD_OSPF_exit,		NULL},
+	{"network",		&crouterCMD_OSPF_network,	&crouterCMD_OSPF_nonetwork},
+	{"passive-interface",	&crouterCMD_OSPF_passive,	&crouterCMD_OSPF_nopassive},
+	{"redistribute",	&crouterCMD_OSPF_redistrib,	&crouterCMD_OSPF_noredistrib},
+	{"router-id",		&crouterCMD_OSPF_routerid,	&crouterCMD_OSPF_norouterid},
+	{"timers",		&crouterCMD_OSPF_timers,	&crouterCMD_OSPF_notimers}
+};
+
 unsigned short initCmds()
 {
-	// User Mode Commands
-	userCmd[0].name = "exit";
-	userCmd[0].handler = &uCMD_exit;
-	userCmd[1].name = "enable";
-	userCmd[1].handler = &uCMD_enable;
-	userCmd[2].name = "help";
-	userCmd[2].handler = &uCMD_help;
-	userCmd[3].name = "show";
-	userCmd[3].handler = &uCMD_show;
-
-	// Enable Mode Commands
-	enableCmd[0].name = "exit";
-	enableCmd[0].handler = &eCMD_exit;
-	enableCmd[1].name = "configure";
-	enableCmd[1].handler = &eCMD_configure;
-	enableCmd[2].name = "save";
-	enableCmd[2].handler = &eCMD_save;
-	enableCmd[3].name = "show";
-	enableCmd[3].handler = &eCMD_show;
-
-	// Enable - Configure Commands
-	confCmd[0].name = "exit";
-	confCmd[0].handler = &cCMD_exit;
-	confCmd[1].name = "firewall";
-	confCmd[1].handler = &cCMD_firewall;
-	confCmd[2].name = "hostname";
-	confCmd[2].handler = &cCMD_hostname;
-	confCmd[3].name = "interface";
-	confCmd[3].handler = &cCMD_interface;
-	confCmd[4].name = "ip";
-	confCmd[4].handler = &cCMD_ip;
-	confCmd[5].name = "router";
-	confCmd[5].handler = &cCMD_router;
-
-	// Enable - Configure Inverted Commands
-	noconfCmd[0].name = "hostname";
-	noconfCmd[0].handler = &cCMD_nohostname;
-	noconfCmd[1].name = "ip";
-	noconfCmd[1].handler = &cCMD_noip;
-	noconfCmd[2].name = "interface";
-	noconfCmd[2].handler = &cCMD_nointerface;
-
-	// Enable - Configure - Interface Commands
-	confIfCmd[0].name = "exit";
-	confIfCmd[0].handler = &cifCMD_exit;
-	confIfCmd[1].name = "shutdown";
-	confIfCmd[1].handler = &cifCMD_shutdown;
-	confIfCmd[2].name = "ip";
-	confIfCmd[2].handler = &cifCMD_ip;
-	confIfCmd[3].name = "description";
-	confIfCmd[3].handler = &cifCMD_description;
-	confIfCmd[4].name = "encapsulation";
-	confIfCmd[4].handler = &cifCMD_encap;
-
-	// Enable - Configure - Interface Inverted commands
-	noconfIfCmd[0].name = "shutdown";
-	noconfIfCmd[0].handler = &cifCMD_noshutdown;
-	noconfIfCmd[1].name = "ip";
-	noconfIfCmd[1].handler = &cifCMD_noip;
-	noconfIfCmd[2].name = "description";
-	noconfIfCmd[2].handler = &cifCMD_nodescription;
-	noconfIfCmd[3].name = "encapsulation";
-	noconfIfCmd[3].handler = &cifCMD_noencap;
-
-	// Enable - Configure - Firewall Commands
-	confFWCmd[0].name = "exit";
-	confFWCmd[0].handler = &cfwCMD_exit;
-	confFWCmd[1].name = "default";
-	confFWCmd[1].handler = &cfwCMD_default;
-	confFWCmd[2].name = "enable";
-	confFWCmd[2].handler = &cfwCMD_enable;
-	confFWCmd[3].name = "disable";
-	confFWCmd[3].handler = &cfwCMD_disable;
-	confFWCmd[4].name = "access-list";
-	confFWCmd[4].handler = &cfwCMD_acl;
-
-	// Enable - Configure - Firewall Inverted Commands
-	noconfFWCmd[0].name = "access-list";
-	noconfFWCmd[0].handler = &cfwCMD_noacl;
-
-	// Enable - Configure - Firewall - ACL Commands
-	confACLCmd[0].name = "allow";
-	confACLCmd[0].handler = &caclCMD_allow_acl;
-	confACLCmd[1].name = "deny";
-	confACLCmd[1].handler = &caclCMD_deny_acl;
-	confACLCmd[2].name = "exit";
-	confACLCmd[2].handler = &caclCMD_exit;
-
-	// Enable - Configure - Firewall No ACL Commands
-	noconfACLCmd[0].name = "allow";
-	noconfACLCmd[0].handler = &caclCMD_noallow_acl;
-	noconfACLCmd[1].name = "deny";
-	noconfACLCmd[1].handler = &caclCMD_nodeny_acl;
-
-	// Enable - Configure - Redundancy Commands
-	confRDCmd[0].name = "exit";
-	confRDCmd[0].handler = &crdCMD_exit;
-
-	// Enable - Configure - Router RIP Commands
-	confRouterRIPCmd[0].name = "exit";
-	confRouterRIPCmd[0].handler = &crouterCMD_RIP_exit;
-	confRouterRIPCmd[1].name = "redistribute";
-	confRouterRIPCmd[1].handler = crouterCMD_RIP_redistrib;
-	confRouterRIPCmd[2].name = "default-information";
-	confRouterRIPCmd[2].handler = crouterCMD_RIP_defaultinformation;
-	confRouterRIPCmd[3].name = "split-horizon";
-	confRouterRIPCmd[3].handler = crouterCMD_RIP_splithorizon;
-	confRouterRIPCmd[4].name = "passive-interface";
-	confRouterRIPCmd[4].handler = crouterCMD_RIP_passive;
-	confRouterRIPCmd[5].name = "timers";
-	confRouterRIPCmd[5].handler = crouterCMD_RIP_timer;
-	confRouterRIPCmd[6].name = "network";
-	confRouterRIPCmd[6].handler = crouterCMD_RIP_network;
-
-	// Enable - Configure - Router RIP No Commands
-	noconfRouterRIPCmd[0].name = "redistribute";
-	noconfRouterRIPCmd[0].handler = crouterCMD_RIP_noredistrib;
-	noconfRouterRIPCmd[1].name = "default-information";
-	noconfRouterRIPCmd[1].handler = crouterCMD_RIP_nodefaultinformation;
-	noconfRouterRIPCmd[2].name = "split-horizon";
-	noconfRouterRIPCmd[2].handler = crouterCMD_RIP_nosplithorizon;
-	noconfRouterRIPCmd[3].name = "passive-interface";
-	noconfRouterRIPCmd[3].handler = crouterCMD_RIP_nopassive;
-	noconfRouterRIPCmd[4].name = "timers";
-	noconfRouterRIPCmd[4].handler = crouterCMD_RIP_notimer;
-	noconfRouterRIPCmd[5].name = "network";
-	noconfRouterRIPCmd[5].handler = crouterCMD_RIP_nonetwork;
-
-	// Enable - Configure - Router OSPF Commands
-	confRouterOSPFCmd[0].name = "exit";
-	confRouterOSPFCmd[0].handler = &crouterCMD_OSPF_exit;
-	confRouterOSPFCmd[1].name = "redistribute";
-	confRouterOSPFCmd[1].handler = crouterCMD_OSPF_redistrib;
-	confRouterOSPFCmd[2].name = "passive-interface";
-	confRouterOSPFCmd[2].handler = crouterCMD_OSPF_passive;
-	confRouterOSPFCmd[3].name = "router-id";
-	confRouterOSPFCmd[3].handler = crouterCMD_OSPF_routerid;
-	confRouterOSPFCmd[4].name = "timers";
-	confRouterOSPFCmd[4].handler = crouterCMD_OSPF_timers;
-	confRouterOSPFCmd[5].name = "network";
-	confRouterOSPFCmd[5].handler = crouterCMD_OSPF_network;
-	confRouterOSPFCmd[6].name = "area";
-	confRouterOSPFCmd[6].handler = crouterCMD_OSPF_area;
-
-	// Enable - Configure - Router OSPF No Commands
-	noconfRouterOSPFCmd[0].name = "redistribute";
-	noconfRouterOSPFCmd[0].handler = crouterCMD_OSPF_noredistrib;
-	noconfRouterOSPFCmd[1].name = "passive-interface";
-	noconfRouterOSPFCmd[1].handler = crouterCMD_OSPF_nopassive;
-	noconfRouterOSPFCmd[2].name = "router-id";
-	noconfRouterOSPFCmd[2].handler = crouterCMD_OSPF_norouterid;
-	noconfRouterOSPFCmd[3].name = "timers";
-	noconfRouterOSPFCmd[3].handler = crouterCMD_OSPF_notimers;
-	noconfRouterOSPFCmd[4].name = "network";
-	noconfRouterOSPFCmd[4].handler = crouterCMD_OSPF_nonetwork;
-	noconfRouterOSPFCmd[5].name = "area";
-	noconfRouterOSPFCmd[5].handler = crouterCMD_OSPF_noarea;
-
 	masterCmd[0] = userCmd;
 	masterCmd[1] = enableCmd;
 	masterCmd[2] = confCmd;
@@ -209,16 +129,6 @@ unsigned short initCmds()
 	masterCmd[6] = confACLCmd;
 	masterCmd[7] = confRouterRIPCmd;
 	masterCmd[8] = confRouterOSPFCmd;
-
-	masternoCmd[0] = nouserCmd;
-	masternoCmd[1] = noenableCmd;
-	masternoCmd[2] = noconfCmd;
-	masternoCmd[3] = noconfIfCmd;
-	masternoCmd[4] = noconfFWCmd;
-	masternoCmd[5] = noconfRDCmd;
-	masternoCmd[6] = noconfACLCmd;
-	masternoCmd[7] = noconfRouterRIPCmd;
-	masternoCmd[8] = noconfRouterOSPFCmd;
 
 	return 0;
 }
@@ -241,9 +151,9 @@ cmdCallback handleCmd(char* _fullcmd, unsigned short promptMode)
 		cutFirstWord(cmd[1],nocmd);
 		while(i < MAX_NO_CMDS[promptMode])
 		{
-			if(strcmp(nocmd[0],masternoCmd[promptMode][i].name) == 0)
+			if(strcmp(nocmd[0],masterCmd[promptMode][i].name) == 0 && masterCmd[promptMode][i].invhandler != NULL)
 			{
-				return (*masternoCmd[promptMode][i].handler)(nocmd[1]);
+				return (*masterCmd[promptMode][i].invhandler)(nocmd[1]);
 			}
 			++i;
 		}
@@ -252,7 +162,7 @@ cmdCallback handleCmd(char* _fullcmd, unsigned short promptMode)
 	{
 		while(i < MAX_CMDS[promptMode])
 		{
-			if(strcmp(cmd[0],masterCmd[promptMode][i].name) == 0)
+			if(strcmp(cmd[0],masterCmd[promptMode][i].name) == 0 && masterCmd[promptMode][i].handler != NULL)
 			{
 				return (*masterCmd[promptMode][i].handler)(cmd[1]);
 			}

@@ -42,6 +42,7 @@ typedef struct commandHandler
 {
 	const char* name;
 	cmdCallback (*handler)(char* otherArgs);
+	cmdCallback (*invhandler)(char* otherArgs);
 } cmdHdlr;
 
 #define MAX_CMD_TYPES	9
@@ -80,45 +81,6 @@ cmdHdlr confRouterRIPCmd[MAX_CONF_ROUTER_RIP_CMD];
 cmdHdlr confRouterOSPFCmd[MAX_CONF_ROUTER_OSPF_CMD];
 
 cmdHdlr* masterCmd[MAX_CMD_TYPES];
-
-// Inverted commands
-
-#define MAX_USER_NO_CMD 0
-#define MAX_ENABLE_NO_CMD 0
-#define MAX_CONF_NO_CMD 3
-#define MAX_CONF_IF_NO_CMD 4
-#define MAX_CONF_FW_NO_CMD 1
-#define MAX_CONF_RD_NO_CMD 0
-#define MAX_CONF_ACL_NO_CMD 2
-#define MAX_CONF_ROUTER_RIP_NO_CMD 6
-#define MAX_CONF_ROUTER_OSPF_NO_CMD 6
-
-static const unsigned short MAX_NO_CMDS[MAX_CMD_TYPES] =
-{
-	MAX_USER_NO_CMD,
-	MAX_ENABLE_NO_CMD,
-	MAX_CONF_NO_CMD,
-	MAX_CONF_IF_NO_CMD,
-	MAX_CONF_FW_NO_CMD,
-	MAX_CONF_RD_NO_CMD,
-	MAX_CONF_ACL_NO_CMD,
-	MAX_CONF_ROUTER_RIP_NO_CMD,
-	MAX_CONF_ROUTER_OSPF_NO_CMD
-};
-
-
-cmdHdlr nouserCmd[MAX_USER_NO_CMD];
-cmdHdlr noenableCmd[MAX_ENABLE_NO_CMD];
-cmdHdlr noconfCmd[MAX_CONF_NO_CMD];
-cmdHdlr noconfIfCmd[MAX_CONF_IF_NO_CMD];
-cmdHdlr noconfFWCmd[MAX_CONF_FW_NO_CMD];
-cmdHdlr noconfRDCmd[MAX_CONF_RD_NO_CMD];
-cmdHdlr noconfACLCmd[MAX_CONF_ACL_NO_CMD];
-cmdHdlr noconfRouterCmd[MAX_CONF_ROUTER_RIP_NO_CMD];
-cmdHdlr noconfRouterRIPCmd[MAX_CONF_ROUTER_RIP_NO_CMD];
-cmdHdlr noconfRouterOSPFCmd[MAX_CONF_ROUTER_OSPF_NO_CMD];
-
-cmdHdlr* masternoCmd[MAX_CMD_TYPES];
 
 unsigned short initCmds();
 
