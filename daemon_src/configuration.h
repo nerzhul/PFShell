@@ -38,9 +38,9 @@
 #define WRITE_HOSTNAME() saveHostname();
 
 unsigned short is_loading;
-unsigned short loadConfiguration();
-unsigned short writeRunningConfig();
-uint8_t saveHostname();
+uint8_t loadConfiguration(void);
+uint8_t writeRunningConfig(void);
+uint8_t saveHostname(void);
 
 char* hostname;
 char dnssearch[100];

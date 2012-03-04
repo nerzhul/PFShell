@@ -30,7 +30,7 @@
 #include <string.h>
 #include "interface.h"
 #include "configuration.h"
-#include "cmd/command.h"
+#include "cmd_command.h"
 #include "iputils.h"
 #include "string_mgmt.h"
 #include "sysunix.h"
@@ -122,7 +122,7 @@ void delInterface(char* name)
 }
 
 
-void loadInterfaces()
+void loadInterfaces(void)
 {
 	char output[1024] = "";
 #ifdef FREEBSD
@@ -139,7 +139,7 @@ void loadInterfaces()
 	uint8_t i;
 	for(i=0;i<nbif;i++)
 	{
-		if(strlen(iface[i]) < 2 || strlen(iface[i]) > 4 && iface[i][0] == 'v' && iface[i][1] == 'l' && iface[i][2] == 'a' && iface[i][3] == 'n')
+		if((strlen(iface[i]) < 2) || (strlen(iface[i]) > 4 && iface[i][0] == 'v' && iface[i][1] == 'l' && iface[i][2] == 'a' && iface[i][3] == 'n'))
 			continue;
 
 		if(getInterfacePosition(iface[i]) == -1)
@@ -147,7 +147,7 @@ void loadInterfaces()
 	}
 }
 
-unsigned short saveInterfaces()
+unsigned short saveInterfaces(void)
 {
 	net_iface* cursor = interfaces;
 	if(interfaces == NULL)
@@ -159,7 +159,6 @@ unsigned short saveInterfaces()
 		{
 			if(getInterfaceState(cursor->name) == 1)
 			{
-				char buffer[1024] = "";
 				char pathbuffer[100] = "";
 				strcpy(pathbuffer,"/etc/hostname.");
 				strcat(pathbuffer,cursor->name);
@@ -581,10 +580,10 @@ unsigned short getInterfaceOSPFCost(char* name)
 	return result;
 }
 
-unsigned short setInterfaceOSPFPriority(char* name, unsigned short prio)
+unsigned short setInterfaceOSPFPriority(char* name, uint8_t prio)
 {
-	if(prio > 255 && prio < 0)
-		return 1;
+	/*if(prio > 255 && prio < 0) // Due to variable type
+		return 1;*/
 
 	if(interfaces == NULL)
 		return 1;
@@ -642,9 +641,6 @@ unsigned short getInterfaceOSPFPriority(char* name)
 
 unsigned short setInterfaceOSPFHello(char* name, unsigned short hello)
 {
-	if(hello > 65535 && hello < 1)
-		return 1;
-
 	if(interfaces == NULL)
 		return 1;
 	else
@@ -1049,7 +1045,7 @@ char* getInterfaceRIPAuthKey(char* name)
 
 unsigned short setInterfaceOSPFAuthType(char* name, unsigned short type)
 {
-	if(type > RIP_AUTH_MD5 && type < RIP_AUTH_NONE)
+	if(type > RIP_AUTH_MD5)
 		return 1;
 
 	if(interfaces == NULL)
@@ -1079,7 +1075,7 @@ unsigned short setInterfaceOSPFAuthType(char* name, unsigned short type)
 
 unsigned short setInterfaceRIPAuthType(char* name, unsigned short type)
 {
-	if(type > RIP_AUTH_MD5 && type < RIP_AUTH_NONE)
+	if(type > RIP_AUTH_MD5)
 		return 1;
 
 	if(interfaces == NULL)
@@ -1399,10 +1395,10 @@ uint8_t addInterfaceIPHelper(char* name, char* ip)
 void delInterfaceIPHelper(char* name, char* ip)
 {
 	if(interfaces == NULL)
-		return 1;
+		return;
 
 	if(is_valid_ip(ip) != 0)
-		return 2;
+		return;
 
 	net_iface* cursor = interfaces;
 
@@ -1435,13 +1431,13 @@ void delInterfaceIPHelper(char* name, char* ip)
 			strcpy(cursor->ip_helper_list,buffer);
 
 			WRITE_RUN();
-			return 0;
+			return;
 		}
 		else
 			cursor = cursor->next;
 	}
 
-	return 1;
+	return;
 }
 
 char* getInterfaceIPHelpers(char* name)

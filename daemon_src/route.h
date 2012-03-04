@@ -43,9 +43,9 @@ struct route
 void addRoute(char* ip, char* mask, char* gate);
 void delRoute(char* ip, char* mask, char* gate);
 
-void saveSysctl();
-void saveRipd();
-void saveOspfd();
+void saveSysctl(void);
+void saveRipd(void);
+void saveOspfd(void);
 
 // Pointer for static routes
 route* routes;

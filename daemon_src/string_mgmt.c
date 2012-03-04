@@ -36,11 +36,11 @@ void cutFirstWord(char* string,char** result)
 	char firstWord[1024] = "";
 	char followWords[1024] = "";
 
-	int offset = 0;
-	int offset2 = 0;
-	short first_written = 0;
+	int16_t offset = 0;
+	int16_t offset2 = 0;
+	int16_t first_written = 0;
 
-	while(offset <= strlen(string))
+	while(offset <= (int16_t)strlen(string))
 	{
 		if(!first_written)
 		{
@@ -155,11 +155,11 @@ void cutByChar(char* string,char** result,char cutter)
 	char firstWord[1024] = "";
 	char followWords[1024] = "";
 
-	int offset = 0;
-	int offset2 = 0;
-	short first_written = 0;
+	int16_t offset = 0;
+	int16_t offset2 = 0;
+	int16_t first_written = 0;
 
-	while(offset <= strlen(string))
+	while(offset <= (int16_t)strlen(string))
 	{
 		if(!first_written)
 		{

@@ -35,12 +35,13 @@ char* printError(char* str, ...)
 	va_list args;
 	va_start(args, str);
 
-	strcpy(buffer,setPromptColor(0,RED));
+	sprintf(buffer,setPromptColor(0,RED));
 	sprintf(buffer2,str, args);
 	strcat(buffer,buffer2);
 	strcat(buffer,resetPromptColor(0));
 
 	va_end(args);
+	return buffer;
 }
 
 char* printSuccess(char* str, ...)
@@ -56,6 +57,7 @@ char* printSuccess(char* str, ...)
 	strcat(buffer,resetPromptColor(0));
 
 	va_end(args);
+	return buffer;
 }
 
 char* setPromptColor(short stdout_stream, short color)
@@ -109,7 +111,7 @@ char* resetPromptColor(short stdout_stream)
 	return "\x1b[0m";
 }
 
-unsigned short askConfirm() {
+uint8_t askConfirm() {
 	printf("Are you sure [y|n] ? ");
 	char c = getchar();
 	while(c != 'y' && c != 'n') {

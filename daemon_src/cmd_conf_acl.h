@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Loïc BLOT - Frost Sapphire Studios
+* Copyright (c) 2011-2012, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -25,23 +25,19 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __CONF_ROUTER_OSPF_H_
-#define __CONF_ROUTER_OSPF_H_
+#ifndef __COMMAND_ACL_H__
+#define __COMMAND_ACL_H__
 
-#include "command.h"
+#include "cmd_command.h"
 
-cmdCallback crouterCMD_OSPF_exit(char* _none);
+char* current_acl;
 
-cmdCallback crouterCMD_OSPF_redistrib(char* args);
-cmdCallback crouterCMD_OSPF_noredistrib(char* args);
-cmdCallback crouterCMD_OSPF_passive(char* args);
-cmdCallback crouterCMD_OSPF_nopassive(char* args);
-cmdCallback crouterCMD_OSPF_routerid(char* args);
-cmdCallback crouterCMD_OSPF_norouterid(char* args);
-cmdCallback crouterCMD_OSPF_timers(char* args);
-cmdCallback crouterCMD_OSPF_notimers(char* args);
-cmdCallback crouterCMD_OSPF_network(char* args);
-cmdCallback crouterCMD_OSPF_nonetwork(char* args);
-cmdCallback crouterCMD_OSPF_area(char* args);
-cmdCallback crouterCMD_OSPF_noarea(char* args);
+cmdCallback caclCMD_exit(char* _none);
+
+cmdCallback caclCMD_allow_acl(char* args);
+cmdCallback caclCMD_deny_acl(char* args);
+
+cmdCallback caclCMD_noallow_acl(char* args);
+cmdCallback caclCMD_nodeny_acl(char* args);
+
 #endif

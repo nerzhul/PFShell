@@ -26,11 +26,12 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "daemon_socket.h"
-#include "cmd/command.h"
+#include "cmd_command.h"
 #include "configuration.h"
-#include "prompt/prompt_msg.h"
+#include "prompt_msg.h"
 #include "sysunix.h"
 
 int main(int argc, const char** argv)

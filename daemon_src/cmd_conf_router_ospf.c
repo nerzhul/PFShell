@@ -26,13 +26,13 @@
 */
 
 #include <stdlib.h>
-#include "conf_router_ospf.h"
+#include "cmd_conf_router_ospf.h"
 #include "configuration.h"
 #include "interface.h"
 #include "iputils.h"
-#include "../prompt/prompt.h"
-#include "../prompt/prompt_msg.h"
-#include "../string_mgmt.h"
+#include "prompt.h"
+#include "prompt_msg.h"
+#include "string_mgmt.h"
 #include "route.h"
 
 
@@ -704,7 +704,7 @@ cmdCallback crouterCMD_OSPF_notimers(char* args)
 		return cb;
 	}
 
-	if(spf_del == ospf_delay_timer && spf_hold == ospf_holdtime_timer)
+	if(spf_del == (int)ospf_delay_timer && spf_hold == (int)ospf_holdtime_timer)
 	{
 		ospf_delay_timer = OSPF_DEFAULT_DELAY;
 		ospf_holdtime_timer = OSPF_DEFAULT_HOLDTIME;

@@ -64,8 +64,8 @@ struct net_iface
 
 void addInterface(char* name);
 void delInterface(char* name);
-void loadInterfaces();
-unsigned short saveInterfaces();
+void loadInterfaces(void);
+unsigned short saveInterfaces(void);
 
 uint8_t is_interface(char* name);
 
@@ -93,11 +93,11 @@ unsigned short setInterfaceRIPNetwork(char* name, uint8_t net);
 // OSPF
 unsigned short setInterfaceOSPFPassive(char* name, unsigned short passive);
 unsigned short setInterfaceOSPFCost(char* name, unsigned short cost);
-unsigned short setInterfaceOSPFPriority(char* name, unsigned short cost);
-unsigned short setInterfaceOSPFDead(char* name, unsigned int cost);
-unsigned short setInterfaceOSPFHello(char* name, unsigned short cost);
-unsigned short setInterfaceOSPFTransmit(char* name, unsigned short cost);
-unsigned short setInterfaceOSPFRetransmit(char* name, unsigned short cost);
+unsigned short setInterfaceOSPFPriority(char* name, uint8_t prio);
+unsigned short setInterfaceOSPFDead(char* name, unsigned int dead);
+unsigned short setInterfaceOSPFHello(char* name, unsigned short hello);
+unsigned short setInterfaceOSPFTransmit(char* name, unsigned short tr);
+unsigned short setInterfaceOSPFRetransmit(char* name, unsigned short retr);
 unsigned short setInterfaceOSPFAuthType(char* name, unsigned short type);
 unsigned short setInterfaceOSPFAuthKey(char* name, char* key);
 

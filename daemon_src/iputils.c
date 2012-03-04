@@ -31,6 +31,7 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <math.h>
+#include <stdlib.h>
 #include "iputils.h"
 #include "string_mgmt.h"
 
@@ -39,7 +40,6 @@ char* calc_broadcast(char* IP, char* mask)
 	struct in_addr _IP;
 	struct in_addr _mask;
 	struct in_addr bcast;
-	char* result;
 
 	inet_aton(IP,&_IP);
 	inet_aton(mask,&_mask);
@@ -54,7 +54,6 @@ char* calc_network(char* IP,char* mask)
 	struct in_addr _IP;
 	struct in_addr _mask;
 	struct in_addr res;
-	char* result;
 
 	inet_aton(IP,&_IP);
 	inet_aton(mask,&_mask);

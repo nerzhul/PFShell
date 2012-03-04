@@ -25,19 +25,24 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __COMMAND_ACL_H__
-#define __COMMAND_ACL_H__
+#ifndef __CONF_ROUTER_RIP_H__
+#define __CONF_ROUTER_RIP_H__
 
-#include "command.h"
+#include "cmd_command.h"
 
-char* current_acl;
+cmdCallback crouterCMD_RIP_exit(char* _none);
 
-cmdCallback caclCMD_exit(char* _none);
-
-cmdCallback caclCMD_allow_acl(char* args);
-cmdCallback caclCMD_deny_acl(char* args);
-
-cmdCallback caclCMD_noallow_acl(char* args);
-cmdCallback caclCMD_nodeny_acl(char* args);
+cmdCallback crouterCMD_RIP_redistrib(char* args);
+cmdCallback crouterCMD_RIP_noredistrib(char* args);
+cmdCallback crouterCMD_RIP_defaultinformation(char* args);
+cmdCallback crouterCMD_RIP_nodefaultinformation(char* args);
+cmdCallback crouterCMD_RIP_passive(char* args);
+cmdCallback crouterCMD_RIP_nopassive(char* args);
+cmdCallback crouterCMD_RIP_timer(char* args);
+cmdCallback crouterCMD_RIP_notimer(char* args);
+cmdCallback crouterCMD_RIP_network(char* args);
+cmdCallback crouterCMD_RIP_nonetwork(char* args);
+cmdCallback crouterCMD_RIP_splithorizon(char* _none);
+cmdCallback crouterCMD_RIP_nosplithorizon(char* _none);
 
 #endif

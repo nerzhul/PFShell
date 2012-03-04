@@ -46,9 +46,9 @@ SOCKET csock;
 socklen_t csize;
 int serror;
 
-unsigned short openServerSocket();
-unsigned short closeServerSocket();
-void waitAndHandleClients();
+unsigned short openServerSocket(void);
+unsigned short closeServerSocket(void);
+void waitAndHandleClients(void);
 
 void decodePacket(char* pkt);
 

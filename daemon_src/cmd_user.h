@@ -25,18 +25,14 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "conf_rd.h"
-#include "../prompt/prompt_msg.h"
+#ifndef __COMMAND_USER_H__
+#define __COMMAND_USER_H__
 
-cmdCallback crdCMD_exit(char* _none) {
-	cmdCallback cb = {PROMPT_CONF_RD,""};
+#include "cmd_command.h"
 
-	if(strlen(_none) > 0)
-	{
-		cb.message = CMDCOMMON_EXIT_ERROR();
-	}
-	else
-		cb.promptMode = PROMPT_CONF;
+cmdCallback uCMD_enable(char* _none);
+cmdCallback uCMD_exit(char* _none);
+cmdCallback uCMD_help(char* _none);
+cmdCallback uCMD_show(char* args);
 
-	return cb;
-}
+#endif

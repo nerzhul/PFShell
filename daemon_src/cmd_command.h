@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -25,11 +25,67 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __CONF_RD_H__
-#define __CONF_RD_H__
+#ifndef __COMMAND_H__
+#define __COMMAND_H__
 
-#include "command.h"
+#include <sys/types.h>
 
-cmdCallback crdCMD_exit(char* _none);
+#define CMD_ASKCONFIRM() askConfirm();
+
+typedef struct cmdCallback
+{
+	unsigned short promptMode;
+	char* message;
+} cmdCallback;
+
+typedef struct commandHandler
+{
+	const char* name;
+	cmdCallback (*handler)(char* otherArgs);
+	cmdCallback (*invhandler)(char* otherArgs);
+} cmdHdlr;
+
+#define MAX_CMD_TYPES	9
+
+#define MAX_USER_CMD			4
+#define MAX_ENABLE_CMD			4
+#define MAX_CONF_CMD			6
+#define MAX_CONF_IF_CMD 		5
+#define MAX_CONF_FW_CMD			5
+#define MAX_CONF_RD_CMD			1
+#define MAX_CONF_ACL_CMD		3
+#define MAX_CONF_ROUTER_RIP_CMD		7
+#define MAX_CONF_ROUTER_OSPF_CMD	7
+
+static const unsigned short MAX_CMDS[MAX_CMD_TYPES] =
+{
+	MAX_USER_CMD,
+	MAX_ENABLE_CMD,
+	MAX_CONF_CMD,
+	MAX_CONF_IF_CMD,
+	MAX_CONF_FW_CMD,
+	MAX_CONF_RD_CMD,
+	MAX_CONF_ACL_CMD,
+	MAX_CONF_ROUTER_RIP_CMD,
+	MAX_CONF_ROUTER_OSPF_CMD
+};
+
+cmdHdlr userCmd[MAX_USER_CMD];
+cmdHdlr enableCmd[MAX_ENABLE_CMD];
+cmdHdlr confCmd[MAX_CONF_CMD];
+cmdHdlr confIfCmd[MAX_CONF_IF_CMD];
+cmdHdlr confFWCmd[MAX_CONF_FW_CMD];
+cmdHdlr confRDCmd[MAX_CONF_RD_CMD];
+cmdHdlr confACLCmd[MAX_CONF_ACL_CMD];
+cmdHdlr confRouterRIPCmd[MAX_CONF_ROUTER_RIP_CMD];
+cmdHdlr confRouterOSPFCmd[MAX_CONF_ROUTER_OSPF_CMD];
+
+cmdHdlr* masterCmd[MAX_CMD_TYPES];
+
+uint8_t initCmds(void);
+
+cmdCallback handleCmd(char* _cmd, unsigned short promptMode);
+
+void hsystemcmd(char* cmd);
 
 #endif

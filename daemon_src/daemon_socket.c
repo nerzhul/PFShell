@@ -29,10 +29,10 @@
 #include <stdio.h>
 
 #include "daemon_socket.h"
-#include "cmd/command.h"
-#include "prompt/prompt.h"
+#include "cmd_command.h"
+#include "prompt.h"
 
-unsigned short openServerSocket()
+unsigned short openServerSocket(void)
 {
 	ssock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -64,7 +64,7 @@ unsigned short openServerSocket()
 	return 0;
 }
 
-void waitAndHandleClients()
+void waitAndHandleClients(void)
 {
 	while(1)
 	{
@@ -88,7 +88,7 @@ void waitAndHandleClients()
 	}
 }
 
-unsigned short closeServerSocket()
+unsigned short closeServerSocket(void)
 {
 	shutdown(ssock,SHUT_RDWR);
 	return 0;
@@ -103,7 +103,7 @@ void decodePacket(char* pkt)
 
 	promptMode = (int)(char)pkt[0]-(int)'0';
 
-	while(offset < strlen(pkt))
+	while(offset < (int)strlen(pkt))
 	{
 		command[offset-1] = pkt[offset];
 		++offset;

@@ -25,47 +25,25 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __PROMPT_H_
-#define __PROMPT_H_
+#ifndef __CONF_H__
+#define __CONF_H__
 
-#include <string.h>
-#include <stdio.h>
-#include <stdarg.h>
+#include "cmd_command.h"
 
-#define PROMPT_USER			0
-#define PROMPT_ENABLE			1
-#define PROMPT_CONF			2
-#define PROMPT_CONF_IF			3
-#define PROMPT_CONF_FW			4
-#define PROMPT_CONF_RD			5
-#define PROMPT_CONF_ACL 		6
-#define PROMPT_CONF_ROUTER_RIP 		7
-#define PROMPT_CONF_ROUTER_OSPF		8
-#define MAX_PROMPTS			9
+cmdCallback cCMD_exit(char* _none);
+cmdCallback cCMD_firewall(char* _none);
+cmdCallback cCMD_hostname(char* args);
 
-#define BLACK 0
-#define RED 1
-#define GREEN 2
-#define BROWN 3
-#define BLUE 4
-#define MAGENTA 5
-#define CYAN 6
-#define GREY 7
-#define YELLOW 8
-#define LRED 9
-#define LGREEN 10
-#define LBLUE 11
-#define LMAGENTA 12
-#define LCYAN 13
-#define WHITE 14
-#define MAX_COLORS 15
+cmdCallback cCMD_router(char* args);
+cmdCallback cCMD_norouter(char* args);
+// Iface
+cmdCallback cCMD_interface(char* args);
+cmdCallback cCMD_ip(char* args);
 
-char* printError(char* str, ...);
-char* printSuccess(char* str, ...);
+// Inverted commands
+cmdCallback cCMD_nohostname(char* args);
 
-char* setPromptColor(short stdout_stream, short color);
-char* resetPromptColor(short stdout_stream);
-
-unsigned short askConfirm();
+cmdCallback cCMD_nointerface(char* args);
+cmdCallback cCMD_noip(char* args);
 
 #endif

@@ -26,19 +26,19 @@
 */
 
 #include <stdlib.h>
-#include "command.h"
-#include "user.h"
-#include "enable.h"
-#include "conf.h"
-#include "conf_acl.h"
-#include "conf_if.h"
-#include "conf_fw.h"
-#include "conf_rd.h"
-#include "conf_router_rip.h"
-#include "conf_router_ospf.h"
-#include "../string_mgmt.h"
-#include "../prompt/prompt_msg.h"
-#include "../prompt/prompt.h"
+#include "cmd_command.h"
+#include "cmd_user.h"
+#include "cmd_enable.h"
+#include "cmd_conf.h"
+#include "cmd_conf_acl.h"
+#include "cmd_conf_if.h"
+#include "cmd_conf_fw.h"
+#include "cmd_conf_rd.h"
+#include "cmd_conf_router_rip.h"
+#include "cmd_conf_router_ospf.h"
+#include "string_mgmt.h"
+#include "prompt_msg.h"
+#include "prompt.h"
 
 cmdHdlr userCmd[MAX_USER_CMD] =
 {
@@ -118,7 +118,7 @@ cmdHdlr confRouterOSPFCmd[MAX_CONF_ROUTER_OSPF_CMD] =
 	{"timers",		&crouterCMD_OSPF_timers,	&crouterCMD_OSPF_notimers}
 };
 
-unsigned short initCmds()
+uint8_t initCmds()
 {
 	masterCmd[0] = userCmd;
 	masterCmd[1] = enableCmd;

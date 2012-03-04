@@ -26,11 +26,13 @@
 */
 
 #include <stdlib.h>
-#include "conf_router_rip.h"
+#include "cmd_conf_router_rip.h"
 #include "configuration.h"
-#include "../prompt/prompt_msg.h"
+#include "prompt.h"
+#include "prompt_msg.h"
 #include "route.h"
-#include "../prompt/prompt.h"
+#include "string_mgmt.h"
+
 
 cmdCallback crouterCMD_RIP_network(char* args)
 {
@@ -349,7 +351,7 @@ cmdCallback crouterCMD_RIP_notimer(char* args)
 	int fail_t = atoi(timers[1]);
 	int dead_t = atoi(timers[2]);
 
-	if(update_t == rip_update_timer && fail_t == rip_fail_timer && dead_t == rip_dead_timer)
+	if(update_t == (int)rip_update_timer && fail_t == (int)rip_fail_timer && dead_t == (int)rip_dead_timer)
 	{
 		rip_update_timer = 30;
 		rip_fail_timer = 180;

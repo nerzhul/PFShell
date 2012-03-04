@@ -25,65 +25,11 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "conf_acl.h"
-#include "../configuration.h"
-#include "../firewall.h"
-#include "../prompt/prompt_msg.h"
+#ifndef __CONF_RD_H__
+#define __CONF_RD_H__
 
-cmdCallback caclCMD_exit(char* _none)
-{
-	cmdCallback cb = {PROMPT_CONF_ACL,""};
-	if(strlen(_none) > 0)
-	{
-		cb.message = CMDCOMMON_EXIT_ERROR();
-	}
-	else
-		cb.promptMode = PROMPT_CONF_FW;
-	return cb;
-}
+#include "cmd_command.h"
 
-cmdCallback caclCMD_allow_acl(char* args)
-{
-	cmdCallback cb = {PROMPT_CONF_ACL,""};
-	if(readACL(args,1,0) == 0)
-	{
-		WRITE_RUN();
-	}
-	else
-		cb.message = CMDACL_ERROR();
-	return cb;
-}
+cmdCallback crdCMD_exit(char* _none);
 
-cmdCallback caclCMD_deny_acl(char* args)
-{
-	cmdCallback cb = {PROMPT_CONF_ACL,""};
-	if(readACL(args,0,0) == 0)
-	{
-		WRITE_RUN();
-	}
-	else
-		cb.message = CMDACL_ERROR();
-	return cb;
-}
-
-cmdCallback caclCMD_noallow_acl(char* args)
-{
-	cmdCallback cb = {PROMPT_CONF_ACL,""};
-	if(readACL(args,1,1) == 0)
-	{
-		WRITE_RUN();
-	}
-
-	return cb;
-}
-
-cmdCallback caclCMD_nodeny_acl(char* args)
-{
-	cmdCallback cb = {PROMPT_CONF_ACL,""};
-	if(readACL(args,0,1) == 0)
-	{
-		WRITE_RUN();
-	}
-
-	return cb;
-}
+#endif

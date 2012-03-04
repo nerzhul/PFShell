@@ -25,11 +25,12 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "conf_fw.h"
-#include "conf_acl.h"
-#include "../firewall.h"
-#include "../prompt/prompt_msg.h"
-#include "../configuration.h"
+#include "cmd_conf_fw.h"
+#include "cmd_conf_acl.h"
+#include "firewall.h"
+#include "string_mgmt.h"
+#include "prompt_msg.h"
+#include "configuration.h"
 
 cmdCallback cfwCMD_exit(char* _none)
 {

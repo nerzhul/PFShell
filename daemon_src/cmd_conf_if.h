@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -25,14 +25,44 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __ENABLE_H__
-#define __ENABLE_H__
+#ifndef __CONF_IF_H__
+#define __CONF_IF_H__
 
-#include "command.h"
+#include "cmd_command.h"
 
-cmdCallback eCMD_configure(char* args);
-cmdCallback eCMD_exit(char* _none);
-cmdCallback eCMD_save(char* _none);
-cmdCallback eCMD_show(char* args);
+char* current_iface;
+uint16_t current_iface_id;
+
+cmdCallback cifCMD_exit(char* _none);
+
+// IP management
+cmdCallback cifCMD_ip(char* args);
+cmdCallback cifCMD_ip_address(char* args);
+cmdCallback cifCMD_noip(char* args);
+
+// ACLS
+cmdCallback cifCMD_access_list(char* args);
+cmdCallback cifCMD_noaccess_list(char* args);
+
+// Interface Mgmt
+cmdCallback cifCMD_shutdown(char* _none);
+cmdCallback cifCMD_noshutdown(char* _none);
+
+// RIP
+cmdCallback cifCMD_ip_rip(char* args);
+cmdCallback cifCMD_noip_rip(char* args);
+
+// OSPF
+cmdCallback cifCMD_ip_ospf(char* args);
+cmdCallback cifCMD_noip_ospf(char* args);
+
+// Misc
+cmdCallback cifCMD_description(char* args);
+cmdCallback cifCMD_nodescription(char* args);
+cmdCallback cifCMD_encap(char* args);
+cmdCallback cifCMD_noencap(char* args);
+cmdCallback cifCMD_ip_helper(char* args);
+cmdCallback cifCMD_noip_helper(char* args);
+
 
 #endif

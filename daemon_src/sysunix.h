@@ -28,7 +28,7 @@
 #ifndef __SYSUNIX_H__
 #define __SYSUNIX_H__
 
-unsigned short checkSystemIntegrity();
+unsigned short checkSystemIntegrity(void);
 unsigned short execSystemCommand(char* cmd, char* output);
 
 #endif

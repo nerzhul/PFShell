@@ -27,13 +27,13 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "conf.h"
-#include "conf_if.h"
-#include "../prompt/prompt_msg.h"
-#include "../configuration.h"
-#include "../iputils.h"
-#include "../route.h"
-#include "../string_mgmt.h"
+#include "cmd_conf.h"
+#include "cmd_conf_if.h"
+#include "prompt_msg.h"
+#include "configuration.h"
+#include "iputils.h"
+#include "route.h"
+#include "string_mgmt.h"
 
 cmdCallback cCMD_exit(char* _none)
 {

@@ -1,3 +1,2 @@
 #! /bin/sh
-./configure --prefix=/opt/
 make install

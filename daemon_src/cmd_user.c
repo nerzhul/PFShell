@@ -25,27 +25,66 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __CONF_FW_H__
-#define __CONF_FW_H__
+#include <stdlib.h>
+#include <ncurses.h>
+#include "cmd_user.h"
+#include "prompt_msg.h"
+#include "string_mgmt.h"
 
-#include "command.h"
+cmdCallback uCMD_enable(char* _none)
+{
+	cmdCallback cb = {PROMPT_USER,""};
+	if(strlen(_none) > 0)
+	{
+		cb.message = CMDUSER_ENABLE_ERROR();
+		return cb;
+	}
+	//  @ TODO
+	//printf("Password: \n");
 
-cmdCallback cfwCMD_exit(char* _none);
+	cb.promptMode = PROMPT_ENABLE;
+	return cb;
+}
 
-// Default policies
-cmdCallback cfwCMD_default(char* args);
-cmdCallback cfwCMD_default_input(char* args);
-cmdCallback cfwCMD_default_output(char* args);
+cmdCallback uCMD_exit(char* _none)
+{
+	cmdCallback cb = {PROMPT_USER,""};
+	if(strlen(_none) > 0)
+	{
+		cb.message = CMDCOMMON_EXIT_ERROR();
+		return cb;
+	}
 
-// Enable & Disable firewall
-cmdCallback cfwCMD_disable(char* _none);
-cmdCallback cfwCMD_enable(char* _none);
+	cb.message = "Bye !\n";
+	return cb;
+}
 
-// ACLs
-cmdCallback cfwCMD_acl(char* args);
-cmdCallback cfwCMD_noacl(char* args);
+cmdCallback uCMD_help(char* _none)
+{
+	cmdCallback cb = {PROMPT_USER,""};
+	cb.message = "enable - grant you administrative privileges\nexit   - leave the current terminal\nhelp   - show this help\nshow   - show some informations\n";
+	return cb;
+}
 
-// Temp Command
-cmdCallback cfwCMD_show_packetfilter(char* _none);
-
-#endif
+cmdCallback uCMD_show(char* args)
+{
+	cmdCallback cb = {PROMPT_USER,""};
+	if(strlen(args) <= 1)
+	{
+		cb.message = CMDUSER_SHOW_ERROR();
+	}
+	else
+	{
+		char* showcmd[2];
+		cutFirstWord(args,showcmd);
+		if(strcmp(showcmd[0],"version") == 0)
+		{
+				sprintf(cb.message,"PFShell version %s\n",VERSION);
+		}
+		else
+		{
+			cb.message = CMDUSER_SHOW_ERROR();
+		}
+	}
+	return cb;
+}

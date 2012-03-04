@@ -26,14 +26,14 @@
 */
 
 #include <stdlib.h>
-#include "command.h"
-#include "conf_if.h"
-#include "../firewall.h"
-#include "../configuration.h"
-#include "../interface.h"
-#include "../prompt/prompt_msg.h"
-#include "../iputils.h"
-#include "../string_mgmt.h"
+#include "cmd_command.h"
+#include "cmd_conf_if.h"
+#include "firewall.h"
+#include "configuration.h"
+#include "interface.h"
+#include "prompt_msg.h"
+#include "iputils.h"
+#include "string_mgmt.h"
 
 cmdCallback cifCMD_exit(char* _none)
 {
@@ -516,7 +516,7 @@ cmdCallback cifCMD_noip_ospf(char* args)
 	{
 		int tmpvar = atoi(keywords[1]);
 
-		if(tmpvar == getInterfaceOSPFDead(current_iface))
+		if(tmpvar == (int)getInterfaceOSPFDead(current_iface))
 		{
 			setInterfaceOSPFDead(current_iface,40);
 			WRITE_RUN();
@@ -703,7 +703,7 @@ cmdCallback cifCMD_shutdown(char* _none)
 	if(current_iface_id == 0)
 		sprintf(buffer,"ifconfig %s down",current_iface);
 	else
-		sprintf(buffer,"ifconfig vlan%d%d down",getInterfacePosition(current_iface),current_iface,current_iface_id);
+		sprintf(buffer,"ifconfig vlan%d%d down",getInterfacePosition(current_iface),current_iface_id);
 	system(buffer);
 
 	if(setInterfaceState(current_iface,0) != 0)
@@ -735,7 +735,7 @@ cmdCallback cifCMD_noshutdown(char* _none)
 	char* ifconf = getInterfaceIP(current_iface);
 	if(strcmp(ifconf,"DHCP") == 0)
 	{
-		char buffer[100] = "";
+		buffer[100] = "";
 		if(current_iface_id == 0)
 			sprintf(buffer,"dhclient %s",current_iface);
 		else

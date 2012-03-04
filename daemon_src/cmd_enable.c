@@ -25,13 +25,14 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "enable.h"
-#include "../configuration.h"
-#include "../interface.h"
-#include "../prompt/prompt_msg.h"
-#include "../route.h"
-#include "../string_mgmt.h"
-#include "../sysunix.h"
+#include <stdlib.h>
+#include "cmd_enable.h"
+#include "configuration.h"
+#include "interface.h"
+#include "prompt_msg.h"
+#include "route.h"
+#include "string_mgmt.h"
+#include "sysunix.h"
 
 cmdCallback eCMD_configure(char* args)
 {

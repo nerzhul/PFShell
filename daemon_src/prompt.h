@@ -25,65 +25,47 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <stdlib.h>
-#include <ncurses.h>
-#include "user.h"
-#include "../prompt/prompt_msg.h"
+#ifndef __PROMPT_H_
+#define __PROMPT_H_
 
-cmdCallback uCMD_enable(char* _none)
-{
-	cmdCallback cb = {PROMPT_USER,""};
-	if(strlen(_none) > 0)
-	{
-		cb.message = CMDUSER_ENABLE_ERROR();
-		return cb;
-	}
-	//  @ TODO
-	//printf("Password: \n");
+#include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
 
-	cb.promptMode = PROMPT_ENABLE;
-	return cb;
-}
+#define PROMPT_USER			0
+#define PROMPT_ENABLE			1
+#define PROMPT_CONF			2
+#define PROMPT_CONF_IF			3
+#define PROMPT_CONF_FW			4
+#define PROMPT_CONF_RD			5
+#define PROMPT_CONF_ACL 		6
+#define PROMPT_CONF_ROUTER_RIP 		7
+#define PROMPT_CONF_ROUTER_OSPF		8
+#define MAX_PROMPTS			9
 
-cmdCallback uCMD_exit(char* _none)
-{
-	cmdCallback cb = {PROMPT_USER,""};
-	if(strlen(_none) > 0)
-	{
-		cb.message = CMDCOMMON_EXIT_ERROR();
-		return cb;
-	}
+#define BLACK 0
+#define RED 1
+#define GREEN 2
+#define BROWN 3
+#define BLUE 4
+#define MAGENTA 5
+#define CYAN 6
+#define GREY 7
+#define YELLOW 8
+#define LRED 9
+#define LGREEN 10
+#define LBLUE 11
+#define LMAGENTA 12
+#define LCYAN 13
+#define WHITE 14
+#define MAX_COLORS 15
 
-	cb.message = "Bye !\n";
-	return cb;
-}
+char* printError(char* str, ...);
+char* printSuccess(char* str, ...);
 
-cmdCallback uCMD_help(char* _none)
-{
-	cmdCallback cb = {PROMPT_USER,""};
-	cb.message = "enable - grant you administrative privileges\nexit   - leave the current terminal\nhelp   - show this help\nshow   - show some informations\n";
-	return cb;
-}
+char* setPromptColor(short stdout_stream, short color);
+char* resetPromptColor(short stdout_stream);
 
-cmdCallback uCMD_show(char* args)
-{
-	cmdCallback cb = {PROMPT_USER,""};
-	if(strlen(args) <= 1)
-	{
-		cb.message = CMDUSER_SHOW_ERROR();
-	}
-	else
-	{
-		char* showcmd[2];
-		cutFirstWord(args,showcmd);
-		if(strcmp(showcmd[0],"version") == 0)
-		{
-				sprintf(cb.message,"PFShell version %s\n",VERSION);
-		}
-		else
-		{
-			cb.message = CMDUSER_SHOW_ERROR();
-		}
-	}
-	return cb;
-}
+uint8_t askConfirm(void);
+
+#endif

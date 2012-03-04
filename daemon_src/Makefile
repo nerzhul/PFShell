@@ -1,13 +1,14 @@
 #       $OpenBSD: Makefile $
 
-PROG=   BSDRouterd
+.include <bsd.obj.mk>
 
-SRCS=   cmd/command.c cmd/command.h cmd/conf.c cmd/conf.h cmd/conf_acl.c cmd/conf_acl.h \
-	cmd/conf_fw.c cmd/conf_fw.h cmd/conf_if.c cmd/conf_if.h cmd/conf_rd.c cmd/conf_rd.h \
-	cmd/conf_router_ospf.c cmd/conf_router_ospf.h cmd/conf_router_rip.c cmd/conf_router_rip.h \
-	cmd/enable.c cmd/enable.h cmd/user.c cmd/user.h configuration.c configuration.h \
+PROG=   BSDRouterd
+SRCS=   cmd_command.c cmd_command.h cmd_conf.c cmd_conf.h cmd_conf_acl.c cmd_conf_acl.h \
+	cmd_conf_fw.c cmd_conf_fw.h cmd_conf_if.c cmd_conf_if.h cmd_conf_rd.c cmd_conf_rd.h \
+	cmd_conf_router_ospf.c cmd_conf_router_ospf.h cmd_conf_router_rip.c cmd_conf_router_rip.h \
+	cmd_enable.c cmd_enable.h cmd_user.c cmd_user.h configuration.c configuration.h \
 	daemon_socket.c daemon_socket.h firewall.c firewall.h interface.c interface.h \
-	iputils.c iputils.h main.c prompt/prompt.c prompt/prompt.h prompt/prompt_msg.h \
+	iputils.c iputils.h main.c prompt.c prompt.h prompt_msg.h \
 	route.c route.h string_mgmt.c string_mgmt.h sysunix.c sysunix.h
 
 MAN=

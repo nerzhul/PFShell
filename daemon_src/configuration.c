@@ -35,13 +35,13 @@
 #include "iputils.h"
 #include "route.h"
 #include "string_mgmt.h"
-#include "cmd/command.h"
-#include "cmd/conf_fw.h"
-#include "cmd/conf.h"
-#include "prompt/prompt_msg.h"
+#include "cmd_command.h"
+#include "cmd_conf_fw.h"
+#include "cmd_conf.h"
+#include "prompt_msg.h"
 
 
-unsigned short loadConfiguration()
+uint8_t loadConfiguration(void)
 {
 	// Temporary path
 	FILE* confFile;
@@ -115,7 +115,7 @@ unsigned short loadConfiguration()
 	return 1;
 }
 
-unsigned short writeRunningConfig()
+uint8_t writeRunningConfig(void)
 {
 	FILE* confFile;
 	confFile = fopen("/opt/PFShell/running-config","w");
@@ -471,9 +471,10 @@ unsigned short writeRunningConfig()
 
 		fclose(confFile);
 	}
+	return 0;
 }
 
-uint8_t saveHostname()
+uint8_t saveHostname(void)
 {
 	FILE* fname = fopen("/etc/myname.run","w");
 	if(fname != NULL)
@@ -481,4 +482,6 @@ uint8_t saveHostname()
 		fputs(hostname,fname);
 		fclose(fname);
 	}
+
+	return 0;
 }

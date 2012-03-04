@@ -29,10 +29,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "cmd/conf_acl.h"
+#include <unistd.h>
+#include "cmd_conf_acl.h"
 #include "firewall.h"
 #include "configuration.h"
-#include <unistd.h>
+#include "iputils.h"
+#include "string_mgmt.h"
 
 void addAccessList(acl* _list, char* name)
 {
@@ -231,7 +233,7 @@ void removeACL(char* listname, unsigned short proto, unsigned short sport, unsig
 	}
 }
 
-unsigned short readACL(char* args, unsigned short allow, unsigned short remove)
+unsigned short readACL(char* args, unsigned short allow, unsigned short rm)
 {
 	char* nexttab[2];
 	char _nextvar[1024] = "";
@@ -334,7 +336,7 @@ unsigned short readACL(char* args, unsigned short allow, unsigned short remove)
 			_dport = port2;
 	}
 
-	if(remove == 0)
+	if(rm == 0)
 		addACL(name,_proto,_sport,_dport,_saddr,_daddr,_allow);
 	else
 		removeACL(name,_proto,_sport,_dport,_saddr,_daddr,_allow);
@@ -342,7 +344,7 @@ unsigned short readACL(char* args, unsigned short allow, unsigned short remove)
 	return 0;
 }
 
-unsigned short writeFirewall()
+uint8_t writeFirewall(void)
 {
 	net_iface* cursor = interfaces;
 	if(interfaces == NULL)

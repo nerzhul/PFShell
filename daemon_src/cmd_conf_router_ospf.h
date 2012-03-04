@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT - Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -25,25 +25,24 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __CONF_H__
-#define __CONF_H__
+#ifndef __CONF_ROUTER_OSPF_H_
+#define __CONF_ROUTER_OSPF_H_
 
-#include "command.h"
+#include "cmd_command.h"
 
-cmdCallback cCMD_exit(char* _none);
-cmdCallback cCMD_firewall(char* _none);
-cmdCallback cCMD_hostname(char* args);
+cmdCallback crouterCMD_OSPF_exit(char* _none);
 
-cmdCallback cCMD_router(char* args);
-cmdCallback cCMD_norouter(char* args);
-// Iface
-cmdCallback cCMD_interface(char* args);
-cmdCallback cCMD_ip(char* args);
-
-// Inverted commands
-cmdCallback cCMD_nohostname(char* args);
-
-cmdCallback cCMD_nointerface(char* args);
-cmdCallback cCMD_noip(char* args);
+cmdCallback crouterCMD_OSPF_redistrib(char* args);
+cmdCallback crouterCMD_OSPF_noredistrib(char* args);
+cmdCallback crouterCMD_OSPF_passive(char* args);
+cmdCallback crouterCMD_OSPF_nopassive(char* args);
+cmdCallback crouterCMD_OSPF_routerid(char* args);
+cmdCallback crouterCMD_OSPF_norouterid(char* args);
+cmdCallback crouterCMD_OSPF_timers(char* args);
+cmdCallback crouterCMD_OSPF_notimers(char* args);
+cmdCallback crouterCMD_OSPF_network(char* args);
+cmdCallback crouterCMD_OSPF_nonetwork(char* args);
+cmdCallback crouterCMD_OSPF_area(char* args);
+cmdCallback crouterCMD_OSPF_noarea(char* args);
 
 #endif

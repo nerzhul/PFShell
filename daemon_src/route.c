@@ -31,6 +31,7 @@
 #include <sys/types.h>
 
 #include "route.h"
+#include "cmd_command.h"
 #include "configuration.h"
 #include "iputils.h"
 #include "string_mgmt.h"
@@ -429,7 +430,7 @@ void delRedistNetForOSPF(char* net)
 	}
 }
 
-void saveSysctl()
+void saveSysctl(void)
 {
 	FILE* fSysctl = fopen("/etc/sysctl.conf","w+");
 	if(iprouting > 0)
@@ -465,7 +466,7 @@ void saveSysctl()
 	fclose(fSysctl);
 }
 
-void saveRipd()
+void saveRipd(void)
 {
 	FILE* fRIPd = fopen("/etc/ripd.conf","w+");
 
@@ -557,7 +558,7 @@ void saveRipd()
 	}
 }
 
-void saveOspfd()
+void saveOspfd(void)
 {
 	FILE* fOSPFd = fopen("/etc/ospfd.conf","w+");
 

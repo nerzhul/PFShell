@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Loïc BLOT, CNRS
+* Copyright (c) 2011-2012, Frost Sapphire Studios
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -25,44 +25,27 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __CONF_IF_H__
-#define __CONF_IF_H__
+#ifndef __CONF_FW_H__
+#define __CONF_FW_H__
 
-#include "command.h"
+#include "cmd_command.h"
 
-char* current_iface;
-uint16_t current_iface_id;
+cmdCallback cfwCMD_exit(char* _none);
 
-cmdCallback cifCMD_exit(char* _none);
+// Default policies
+cmdCallback cfwCMD_default(char* args);
+cmdCallback cfwCMD_default_input(char* args);
+cmdCallback cfwCMD_default_output(char* args);
 
-// IP management
-cmdCallback cifCMD_ip(char* args);
-cmdCallback cifCMD_ip_address(char* args);
-cmdCallback cifCMD_noip(char* args);
+// Enable & Disable firewall
+cmdCallback cfwCMD_disable(char* _none);
+cmdCallback cfwCMD_enable(char* _none);
 
-// ACLS
-cmdCallback cifCMD_access_list(char* args);
-cmdCallback cifCMD_noaccess_list(char* args);
+// ACLs
+cmdCallback cfwCMD_acl(char* args);
+cmdCallback cfwCMD_noacl(char* args);
 
-// Interface Mgmt
-cmdCallback cifCMD_shutdown(char* _none);
-cmdCallback cifCMD_noshutdown(char* _none);
-
-// RIP
-cmdCallback cifCMD_ip_rip(char* args);
-cmdCallback cifCMD_noip_rip(char* args);
-
-// OSPF
-cmdCallback cifCMD_ip_ospf(char* args);
-cmdCallback cifCMD_noip_ospf(char* args);
-
-// Misc
-cmdCallback cifCMD_description(char* args);
-cmdCallback cifCMD_nodescription(char* args);
-cmdCallback cifCMD_encap(char* args);
-cmdCallback cifCMD_noencap(char* args);
-cmdCallback cifCMD_ip_helper(char* args);
-cmdCallback cifCMD_noip_helper(char* args);
-
+// Temp Command
+cmdCallback cfwCMD_show_packetfilter(char* _none);
 
 #endif

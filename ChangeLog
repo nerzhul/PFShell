@@ -206,3 +206,7 @@ Alpha 0.27 - prev
 - Implement OSPF stub areas (with no-summary opt)
 - Implement OSPF redistribute A.B.C.D/CIDR (+metric & type)
 - Rewrite command handler in proper way
+- Use BSD Makefiles instead of .am Makefiles (not totally compilable for this time)
+- Fix some compile warns
+- sysunix buffers are now correctly reinit
+- Memory improvement by setting uint8_t instead of unsigned short (uint16_t)
