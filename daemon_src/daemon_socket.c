@@ -66,6 +66,8 @@ unsigned short openServerSocket(void)
 
 void waitAndHandleClients(void)
 {
+	cmdbuffersize = 0;
+	bzero(cmdbuffer,4096);
 	while(1)
 	{
 		// @TODO: thread this
@@ -74,8 +76,8 @@ void waitAndHandleClients(void)
 			unsigned short closeSock = 0;
 			while(closeSock == 0)
 			{
-				char buffer[4096] = "";
-				int recvsize = recv(csock,buffer,4096,0);
+				char buffer[16] = "";
+				int recvsize = recv(csock,buffer,16,0);
 				if(recvsize == 0 || recvsize < 1)
 				{
 					shutdown(csock,SHUT_RDWR);
@@ -97,27 +99,38 @@ unsigned short closeServerSocket(void)
 void decodePacket(char* pkt)
 {
 	unsigned short promptMode;
-	char command[4096] = "";
-
+	uint8_t finish = 0;
 	int offset = 1;
 
 	promptMode = (int)(char)pkt[0]-(int)'0';
 
 	while(offset < (int)strlen(pkt))
 	{
-		command[offset-1] = pkt[offset];
+		cmdbuffer[cmdbuffersize] = pkt[offset];
+		if(pkt[offset] == '\n' || pkt[offset] == '\0')
+			finish = 1;
+		else if(pkt[offset] == '\b')
+		{
+			cmdbuffersize--;
+			cmdbuffer[cmdbuffersize] = '\0';
+		}
+		cmdbuffersize++;
 		++offset;
 	}
 
-	command[strlen(pkt)-1] = '\0';
+	cmdbuffer[cmdbuffersize] = '\0';
 
-	if(promptMode < MAX_PROMPTS)
+	if(finish == 1 && promptMode < MAX_PROMPTS)
 	{
-		cmdCallback cb = handleCmd(command,promptMode);
+		cmdCallback cb = handleCmd(cmdbuffer,promptMode);
 		char sendBuffer[4096] = "";
 		sprintf(sendBuffer,"%d%s",cb.promptMode,cb.message);
 		sendPacket(sendBuffer);
+		bzero(cmdbuffer,4096);
+		cmdbuffersize = 0;
 	}
+	else
+		sendPacket("0000");
 }
 
 unsigned short sendPacket(char* data)

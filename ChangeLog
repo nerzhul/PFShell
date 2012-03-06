@@ -211,3 +211,6 @@ Alpha 0.27
 - sysunix buffers are now correctly reinit
 - Memory improvement by setting uint8_t instead of unsigned short (uint16_t)
 - BSDRouterShell is now fully warn fixed
+
+Alpha 0.28 - prev
+- Modify command handling to send char by char, not string by string in prevision of auto completion

@@ -28,6 +28,8 @@
 #ifndef __COMMAND_H__
 #define __COMMAND_H__
 
+uint16_t commandoffset;
 char* readCmd(void);
+char readChar(void);
 
 #endif

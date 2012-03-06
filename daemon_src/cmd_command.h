@@ -88,4 +88,6 @@ cmdCallback handleCmd(char* _cmd, unsigned short promptMode);
 
 void hsystemcmd(char* cmd);
 
+uint8_t searchCommand(char* cmd);
+
 #endif

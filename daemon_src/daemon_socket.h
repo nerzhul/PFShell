@@ -46,6 +46,9 @@ SOCKET csock;
 socklen_t csize;
 int serror;
 
+uint16_t cmdbuffersize;
+char cmdbuffer[4096];
+
 unsigned short openServerSocket(void);
 unsigned short closeServerSocket(void);
 void waitAndHandleClients(void);

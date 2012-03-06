@@ -94,3 +94,41 @@ char* readCmd(void)
 
 	return cmd;
 }
+
+char readChar(void)
+{
+	struct termios t,tfst;
+	char tmpchar;
+	tcgetattr(0,&t);
+	tfst = t;
+	t.c_lflag &= ~ECHO;
+	t.c_lflag &= ~ICANON;
+
+	tcsetattr(0,TCSANOW,&t);
+	fflush(stdout);
+	tmpchar=getchar();
+
+	if(tmpchar == t.c_cc[VERASE])
+	{
+		if(commandoffset > 0)
+		{
+			printf("\b \b");
+			tmpchar='\b';
+			commandoffset--;
+		}
+		else tmpchar = 0;
+	}
+	else if(tmpchar == '\n' || putchar == '\0')
+	{
+		putchar(tmpchar);
+		commandoffset = 0;
+	}
+	else
+	{
+		commandoffset++;
+		putchar(tmpchar);
+	}
+
+	tcsetattr(0,TCSANOW,&tfst);
+	return tmpchar;
+}

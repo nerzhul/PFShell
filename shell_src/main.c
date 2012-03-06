@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -9,7 +9,7 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * Neither the name of the Frost Sapphire Studios nor the
+*     * Neither the name of the CNRS nor the
 *       names of its contributors may be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
@@ -37,6 +37,7 @@ int main(int argc, const char** argv)
 	// Set default hostname
 	strncpy(hostname,"BSDRouter",128);
 
+	commandoffset = 0;
 	initSignals();
 	initPrompts();
 
@@ -51,23 +52,33 @@ int main(int argc, const char** argv)
 
 		while(1)
 		{
-			char sendBuffer[4096] = "";
-			snprintf(sendBuffer,4096,"%d%s",promptMode,readCmd());
-			sendPacket(sendBuffer);
-			if(strlen(sendBuffer) > 1)
+			char sendBuffer[16] = "";
+			char schar = readChar();
+			if(schar != 0)
 			{
-				char buffer[4096];
-				int recvsize = recv(csock,buffer,4096,0);
-				if(recvsize == 0 || recvsize < 1)
+				snprintf(sendBuffer,16,"%d%c",promptMode,schar);
+				sendPacket(sendBuffer);
+				if(strlen(sendBuffer) > 1)
 				{
-					printf("Broken pipe. Exiting shell\n");
-					shutdown(csock,SHUT_RDWR);
-					return 0;
+					char buffer[4096];
+					int recvsize = recv(csock,buffer,4096,0);
+					if(recvsize == 0 || recvsize < 1)
+					{
+						printf("Broken pipe. Exiting shell\n");
+						shutdown(csock,SHUT_RDWR);
+						return 0;
+					}
+					else if(recvsize == 5 && (buffer[0] == '0' && buffer[1] == '0' && buffer[2] == '0' && buffer[3] == '0'))
+					{
+					}
+					else
+					{
+						decodePacket(buffer);
+						prompt();
+					}
 				}
-				else
-					decodePacket(buffer);
 			}
-			prompt();
+
 		}
 	}
 	else if(sock_error == 1)
