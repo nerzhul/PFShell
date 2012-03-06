@@ -115,6 +115,7 @@ cmdHdlr confRouterOSPFCmd[MAX_CONF_ROUTER_OSPF_CMD] =
 	{"passive-interface",	&crouterCMD_OSPF_passive,	&crouterCMD_OSPF_nopassive},
 	{"redistribute",	&crouterCMD_OSPF_redistrib,	&crouterCMD_OSPF_noredistrib},
 	{"router-id",		&crouterCMD_OSPF_routerid,	&crouterCMD_OSPF_norouterid},
+	{"stub",		&crouterCMD_OSPF_stub,		&crouterCMD_OSPF_nostub},
 	{"timers",		&crouterCMD_OSPF_timers,	&crouterCMD_OSPF_notimers}
 };
 

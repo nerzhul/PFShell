@@ -107,6 +107,9 @@ void decodePacket(char* pkt)
 	while(offset < (int)strlen(pkt))
 	{
 		cmdbuffer[cmdbuffersize] = pkt[offset];
+		if(pkt[offset] == '\n')
+			cmdbuffer[cmdbuffersize] = '\0';
+
 		if(pkt[offset] == '\n' || pkt[offset] == '\0')
 			finish = 1;
 		else if(pkt[offset] == '\b')

@@ -578,6 +578,8 @@ void saveOspfd(void)
 
 		if(ospf_holdtime_timer != OSPF_DEFAULT_HOLDTIME)
 			fprintf(fOSPFd,"spf-holdtime %d\n",ospf_holdtime_timer);
+		if(ospf_stub_router == 1)
+			fputs("stub router yes\n",fOSPFd);
 
 		if(ospf_redistrib_conn == 1)
 		{

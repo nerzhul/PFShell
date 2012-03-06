@@ -31,6 +31,7 @@
 
 #include "command.h"
 
+// Depeciated
 char* readCmd(void)
 {
 	char buffer[1024] = "";

@@ -884,3 +884,37 @@ cmdCallback crouterCMD_OSPF_noarea(char* args)
 	freeCutString(area,nbargs);
 	return cb;
 }
+
+cmdCallback crouterCMD_OSPF_stub(char* _none)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
+
+	if(strlen(_none) > 0)
+	{
+		cb.message = CMDROUTER_OSPF_STUB_ERROR();
+		return cb;
+	}
+
+	ospf_stub_router = 1;
+
+	WRITE_RUN();
+	WRITE_OSPFD();
+	return cb;
+}
+
+cmdCallback crouterCMD_OSPF_nostub(char* _none)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
+
+	if(strlen(_none) > 0)
+	{
+		cb.message = CMDROUTER_OSPF_STUB_ERROR();
+		return cb;
+	}
+
+	ospf_stub_router = 0;
+
+	WRITE_RUN();
+	WRITE_OSPFD();
+	return cb;
+}

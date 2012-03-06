@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Loïc BLOT - Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT - CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -9,7 +9,7 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * Neither the name of the Frost Sapphire Studios nor the
+*     * Neither the name of the BSDRouterd nor the
 *       names of its contributors may be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
@@ -31,7 +31,6 @@
 #include "cmd_command.h"
 
 cmdCallback crouterCMD_OSPF_exit(char* _none);
-
 cmdCallback crouterCMD_OSPF_redistrib(char* args);
 cmdCallback crouterCMD_OSPF_noredistrib(char* args);
 cmdCallback crouterCMD_OSPF_passive(char* args);
@@ -44,5 +43,6 @@ cmdCallback crouterCMD_OSPF_network(char* args);
 cmdCallback crouterCMD_OSPF_nonetwork(char* args);
 cmdCallback crouterCMD_OSPF_area(char* args);
 cmdCallback crouterCMD_OSPF_noarea(char* args);
-
+cmdCallback crouterCMD_OSPF_stub(char* _none);
+cmdCallback crouterCMD_OSPF_nostub(char* _none);
 #endif
