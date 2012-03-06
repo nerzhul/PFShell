@@ -1040,3 +1040,26 @@ cmdCallback cifCMD_noip_helper(char* args)
 	freeCutString(iphelper,nbargs);
 	return cb;
 }
+
+cmdCallback cifCMD_help(char* _none)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	if(strlen(_none) > 0)
+		return cb;
+
+	char buffer[3072];
+	bzero(buffer,3072);
+	uint8_t i;
+	for(i=0;i<MAX_CONF_IF_CMD;i++)
+	{
+		char buffer2[256];
+		bzero(buffer2,256);
+		sprintf(buffer2,"%s%s\n",confIfCmd[i].name,confIfCmd[i].help);
+		strcat(buffer,buffer2);
+	}
+
+	cb.message = (char*)malloc((strlen(buffer)+1)*sizeof(char));
+	strcpy(cb.message,buffer);
+	return cb;
+}

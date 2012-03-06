@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -9,7 +9,7 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * Neither the name of the Frost Sapphire Studios nor the
+*     * Neither the name of the BSDRouter nor the
 *       names of its contributors may be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
@@ -375,5 +375,28 @@ cmdCallback crouterCMD_RIP_exit(char* _none)
 	else
 		cb.promptMode = PROMPT_CONF;
 
+	return cb;
+}
+
+cmdCallback crouterCMD_RIP_help(char* _none)
+{
+	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
+
+	if(strlen(_none) > 0)
+		return cb;
+
+	char buffer[3072];
+	bzero(buffer,3072);
+	uint8_t i;
+	for(i=0;i<MAX_CONF_ROUTER_RIP_CMD;i++)
+	{
+		char buffer2[256];
+		bzero(buffer2,256);
+		sprintf(buffer2,"%s%s\n",confRouterRIPCmd[i].name,confRouterRIPCmd[i].help);
+		strcat(buffer,buffer2);
+	}
+
+	cb.message = (char*)malloc((strlen(buffer)+1)*sizeof(char));
+	strcpy(cb.message,buffer);
 	return cb;
 }

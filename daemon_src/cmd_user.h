@@ -32,7 +32,8 @@
 
 cmdCallback uCMD_enable(char* _none);
 cmdCallback uCMD_exit(char* _none);
-cmdCallback uCMD_help(char* _none);
 cmdCallback uCMD_show(char* args);
+cmdCallback uCMD_help(char* _none);
+
 
 #endif

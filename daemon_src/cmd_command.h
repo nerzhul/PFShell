@@ -43,19 +43,20 @@ typedef struct commandHandler
 	const char* name;
 	cmdCallback (*handler)(char* otherArgs);
 	cmdCallback (*invhandler)(char* otherArgs);
+	const char* help;
 } cmdHdlr;
 
 #define MAX_CMD_TYPES	9
 
 #define MAX_USER_CMD			4
-#define MAX_ENABLE_CMD			4
-#define MAX_CONF_CMD			6
-#define MAX_CONF_IF_CMD 		5
-#define MAX_CONF_FW_CMD			5
-#define MAX_CONF_RD_CMD			1
-#define MAX_CONF_ACL_CMD		3
-#define MAX_CONF_ROUTER_RIP_CMD		7
-#define MAX_CONF_ROUTER_OSPF_CMD	8
+#define MAX_ENABLE_CMD			5
+#define MAX_CONF_CMD			7
+#define MAX_CONF_IF_CMD 		6
+#define MAX_CONF_FW_CMD			6
+#define MAX_CONF_RD_CMD			2
+#define MAX_CONF_ACL_CMD		4
+#define MAX_CONF_ROUTER_RIP_CMD		8
+#define MAX_CONF_ROUTER_OSPF_CMD	9
 
 static const unsigned short MAX_CMDS[MAX_CMD_TYPES] =
 {

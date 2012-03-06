@@ -44,5 +44,6 @@ cmdCallback crouterCMD_RIP_network(char* args);
 cmdCallback crouterCMD_RIP_nonetwork(char* args);
 cmdCallback crouterCMD_RIP_splithorizon(char* _none);
 cmdCallback crouterCMD_RIP_nosplithorizon(char* _none);
+cmdCallback crouterCMD_RIP_help(char* _none);
 
 #endif

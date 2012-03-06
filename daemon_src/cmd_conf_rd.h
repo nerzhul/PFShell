@@ -31,5 +31,5 @@
 #include "cmd_command.h"
 
 cmdCallback crdCMD_exit(char* _none);
-
+cmdCallback crdCMD_help(char* _none);
 #endif

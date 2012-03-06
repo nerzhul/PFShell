@@ -46,4 +46,6 @@ cmdCallback cCMD_nohostname(char* args);
 cmdCallback cCMD_nointerface(char* args);
 cmdCallback cCMD_noip(char* args);
 
+cmdCallback cCMD_help(char* _none);
+
 #endif

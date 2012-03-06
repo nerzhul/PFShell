@@ -593,3 +593,27 @@ cmdCallback cCMD_noip(char* args)
 	freeCutString(_ip,nbargs);
 	return cb;
 }
+
+cmdCallback cCMD_help(char* _none)
+{
+	cmdCallback cb = {PROMPT_CONF,""};
+
+	if(strlen(_none) > 0)
+		return cb;
+
+	char buffer[3072];
+	bzero(buffer,3072);
+	uint8_t i;
+	for(i=0;i<MAX_CONF_CMD;i++)
+	{
+		char buffer2[256];
+		bzero(buffer2,256);
+		sprintf(buffer2,"%s%s\n",confCmd[i].name,confCmd[i].help);
+		strcat(buffer,buffer2);
+	}
+
+	cb.message = (char*)malloc((strlen(buffer)+1)*sizeof(char));
+	strcpy(cb.message,buffer);
+	return cb;
+}
+

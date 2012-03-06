@@ -63,6 +63,7 @@ cmdCallback cifCMD_encap(char* args);
 cmdCallback cifCMD_noencap(char* args);
 cmdCallback cifCMD_ip_helper(char* args);
 cmdCallback cifCMD_noip_helper(char* args);
+cmdCallback cifCMD_help(char* _none);
 
 
 #endif

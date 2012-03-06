@@ -45,4 +45,5 @@ cmdCallback crouterCMD_OSPF_area(char* args);
 cmdCallback crouterCMD_OSPF_noarea(char* args);
 cmdCallback crouterCMD_OSPF_stub(char* _none);
 cmdCallback crouterCMD_OSPF_nostub(char* _none);
+cmdCallback crouterCMD_OSPF_help(char* _none);
 #endif

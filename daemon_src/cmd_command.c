@@ -42,81 +42,89 @@
 
 cmdHdlr userCmd[MAX_USER_CMD] =
 {
-	{"exit",		&uCMD_exit,		NULL},
-	{"enable",		&uCMD_enable,		NULL},
-	{"help",		&uCMD_help,		NULL},
-	{"show",		&uCMD_show,		NULL}
+	{"exit",		&uCMD_exit,		NULL,				"\t\t\t\t\texit the shell"},
+	{"enable",		&uCMD_enable,		NULL,				"\t\t\t\t\tgo into privileged mode"},
+	{"help",		&uCMD_help,		NULL,				"\t\t\t\t\tdisplay this help"},
+	{"show",		&uCMD_show,		NULL,				"\t\t\t\t\tshow some informations"}
 };
 
 cmdHdlr enableCmd[MAX_ENABLE_CMD] =
 {
-	{"configure",		&eCMD_configure,	NULL},
-	{"exit",		&eCMD_exit,		NULL},
-	{"save",		&eCMD_save,		NULL},
-	{"show",		eCMD_show,		NULL}
+	{"configure",		&eCMD_configure,	NULL,				"\t\t\t\tgo to configure prompt"},
+	{"exit",		&eCMD_exit,		NULL,				"\t\t\t\t\texit the privileged mode"},
+	{"help",		&eCMD_help,		NULL,				"\t\t\t\t\tdisplay this help"},
+	{"save",		&eCMD_save,		NULL,				"\t\t\t\t\tsave running configuration for later restart"},
+	{"show",		eCMD_show,		NULL,				"\t\t\t\t\tshow some informations"}
 };
 
 cmdHdlr confCmd[MAX_CONF_CMD] =
 {
-	{"exit",		&eCMD_exit,		NULL},
-	{"firewall",		&cCMD_firewall,		NULL},
-	{"hostname",		&cCMD_hostname,		&cCMD_nohostname},
-	{"interface",		&cCMD_interface,	&cCMD_nointerface},
-	{"ip",			&cCMD_ip,		&cCMD_noip},
-	{"router",		&cCMD_router,		NULL}
+	{"exit",		&eCMD_exit,		NULL,				"\t\t\t\t\treturn back to privileged mode"},
+	{"firewall",		&cCMD_firewall,		NULL,				"\t\t\t\tconfigure the firewall"},
+	{"help",		&cCMD_help,		NULL,				"\t\t\t\t\tdisplay this help"},
+	{"hostname",		&cCMD_hostname,		&cCMD_nohostname,		"\t\t\t\tchange router hostname"},
+	{"interface",		&cCMD_interface,	&cCMD_nointerface,		"\t\t\t\tconfigure some (sub-)interface"},
+	{"ip",			&cCMD_ip,		&cCMD_noip,			"\t\t\t\t\tsome ipv4 modifications"},
+	{"router",		&cCMD_router,		NULL,				"\t\t\t\t\tdynamic router prompts"}
 };
 
 cmdHdlr confIfCmd[MAX_CONF_IF_CMD] =
 {
-	{"description",		&cifCMD_description,	&cifCMD_nodescription},
-	{"encapsulation",	&cifCMD_encap,		&cifCMD_noencap},
-	{"exit",		&cifCMD_exit,		NULL},
-	{"ip",			&cifCMD_ip,		&cifCMD_noip},
-	{"shutdown",		&cifCMD_shutdown,	&cifCMD_noshutdown}
+	{"description",		&cifCMD_description,	&cifCMD_nodescription,		"\t\t\t\tchange the description of the interface"},
+	{"encapsulation",	&cifCMD_encap,		&cifCMD_noencap,		"\t\t\t\t{in sub-interface} do dot1q encapsulation for outgoing packets"},
+	{"exit",		&cifCMD_exit,		NULL,				"\t\t\t\t\treturn back to configuration mode"},
+	{"help",		&cifCMD_help,		NULL,				"\t\t\t\t\tdisplay this help"},
+	{"ip",			&cifCMD_ip,		&cifCMD_noip,			"\t\t\t\t\tsome ipv4 modifications"},
+	{"shutdown",		&cifCMD_shutdown,	&cifCMD_noshutdown,		"\t\t\t\tadmistratively shutdown the interface"}
 };
 
 cmdHdlr confFWCmd[MAX_CONF_FW_CMD] =
 {
-	{"access-list",		&cfwCMD_acl,		&cfwCMD_noacl},
-	{"default",		&cfwCMD_default,	NULL},
-	{"disable",		&cfwCMD_disable,	&cfwCMD_enable},
-	{"enable",		&cfwCMD_enable,		&cfwCMD_disable},
-	{"exit",		&cfwCMD_exit,		NULL}
+	{"access-list",		&cfwCMD_acl,		&cfwCMD_noacl,			"\t\t\t\tgo to access-list prompt"},
+	{"default",		&cfwCMD_default,	NULL,				"\t\t\t\t\tmanage default firewall parameters"},
+	{"disable",		&cfwCMD_disable,	&cfwCMD_enable,			"\t\t\t\t\tdisable the firewall"},
+	{"enable",		&cfwCMD_enable,		&cfwCMD_disable,		"\t\t\t\t\tenable the firewall"},
+	{"exit",		&cfwCMD_exit,		NULL,				"\t\t\t\t\treturn back to the configuration mode"},
+	{"help",		&cfwCMD_help,		NULL,				"\t\t\t\t\tdisplay this help"}
 };
 
 cmdHdlr confACLCmd[MAX_CONF_ACL_CMD] =
 {
-	{"allow",		&caclCMD_allow_acl,	&caclCMD_noallow_acl},
-	{"deny",		&caclCMD_deny_acl,	&caclCMD_nodeny_acl},
-	{"exit",		&caclCMD_exit,		NULL}
+	{"allow",		&caclCMD_allow_acl,	&caclCMD_noallow_acl,		"\t\t\t\t\tallow some traffic"},
+	{"deny",		&caclCMD_deny_acl,	&caclCMD_nodeny_acl,		"\t\t\t\t\tdrop some traffic"},
+	{"exit",		&caclCMD_exit,		NULL,				"\t\t\t\t\treturn back to the firewall mode"},
+	{"help",		&caclCMD_help,		NULL,				"\t\t\t\t\tdisplay this help"}
 };
 
 cmdHdlr confRDCmd[MAX_CONF_RD_CMD] =
 {
-	{"exit",		&crdCMD_exit,		NULL},
+	{"exit",		&crdCMD_exit,		NULL,				"\t\t\t\t\treturn back to the configuration mode"},
+	{"help",		&crdCMD_help,		NULL,				"\t\t\t\t\tdisplay this help"},
 };
 
 cmdHdlr confRouterRIPCmd[MAX_CONF_ROUTER_RIP_CMD] =
 {
-	{"default-information",	&crouterCMD_RIP_defaultinformation,	&crouterCMD_RIP_nodefaultinformation},
-	{"exit",		&crouterCMD_RIP_exit,			NULL},
-	{"network",		&crouterCMD_RIP_network,		&crouterCMD_RIP_nonetwork},
-	{"passive-interface",	&crouterCMD_RIP_passive,		&crouterCMD_RIP_nopassive},
-	{"redistribute",	&crouterCMD_RIP_redistrib,		&crouterCMD_RIP_noredistrib},
-	{"split-horizon",	&crouterCMD_RIP_splithorizon,		&crouterCMD_RIP_nosplithorizon},
-	{"timers",		&crouterCMD_RIP_timer,			crouterCMD_RIP_notimer}
+	{"default-information",	&crouterCMD_RIP_defaultinformation,	&crouterCMD_RIP_nodefaultinformation,	"\t\t\tredistribute default route"},
+	{"exit",		&crouterCMD_RIP_exit,			NULL,					"\t\t\t\t\treturn back to the configuration mode"},
+	{"help",		&crouterCMD_RIP_help,			NULL,					"\t\t\t\t\tdisplay this help"},
+	{"network",		&crouterCMD_RIP_network,		&crouterCMD_RIP_nonetwork,		"\t\t\t\t\tset RIP diffusion network"},
+	{"passive-interface",	&crouterCMD_RIP_passive,		&crouterCMD_RIP_nopassive,		"\t\t\tset non diffusing interface"},
+	{"redistribute",	&crouterCMD_RIP_redistrib,		&crouterCMD_RIP_noredistrib,		"\t\t\t\tredistribute some routes"},
+	{"split-horizon",	&crouterCMD_RIP_splithorizon,		&crouterCMD_RIP_nosplithorizon,		"\t\t\t\tmanage split-horizon"},
+	{"timers",		&crouterCMD_RIP_timer,			crouterCMD_RIP_notimer,			"\t\t\t\t\tmanage RIP timers"}
 };
 
 cmdHdlr confRouterOSPFCmd[MAX_CONF_ROUTER_OSPF_CMD] =
 {
-	{"area",		&crouterCMD_OSPF_area,		&crouterCMD_OSPF_noarea},
-	{"exit",		&crouterCMD_OSPF_exit,		NULL},
-	{"network",		&crouterCMD_OSPF_network,	&crouterCMD_OSPF_nonetwork},
-	{"passive-interface",	&crouterCMD_OSPF_passive,	&crouterCMD_OSPF_nopassive},
-	{"redistribute",	&crouterCMD_OSPF_redistrib,	&crouterCMD_OSPF_noredistrib},
-	{"router-id",		&crouterCMD_OSPF_routerid,	&crouterCMD_OSPF_norouterid},
-	{"stub",		&crouterCMD_OSPF_stub,		&crouterCMD_OSPF_nostub},
-	{"timers",		&crouterCMD_OSPF_timers,	&crouterCMD_OSPF_notimers}
+	{"area",		&crouterCMD_OSPF_area,		&crouterCMD_OSPF_noarea,		"\t\t\t\t\tmodify an OSPF area"},
+	{"exit",		&crouterCMD_OSPF_exit,		NULL,					"\t\t\t\t\treturn back to the configuration mode"},
+	{"help",		&crouterCMD_OSPF_help,		NULL,					"\t\t\t\t\tdisplay this help"},
+	{"network",		&crouterCMD_OSPF_network,	&crouterCMD_OSPF_nonetwork,		"\t\t\t\t\tset OSPF diffusion network and area"},
+	{"passive-interface",	&crouterCMD_OSPF_passive,	&crouterCMD_OSPF_nopassive,		"\t\t\tset non diffusing interface"},
+	{"redistribute",	&crouterCMD_OSPF_redistrib,	&crouterCMD_OSPF_noredistrib,		"\t\t\t\tredistribute some routes"},
+	{"router-id",		&crouterCMD_OSPF_routerid,	&crouterCMD_OSPF_norouterid,		"\t\t\t\tmodify OSPF router id"},
+	{"stub",		&crouterCMD_OSPF_stub,		&crouterCMD_OSPF_nostub,		"\t\t\t\t\tdeclare router as stub"},
+	{"timers",		&crouterCMD_OSPF_timers,	&crouterCMD_OSPF_notimers,		"\t\t\t\t\tmodify OSPF timers"}
 };
 
 uint8_t initCmds()

@@ -48,4 +48,5 @@ cmdCallback cfwCMD_noacl(char* args);
 // Temp Command
 cmdCallback cfwCMD_show_packetfilter(char* _none);
 
+cmdCallback cfwCMD_help(char* _none);
 #endif

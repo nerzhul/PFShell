@@ -40,3 +40,26 @@ cmdCallback crdCMD_exit(char* _none) {
 
 	return cb;
 }
+
+cmdCallback crdCMD_help(char* _none)
+{
+	cmdCallback cb = {PROMPT_CONF_RD,""};
+
+	if(strlen(_none) > 0)
+		return cb;
+
+	char buffer[3072];
+	bzero(buffer,3072);
+	uint8_t i;
+	for(i=0;i<MAX_CONF_RD_CMD;i++)
+	{
+		char buffer2[256];
+		bzero(buffer2,256);
+		sprintf(buffer2,"%s%s\n",confRDCmd[i].name,confRDCmd[i].help);
+		strcat(buffer,buffer2);
+	}
+
+	cb.message = (char*)malloc((strlen(buffer)+1)*sizeof(char));
+	strcpy(cb.message,buffer);
+	return cb;
+}

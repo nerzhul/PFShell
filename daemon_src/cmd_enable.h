@@ -35,4 +35,7 @@ cmdCallback eCMD_exit(char* _none);
 cmdCallback eCMD_save(char* _none);
 cmdCallback eCMD_show(char* args);
 
+cmdCallback eCMD_help(char* _none);
+
+
 #endif

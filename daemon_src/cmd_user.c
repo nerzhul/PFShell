@@ -59,13 +59,6 @@ cmdCallback uCMD_exit(char* _none)
 	return cb;
 }
 
-cmdCallback uCMD_help(char* _none)
-{
-	cmdCallback cb = {PROMPT_USER,""};
-	cb.message = "enable - grant you administrative privileges\nexit   - leave the current terminal\nhelp   - show this help\nshow   - show some informations\n";
-	return cb;
-}
-
 cmdCallback uCMD_show(char* args)
 {
 	cmdCallback cb = {PROMPT_USER,""};
@@ -86,5 +79,28 @@ cmdCallback uCMD_show(char* args)
 			cb.message = CMDUSER_SHOW_ERROR();
 		}
 	}
+	return cb;
+}
+
+cmdCallback uCMD_help(char* _none)
+{
+	cmdCallback cb = {PROMPT_USER,""};
+
+	if(strlen(_none) > 0)
+		return cb;
+
+	char buffer[3072];
+	bzero(buffer,3072);
+	uint8_t i;
+	for(i=0;i<MAX_USER_CMD;i++)
+	{
+		char buffer2[256];
+		bzero(buffer2,256);
+		sprintf(buffer2,"%s%s\n",userCmd[i].name,userCmd[i].help);
+		strcat(buffer,buffer2);
+	}
+
+	cb.message = (char*)malloc((strlen(buffer)+1)*sizeof(char));
+	strcpy(cb.message,buffer);
 	return cb;
 }
