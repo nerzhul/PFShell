@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, CNRS
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -9,7 +9,7 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * Neither the name of the Frost Sapphire Studios nor the
+*     * Neither the name of the BSDRouterd nor the
 *       names of its contributors may be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
@@ -43,6 +43,8 @@ void addInterface(char* name)
 	newIface->next = NULL;
 	newIface->prev = NULL;
 	newIface->ip = "";
+	newIface->real_mac_addr = "";
+	newIface->mac_addr = "";
 	newIface->acl_in = "";
 	newIface->acl_out = "";
 	newIface->desc = "";
@@ -124,12 +126,9 @@ void delInterface(char* name)
 
 void loadInterfaces(void)
 {
-	char output[1024] = "";
-#ifdef FREEBSD
-	execSystemCommand("for IF in $(/sbin/ifconfig | grep HWaddr | awk '{print $1}'); do echo $IF; done;",output);
-#else
+	char output[1024];
+	bzero(output,1024);
 	execSystemCommand("for IF in $(/sbin/ifconfig | grep BROADCAST | awk '{print $1}' | awk -F':' '{print $1}'); do echo $IF; done;",output);
-#endif
 	if(strcmp(output,"") == 0)
 		return;
 
@@ -144,6 +143,15 @@ void loadInterfaces(void)
 
 		if(getInterfacePosition(iface[i]) == -1)
 			addInterface(iface[i]);
+
+		char buffer[1024];
+		bzero(buffer,1024);
+		sprintf(buffer,"/sbin/ifconfig %s | grep lladdr | awk '{print $2}' | tr -d '\n'",iface[i]);
+		bzero(output,1024);
+
+		execSystemCommand(buffer,output);
+		if(is_valid_macaddr(output) == 0)
+			setInterfaceRealMAC(iface[i],output);
 	}
 }
 
@@ -250,6 +258,62 @@ unsigned short setInterfaceIP(char* name, char* ip)
 	return 0;
 }
 
+unsigned short setInterfaceMAC(char* name, char* mac)
+{
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->mac_addr = (char*)malloc(strlen(mac)+1*sizeof(char));
+				strcpy(cursor->mac_addr,mac);
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
+unsigned short setInterfaceRealMAC(char* name, char* mac)
+{
+	if(interfaces == NULL)
+		return 1;
+	else
+	{
+		net_iface* cursor = interfaces;
+		uint8_t found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				cursor->real_mac_addr = (char*)malloc(strlen(mac)+1*sizeof(char));
+				strcpy(cursor->real_mac_addr,mac);
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
 int8_t getInterfacePosition(char* name)
 {
 	int8_t pos = 0;
@@ -303,6 +367,66 @@ char* getInterfaceIP(char* name)
 
 	return _ip;
 }
+
+char* getInterfaceMAC(char* name)
+{
+	char _mac[50] = "";
+
+	if(interfaces == NULL)
+		return "";
+	else
+	{
+		net_iface* cursor = interfaces;
+		unsigned short found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				strcpy(_mac,cursor->mac_addr);
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return "";
+	}
+
+	return _mac;
+}
+
+char* getInterfaceRealMAC(char* name)
+{
+	char _mac[50];
+	bzero(_mac,50);
+
+	if(interfaces == NULL)
+		return "";
+	else
+	{
+		net_iface* cursor = interfaces;
+		uint8_t found = 0;
+
+		while(found == 0 && cursor != NULL)
+		{
+			if(strcmp(cursor->name,name) == 0)
+			{
+				found = 1;
+				strcpy(_mac,cursor->real_mac_addr);
+			}
+			else
+				cursor = cursor->next;
+		}
+
+		if(found == 0)
+			return "";
+	}
+
+	return _mac;
+}
+
 
 unsigned short setInterfaceDesc(char* name, char* desc)
 {

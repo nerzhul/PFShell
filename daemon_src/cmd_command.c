@@ -75,6 +75,7 @@ cmdHdlr confIfCmd[MAX_CONF_IF_CMD] =
 	{"exit",		&cifCMD_exit,		NULL,				"\t\t\t\t\treturn back to configuration mode"},
 	{"help",		&cifCMD_help,		NULL,				"\t\t\t\t\tdisplay this help"},
 	{"ip",			&cifCMD_ip,		&cifCMD_noip,			"\t\t\t\t\tsome ipv4 modifications"},
+	{"mac-address",		&cifCMD_mac,		&cifCMD_nomac,			"\t\t\t\tmodify interface mac address (hw address)"},
 	{"shutdown",		&cifCMD_shutdown,	&cifCMD_noshutdown,		"\t\t\t\tadmistratively shutdown the interface"}
 };
 

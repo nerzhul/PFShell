@@ -9,7 +9,7 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * Neither the name of the Frost Sapphire Studios nor the
+*     * Neither the name of the BSDRouterd nor the
 *       names of its contributors may be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
@@ -366,6 +366,9 @@ uint8_t writeRunningConfig(void)
 
 			if(strlen(if_cursor->ip) > 0)
 				fprintf(confFile,"ip address %s\n",if_cursor->ip);
+
+			if(strlen(if_cursor->mac_addr) > 0)
+				fprintf(confFile,"mac-address %s\n",if_cursor->mac_addr);
 
 			if(if_cursor->state == 0)
 				fputs("shutdown\n",confFile);

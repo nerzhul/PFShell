@@ -9,7 +9,7 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * Neither the name of the Frost Sapphire Studios nor the
+*     * Neither the name of the BSDRouterd nor the
 *       names of its contributors may be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
@@ -36,6 +36,8 @@ struct net_iface
 {
 	char* name;
 	char* ip;
+	char* real_mac_addr;
+	char* mac_addr;
 	char* acl_in;
 	char* acl_out;
 	char* desc;
@@ -72,6 +74,8 @@ uint8_t is_interface(char* name);
 int8_t getInterfacePosition(char* name);
 
 unsigned short setInterfaceIP(char* name, char* ip);
+unsigned short setInterfaceMAC(char* name, char* mac);
+unsigned short setInterfaceRealMAC(char* name, char* mac);
 unsigned short setInterfaceVLAN(char* name, uint16_t vlan);
 unsigned short setInterfaceState(char* name, unsigned short state);
 unsigned short setInterfaceACL(char* name, char* aclname, char* direction);
@@ -102,6 +106,8 @@ unsigned short setInterfaceOSPFAuthType(char* name, unsigned short type);
 unsigned short setInterfaceOSPFAuthKey(char* name, char* key);
 
 char* getInterfaceIP(char* name);
+char* getInterfaceMAC(char* name);
+char* getInterfaceRealMAC(char* name);
 uint16_t getInterfaceVLAN(char* name);
 unsigned short getInterfaceState(char* name);
 char* getInterfaceDesc(char* name);

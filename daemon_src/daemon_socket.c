@@ -111,13 +111,17 @@ void decodePacket(char* pkt)
 			cmdbuffer[cmdbuffersize] = '\0';
 
 		if(pkt[offset] == '\n' || pkt[offset] == '\0')
+		{
 			finish = 1;
+			cmdbuffersize++;
+		}
 		else if(pkt[offset] == '\b')
 		{
 			cmdbuffersize--;
 			cmdbuffer[cmdbuffersize] = '\0';
 		}
-		cmdbuffersize++;
+		else
+			cmdbuffersize++;
 		++offset;
 	}
 

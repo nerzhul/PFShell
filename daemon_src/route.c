@@ -9,7 +9,7 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * Neither the name of Frost Sapphire Studios nor the
+*     * Neither the name of BSDRouterd nor the
 *       names of its contributors may be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
@@ -570,7 +570,7 @@ void saveOspfd(void)
 		fputs("fib-update yes\n",fOSPFd);
 		fputs("rfc1583compat yes\n",fOSPFd);
 
-		if(is_valid_ip(ospf_router_id) == 0)
+		if(strlen(ospf_router_id) > 0 && is_valid_ip(ospf_router_id) == 0)
 			fprintf(fOSPFd,"router-id %s\n",ospf_router_id);
 
 		if(ospf_delay_timer != OSPF_DEFAULT_DELAY)

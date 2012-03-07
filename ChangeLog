@@ -215,3 +215,6 @@ Alpha 0.27
 Alpha 0.28 - prev
 - Modify command handling to send char by char, not string by string in prevision of auto completion
 - Implement help command for all prompts
+- Little improvement for is_valid_ip is_valid_ip_cidr
+- Implement is_valid_macaddr to check mac addresses
+- Implement mac-address <hw|random> command for interface

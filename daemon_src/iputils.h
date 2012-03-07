@@ -32,12 +32,15 @@ char* calc_broadcast(char* IP, char* mask);
 char*  calc_network(char*  IP,char*  mask);
 short calc_cidr(char* mask);
 char* calc_mask_from_cidr(char* cidr);
+uint32_t convert_ip_to_int(char* ip);
+char* convert_int_to_ip(uint32_t ip);
+
 unsigned short is_valid_mask(char* mask);
+uint8_t is_valid_ip(char* ip);
+uint8_t is_valid_ip_and_cidr(char* str);
+uint8_t is_valid_macaddr(char* str);
+
 // Not used for now
 unsigned int calc_num_broadcast(unsigned int IP,unsigned int mask);
 unsigned int calc_num_network(unsigned int IP,unsigned int mask);
-uint8_t is_valid_ip(char* ip);
-uint8_t is_valid_ip_and_cidr(char* str);
-uint32_t convert_ip_to_int(char* ip);
-char* convert_int_to_ip(uint32_t ip);
 #endif

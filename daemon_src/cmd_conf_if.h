@@ -40,6 +40,10 @@ cmdCallback cifCMD_ip(char* args);
 cmdCallback cifCMD_ip_address(char* args);
 cmdCallback cifCMD_noip(char* args);
 
+// LL management
+cmdCallback cifCMD_mac(char* args);
+cmdCallback cifCMD_nomac(char* args);
+
 // ACLS
 cmdCallback cifCMD_access_list(char* args);
 cmdCallback cifCMD_noaccess_list(char* args);

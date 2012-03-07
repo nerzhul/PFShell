@@ -9,7 +9,7 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * Neither the name of the Frost Sapphire Studios nor the
+*     * Neither the name of the BSDRouterd nor the
 *       names of its contributors may be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
@@ -1061,5 +1061,58 @@ cmdCallback cifCMD_help(char* _none)
 
 	cb.message = (char*)malloc((strlen(buffer)+1)*sizeof(char));
 	strcpy(cb.message,buffer);
+	return cb;
+}
+
+cmdCallback cifCMD_mac(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	char* macaddr[1];
+	uint8_t nbargs = cutString(args,macaddr);
+
+	if(nbargs != 1 || is_valid_macaddr(macaddr[0]) != 0 && strcmp(macaddr[0],"random") != 0)
+	{
+		cb.message = CMDIF_MACADDR_ERROR();
+		freeCutString(macaddr,nbargs);
+		return cb;
+	}
+
+	setInterfaceMAC(current_iface,macaddr[0]);
+	char buffer[1024];
+	bzero(buffer,1024);
+	sprintf(buffer,"ifconfig %s lladdr %s",current_iface,macaddr[0]);
+	system(buffer);
+	WRITE_RUN();
+	freeCutString(macaddr,nbargs);
+	return cb;
+}
+
+cmdCallback cifCMD_nomac(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	char* macaddr[1];
+	uint8_t nbargs = cutString(args,macaddr);
+
+	if(nbargs != 1 || is_valid_macaddr(macaddr[0]) != 0 && strcmp(macaddr[0],"random") != 0)
+	{
+		cb.message = CMDIF_MACADDR_ERROR();
+		freeCutString(macaddr,nbargs);
+		return cb;
+	}
+
+	if(strcmp(getInterfaceMAC(current_iface),macaddr[0]) == 0)
+	{
+		setInterfaceMAC(current_iface,"");
+		char buffer[1024];
+		bzero(buffer,1024);
+		printf("mac %s\n",getInterfaceRealMAC(current_iface));
+		sprintf(buffer,"ifconfig %s lladdr %s",current_iface,getInterfaceRealMAC(current_iface));
+		system(buffer);
+	}
+
+	WRITE_RUN();
+	freeCutString(macaddr,nbargs);
 	return cb;
 }

@@ -9,7 +9,7 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * Neither the name of the Frost Sapphire Studios nor the
+*     * Neither the name of the CNRS nor the
 *       names of its contributors may be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
@@ -92,7 +92,7 @@
 #define CMDIF_IP_OSPF_RETRANSMIT_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip ospf retransmit-interval <5-3600>\n");
 #define CMDIF_ENCAPSULATION_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) encapsulation dot1q <1-1005>\n");
 #define CMDIF_IP_HELPER_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip helper-address A.B.C.D\n");
-
+#define CMDIF_MACADDR_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) mac-address <xx:xx:xx:xx:xx:xx|random>\n");
 
 // Firewall Messages
 #define CMDFW_DISABLE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   disable\n");
