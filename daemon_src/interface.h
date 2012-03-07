@@ -67,19 +67,19 @@ struct net_iface
 void addInterface(char* name);
 void delInterface(char* name);
 void loadInterfaces(void);
-unsigned short saveInterfaces(void);
+uint8_t saveInterfaces(void);
 
 uint8_t is_interface(char* name);
 
 int8_t getInterfacePosition(char* name);
 
-unsigned short setInterfaceIP(char* name, char* ip);
-unsigned short setInterfaceMAC(char* name, char* mac);
-unsigned short setInterfaceRealMAC(char* name, char* mac);
-unsigned short setInterfaceVLAN(char* name, uint16_t vlan);
-unsigned short setInterfaceState(char* name, unsigned short state);
-unsigned short setInterfaceACL(char* name, char* aclname, char* direction);
-unsigned short setInterfaceDesc(char* name, char* desc);
+uint8_t setInterfaceIP(char* name, char* ip);
+uint8_t setInterfaceMAC(char* name, char* mac);
+uint8_t setInterfaceRealMAC(char* name, char* mac);
+uint8_t setInterfaceVLAN(char* name, uint16_t vlan);
+uint8_t setInterfaceState(char* name, unsigned short state);
+uint8_t setInterfaceACL(char* name, char* aclname, char* direction);
+uint8_t setInterfaceDesc(char* name, char* desc);
 
 // Ip Helpers
 uint8_t addInterfaceIPHelper(char* name, char* ip);
@@ -88,22 +88,22 @@ char* getInterfaceIPHelpers(char* name);
 void launchInterfaceIPHelpers(char* name);
 
 // RIP
-unsigned short setInterfaceRIPPassive(char* name, unsigned short passive);
-unsigned short setInterfaceRIPCost(char* name, unsigned short cost);
-unsigned short setInterfaceRIPAuthType(char* name, unsigned short type);
-unsigned short setInterfaceRIPAuthKey(char* name, char* key);
-unsigned short setInterfaceRIPNetwork(char* name, uint8_t net);
+uint8_t setInterfaceRIPPassive(char* name, unsigned short passive);
+uint8_t setInterfaceRIPCost(char* name, unsigned short cost);
+uint8_t setInterfaceRIPAuthType(char* name, unsigned short type);
+uint8_t setInterfaceRIPAuthKey(char* name, char* key);
+uint8_t setInterfaceRIPNetwork(char* name, uint8_t net);
 
 // OSPF
-unsigned short setInterfaceOSPFPassive(char* name, unsigned short passive);
-unsigned short setInterfaceOSPFCost(char* name, unsigned short cost);
-unsigned short setInterfaceOSPFPriority(char* name, uint8_t prio);
-unsigned short setInterfaceOSPFDead(char* name, unsigned int dead);
-unsigned short setInterfaceOSPFHello(char* name, unsigned short hello);
-unsigned short setInterfaceOSPFTransmit(char* name, unsigned short tr);
-unsigned short setInterfaceOSPFRetransmit(char* name, unsigned short retr);
-unsigned short setInterfaceOSPFAuthType(char* name, unsigned short type);
-unsigned short setInterfaceOSPFAuthKey(char* name, char* key);
+uint8_t setInterfaceOSPFPassive(char* name, unsigned short passive);
+uint8_t setInterfaceOSPFCost(char* name, unsigned short cost);
+uint8_t setInterfaceOSPFPriority(char* name, uint8_t prio);
+uint8_t setInterfaceOSPFDead(char* name, unsigned int dead);
+uint8_t setInterfaceOSPFHello(char* name, unsigned short hello);
+uint8_t setInterfaceOSPFTransmit(char* name, unsigned short tr);
+uint8_t setInterfaceOSPFRetransmit(char* name, unsigned short retr);
+uint8_t setInterfaceOSPFAuthType(char* name, unsigned short type);
+uint8_t setInterfaceOSPFAuthKey(char* name, char* key);
 
 char* getInterfaceIP(char* name);
 char* getInterfaceMAC(char* name);

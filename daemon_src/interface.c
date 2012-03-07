@@ -155,7 +155,7 @@ void loadInterfaces(void)
 	}
 }
 
-unsigned short saveInterfaces(void)
+uint8_t saveInterfaces(void)
 {
 	net_iface* cursor = interfaces;
 	if(interfaces == NULL)
@@ -231,7 +231,7 @@ unsigned short saveInterfaces(void)
 	return 0;
 }
 
-unsigned short setInterfaceIP(char* name, char* ip)
+uint8_t setInterfaceIP(char* name, char* ip)
 {
 	if(interfaces == NULL)
 		return 1;
@@ -258,7 +258,7 @@ unsigned short setInterfaceIP(char* name, char* ip)
 	return 0;
 }
 
-unsigned short setInterfaceMAC(char* name, char* mac)
+uint8_t setInterfaceMAC(char* name, char* mac)
 {
 	if(interfaces == NULL)
 		return 1;
@@ -286,7 +286,7 @@ unsigned short setInterfaceMAC(char* name, char* mac)
 	return 0;
 }
 
-unsigned short setInterfaceRealMAC(char* name, char* mac)
+uint8_t setInterfaceRealMAC(char* name, char* mac)
 {
 	if(interfaces == NULL)
 		return 1;
@@ -428,7 +428,7 @@ char* getInterfaceRealMAC(char* name)
 }
 
 
-unsigned short setInterfaceDesc(char* name, char* desc)
+uint8_t setInterfaceDesc(char* name, char* desc)
 {
 	if(interfaces == NULL)
 		return 1;
@@ -484,7 +484,7 @@ char* getInterfaceDesc(char* name)
 	return _desc;
 }
 
-unsigned short setInterfaceRIPNetwork(char* name, uint8_t network)
+uint8_t setInterfaceRIPNetwork(char* name, uint8_t network)
 {
 	if(interfaces == NULL)
 		return 1;
@@ -540,7 +540,7 @@ uint8_t getInterfaceRIPNetwork(char* name)
 	return result;
 }
 
-unsigned short setInterfaceVLAN(char* name, uint16_t vlan)
+uint8_t setInterfaceVLAN(char* name, uint16_t vlan)
 {
 	if(interfaces == NULL)
 		return 1;
@@ -567,7 +567,7 @@ unsigned short setInterfaceVLAN(char* name, uint16_t vlan)
 	return 0;
 }
 
-unsigned short setInterfaceState(char* name, unsigned short state)
+uint8_t setInterfaceState(char* name, unsigned short state)
 {
 	if(interfaces == NULL)
 		return 1;
@@ -645,7 +645,7 @@ unsigned short getInterfaceState(char* name)
 	return result;
 }
 
-unsigned short setInterfaceOSPFCost(char* name, unsigned short cost)
+uint8_t setInterfaceOSPFCost(char* name, unsigned short cost)
 {
 	if(cost > 16 && cost < 1)
 		return 1;
@@ -704,7 +704,7 @@ unsigned short getInterfaceOSPFCost(char* name)
 	return result;
 }
 
-unsigned short setInterfaceOSPFPriority(char* name, uint8_t prio)
+uint8_t setInterfaceOSPFPriority(char* name, uint8_t prio)
 {
 	/*if(prio > 255 && prio < 0) // Due to variable type
 		return 1;*/
@@ -763,7 +763,7 @@ unsigned short getInterfaceOSPFPriority(char* name)
 	return result;
 }
 
-unsigned short setInterfaceOSPFHello(char* name, unsigned short hello)
+uint8_t setInterfaceOSPFHello(char* name, unsigned short hello)
 {
 	if(interfaces == NULL)
 		return 1;
@@ -819,7 +819,7 @@ unsigned short getInterfaceOSPFHello(char* name)
 	return result;
 }
 
-unsigned short setInterfaceOSPFDead(char* name, unsigned int dead)
+uint8_t setInterfaceOSPFDead(char* name, unsigned int dead)
 {
 	if(dead > 2147483647 && dead < 2)
 		return 1;
@@ -878,7 +878,7 @@ unsigned int getInterfaceOSPFDead(char* name)
 	return result;
 }
 
-unsigned short setInterfaceOSPFTransmit(char* name, unsigned short transmit)
+uint8_t setInterfaceOSPFTransmit(char* name, unsigned short transmit)
 {
 	if(transmit > 3600 && transmit < 1)
 		return 1;
@@ -937,7 +937,7 @@ unsigned short getInterfaceOSPFTransmit(char* name)
 	return result;
 }
 
-unsigned short setInterfaceOSPFRetransmit(char* name, unsigned short transmit)
+uint8_t setInterfaceOSPFRetransmit(char* name, unsigned short transmit)
 {
 	if(transmit > 3600 && transmit < 5)
 		return 1;
@@ -996,7 +996,7 @@ unsigned short getInterfaceOSPFRetransmit(char* name)
 	return result;
 }
 
-unsigned short setInterfaceRIPCost(char* name, unsigned short cost)
+uint8_t setInterfaceRIPCost(char* name, unsigned short cost)
 {
 	if(cost > 16 && cost < 1)
 		return 1;
@@ -1055,7 +1055,7 @@ unsigned short getInterfaceRIPCost(char* name)
 	return result;
 }
 
-unsigned short setInterfaceOSPFAuthKey(char* name, char* key)
+uint8_t setInterfaceOSPFAuthKey(char* name, char* key)
 {
 	if(interfaces == NULL)
 		return 1;
@@ -1082,7 +1082,7 @@ unsigned short setInterfaceOSPFAuthKey(char* name, char* key)
 	return 0;
 }
 
-unsigned short setInterfaceRIPAuthKey(char* name, char* key)
+uint8_t setInterfaceRIPAuthKey(char* name, char* key)
 {
 	if(interfaces == NULL)
 		return 1;
@@ -1167,7 +1167,7 @@ char* getInterfaceRIPAuthKey(char* name)
 	return _key;
 }
 
-unsigned short setInterfaceOSPFAuthType(char* name, unsigned short type)
+uint8_t setInterfaceOSPFAuthType(char* name, unsigned short type)
 {
 	if(type > RIP_AUTH_MD5)
 		return 1;
@@ -1197,7 +1197,7 @@ unsigned short setInterfaceOSPFAuthType(char* name, unsigned short type)
 	return 0;
 }
 
-unsigned short setInterfaceRIPAuthType(char* name, unsigned short type)
+uint8_t setInterfaceRIPAuthType(char* name, unsigned short type)
 {
 	if(type > RIP_AUTH_MD5)
 		return 1;
@@ -1285,7 +1285,7 @@ unsigned short getInterfaceRIPAuthType(char* name)
 	return result;
 }
 
-unsigned short setInterfaceRIPPassive(char* name, unsigned short passive)
+uint8_t setInterfaceRIPPassive(char* name, unsigned short passive)
 {
 	if(interfaces == NULL)
 		return 1;
@@ -1339,7 +1339,7 @@ unsigned short getInterfaceRIPPassive(char* name)
 	return result;
 }
 
-unsigned short setInterfaceOSPFPassive(char* name, unsigned short passive)
+uint8_t setInterfaceOSPFPassive(char* name, unsigned short passive)
 {
 	if(interfaces == NULL)
 		return 1;
@@ -1395,7 +1395,7 @@ unsigned short getInterfaceOSPFPassive(char* name)
 	return result;
 }
 
-unsigned short setInterfaceACL(char* name, char* aclname, char* direction)
+uint8_t setInterfaceACL(char* name, char* aclname, char* direction)
 {
 	if(interfaces == NULL)
 		return 1;
