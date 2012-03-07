@@ -42,6 +42,7 @@ struct net_iface
 	char* acl_out;
 	char* desc;
 	uint16_t vlan;
+	char* speed;
 	unsigned short state;
 	char* ip_helper_list;
 	uint8_t is_rip_network;
@@ -80,6 +81,7 @@ uint8_t setInterfaceVLAN(char* name, uint16_t vlan);
 uint8_t setInterfaceState(char* name, unsigned short state);
 uint8_t setInterfaceACL(char* name, char* aclname, char* direction);
 uint8_t setInterfaceDesc(char* name, char* desc);
+uint8_t setInterfaceSpeed(char* name, char* speed);
 
 // Ip Helpers
 uint8_t addInterfaceIPHelper(char* name, char* ip);
@@ -111,6 +113,7 @@ char* getInterfaceRealMAC(char* name);
 uint16_t getInterfaceVLAN(char* name);
 unsigned short getInterfaceState(char* name);
 char* getInterfaceDesc(char* name);
+char* getInterfaceSpeed(char* name);
 
 // RIP
 unsigned short getInterfaceRIPPassive(char* name);

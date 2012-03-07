@@ -219,3 +219,4 @@ Alpha 0.28 - prev
 - Implement is_valid_macaddr to check mac addresses
 - Implement mac-address <hw|random> command for interface
 - Many memory improvements
+- Implement interface speed mod

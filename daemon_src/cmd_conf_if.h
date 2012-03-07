@@ -43,6 +43,8 @@ cmdCallback cifCMD_noip(char* args);
 // LL management
 cmdCallback cifCMD_mac(char* args);
 cmdCallback cifCMD_nomac(char* args);
+cmdCallback cifCMD_speed(char* args);
+cmdCallback cifCMD_nospeed(char* args);
 
 // ACLS
 cmdCallback cifCMD_access_list(char* args);

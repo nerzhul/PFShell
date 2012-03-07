@@ -93,6 +93,7 @@
 #define CMDIF_ENCAPSULATION_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) encapsulation dot1q <1-1005>\n");
 #define CMDIF_IP_HELPER_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) ip helper-address A.B.C.D\n");
 #define CMDIF_MACADDR_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) mac-address <xx:xx:xx:xx:xx:xx|random>\n");
+#define CMDIF_SPEED_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   (no) speed <speed>\n");
 
 // Firewall Messages
 #define CMDFW_DISABLE_ERROR() PRINTERROR("Syntax error !\nCorrect syntax is:\n   disable\n");

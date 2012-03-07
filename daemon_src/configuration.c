@@ -364,11 +364,14 @@ uint8_t writeRunningConfig(void)
 			if(if_cursor->vlan > 0 && if_cursor->vlan <= 1005)
 				fprintf(confFile,"encapsulation dot1q %d\n",if_cursor->vlan);
 
-			if(strlen(if_cursor->ip) > 0)
+			if(if_cursor->ip != NULL && strlen(if_cursor->ip) > 0)
 				fprintf(confFile,"ip address %s\n",if_cursor->ip);
 
-			if(strlen(if_cursor->mac_addr) > 0)
+			if(if_cursor->mac_addr != NULL && strlen(if_cursor->mac_addr) > 0)
 				fprintf(confFile,"mac-address %s\n",if_cursor->mac_addr);
+
+			if(if_cursor->speed != NULL && strlen(if_cursor->speed) > 0)
+				fprintf(confFile,"speed %s\n",if_cursor->speed);
 
 			if(if_cursor->state == 0)
 				fputs("shutdown\n",confFile);

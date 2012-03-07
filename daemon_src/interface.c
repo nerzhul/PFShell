@@ -49,6 +49,7 @@ void addInterface(char* name)
 	newIface->acl_out = "";
 	newIface->desc = "";
 	newIface->vlan = 0;
+	newIface->speed = "";
 	newIface->state = 1;
 	newIface->ip_helper_list = "";
 	newIface->is_rip_network = 0;
@@ -421,6 +422,21 @@ uint8_t setInterfaceRIPNetwork(char* name, uint8_t network)
 	return 1;
 }
 
+char* getInterfaceSpeed(char* name)
+{
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->speed;
+		else
+			cursor = cursor->next;
+	}
+
+	return -1;
+}
+
 uint8_t getInterfaceRIPNetwork(char* name)
 {
 	net_iface* cursor = interfaces;
@@ -445,6 +461,28 @@ uint8_t setInterfaceVLAN(char* name, uint16_t vlan)
 		if(strcmp(cursor->name,name) == 0)
 		{
 			cursor->vlan = vlan;
+			return 0;
+		}
+		else
+			cursor = cursor->next;
+	}
+
+	return 1;
+}
+
+uint8_t setInterfaceSpeed(char* name, char* speed)
+{
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
+		{
+			if(cursor->speed != NULL && strlen(cursor->speed) > 0)
+				free(cursor->speed);
+
+			cursor->speed = (char*)malloc((strlen(speed)+1)*sizeof(char));
+			strcpy(cursor->speed,speed);
 			return 0;
 		}
 		else

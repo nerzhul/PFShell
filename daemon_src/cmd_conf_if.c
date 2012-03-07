@@ -34,6 +34,7 @@
 #include "prompt_msg.h"
 #include "iputils.h"
 #include "string_mgmt.h"
+#include "sysunix.h"
 
 cmdCallback cifCMD_exit(char* _none)
 {
@@ -1095,7 +1096,7 @@ cmdCallback cifCMD_nomac(char* args)
 	char* macaddr[1];
 	uint8_t nbargs = cutString(args,macaddr);
 
-	if(nbargs != 1 || is_valid_macaddr(macaddr[0]) != 0 && strcmp(macaddr[0],"random") != 0)
+	if(strlen(args) == 0 || is_valid_macaddr(macaddr[0]) != 0 && strcmp(macaddr[0],"random") != 0)
 	{
 		cb.message = CMDIF_MACADDR_ERROR();
 		freeCutString(macaddr,nbargs);
@@ -1107,12 +1108,91 @@ cmdCallback cifCMD_nomac(char* args)
 		setInterfaceMAC(current_iface,"");
 		char buffer[1024];
 		bzero(buffer,1024);
-		printf("mac %s\n",getInterfaceRealMAC(current_iface));
 		sprintf(buffer,"ifconfig %s lladdr %s",current_iface,getInterfaceRealMAC(current_iface));
 		system(buffer);
 	}
 
 	WRITE_RUN();
 	freeCutString(macaddr,nbargs);
+	return cb;
+}
+
+cmdCallback cifCMD_speed(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	if(strlen(args) == 0)
+	{
+		cb.message = CMDIF_SPEED_ERROR();
+		return cb;
+	}
+
+	if(current_iface_id != 0)
+	{
+		cb.message = CMD_UNK();
+		return cb;
+	}
+
+	char* speed[1];
+	uint8_t nbargs = cutString(args,speed);
+
+	char output[1024];
+	bzero(output,1024);
+	char buffer[128];
+	bzero(buffer,128);
+
+	sprintf(buffer,"ifconfig %s media | grep media | awk '{print $2}' | grep 1|uniq",current_iface);
+
+	execSystemCommand(buffer,output);
+
+	char* speeds[128];
+	uint8_t nbif = cutString(output,speeds);
+
+	uint8_t i;
+	for(i=0;i<nbif;i++)
+	{
+		if(strcmp(speed[0],speeds[i]) == 0)
+		{
+			setInterfaceSpeed(current_iface,speed[0]);
+			WRITE_RUN();
+			freeCutString(speed,nbargs);
+			return cb;
+		}
+	}
+
+	bzero(buffer,128);
+	sprintf(buffer,"Invalid speed, valid speeds are \n%s",output);
+	cb.message = printError(buffer);
+
+	freeCutString(speed,nbargs);
+	return cb;
+}
+
+cmdCallback cifCMD_nospeed(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	if(strlen(args) == 0)
+	{
+		cb.message = CMDIF_SPEED_ERROR();
+		return cb;
+	}
+
+	if(current_iface_id != 0)
+	{
+		cb.message = CMD_UNK();
+		return cb;
+	}
+
+	char* speed[1];
+	uint8_t nbargs = cutString(args,speed);
+
+	if(strcmp(getInterfaceSpeed(current_iface),speed[0]) == 0)
+	{
+		setInterfaceSpeed(current_iface,"");
+		WRITE_RUN();
+	}
+
+	freeCutString(speed,nbargs);
 	return cb;
 }
