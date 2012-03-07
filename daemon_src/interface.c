@@ -233,106 +233,83 @@ uint8_t saveInterfaces(void)
 
 uint8_t setInterfaceIP(char* name, char* ip)
 {
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->ip = ip;
-			}
-			else
-				cursor = cursor->next;
+			if(cursor->ip != NULL && strlen(cursor->ip) > 0)
+				free(cursor->ip);
+			cursor->ip = (char*)malloc(strlen(ip)*sizeof(char));
+			strcpy(cursor->ip,ip);
+			return 0;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 uint8_t setInterfaceMAC(char* name, char* mac)
 {
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->mac_addr = (char*)malloc(strlen(mac)+1*sizeof(char));
-				strcpy(cursor->mac_addr,mac);
-			}
-			else
-				cursor = cursor->next;
-		}
+			if(cursor->mac_addr != NULL && strlen(cursor->mac_addr) > 0)
+				free(cursor->mac_addr);
 
-		if(found == 0)
-			return 1;
+			cursor->mac_addr = (char*)malloc(strlen(mac)*sizeof(char));
+			strcpy(cursor->mac_addr,mac);
+			return 0;
+		}
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 uint8_t setInterfaceRealMAC(char* name, char* mac)
 {
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		uint8_t found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->real_mac_addr = (char*)malloc(strlen(mac)+1*sizeof(char));
-				strcpy(cursor->real_mac_addr,mac);
-			}
-			else
-				cursor = cursor->next;
-		}
+			if(cursor->real_mac_addr != NULL && strlen(cursor->real_mac_addr) > 0)
+				free(cursor->real_mac_addr);
 
-		if(found == 0)
-			return 1;
+			cursor->real_mac_addr = (char*)malloc(strlen(mac)*sizeof(char));
+			strcpy(cursor->real_mac_addr,mac);
+			return 0;
+		}
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 int8_t getInterfacePosition(char* name)
 {
 	int8_t pos = 0;
 
-	if(interfaces == NULL)
-		return -1;
-	else
-	{
-		net_iface* cursor = interfaces;
+	net_iface* cursor = interfaces;
 
-		while(cursor != NULL)
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
+			return pos;
+		else
 		{
-			if(strcmp(cursor->name,name) == 0)
-				return pos;
-			else
-			{
-				pos++;
-				cursor = cursor->next;
-			}
+			pos++;
+			cursor = cursor->next;
 		}
 	}
 
@@ -341,308 +318,188 @@ int8_t getInterfacePosition(char* name)
 
 char* getInterfaceIP(char* name)
 {
-	char _ip[50] = "";
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return "";
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				strcpy(_ip,cursor->ip);
-			}
-			else
-				cursor = cursor->next;
+			return cursor->ip;
 		}
-
-		if(found == 0)
-			return "";
+		else
+			cursor = cursor->next;
 	}
 
-	return _ip;
+	return "";
 }
 
 char* getInterfaceMAC(char* name)
 {
-	char _mac[50] = "";
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return "";
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				strcpy(_mac,cursor->mac_addr);
-			}
-			else
-				cursor = cursor->next;
+			return cursor->mac_addr;
 		}
-
-		if(found == 0)
-			return "";
+		else
+			cursor = cursor->next;
 	}
 
-	return _mac;
+	return "";
 }
 
 char* getInterfaceRealMAC(char* name)
 {
-	char _mac[50];
-	bzero(_mac,50);
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return "";
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		uint8_t found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				strcpy(_mac,cursor->real_mac_addr);
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return "";
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->real_mac_addr;
+		else
+			cursor = cursor->next;
 	}
 
-	return _mac;
+	return "";
 }
 
 
 uint8_t setInterfaceDesc(char* name, char* desc)
 {
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->desc = desc;
-			}
-			else
-				cursor = cursor->next;
-		}
+			if(cursor->desc != NULL && strlen(cursor->desc) > 0)
+				free(cursor->desc);
 
-		if(found == 0)
-			return 1;
+			cursor->desc = (char*)malloc(strlen(desc)*sizeof(char));
+			strcpy(cursor->desc,desc);
+			return 0;
+		}
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 char* getInterfaceDesc(char* name)
 {
-	char _desc[50] = "";
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return "";
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				strcpy(_desc,cursor->desc);
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return "";
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->desc;
+		else
+			cursor = cursor->next;
 	}
 
-	return _desc;
+	return "";
 }
 
 uint8_t setInterfaceRIPNetwork(char* name, uint8_t network)
 {
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->is_rip_network = network;
-			}
-			else
-				cursor = cursor->next;
+			cursor->is_rip_network = network;
+			return 0;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 uint8_t getInterfaceRIPNetwork(char* name)
 {
-	uint8_t result = -1;
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return -1;
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				result = cursor->is_rip_network;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return -1;
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->is_rip_network;
+		else
+			cursor = cursor->next;
 	}
 
-	return result;
+	return -1;
 }
 
 uint8_t setInterfaceVLAN(char* name, uint16_t vlan)
 {
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->vlan = vlan;
-			}
-			else
-				cursor = cursor->next;
+			cursor->vlan = vlan;
+			return 0;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 uint8_t setInterfaceState(char* name, unsigned short state)
 {
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->state = state;
-			}
-			else
-				cursor = cursor->next;
+			cursor->state = state;
+			return 0;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 uint16_t getInterfaceVLAN(char* name)
 {
-	unsigned short result = -1;
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return -1;
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-
-		while(cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-				return cursor->vlan;
-			else
-				cursor = cursor->next;
-		}
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->vlan;
+		else
+			cursor = cursor->next;
 	}
 
-	return result;
+	return -1;
 }
 
 unsigned short getInterfaceState(char* name)
 {
-	unsigned short result = -1;
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return -1;
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				result = cursor->state;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return -1;
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->state;
+		else
+			cursor = cursor->next;
 	}
 
-	return result;
+	return -1;
 }
 
 uint8_t setInterfaceOSPFCost(char* name, unsigned short cost)
@@ -650,58 +507,35 @@ uint8_t setInterfaceOSPFCost(char* name, unsigned short cost)
 	if(cost > 16 && cost < 1)
 		return 1;
 
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->ospf_cost = cost;
-			}
-			else
-				cursor = cursor->next;
+			cursor->ospf_cost = cost;
+			return 0;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 unsigned short getInterfaceOSPFCost(char* name)
 {
-	unsigned short result = -1;
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return -1;
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				result = cursor->ospf_cost;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return -1;
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->ospf_cost;
+		else
+			cursor = cursor->next;
 	}
 
-	return result;
+	return -1;
 }
 
 uint8_t setInterfaceOSPFPriority(char* name, uint8_t prio)
@@ -709,114 +543,68 @@ uint8_t setInterfaceOSPFPriority(char* name, uint8_t prio)
 	/*if(prio > 255 && prio < 0) // Due to variable type
 		return 1;*/
 
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->ospf_priority = prio;
-			}
-			else
-				cursor = cursor->next;
+			cursor->ospf_priority = prio;
+			return 0;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 unsigned short getInterfaceOSPFPriority(char* name)
 {
-	unsigned short result = -1;
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return -1;
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				result = cursor->ospf_priority;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return -1;
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->ospf_priority;
+		else
+			cursor = cursor->next;
 	}
 
-	return result;
+	return -1;
 }
 
 uint8_t setInterfaceOSPFHello(char* name, unsigned short hello)
 {
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->ospf_hello_int = hello;
-			}
-			else
-				cursor = cursor->next;
+			cursor->ospf_hello_int = hello;
+			return 0;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 unsigned short getInterfaceOSPFHello(char* name)
 {
-	unsigned short result = -1;
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return -1;
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				result = cursor->ospf_hello_int;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return -1;
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->ospf_hello_int;
+		else
+			cursor = cursor->next;
 	}
 
-	return result;
+	return -1;
 }
 
 uint8_t setInterfaceOSPFDead(char* name, unsigned int dead)
@@ -824,58 +612,35 @@ uint8_t setInterfaceOSPFDead(char* name, unsigned int dead)
 	if(dead > 2147483647 && dead < 2)
 		return 1;
 
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->ospf_dead_int = dead;
-			}
-			else
-				cursor = cursor->next;
+			cursor->ospf_dead_int = dead;
+			return 0;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 unsigned int getInterfaceOSPFDead(char* name)
 {
-	unsigned int result = -1;
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return -1;
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				result = cursor->ospf_dead_int;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return -1;
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->ospf_dead_int;
+		else
+			cursor = cursor->next;
 	}
 
-	return result;
+	return -1;
 }
 
 uint8_t setInterfaceOSPFTransmit(char* name, unsigned short transmit)
@@ -883,58 +648,35 @@ uint8_t setInterfaceOSPFTransmit(char* name, unsigned short transmit)
 	if(transmit > 3600 && transmit < 1)
 		return 1;
 
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->ospf_transmit_delay = transmit;
-			}
-			else
-				cursor = cursor->next;
+			cursor->ospf_transmit_delay = transmit;
+			return 0;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 unsigned short getInterfaceOSPFTransmit(char* name)
 {
-	unsigned short result = -1;
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return -1;
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				result = cursor->ospf_transmit_delay;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return -1;
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->ospf_transmit_delay;
+		else
+			cursor = cursor->next;
 	}
 
-	return result;
+	return -1;
 }
 
 uint8_t setInterfaceOSPFRetransmit(char* name, unsigned short transmit)
@@ -942,58 +684,35 @@ uint8_t setInterfaceOSPFRetransmit(char* name, unsigned short transmit)
 	if(transmit > 3600 && transmit < 5)
 		return 1;
 
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->ospf_retransmit_delay = transmit;
-			}
-			else
-				cursor = cursor->next;
+			cursor->ospf_retransmit_delay = transmit;
+			return 0;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 unsigned short getInterfaceOSPFRetransmit(char* name)
 {
-	unsigned short result = -1;
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return -1;
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				result = cursor->ospf_retransmit_delay;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return -1;
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->ospf_retransmit_delay;
+		else
+			cursor = cursor->next;
 	}
 
-	return result;
+	return -1;
 }
 
 uint8_t setInterfaceRIPCost(char* name, unsigned short cost)
@@ -1001,170 +720,110 @@ uint8_t setInterfaceRIPCost(char* name, unsigned short cost)
 	if(cost > 16 && cost < 1)
 		return 1;
 
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->rip_cost = cost;
-			}
-			else
-				cursor = cursor->next;
+			cursor->rip_cost = cost;
+			return 0;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 unsigned short getInterfaceRIPCost(char* name)
 {
-	unsigned short result = -1;
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return -1;
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				result = cursor->rip_cost;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return -1;
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->rip_cost;
+		else
+			cursor = cursor->next;
 	}
 
-	return result;
+	return -1;
 }
 
 uint8_t setInterfaceOSPFAuthKey(char* name, char* key)
 {
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->ospf_auth_pwd = key;
-			}
-			else
-				cursor = cursor->next;
-		}
+			if(cursor->ospf_auth_pwd != NULL && strlen(cursor->ospf_auth_pwd) > 0)
+				free(cursor->ospf_auth_pwd);
 
-		if(found == 0)
-			return 1;
+			cursor->ospf_auth_pwd = (char*)malloc(strlen(key)*sizeof(char));
+			strcpy(cursor->ospf_auth_pwd,key);
+			return 0;
+		}
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 uint8_t setInterfaceRIPAuthKey(char* name, char* key)
 {
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->rip_auth_pwd = key;
-			}
-			else
-				cursor = cursor->next;
-		}
+			if(cursor->rip_auth_pwd != NULL && strlen(cursor->rip_auth_pwd) > 0)
+				free(cursor->rip_auth_pwd);
 
-		if(found == 0)
-			return 1;
+			cursor->rip_auth_pwd = (char*)malloc(strlen(key)*sizeof(char));
+			strcpy(cursor->rip_auth_pwd,key);
+			return 0;
+
+		}
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 char* getInterfaceOSPFAuthKey(char* name)
 {
-	char _key[50] = "";
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return "";
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				strcpy(_key,cursor->ospf_auth_pwd);
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return "";
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->ospf_auth_pwd;
+		else
+			cursor = cursor->next;
 	}
 
-	return _key;
+	return "";
 }
 
 char* getInterfaceRIPAuthKey(char* name)
 {
-	char _key[50] = "";
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return "";
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				strcpy(_key,cursor->rip_auth_pwd);
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return "";
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->rip_auth_pwd;
+		else
+			cursor = cursor->next;
 	}
 
-	return _key;
+	return "";
 }
 
 uint8_t setInterfaceOSPFAuthType(char* name, unsigned short type)
@@ -1172,29 +831,20 @@ uint8_t setInterfaceOSPFAuthType(char* name, unsigned short type)
 	if(type > RIP_AUTH_MD5)
 		return 1;
 
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->ospf_auth_type = type;
-			}
-			else
-				cursor = cursor->next;
+			cursor->ospf_auth_type = type;
+			return 0;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 uint8_t setInterfaceRIPAuthType(char* name, unsigned short type)
@@ -1202,254 +852,171 @@ uint8_t setInterfaceRIPAuthType(char* name, unsigned short type)
 	if(type > RIP_AUTH_MD5)
 		return 1;
 
-	if(interfaces == NULL)
-		return 1;
-	else
-	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->rip_auth_type = type;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return 1;
-	}
-
-	return 0;
-}
-
-unsigned short getInterfaceOSPFAuthType(char* name)
-{
-	unsigned short result = -1;
-
-	if(interfaces == NULL)
-		return -1;
-	else
-	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				result = cursor->ospf_auth_type;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return -1;
-	}
-
-	return result;
-}
-
-unsigned short getInterfaceRIPAuthType(char* name)
-{
-	unsigned short result = -1;
-
-	if(interfaces == NULL)
-		return -1;
-	else
-	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				result = cursor->rip_auth_type;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return -1;
-	}
-
-	return result;
-}
-
-uint8_t setInterfaceRIPPassive(char* name, unsigned short passive)
-{
-	if(interfaces == NULL)
-		return 1;
-
 	net_iface* cursor = interfaces;
-	unsigned short found = 0;
 
-	while(found == 0 && cursor != NULL)
+	while(cursor != NULL)
 	{
 		if(strcmp(cursor->name,name) == 0)
 		{
-			found = 1;
-			cursor->rip_passive = passive;
+			cursor->rip_auth_type = type;
+			return 0;
 		}
 		else
 			cursor = cursor->next;
 	}
 
-	if(found == 0)
-		return 1;
+	return 1;
+}
 
-	return 0;
+unsigned short getInterfaceOSPFAuthType(char* name)
+{
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->ospf_auth_type;
+		else
+			cursor = cursor->next;
+	}
+
+	return -1;
+}
+
+unsigned short getInterfaceRIPAuthType(char* name)
+{
+
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->rip_auth_type;
+		else
+			cursor = cursor->next;
+	}
+
+	return -1;
+}
+
+uint8_t setInterfaceRIPPassive(char* name, unsigned short passive)
+{
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
+		{
+			cursor->rip_passive = passive;
+			return 0;
+		}
+		else
+			cursor = cursor->next;
+	}
+
+	return 1;
 }
 
 unsigned short getInterfaceRIPPassive(char* name)
 {
-	unsigned short result = -1;
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return -1;
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				result = cursor->rip_passive;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return -1;
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->rip_passive;
+		else
+			cursor = cursor->next;
 	}
 
-	return result;
+	return -1;
 }
 
 uint8_t setInterfaceOSPFPassive(char* name, unsigned short passive)
 {
-	if(interfaces == NULL)
-		return 1;
-	else
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
+		if(strcmp(cursor->name,name) == 0)
 		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				cursor->ospf_passive = passive;
-			}
-			else
-				cursor = cursor->next;
+			cursor->ospf_passive = passive;
+			return 0;
 		}
-
-		if(found == 0)
-			return 1;
+		else
+			cursor = cursor->next;
 	}
 
-	return 0;
+	return 1;
 }
 
 unsigned short getInterfaceOSPFPassive(char* name)
 {
-	unsigned short result = -1;
+	net_iface* cursor = interfaces;
 
-	if(interfaces == NULL)
-		return -1;
-	else
+	while(cursor != NULL)
 	{
-		net_iface* cursor = interfaces;
-		unsigned short found = 0;
-
-		while(found == 0 && cursor != NULL)
-		{
-			if(strcmp(cursor->name,name) == 0)
-			{
-				found = 1;
-				result = cursor->ospf_passive;
-			}
-			else
-				cursor = cursor->next;
-		}
-
-		if(found == 0)
-			return -1;
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->ospf_passive;
+		else
+			cursor = cursor->next;
 	}
 
-	return result;
+	return -1;
 }
 
 uint8_t setInterfaceACL(char* name, char* aclname, char* direction)
 {
-	if(interfaces == NULL)
-		return 1;
+	net_iface* cursor = interfaces;
 
-		net_iface* cursor = interfaces;
-	unsigned short found = 0;
-
-	while(found == 0 && cursor != NULL)
+	while(cursor != NULL)
 	{
 		if(strcmp(cursor->name,name) == 0)
 		{
-			found = 1;
-
 			if(strlen(aclname) != 0)
 			{
 				acl* cursor2 = access_lists;
-				unsigned short found2 = 0;
 
-				while(found2 == 0 && cursor2 != NULL)
+				while(cursor2 != NULL)
 				{
 					if(strcmp(cursor2->name,aclname) == 0)
 					{
-						found2 = 1;
-
 						if(strcmp(direction,"in") == 0)
+						{
 							cursor->acl_in = aclname;
+							return 0;
+						}
 						else if(strcmp(direction,"out") == 0)
+						{
 							cursor->acl_out = aclname;
+							return 0;
+						}
 						else
 							return 1;
 					}
 					else
 						cursor2 = cursor2->next;
 				}
-
-				if(found2 == 0)
-					return 1;
 			}
 			else
 			{
 				if(strcmp(direction,"in") == 0)
+				{
 					cursor->acl_in = "";
+					return 0;
+				}
 				else if(strcmp(direction,"out") == 0)
+				{
 					cursor->acl_out = "";
+					return 0;
+				}
 			}
 		}
 		else
 			cursor = cursor->next;
 	}
 
-	if(found == 0)
-		return 1;
-
-	return 0;
+	return 1;
 }
 
 uint8_t is_interface(char* name)
@@ -1584,9 +1151,6 @@ char* getInterfaceIPHelpers(char* name)
 
 void launchInterfaceIPHelpers(char* name)
 {
-	if(interfaces == NULL)
-		return;
-
 	net_iface* cursor = interfaces;
 
 	while(cursor != NULL)

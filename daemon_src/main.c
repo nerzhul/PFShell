@@ -68,11 +68,11 @@ int main(int argc, const char** argv)
 		is_loading = 0;
 
 		// Now we daemonize
-		pid_t pid = fork();
+		/*pid_t pid = fork();
 		if(pid < 0)
 			printf("\x1b[31mFATAL Fork Error !\x1b[0m !\n");
 		else if(pid > 0)
-			return 0;
+			return 0;*/
 
 		waitAndHandleClients();
 		closeServerSocket();
