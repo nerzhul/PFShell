@@ -1137,22 +1137,33 @@ cmdCallback cifCMD_speed(char* args)
 	uint8_t nbargs = cutString(args,speed);
 
 	char output[1024];
-	bzero(output,1024);
+	char output2[1024];
 	char buffer[128];
+	char buffer2[128];
+	bzero(output,1024);
+	bzero(output2,1024);
 	bzero(buffer,128);
+	bzero(buffer2,128);
 
 	sprintf(buffer,"ifconfig %s media | grep media | awk '{print $2}' | grep 1|uniq|cut -f'1' -d 'b'",current_iface);
-
+	sprintf(buffer2,"ifconfig %s media | grep media | awk '{print $2}' | grep 1|uniq",current_iface);
 	execSystemCommand(buffer,output);
+	execSystemCommand(buffer2,output2);
 
 	char* speeds[128];
+	char* realspeeds[128];
 	uint8_t nbif = cutString(output,speeds);
+	cutString(output2,realspeeds);
 
 	uint8_t i;
 	for(i=0;i<nbif;i++)
 	{
 		if(strcmp(speed[0],speeds[i]) == 0)
 		{
+			char cmdbuffer[256];
+			bzero(cmdbuffer,256);
+			sprintf(cmdbuffer,"ifconfig %s media %s",current_iface,realspeeds[i]);
+			system(cmdbuffer);
 			setInterfaceSpeed(current_iface,speed[0]);
 			WRITE_RUN();
 			freeCutString(speed,nbargs);
@@ -1189,6 +1200,10 @@ cmdCallback cifCMD_nospeed(char* args)
 
 	if(strcmp(getInterfaceSpeed(current_iface),speed[0]) == 0)
 	{
+		char cmdbuffer[256];
+		bzero(cmdbuffer,256);
+		sprintf(cmdbuffer,"ifconfig %s media autoselect",current_iface);
+		system(cmdbuffer);
 		setInterfaceSpeed(current_iface,"");
 		WRITE_RUN();
 	}
