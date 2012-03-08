@@ -45,6 +45,8 @@ cmdCallback cifCMD_mac(char* args);
 cmdCallback cifCMD_nomac(char* args);
 cmdCallback cifCMD_speed(char* args);
 cmdCallback cifCMD_nospeed(char* args);
+cmdCallback cifCMD_duplex(char* args);
+cmdCallback cifCMD_noduplex(char* args);
 
 // ACLS
 cmdCallback cifCMD_access_list(char* args);

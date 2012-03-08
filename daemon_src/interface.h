@@ -30,6 +30,10 @@
 
 #include <sys/types.h>
 
+#define DUPLEX_AUTO 0
+#define DUPLEX_HALF 1
+#define DUPLEX_FULL 2
+
 typedef struct net_iface net_iface;
 
 struct net_iface
@@ -43,7 +47,8 @@ struct net_iface
 	char* desc;
 	uint16_t vlan;
 	char* speed;
-	unsigned short state;
+	uint8_t duplex;
+	uint8_t state;
 	char* ip_helper_list;
 	uint8_t is_rip_network;
 	unsigned short rip_passive;
@@ -78,10 +83,11 @@ uint8_t setInterfaceIP(char* name, char* ip);
 uint8_t setInterfaceMAC(char* name, char* mac);
 uint8_t setInterfaceRealMAC(char* name, char* mac);
 uint8_t setInterfaceVLAN(char* name, uint16_t vlan);
-uint8_t setInterfaceState(char* name, unsigned short state);
+uint8_t setInterfaceState(char* name, uint8_t state);
 uint8_t setInterfaceACL(char* name, char* aclname, char* direction);
 uint8_t setInterfaceDesc(char* name, char* desc);
 uint8_t setInterfaceSpeed(char* name, char* speed);
+uint8_t setInterfaceDuplex(char* name, uint8_t duplex);
 
 // Ip Helpers
 uint8_t addInterfaceIPHelper(char* name, char* ip);
@@ -111,9 +117,10 @@ char* getInterfaceIP(char* name);
 char* getInterfaceMAC(char* name);
 char* getInterfaceRealMAC(char* name);
 uint16_t getInterfaceVLAN(char* name);
-unsigned short getInterfaceState(char* name);
+uint8_t getInterfaceState(char* name);
 char* getInterfaceDesc(char* name);
 char* getInterfaceSpeed(char* name);
+uint8_t getInterfaceDuplex(char* name);
 
 // RIP
 unsigned short getInterfaceRIPPassive(char* name);

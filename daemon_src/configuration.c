@@ -373,6 +373,9 @@ uint8_t writeRunningConfig(void)
 			if(if_cursor->speed != NULL && strlen(if_cursor->speed) > 0)
 				fprintf(confFile,"speed %s\n",if_cursor->speed);
 
+			if(if_cursor->duplex > DUPLEX_AUTO && if_cursor->duplex <= DUPLEX_FULL)
+				fprintf(confFile,"duplex %s\n",(if_cursor->duplex == DUPLEX_HALF ? "half" : "full"));
+
 			if(if_cursor->state == 0)
 				fputs("shutdown\n",confFile);
 

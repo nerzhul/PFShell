@@ -50,6 +50,7 @@ void addInterface(char* name)
 	newIface->desc = "";
 	newIface->vlan = 0;
 	newIface->speed = "";
+	newIface->duplex = DUPLEX_AUTO;
 	newIface->state = 1;
 	newIface->ip_helper_list = "";
 	newIface->is_rip_network = 0;
@@ -492,7 +493,7 @@ uint8_t setInterfaceSpeed(char* name, char* speed)
 	return 1;
 }
 
-uint8_t setInterfaceState(char* name, unsigned short state)
+uint8_t setInterfaceState(char* name, uint8_t state)
 {
 	net_iface* cursor = interfaces;
 
@@ -501,6 +502,27 @@ uint8_t setInterfaceState(char* name, unsigned short state)
 		if(strcmp(cursor->name,name) == 0)
 		{
 			cursor->state = state;
+			return 0;
+		}
+		else
+			cursor = cursor->next;
+	}
+
+	return 1;
+}
+
+uint8_t setInterfaceDuplex(char* name, uint8_t duplex)
+{
+	if(duplex > DUPLEX_FULL)
+		return 2;
+
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
+		{
+			cursor->duplex = duplex;
 			return 0;
 		}
 		else
@@ -525,7 +547,7 @@ uint16_t getInterfaceVLAN(char* name)
 	return -1;
 }
 
-unsigned short getInterfaceState(char* name)
+uint8_t getInterfaceState(char* name)
 {
 	net_iface* cursor = interfaces;
 
@@ -535,6 +557,21 @@ unsigned short getInterfaceState(char* name)
 			return cursor->state;
 		else
 			cursor = cursor->next;
+	}
+
+	return -1;
+}
+
+uint8_t getInterfaceDuplex(char* name)
+{
+	net_iface* cursor = interfaces;
+
+	while(cursor != NULL)
+	{
+		if(strcmp(cursor->name,name) == 0)
+			return cursor->duplex;
+		else
+			cursor = cursor->duplex;
 	}
 
 	return -1;

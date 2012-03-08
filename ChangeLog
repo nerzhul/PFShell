@@ -220,3 +220,4 @@ Alpha 0.28 - prev
 - Implement mac-address <hw|random> command for interface
 - Many memory improvements
 - Implement interface speed mod
+- Implement interface duplex mod

@@ -1133,6 +1133,16 @@ cmdCallback cifCMD_speed(char* args)
 		return cb;
 	}
 
+	if(strcmp(args,"auto") == 0)
+	{
+		char cmdbuffer[256];
+		bzero(cmdbuffer,256);
+		sprintf(cmdbuffer,"ifconfig %s media autoselect",current_iface);
+		system(cmdbuffer);
+		setInterfaceSpeed(current_iface,"");
+		WRITE_RUN();
+	}
+
 	char* speed[1];
 	uint8_t nbargs = cutString(args,speed);
 
@@ -1209,5 +1219,117 @@ cmdCallback cifCMD_nospeed(char* args)
 	}
 
 	freeCutString(speed,nbargs);
+	return cb;
+}
+
+cmdCallback cifCMD_duplex(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	if(strlen(args) == 0)
+	{
+		cb.message = CMDIF_DUPLEX_ERROR();
+		return cb;
+	}
+
+	if(current_iface_id != 0)
+	{
+		cb.message = CMD_UNK();
+		return cb;
+	}
+
+	char* duplex[1];
+	uint8_t nbargs = cutString(args,duplex);
+
+
+	char output[1024];
+	char output2[1024];
+	char buffer[128];
+	char buffer2[128];
+	bzero(output,1024);
+	bzero(output2,1024);
+	bzero(buffer,128);
+	bzero(buffer2,128);
+
+	sprintf(buffer,"ifconfig %s media | grep mediaopt | awk '{print $4}' | awk -F'-' '{print $1}'|uniq",current_iface);
+	sprintf(buffer2,"ifconfig %s media | grep mediaopt | awk '{print $4}'|uniq",current_iface);
+	execSystemCommand(buffer,output);
+	execSystemCommand(buffer2,output2);
+
+	char* dupl[128];
+	char* reals[128];
+	uint8_t nbif = cutString(output,dupl);
+	cutString(output2,reals);
+
+	uint8_t i;
+	for(i=0;i<nbif;i++)
+	{
+		if(strcmp(duplex[0],dupl[i]) == 0)
+		{
+			char cmdbuffer[256];
+			bzero(cmdbuffer,256);
+			sprintf(cmdbuffer,"ifconfig %s mediaopt %s",current_iface,reals[i]);
+			system(cmdbuffer);
+			if(strcmp(reals[i],"full-duplex") == 0)
+				setInterfaceDuplex(current_iface,DUPLEX_FULL);
+			else if(strcmp(reals[i],"half-duplex") == 0)
+				setInterfaceDuplex(current_iface,DUPLEX_HALF);
+
+			WRITE_RUN();
+			freeCutString(dupl,nbargs);
+			return cb;
+		}
+	}
+
+	bzero(buffer,128);
+	sprintf(buffer,"Invalid dulex, valid duplexes are \n%s",output);
+	cb.message = printError(buffer);
+
+	freeCutString(duplex,nbargs);
+	return cb;
+}
+
+cmdCallback cifCMD_noduplex(char* args)
+{
+	cmdCallback cb = {PROMPT_CONF_IF,""};
+
+	if(strlen(args) == 0)
+	{
+		cb.message = CMDIF_DUPLEX_ERROR();
+		return cb;
+	}
+
+	if(current_iface_id != 0)
+	{
+		cb.message = CMD_UNK();
+		return cb;
+	}
+
+	char* duplex[1];
+	uint8_t nbargs = cutString(args,duplex);
+
+	char curduplex[10];
+	bzero(curduplex,10);
+	if(getInterfaceDuplex(current_iface) == DUPLEX_FULL)
+		strcpy(curduplex,"full");
+	else if(getInterfaceDuplex(current_iface) == DUPLEX_HALF)
+		strcpy(curduplex,"half");
+	else
+		strcpy(curduplex,"");
+
+	if(strcmp(curduplex,duplex[0]) == 0)
+	{
+		char cmdbuffer[256];
+		bzero(cmdbuffer,256);
+
+		sprintf(cmdbuffer,"ifconfig %s media autoselect",current_iface);
+		system(cmdbuffer);
+		if(strlen(getInterfaceSpeed(current_iface)) > 0)
+			cifCMD_speed(getInterfaceSpeed(current_iface));
+		setInterfaceDuplex(current_iface,DUPLEX_AUTO);
+		WRITE_RUN();
+	}
+
+	freeCutString(duplex,nbargs);
 	return cb;
 }

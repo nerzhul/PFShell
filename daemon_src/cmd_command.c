@@ -71,6 +71,7 @@ cmdHdlr confCmd[MAX_CONF_CMD] =
 cmdHdlr confIfCmd[MAX_CONF_IF_CMD] =
 {
 	{"description",		&cifCMD_description,	&cifCMD_nodescription,		"\t\t\t\tchange the description of the interface"},
+	{"duplex",		&cifCMD_duplex,		&cifCMD_noduplex,		"\t\t\t\tmodify interface transmission mode"},
 	{"encapsulation",	&cifCMD_encap,		&cifCMD_noencap,		"\t\t\t\t{in sub-interface} do dot1q encapsulation for outgoing packets"},
 	{"exit",		&cifCMD_exit,		NULL,				"\t\t\t\t\treturn back to configuration mode"},
 	{"help",		&cifCMD_help,		NULL,				"\t\t\t\t\tdisplay this help"},
