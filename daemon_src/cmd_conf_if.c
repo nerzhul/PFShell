@@ -1141,7 +1141,7 @@ cmdCallback cifCMD_speed(char* args)
 	char buffer[128];
 	bzero(buffer,128);
 
-	sprintf(buffer,"ifconfig %s media | grep media | awk '{print $2}' | grep 1|uniq",current_iface);
+	sprintf(buffer,"ifconfig %s media | grep media | awk '{print $2}' | grep 1|uniq|cut -f'1' -d 'b'",current_iface);
 
 	execSystemCommand(buffer,output);
 
