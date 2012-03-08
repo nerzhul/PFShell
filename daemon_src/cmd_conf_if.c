@@ -855,7 +855,15 @@ cmdCallback cifCMD_description(char* args)
 	}
 
 	if(setInterfaceDesc(current_iface,args) != 0)
+	{
 		cb.message = CMDIF_DESC_ERROR();
+	}
+	else
+	{
+		char cmdbuffer[256];
+		sprintf(cmdbuffer,"ifconfig %s description %s",current_iface,args);
+		hsystemcmd(cmdbuffer);
+	}
 
 	WRITE_RUN();
 	return cb;
@@ -873,7 +881,15 @@ cmdCallback cifCMD_nodescription(char* args)
 	if(strcmp(getInterfaceDesc(current_iface),args) == 0)
 	{
 		if(setInterfaceDesc(current_iface,"") != 0)
+		{
 			cb.message = CMDIF_DESC_ERROR();
+		}
+		else
+		{
+			char cmdbuffer[256];
+			sprintf(cmdbuffer,"ifconfig %s -description",current_iface);
+			hsystemcmd(cmdbuffer);
+		}
 	}
 
 	WRITE_RUN();
