@@ -36,8 +36,13 @@ unsigned short checkSystemIntegrity()
 	printf("Starting configuration checks [");
 	fflush(stdout);
 
-	char buffer[1024] = "";
-	char buffer2[1024] = "";
+	char buffer[1024];
+	bzero(buffer,1024);
+	char buffer2[1024];
+	bzero(buffer2,1024);
+
+	char errbuffer[4096];
+	bzero(errbuffer,4096);
 
 	unsigned short error = 0;
 
@@ -56,7 +61,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nsysctl.conf is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nsysctl.conf is corrupted !\n");
 		error = 1;
 	}
 
@@ -74,7 +79,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nsysctl.conf is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nsysctl.conf is corrupted !\n");
 		error = 1;
 	}
 
@@ -92,7 +97,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nsysctl.conf is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nsysctl.conf is corrupted !\n");
 		error = 1;
 	}
 
@@ -111,7 +116,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\n/etc/myname is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\n/etc/myname is corrupted !\n");
 		error = 1;
 	}
 
@@ -129,7 +134,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\n/etc/myname is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\n/etc/myname is corrupted !\n");
 		error = 1;
 	}
 
@@ -147,7 +152,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\n/etc/myname is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\n/etc/myname is corrupted !\n");
 		error = 1;
 	}
 
@@ -163,7 +168,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nresolv.conf is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nresolv.conf is corrupted !\n");
 		error = 1;
 	}
 
@@ -181,7 +186,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nresolv.conf is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nresolv.conf is corrupted !\n");
 		error = 1;
 	}
 
@@ -199,7 +204,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nresolv.conf is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nresolv.conf is corrupted !\n");
 		error = 1;
 	}
 
@@ -215,7 +220,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nripd.conf is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nripd.conf is corrupted !\n");
 		error = 1;
 	}
 
@@ -233,7 +238,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nripd.conf is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nripd.conf is corrupted !\n");
 		error = 1;
 	}
 
@@ -251,7 +256,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nripd.conf is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nripd.conf is corrupted !\n");
 		error = 1;
 	}
 
@@ -267,7 +272,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nospfd.conf is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nospfd.conf is corrupted !\n");
 		error = 1;
 	}
 
@@ -285,7 +290,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nospfd.conf is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nospfd.conf is corrupted !\n");
 		error = 1;
 	}
 
@@ -303,7 +308,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nospfd.conf is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nospfd.conf is corrupted !\n");
 		error = 1;
 	}
 
@@ -322,7 +327,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nstartup-config is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nstartup-config is corrupted !\n");
 		error = 1;
 	}
 
@@ -340,7 +345,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nstartup-config is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nstartup-config is corrupted !\n");
 		error = 1;
 	}
 
@@ -358,7 +363,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nstartup-config is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nstartup-config is corrupted !\n");
 		error = 1;
 	}
 
@@ -377,7 +382,7 @@ unsigned short checkSystemIntegrity()
 	// Check packet filter
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nPacket Filter configuration is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nPacket Filter configuration is corrupted !\n");
 		error = 1;
 	}
 
@@ -395,7 +400,7 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nPacket Filter configuration is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nPacket Filter configuration is corrupted !\n");
 		error = 1;
 	}
 
@@ -414,11 +419,14 @@ unsigned short checkSystemIntegrity()
 
 	if(strcmp(buffer,buffer2) != 0)
 	{
-		printf("\x1b[31mERROR\x1b[0m\nPacket Filter configuration is corrupted !\n");
+		strcat(errbuffer,"\n\x1b[31mERROR\x1b[0m\nPacket Filter configuration is corrupted !\n");
 		error = 1;
 	}
 
 	printf("]\n");
+
+	if(error == 1)
+		printf("%s\n",errbuffer);
 
 	return error;
 }
