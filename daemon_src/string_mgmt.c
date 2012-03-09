@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Loïc BLOT
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -9,7 +9,7 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * Neither the name of the Frost Sapphire Studios nor the
+*     * Neither the name of the BSDRouterd nor the
 *       names of its contributors may be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
@@ -33,8 +33,10 @@
 
 void cutFirstWord(char* string,char** result)
 {
-	char firstWord[1024] = "";
-	char followWords[1024] = "";
+	char firstWord[1024];
+	bzero(firstWord,1024);
+	char followWords[1024];
+	bzero(followWords,1024);
 
 	int16_t offset = 0;
 	int16_t offset2 = 0;
@@ -89,9 +91,9 @@ void cutFirstWord(char* string,char** result)
 	}
 }
 
-uint8_t cutString(char* string,char** result)
+uint8_t cutString(char* string,char** result,uint8_t maxexpectedwords)
 {
-	uint16_t space_count = 0;
+	uint8_t space_count = 0;
 	uint32_t offset = 0;
 
 	// Count spaces
@@ -103,10 +105,14 @@ uint8_t cutString(char* string,char** result)
 		++offset;
 	}
 
+	if(space_count >= maxexpectedwords)
+		return -1;
+
 	offset = 0;
 	uint8_t word_nb = 0;
 
-	char buffer[512] = "";
+	char buffer[512];
+	bzero(buffer,512);
 	uint16_t buffer_offset = 0;
 
 	while(offset <= strlen(string))
@@ -152,8 +158,10 @@ void freeCutString(char** elem,uint8_t size)
 
 void cutByChar(char* string,char** result,char cutter)
 {
-	char firstWord[1024] = "";
-	char followWords[1024] = "";
+	char firstWord[1024];
+	char followWords[1024];
+	bzero(firstWord,1024);
+	bzero(followWords,1024);
 
 	int16_t offset = 0;
 	int16_t offset2 = 0;

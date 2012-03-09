@@ -68,7 +68,7 @@ cmdCallback cCMD_router(char* args)
 	cmdCallback cb = {PROMPT_CONF,""};
 
 	char* routertype[1];
-	uint8_t nbargs = cutString(args,routertype);
+	uint8_t nbargs = cutString(args,routertype,1);
 
 	if(nbargs != 1)
 	{
@@ -99,7 +99,7 @@ cmdCallback cCMD_norouter(char* args)
 	cmdCallback cb = {PROMPT_CONF,""};
 
 	char* routertype[1];
-	uint8_t nbargs = cutString(args,routertype);
+	uint8_t nbargs = cutString(args,routertype,1);
 
 	if(nbargs != 1)
 	{
@@ -132,7 +132,7 @@ cmdCallback cCMD_hostname(char* args)
 	cmdCallback cb = {PROMPT_CONF,""};
 
 	char* hname[1];
-	uint8_t nbargs = cutString(args,hname);
+	uint8_t nbargs = cutString(args,hname,1);
 
 	if(nbargs != 1)
 	{
@@ -154,7 +154,7 @@ cmdCallback cCMD_nohostname(char* args)
 	cmdCallback cb = {PROMPT_CONF,""};
 
 	char* hname[1];
-	uint8_t nbargs = cutString(args,hname);
+	uint8_t nbargs = cutString(args,hname,1);
 
 	if(nbargs != 1)
 	{
@@ -179,7 +179,7 @@ cmdCallback cCMD_interface(char* args)
 	cmdCallback cb = {PROMPT_CONF,""};
 
 	char* iface[1];
-	uint8_t nbargs = cutString(args,iface);
+	uint8_t nbargs = cutString(args,iface,1);
 
 	if(nbargs != 1)
 	{
@@ -262,7 +262,7 @@ cmdCallback cCMD_nointerface(char* args)
 	cmdCallback cb = {PROMPT_CONF,""};
 
 	char* iface[1];
-	uint8_t nbargs = cutString(args,iface);
+	uint8_t nbargs = cutString(args,iface,1);
 
 	if(nbargs != 1)
 	{
@@ -315,7 +315,7 @@ cmdCallback cCMD_ip(char* args)
 	cmdCallback cb = {PROMPT_CONF,""};
 
 	char* _ip[4];
-	uint8_t nbargs = cutString(args,_ip);
+	uint8_t nbargs = cutString(args,_ip,4);
 
 	if(nbargs < 1)
 	{
@@ -323,9 +323,6 @@ cmdCallback cCMD_ip(char* args)
 		freeCutString(_ip,nbargs);
 		return cb;
 	}
-
-	char* ipcmd[2];
-	cutFirstWord(args,ipcmd);
 
 	if(strcmp(_ip[0],"domain-name") == 0)
 	{
@@ -460,7 +457,7 @@ cmdCallback cCMD_noip(char* args)
 	cmdCallback cb = {PROMPT_CONF,""};
 
 	char* _ip[4];
-	uint8_t nbargs = cutString(args,_ip);
+	uint8_t nbargs = cutString(args,_ip,4);
 
 	if(nbargs < 1)
 	{

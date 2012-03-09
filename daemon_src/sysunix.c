@@ -33,7 +33,7 @@
 
 unsigned short checkSystemIntegrity()
 {
-	printf("Starting configuration checks...");
+	printf("Starting configuration checks [");
 	fflush(stdout);
 
 	char buffer[1024] = "";
@@ -45,13 +45,13 @@ unsigned short checkSystemIntegrity()
 	hsystemcmd("cp /etc/ripd.conf.save /etc/ripd.conf");
 	hsystemcmd("cp /etc/ospfd.conf.save /etc/ospfd.conf");
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	execSystemCommand("/bin/md5 /etc/sysctl.conf | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/sysctl.conf.md5",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -60,7 +60,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -69,7 +69,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha1 /etc/sysctl.conf | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/sysctl.conf.sha1",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -78,7 +78,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -87,7 +87,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha256 /etc/sysctl.conf | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/sysctl.conf.sha256",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -96,7 +96,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	// /etc/myname check
@@ -106,7 +106,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/md5 /etc/myname | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/myname.md5",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -115,7 +115,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -124,7 +124,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha1 /etc/myname | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/myname.sha1",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -133,7 +133,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -142,7 +142,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha256 /etc/myname | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/myname.sha256",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -158,7 +158,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/md5 /etc/resolv.conf.save | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/resolv.conf.md5",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -167,7 +167,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -176,7 +176,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha1 /etc/resolv.conf.save | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/resolv.conf.sha1",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -185,7 +185,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -194,7 +194,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha256 /etc/resolv.conf.save | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/resolv.conf.sha256",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -210,7 +210,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/md5 /etc/ripd.conf.save | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/ripd.conf.md5",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -219,7 +219,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -228,7 +228,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha1 /etc/ripd.conf.save | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/ripd.conf.sha1",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -237,7 +237,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -246,7 +246,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha256 /etc/ripd.conf.save | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/ripd.conf.sha256",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -262,7 +262,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/md5 /etc/ospfd.conf.save | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/ospfd.conf.md5",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -271,7 +271,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -280,7 +280,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha1 /etc/ospfd.conf.save | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/ospfd.conf.sha1",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -289,7 +289,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -298,7 +298,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha256 /etc/ospfd.conf.save | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/ospfd.conf.sha256",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -308,7 +308,7 @@ unsigned short checkSystemIntegrity()
 	}
 
 	// check Startup Config
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -317,7 +317,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/md5 /opt/PFShell/startup-config  | awk '{print $4}'",buffer);
 	execSystemCommand("cat /opt/PFShell/startup-config.md5",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -326,7 +326,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -335,7 +335,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha1 /opt/PFShell/startup-config  | awk '{print $4}'",buffer);
 	execSystemCommand("cat /opt/PFShell/startup-config.sha1",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -344,7 +344,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -353,7 +353,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha256 /opt/PFShell/startup-config  | awk '{print $4}'",buffer);
 	execSystemCommand("cat /opt/PFShell/startup-config.sha256",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -362,7 +362,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -371,7 +371,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/md5 /etc/pf.conf | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/pf.conf.md5",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	// Check packet filter
@@ -381,7 +381,7 @@ unsigned short checkSystemIntegrity()
 		error = 1;
 	}
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -390,7 +390,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha1 /etc/pf.conf | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/pf.conf.sha1",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -400,7 +400,7 @@ unsigned short checkSystemIntegrity()
 	}
 
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	bzero(buffer,1024);
@@ -409,7 +409,7 @@ unsigned short checkSystemIntegrity()
 	execSystemCommand("/bin/sha256 /etc/pf.conf | /usr/bin/awk '{print $4}'",buffer);
 	execSystemCommand("cat /etc/pf.conf.sha256",buffer2);
 
-	printf(".");
+	printf("*");
 	fflush(stdout);
 
 	if(strcmp(buffer,buffer2) != 0)
@@ -417,6 +417,8 @@ unsigned short checkSystemIntegrity()
 		printf("\x1b[31mERROR\x1b[0m\nPacket Filter configuration is corrupted !\n");
 		error = 1;
 	}
+
+	printf("]\n");
 
 	return error;
 }

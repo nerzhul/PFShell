@@ -17,7 +17,7 @@ CFLAGS+= -Wall -I${.CURDIR}
 CFLAGS+= -Wstrict-prototypes -Wmissing-prototypes
 CFLAGS+= -Wmissing-declarations
 CFLAGS+= -Wshadow -Wpointer-arith -Wcast-qual
-CFLAGS+= -Wsign-compare
+CFLAGS+= -Wsign-compare -g
 CFLAGS+= -DVERSION=\"alpha\ 0.27\"
 LDADD+= -lm
 

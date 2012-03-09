@@ -239,8 +239,8 @@ uint8_t addIfaceToOSPFArea(char* iface, uint32_t id)
 		{
 			if(cursor->ifacelist != NULL && strlen(cursor->ifacelist) > 0)
 			{
-				char* ifaceBuffer[256];
-				uint8_t nbifaces = cutString(cursor->ifacelist,ifaceBuffer);
+				char* ifaceBuffer[128];
+				uint8_t nbifaces = cutString(cursor->ifacelist,ifaceBuffer,128);
 
 				uint8_t i;
 				for(i=0;i<nbifaces;i++)
@@ -251,6 +251,7 @@ uint8_t addIfaceToOSPFArea(char* iface, uint32_t id)
 						return 1;
 					}
 				}
+				freeCutString(ifaceBuffer,nbifaces);
 			}
 			cursor = cursor->next;
 		}
@@ -281,7 +282,7 @@ uint8_t addIfaceToOSPFArea(char* iface, uint32_t id)
 			else
 			{
 				char* ifaceBuffer[256];
-				uint8_t nbifaces = cutString(oa->ifacelist,ifaceBuffer);
+				uint8_t nbifaces = cutString(oa->ifacelist,ifaceBuffer,256);
 
 				uint8_t i;
 				for(i=0;i<nbifaces;i++)
@@ -322,9 +323,10 @@ void delIfaceFromOSPFArea(char* iface, uint32_t id)
 		return;
 	else
 	{
-		char buffer[1024] = "";
+		char buffer[1024];
+		bzero(buffer,1024);
 		char* ifaceBuffer[256];
-		uint8_t nbifaces = cutString(oa->ifacelist,ifaceBuffer);
+		uint8_t nbifaces = cutString(oa->ifacelist,ifaceBuffer,256);
 		if(oa->ifacelist != NULL);
 			free(oa->ifacelist);
 
@@ -634,8 +636,8 @@ void saveOspfd(void)
 			fprintf(fOSPFd,"area %s {\n",convert_int_to_ip(cursor->id));
 			if(cursor->stub > 0)
 				fprintf(fOSPFd,"\tstub%s\n",(cursor->stub_summary > 0) ? " redistribute default" : "");
-			char* ifbuffer[256];
-			uint8_t nbif = cutString(cursor->ifacelist,ifbuffer);
+			char* ifbuffer[128];
+			uint8_t nbif = cutString(cursor->ifacelist,ifbuffer,128);
 
 			uint8_t i;
 			for(i=0;i<nbif;i++)

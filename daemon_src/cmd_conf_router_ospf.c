@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Loïc BLOT - Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT - CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -9,7 +9,7 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * Neither the name of the Frost Sapphire Studios nor the
+*     * Neither the name of the BSDRouterd nor the
 *       names of its contributors may be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
@@ -61,7 +61,14 @@ cmdCallback crouterCMD_OSPF_redistrib(char* args)
 
 	// Cutting args
 	char* redistargs[5];
-	uint8_t nbargs = cutString(args,redistargs);
+	uint8_t nbargs = cutString(args,redistargs,5);
+
+	if(nbargs == -1)
+	{
+		freeCutString(redistargs,nbargs);
+		cb.message = CMDROUTER_OSPF_REDISTGENERAL_ERROR();
+		return cb;
+	}
 
 	if(strcmp(redistargs[0],"connected") == 0)
 	{
@@ -331,7 +338,15 @@ cmdCallback crouterCMD_OSPF_noredistrib(char* args)
 
 	// Cutting args
 	char* redistargs[5];
-	uint8_t nbargs = cutString(args,redistargs);
+	uint8_t nbargs = cutString(args,redistargs,5);
+
+	if(nbargs == -1)
+	{
+		cb.message = CMDROUTER_OSPF_REDISTGENERAL_ERROR();
+		freeCutString(redistargs,nbargs);
+		return cb;
+	}
+
 
 	if(strcmp(redistargs[0],"connected") == 0)
 	{
@@ -542,9 +557,9 @@ cmdCallback crouterCMD_OSPF_passive(char* args)
 	}
 
 	char* iface[1];
-	uint8_t nbargs = cutString(args,iface);
+	uint8_t nbargs = cutString(args,iface,1);
 
-	if(nbargs > 1)
+	if(nbargs == -1)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
 		freeCutString(iface,nbargs);
@@ -575,9 +590,9 @@ cmdCallback crouterCMD_OSPF_nopassive(char* args)
 	}
 
 	char* iface[1];
-	uint8_t nbargs = cutString(args,iface);
+	uint8_t nbargs = cutString(args,iface,1);
 
-	if(nbargs > 1)
+	if(nbargs == -1)
 	{
 		cb.message = CMDROUTER_RIP_OSPF_INTERFACE_ERROR();
 		freeCutString(iface,nbargs);
@@ -603,7 +618,7 @@ cmdCallback crouterCMD_OSPF_routerid(char* args)
 	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
 
 	char* rid[1];
-	uint8_t nbargs = cutString(args,rid);
+	uint8_t nbargs = cutString(args,rid,1);
 
 	if(nbargs != 1)
 	{
@@ -630,7 +645,7 @@ cmdCallback crouterCMD_OSPF_norouterid(char* args)
 	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
 
 	char* rid[1];
-	uint8_t nbargs = cutString(args,rid);
+	uint8_t nbargs = cutString(args,rid,1);
 
 	if(nbargs != 1)
 	{
@@ -657,7 +672,7 @@ cmdCallback crouterCMD_OSPF_timers(char* args)
 	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
 
 	char* timers[3];
-	uint8_t nbargs = cutString(args,timers);
+	uint8_t nbargs = cutString(args,timers,3);
 
 	if(nbargs != 3 || strcmp(timers[0],"spf") != 0 || is_numeric(timers[1]) != 0 || is_numeric(timers[2]) != 0)
 	{
@@ -685,7 +700,7 @@ cmdCallback crouterCMD_OSPF_notimers(char* args)
 	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
 
 	char* timers[3];
-	uint8_t nbargs = cutString(args,timers);
+	uint8_t nbargs = cutString(args,timers,3);
 
 	if(nbargs != 3 || strcmp(timers[0],"spf") != 0 || is_numeric(timers[1]) != 0 || is_numeric(timers[2]) != 0)
 	{
@@ -721,7 +736,7 @@ cmdCallback crouterCMD_OSPF_network(char* args)
 	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
 
 	char* netarea[3];
-	uint8_t nbargs = cutString(args,netarea);
+	uint8_t nbargs = cutString(args,netarea,3);
 
 	if(nbargs != 3)
 	{
@@ -785,7 +800,7 @@ cmdCallback crouterCMD_OSPF_nonetwork(char* args)
 	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
 
 	char* netarea[3];
-	uint8_t nbargs = cutString(args,netarea);
+	uint8_t nbargs = cutString(args,netarea,3);
 
 	if(nbargs != 3)
 	{
@@ -836,8 +851,8 @@ cmdCallback crouterCMD_OSPF_area(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
 
-	char* area[2];
-	uint8_t nbargs = cutString(args,area);
+	char* area[3];
+	uint8_t nbargs = cutString(args,area,3);
 
 	if(nbargs < 2 || nbargs > 3 || is_valid_ip(area[0]) != 0 || strcmp(area[1],"stub") != 0 || (nbargs == 3 && strcmp(area[2],"no-summary") != 0))
 	{
@@ -862,8 +877,8 @@ cmdCallback crouterCMD_OSPF_noarea(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_ROUTER_OSPF,""};
 
-	char* area[2];
-	uint8_t nbargs = cutString(args,area);
+	char* area[3];
+	uint8_t nbargs = cutString(args,area,3);
 
 	if(nbargs < 2 || nbargs > 3 || is_valid_ip(area[0]) != 0 || strcmp(area[1],"stub") != 0 || nbargs == 3 && strcmp(area[2],"no-summary") != 0)
 	{

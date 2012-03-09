@@ -77,9 +77,9 @@ cmdCallback cifCMD_ip_rip(char* args)
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
 	char* keywords[3];
-	uint8_t nbargs = cutString(args,keywords);
+	uint8_t nbargs = cutString(args,keywords,3);
 
-	if(nbargs < 2)
+	if(nbargs < 2 || nbargs == -1)
 	{
 		cb.message = CMDIF_IP_RIP_ERROR();
 		freeCutString(keywords,nbargs);
@@ -160,7 +160,14 @@ cmdCallback cifCMD_noip_rip(char* args)
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
 	char* keywords[3];
-	uint8_t nbargs = cutString(args,keywords);
+	uint8_t nbargs = cutString(args,keywords,3);
+
+	if(nbargs < 2 || nbargs == -1)
+	{
+		cb.message = CMDIF_IP_RIP_ERROR();
+		freeCutString(keywords,nbargs);
+		return cb;
+	}
 
 	if(strcmp(keywords[0],"authentication") == 0)
 	{
@@ -227,10 +234,10 @@ cmdCallback cifCMD_ip_ospf(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
-	char* keywords[2];
-	uint8_t nbargs = cutString(args,keywords);
+	char* keywords[3];
+	uint8_t nbargs = cutString(args,keywords,2);
 
-	if(nbargs == 0 || nbargs > 3)
+	if(strlen(args) == 0 || nbargs == -1)
 	{
 		cb.message = CMDIF_IP_OSPF_ERROR();
 		freeCutString(keywords,nbargs);
@@ -424,10 +431,10 @@ cmdCallback cifCMD_noip_ospf(char* args)
 {
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
-	char* keywords[2];
-	uint8_t nbargs = cutString(args,keywords);
+	char* keywords[3];
+	uint8_t nbargs = cutString(args,keywords,3);
 
-	if(nbargs != 2)
+	if(strlen(args) == 0 || nbargs == -1)
 	{
 		cb.message = CMDIF_IP_OSPF_ERROR();
 		freeCutString(keywords,nbargs);
@@ -570,9 +577,9 @@ cmdCallback cifCMD_ip_address(char* args)
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
 	char* _ip[2];
-	uint8_t nbargs = cutString(args,_ip);
+	uint8_t nbargs = cutString(args,_ip,2);
 
-	if(nbargs < 1)
+	if(strlen(args) == 0 || nbargs == -1)
 	{
 		cb.message = CMDIF_IPADDR_ERROR();
 		freeCutString(_ip,nbargs);
@@ -700,7 +707,8 @@ cmdCallback cifCMD_shutdown(char* _none)
 		return cb;
 	}
 
-	char buffer[100] = "";
+	char buffer[64];
+	bzero(buffer,64);
 	if(current_iface_id == 0)
 		sprintf(buffer,"ifconfig %s down",current_iface);
 	else
@@ -726,7 +734,8 @@ cmdCallback cifCMD_noshutdown(char* _none)
 		return cb;
 	}
 
-	char buffer[100] = "";
+	char buffer[64];
+	bzero(buffer,64);
 	if(current_iface_id == 0)
 		sprintf(buffer,"ifconfig %s up",current_iface);
 	else
@@ -736,7 +745,7 @@ cmdCallback cifCMD_noshutdown(char* _none)
 	char* ifconf = getInterfaceIP(current_iface);
 	if(strcmp(ifconf,"DHCP") == 0)
 	{
-		buffer[100] = "";
+		bzero(buffer,64);
 		if(current_iface_id == 0)
 			sprintf(buffer,"dhclient %s",current_iface);
 		else
@@ -746,7 +755,7 @@ cmdCallback cifCMD_noshutdown(char* _none)
 	else if(strlen(ifconf) > 0)
 	{
 		char* _ip[2];
-		uint8_t nbargs = cutString(ifconf,_ip);
+		uint8_t nbargs = cutString(ifconf,_ip,2);
 		if(nbargs == 1)
 		{
 			if(current_iface_id == 0)
@@ -755,7 +764,7 @@ cmdCallback cifCMD_noshutdown(char* _none)
 				sprintf(buffer,"ifconfig vlan%d%d %s",getInterfacePosition(current_iface),current_iface_id,_ip[0]);
 			system(buffer);
 		}
-		else
+		else if(nbargs != -1)
 		{
 			if(current_iface_id == 0)
 				sprintf(buffer,"ifconfig %s %s netmask %s",current_iface,_ip[0],_ip[1]);
@@ -781,9 +790,9 @@ cmdCallback cifCMD_access_list(char* args)
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
 	char* acls[2];
-	uint8_t nbargs = cutString(args,acls);
+	uint8_t nbargs = cutString(args,acls,2);
 
-	if(nbargs != 2)
+	if(nbargs != 2 || nbargs == -1)
 	{
 		cb.message = CMDIF_ACCESS_LIST_ERROR();
 		freeCutString(acls,nbargs);
@@ -817,9 +826,9 @@ cmdCallback cifCMD_noaccess_list(char* args)
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
 	char* acls[2];
-	uint8_t nbargs = cutString(args,acls);
+	uint8_t nbargs = cutString(args,acls,2);
 
-	if(nbargs != 2)
+	if(nbargs != 2 || nbargs == -1)
 	{
 		cb.message = CMDIF_ACCESS_LIST_ERROR();
 		freeCutString(acls,nbargs);
@@ -861,6 +870,7 @@ cmdCallback cifCMD_description(char* args)
 	else
 	{
 		char cmdbuffer[256];
+		bzero(cmdbuffer,256);
 		sprintf(cmdbuffer,"ifconfig %s description %s",current_iface,args);
 		hsystemcmd(cmdbuffer);
 	}
@@ -887,6 +897,7 @@ cmdCallback cifCMD_nodescription(char* args)
 		else
 		{
 			char cmdbuffer[256];
+			bzero(cmdbuffer,256);
 			sprintf(cmdbuffer,"ifconfig %s -description",current_iface);
 			hsystemcmd(cmdbuffer);
 		}
@@ -907,7 +918,7 @@ cmdCallback cifCMD_encap(char* args)
 	}
 
 	char* enc[2];
-	uint8_t nbargs = cutString(args,enc);
+	uint8_t nbargs = cutString(args,enc,2);
 
 	if(nbargs != 2)
 	{
@@ -935,6 +946,7 @@ cmdCallback cifCMD_encap(char* args)
 
 		setInterfaceVLAN(current_iface,vlanid);
 		char cmdbuffer[200];
+		bzero(cmdbuffer,200);
 		sprintf(cmdbuffer,"ifconfig vlan%d%d vlan %d",getInterfacePosition(current_iface),current_iface_id,vlanid);
 		hsystemcmd(cmdbuffer);
 		WRITE_RUN();
@@ -961,7 +973,7 @@ cmdCallback cifCMD_noencap(char* args)
 	}
 
 	char* enc[2];
-	uint8_t nbargs = cutString(args,enc);
+	uint8_t nbargs = cutString(args,enc,2);
 
 	if(nbargs != 2)
 	{
@@ -988,6 +1000,7 @@ cmdCallback cifCMD_noencap(char* args)
 
 		setInterfaceVLAN(current_iface,0);
 		char cmdbuffer[200];
+		bzero(cmdbuffer,200);
 		sprintf(cmdbuffer,"ifconfig vlan%d%d vlan 0",getInterfacePosition(current_iface),current_iface_id);
 		hsystemcmd(cmdbuffer);
 		WRITE_RUN();
@@ -1008,9 +1021,9 @@ cmdCallback cifCMD_ip_helper(char* args)
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
 	char* iphelper[1];
-	uint8_t nbargs = cutString(args,iphelper);
+	uint8_t nbargs = cutString(args,iphelper,1);
 
-	if(nbargs != 1 || is_valid_ip(iphelper[0]) != 0)
+	if(strlen(args) == 0 || nbargs == -1 || is_valid_ip(iphelper[0]) != 0)
 	{
 		cb.message = CMDIF_IP_HELPER_ERROR();
 		freeCutString(iphelper,nbargs);
@@ -1019,7 +1032,8 @@ cmdCallback cifCMD_ip_helper(char* args)
 
 	if(addInterfaceIPHelper(current_iface,iphelper[0]) == 0)
 	{
-		char buffer[50] = "";
+		char buffer[64];
+		bzero(buffer,64);
 		if(current_iface_id == 0)
 			sprintf(buffer,"dhcrelay -i %s %s",current_iface,iphelper[0]);
 		else
@@ -1036,9 +1050,9 @@ cmdCallback cifCMD_noip_helper(char* args)
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
 	char* iphelper[1];
-	uint8_t nbargs = cutString(args,iphelper);
+	uint8_t nbargs = cutString(args,iphelper,1);
 
-	if(nbargs != 1 || is_valid_ip(iphelper[0]) != 0)
+	if(strlen(args) == 0 || nbargs == -1 || is_valid_ip(iphelper[0]) != 0)
 	{
 		cb.message = CMDIF_IP_HELPER_ERROR();
 		freeCutString(iphelper,nbargs);
@@ -1047,7 +1061,8 @@ cmdCallback cifCMD_noip_helper(char* args)
 
 	delInterfaceIPHelper(current_iface,iphelper[0]);
 
-	char buffer[150] = "";
+	char buffer[150];
+	bzero(buffer,150);
 	if(current_iface_id == 0)
 		sprintf(buffer,"kill -9 $(ps ax |grep dhcrelay|grep %s|grep %s|awk '{print $1}')",current_iface,iphelper[0]);
 	else
@@ -1086,7 +1101,7 @@ cmdCallback cifCMD_mac(char* args)
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
 	char* macaddr[1];
-	uint8_t nbargs = cutString(args,macaddr);
+	uint8_t nbargs = cutString(args,macaddr,1);
 
 	if(nbargs != 1 || is_valid_macaddr(macaddr[0]) != 0 && strcmp(macaddr[0],"random") != 0)
 	{
@@ -1110,9 +1125,9 @@ cmdCallback cifCMD_nomac(char* args)
 	cmdCallback cb = {PROMPT_CONF_IF,""};
 
 	char* macaddr[1];
-	uint8_t nbargs = cutString(args,macaddr);
+	uint8_t nbargs = cutString(args,macaddr,1);
 
-	if(strlen(args) == 0 || is_valid_macaddr(macaddr[0]) != 0 && strcmp(macaddr[0],"random") != 0)
+	if(strlen(args) == 0 || nbargs == -1 || is_valid_macaddr(macaddr[0]) != 0 && strcmp(macaddr[0],"random") != 0)
 	{
 		cb.message = CMDIF_MACADDR_ERROR();
 		freeCutString(macaddr,nbargs);
@@ -1160,7 +1175,14 @@ cmdCallback cifCMD_speed(char* args)
 	}
 
 	char* speed[1];
-	uint8_t nbargs = cutString(args,speed);
+	uint8_t nbargs = cutString(args,speed,1);
+
+	if(nbargs == -1)
+	{
+		cb.message = CMDIF_SPEED_ERROR();
+		freeCutString(speed,nbargs);
+		return cb;
+	}
 
 	char output[1024];
 	char output2[1024];
@@ -1178,8 +1200,16 @@ cmdCallback cifCMD_speed(char* args)
 
 	char* speeds[128];
 	char* realspeeds[128];
-	uint8_t nbif = cutString(output,speeds);
-	cutString(output2,realspeeds);
+	uint8_t nbif = cutString(output,speeds,128);
+	cutString(output2,realspeeds,128);
+
+	if(nbif == -1)
+	{
+		freeCutString(speeds,nbif);
+		freeCutString(realspeeds,nbif);
+		freeCutString(speed,nbargs);
+		return cb;
+	}
 
 	uint8_t i;
 	for(i=0;i<nbif;i++)
@@ -1192,6 +1222,8 @@ cmdCallback cifCMD_speed(char* args)
 			system(cmdbuffer);
 			setInterfaceSpeed(current_iface,speed[0]);
 			WRITE_RUN();
+			freeCutString(speeds,nbif);
+			freeCutString(realspeeds,nbif);
 			freeCutString(speed,nbargs);
 			return cb;
 		}
@@ -1200,7 +1232,8 @@ cmdCallback cifCMD_speed(char* args)
 	bzero(buffer,128);
 	sprintf(buffer,"Invalid speed, valid speeds are \n%s",output);
 	cb.message = printError(buffer);
-
+	freeCutString(speeds,nbif);
+	freeCutString(realspeeds,nbif);
 	freeCutString(speed,nbargs);
 	return cb;
 }
@@ -1222,7 +1255,14 @@ cmdCallback cifCMD_nospeed(char* args)
 	}
 
 	char* speed[1];
-	uint8_t nbargs = cutString(args,speed);
+	uint8_t nbargs = cutString(args,speed,1);
+
+	if(nbargs == -1)
+	{
+		cb.message = CMDIF_SPEED_ERROR();
+		freeCutString(speed,nbargs);
+		return cb;
+	}
 
 	if(strcmp(getInterfaceSpeed(current_iface),speed[0]) == 0)
 	{
@@ -1255,8 +1295,14 @@ cmdCallback cifCMD_duplex(char* args)
 	}
 
 	char* duplex[1];
-	uint8_t nbargs = cutString(args,duplex);
+	uint8_t nbargs = cutString(args,duplex,1);
 
+	if(nbargs == -1)
+	{
+		cb.message = CMDIF_DUPLEX_ERROR();
+		freeCutString(duplex,nbargs);
+		return cb;
+	}
 
 	char output[1024];
 	char output2[1024];
@@ -1274,8 +1320,8 @@ cmdCallback cifCMD_duplex(char* args)
 
 	char* dupl[128];
 	char* reals[128];
-	uint8_t nbif = cutString(output,dupl);
-	cutString(output2,reals);
+	uint8_t nbif = cutString(output,dupl,128);
+	cutString(output2,reals,128);
 
 	uint8_t i;
 	for(i=0;i<nbif;i++)
@@ -1292,7 +1338,9 @@ cmdCallback cifCMD_duplex(char* args)
 				setInterfaceDuplex(current_iface,DUPLEX_HALF);
 
 			WRITE_RUN();
-			freeCutString(dupl,nbargs);
+			freeCutString(dupl,nbif);
+			freeCutString(reals,nbif);
+			freeCutString(duplex,nbargs);
 			return cb;
 		}
 	}
@@ -1301,6 +1349,8 @@ cmdCallback cifCMD_duplex(char* args)
 	sprintf(buffer,"Invalid dulex, valid duplexes are \n%s",output);
 	cb.message = printError(buffer);
 
+	freeCutString(dupl,nbif);
+	freeCutString(reals,nbif);
 	freeCutString(duplex,nbargs);
 	return cb;
 }
@@ -1322,7 +1372,14 @@ cmdCallback cifCMD_noduplex(char* args)
 	}
 
 	char* duplex[1];
-	uint8_t nbargs = cutString(args,duplex);
+	uint8_t nbargs = cutString(args,duplex,1);
+
+	if(nbargs == -1)
+	{
+		cb.message = CMDIF_DUPLEX_ERROR();
+		freeCutString(duplex,nbargs);
+		return cb;
+	}
 
 	char curduplex[10];
 	bzero(curduplex,10);

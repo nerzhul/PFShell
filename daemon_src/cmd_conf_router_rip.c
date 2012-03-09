@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, CNRS
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@ cmdCallback crouterCMD_RIP_network(char* args)
 	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 
 	char* iface[1];
-	uint8_t nbargs = cutString(args,iface);
+	uint8_t nbargs = cutString(args,iface,1);
 
 	if(nbargs != 1)
 	{
@@ -59,7 +59,7 @@ cmdCallback crouterCMD_RIP_nonetwork(char* args)
 	cmdCallback cb = {PROMPT_CONF_ROUTER_RIP,""};
 
 	char* iface[1];
-	uint8_t nbargs = cutString(args,iface);
+	uint8_t nbargs = cutString(args,iface,1);
 
 	if(nbargs != 1)
 	{
@@ -86,7 +86,7 @@ cmdCallback crouterCMD_RIP_redistrib(char* args)
 
 
 	char* redistargs[1];
-	uint8_t nbargs = cutString(args,redistargs);
+	uint8_t nbargs = cutString(args,redistargs,1);
 
 	if(nbargs != 1)
 	{
@@ -123,7 +123,7 @@ cmdCallback crouterCMD_RIP_noredistrib(char* args)
 	}
 
 	char* redistargs[1];
-	uint8_t nbargs = cutString(args,redistargs);
+	uint8_t nbargs = cutString(args,redistargs,1);
 
 	if(nbargs != 1)
 	{
@@ -221,7 +221,7 @@ cmdCallback crouterCMD_RIP_passive(char* args)
 	}
 
 	char* iface[1];
-	uint8_t nbargs = cutString(args,iface);
+	uint8_t nbargs = cutString(args,iface,1);
 
 	if(nbargs != 1)
 	{
@@ -253,7 +253,7 @@ cmdCallback crouterCMD_RIP_nopassive(char* args)
 	}
 
 	char* iface[1];
-	uint8_t nbargs = cutString(args,iface);
+	uint8_t nbargs = cutString(args,iface,1);
 
 	if(nbargs != 1)
 	{
@@ -286,7 +286,7 @@ cmdCallback crouterCMD_RIP_timer(char* args)
 	}
 
 	char* timers[3];
-	uint8_t nbargs = cutString(args,timers);
+	uint8_t nbargs = cutString(args,timers,3);
 
 	if(nbargs != 3)
 	{
@@ -339,7 +339,7 @@ cmdCallback crouterCMD_RIP_notimer(char* args)
 	}
 
 	char* timers[3];
-	uint8_t nbargs = cutString(args,timers);
+	uint8_t nbargs = cutString(args,timers,3);
 
 	if(nbargs != 3)
 	{

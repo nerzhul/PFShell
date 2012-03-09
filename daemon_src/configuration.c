@@ -43,6 +43,8 @@
 
 uint8_t loadConfiguration(void)
 {
+	printf("Loading configuration: [");
+	fflush(stdout);
 	// Temporary path
 	FILE* confFile;
 	confFile = fopen("/opt/PFShell/startup-config","r");
@@ -51,6 +53,7 @@ uint8_t loadConfiguration(void)
 		system("mkdir -p /opt/PFShell >> /dev/null 2>&1");
 		confFile = fopen("/opt/PFShell/startup-config", "w+");
 		fclose(confFile);
+		printError("FAIL]\n");
 		return 1;
 	}
 
@@ -97,7 +100,8 @@ uint8_t loadConfiguration(void)
 	strcpy(dnsip,"");
 
 	// Read file
-	char path[1035] = "";
+	char path[1035];
+	bzero(path,1035);
 
 	cmdCallback promptMode = {PROMPT_CONF,""};
 	while (fgets(path, sizeof(path), confFile) != NULL) {
@@ -110,8 +114,12 @@ uint8_t loadConfiguration(void)
 			++offset;
 		}
 		promptMode = handleCmd(path,promptMode.promptMode);
+		printf("*");
+		fflush(stdout);
 	}
 	fclose(confFile);
+
+	printf("] Done!\n");
 	return 1;
 }
 
@@ -273,18 +281,16 @@ uint8_t writeRunningConfig(void)
 			ospf_area* oa = ospfareas;
 			while(oa != NULL)
 			{
-				char* iflist[256];
-				uint8_t ifnb = cutString(oa->ifacelist,iflist);
-
+				char* iflist[128];
+				uint8_t ifnb = cutString(oa->ifacelist,iflist,128);
 				uint8_t i;
 				for(i=0;i<ifnb;i++)
 					fprintf(confFile,"network %s area %s\n",iflist[i],convert_int_to_ip(oa->id));
 
-				freeCutString(iflist,ifnb);
-
 				if(oa->stub > 0)
 					fprintf(confFile,"area %s stub%s\n",convert_int_to_ip(oa->id),(oa->stub_summary == 0) ? " no-summary" : "");
 
+				freeCutString(iflist,ifnb);
 				oa = oa->next;
 			}
 			fputs("!\n",confFile);
@@ -382,7 +388,7 @@ uint8_t writeRunningConfig(void)
 			if(strlen(if_cursor->ip_helper_list) > 0)
 			{
 				char* helpers[64];
-				uint8_t nbhelpers = cutString(if_cursor->ip_helper_list,helpers);
+				uint8_t nbhelpers = cutString(if_cursor->ip_helper_list,helpers,64);
 
 				uint8_t i;
 				for(i=0;i<nbhelpers;i++)
@@ -390,6 +396,7 @@ uint8_t writeRunningConfig(void)
 					if(is_valid_ip(helpers[i]) == 0)
 						fprintf(confFile,"ip helper-address %s\n",helpers[i]);
 				}
+				freeCutString(helpers,nbhelpers);
 			}
 
 			if(strlen(if_cursor->acl_in) > 0)

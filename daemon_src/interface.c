@@ -135,7 +135,7 @@ void loadInterfaces(void)
 		return;
 
 	char* iface[128];
-	uint8_t nbif = cutString(output,iface);
+	uint8_t nbif = cutString(output,iface,128);
 
 	uint8_t i;
 	for(i=0;i<nbif;i++)
@@ -155,6 +155,8 @@ void loadInterfaces(void)
 		if(is_valid_macaddr(output) == 0)
 			setInterfaceRealMAC(iface[i],output);
 	}
+
+	freeCutString(iface,nbif);
 }
 
 uint8_t saveInterfaces(void)
@@ -1127,7 +1129,7 @@ uint8_t addInterfaceIPHelper(char* name, char* ip)
 		if(strcmp(cursor->name,name) == 0)
 		{
 			char* helpers[64];
-			uint8_t nbhelpers = cutString(cursor->ip_helper_list,helpers);
+			uint8_t nbhelpers = cutString(cursor->ip_helper_list,helpers,64);
 
 			uint8_t i;
 			for(i=0;i<nbhelpers;i++)
@@ -1149,6 +1151,7 @@ uint8_t addInterfaceIPHelper(char* name, char* ip)
 			strcpy(cursor->ip_helper_list,buffer);
 
 			WRITE_RUN();
+			freeCutString(helpers,nbhelpers);
 			return 0;
 		}
 		else
@@ -1176,7 +1179,7 @@ void delInterfaceIPHelper(char* name, char* ip)
 			bzero(buffer,strlen(cursor->ip_helper_list));
 
 			char* helpers[64];
-			uint8_t nbhelpers = cutString(cursor->ip_helper_list,helpers);
+			uint8_t nbhelpers = cutString(cursor->ip_helper_list,helpers,64);
 
 			uint8_t first = 1;
 
@@ -1197,6 +1200,7 @@ void delInterfaceIPHelper(char* name, char* ip)
 			strcpy(cursor->ip_helper_list,buffer);
 
 			WRITE_RUN();
+			freeCutString(helpers,nbhelpers);
 			return;
 		}
 		else
@@ -1233,7 +1237,7 @@ void launchInterfaceIPHelpers(char* name)
 		if(strcmp(cursor->name,name) == 0)
 		{
 			char* helpers[64];
-			uint8_t nbhelpers = cutString(cursor->ip_helper_list,helpers);
+			uint8_t nbhelpers = cutString(cursor->ip_helper_list,helpers,64);
 
 			char* subiface[2];
 			cutByChar(name,subiface,'.');
@@ -1251,7 +1255,7 @@ void launchInterfaceIPHelpers(char* name)
 					system(buffer);
 				}
 			}
-
+			freeCutString(helpers,nbhelpers);
 			freeCutString(subiface,strlen(subiface[1]) > 0 ? 2 : 1);
 			return;
 		}

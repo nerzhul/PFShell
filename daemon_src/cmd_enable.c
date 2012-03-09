@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012, Frost Sapphire Studios
+* Copyright (c) 2011-2012, Loïc BLOT, CNRS
 * All rights reserved.
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -9,7 +9,7 @@
 *     * Redistributions in binary form must reproduce the above copyright
 *       notice, this list of conditions and the following disclaimer in the
 *       documentation and/or other materials provided with the distribution.
-*     * Neither the name of the Frost Sapphire Studios nor the
+*     * Neither the name of the BSDRouterd nor the
 *       names of its contributors may be used to endorse or promote products
 *       derived from this software without specific prior written permission.
 *
@@ -193,7 +193,7 @@ cmdCallback eCMD_show(char* args)
 
 				while (fgets(lines, sizeof(lines), fRoutes) != NULL) {
 					char* entries[5];
-					uint8_t nbargs = cutString(lines,entries);
+					uint8_t nbargs = cutString(lines,entries,5);
 
 					if(nbargs != 5)
 						continue;
