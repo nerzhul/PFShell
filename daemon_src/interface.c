@@ -1252,7 +1252,7 @@ void launchInterfaceIPHelpers(char* name)
 						sprintf(buffer,"dhcrelay -i %s %s",cursor->name,helpers[i]);
 					else
 						sprintf(buffer,"dhcrelay -i vlan%d%s %s",getInterfacePosition(cursor->name),subiface[1],helpers[i]);
-					system(buffer);
+					hsystemcmd(buffer);
 				}
 			}
 			freeCutString(helpers,nbhelpers);
